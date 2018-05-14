@@ -1,0 +1,92 @@
+
+<div class="row">
+<div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+    <div class="form-group">
+        <div class="text-center">
+            <label class="control-label" > Día</label>
+        </div>
+    </div>
+</div>
+
+<div class="col-lg-5 col-md-5 col-sm-6 col-xs-12">
+
+
+
+    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+        <div class="form-group">
+            <div class="text-center">
+                <label class="control-label" > Desde</label>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+        <div class="form-group">
+            <div class="text-center">
+                <label class="control-label" > Hasta</label>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="col-lg-5 col-md-5 col-sm-6 col-xs-12">
+    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+        <div class="form-group">
+            <div class="text-center">
+                <label class="control-label" > Break Desde</label>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+        <div class="form-group">
+            <div class="text-center">
+                <label class="control-label" > Break Hasta</label>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+<?php foreach ($schedules as $schedule): ?>
+    <?php
+    $days = [1=> "Lunes",2 => "Martes", 3 => "Miercoles", 4 => "Jueves", 5 => "Viernes", 6 => "Sabado", 7 => "Domingo", 8 => "Feriados"];
+    $day = $schedule->get('day')->getValue();
+    $dayName = $days[$day];
+    ?>
+<div class="row">
+    <?php echo $this->formElement($schedule->get('id')); ?>
+    <?php echo $this->formElement($schedule->get('day')); ?>
+
+    <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+        <div class="form-group">
+            <div class="text-center">
+                <label class="control-label" > <?php echo $dayName; ?></label>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-5 col-md-5 col-sm-6 col-xs-12">
+
+
+
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+            <?php echo $this->formElement($schedule->get('start')); ?>
+        </div>
+
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+            <?php echo $this->formElement($schedule->get('end')); ?>
+        </div>
+    </div>
+
+    <div class="col-lg-5 col-md-5 col-sm-6 col-xs-12">
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+            <?php echo $this->formElement($schedule->get('startBreak')); ?>
+        </div>
+
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+            <?php echo $this->formElement($schedule->get('endBreak')); ?>
+        </div>
+    </div>
+
+</div>
+<?php endforeach; ?>

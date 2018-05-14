@@ -1,0 +1,46 @@
+<?php
+$form = $this->form;
+$form->prepare();
+$elementsReady = array();
+?>
+
+<?php echo $this->form()->openTag($form); ?>
+
+<div class="card">
+    <div class="card-content">
+        <h4>Principal</h4>
+        <?php echo $this->renderFormElement($form->get('id')); ?>
+        <?php echo $this->renderFormElement($form->get('name')); ?>
+        <?php echo $this->renderFormElement($form->get('description')); ?>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-content">
+        <h4>Programación horaria</h4>
+        <p>Configuración del rango horario en el que se podrán agendar eventos en este calendario. </p>
+        <?php echo $this->partial('zf-metal/calendar/manager-calendar/partial/schedules-collection', ["schedules" => $form->get("schedules")]); ?>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-content">
+        <h4>Eventos predefinidos</h4>
+        <p>Configuración de eventos pre-establecidos, con una duracion por defecto.</p>
+<!--        --><?php //$predefinedEvents = $form->get("predefinedEvents"); ?>
+<!--        --><?php //echo $this->renderFormElement($predefinedEvents->get('id')); ?>
+<!--        --><?php //echo $this->renderFormElement($predefinedEvents->get('interval')); ?>
+<!--        --><?php //echo $this->renderFormElement($predefinedEvents->get('break')); ?>
+
+        <?php echo $this->formCollection($form->get('predefinedEvents')); ?>
+    </div>
+</div>
+
+
+<div class="card">
+    <div class="card-content">
+        <?php echo $this->renderFormElement($form->get('submit')); ?>
+
+        <?php echo $this->form()->closeTag($form); ?>
+    </div>
+</div>

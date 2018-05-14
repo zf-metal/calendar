@@ -1,0 +1,18 @@
+<? $form = new \ZfMetal\Calendar\Form\DateForm(); ?>
+
+<div>
+    <a class="btn btn-default"
+       href="<?php echo $this->url('ZfMetalCalendar/TicketSchedule/Schedule', array('date' => $date->modify("-1 day"))); ?>">
+        <
+    </a>
+
+    <?php echo $this->renderForm($form,
+    \ZfMetal\Commons\Consts::STYLE_HORIZONTAL, //Estilo de elementos y form [Horizontal, veritcal, inline, placeholder]
+    \ZfMetal\Commons\Consts::COLUMNS_ONE     //Cantidad de Columanas Global
+    ); ?>
+
+    <a class="btn btn-default"
+       href="<?php echo $this->url('ZfMetalCalendar/TicketSchedule/Schedule', array('date' => $date->modify("+1 day"))); ?>">
+        >
+    </a>
+</div>

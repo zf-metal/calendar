@@ -1,0 +1,35 @@
+<div>
+    <table class="table table-bordered">
+
+        <tr>
+            <th>Hora</th>
+            <?php foreach ($calendars as $calendar): ?>
+                <th ><?php echo $calendar->getName(); ?></th>
+            <?php endforeach; ?>
+        </tr>
+
+        <?php $time = new \DateTime("1970-01-01 00:00:00"); ?>
+
+        <?php $ch = $this->calendarHelper($calendars); ?>
+        <?php for ($i = 0; $i < 48; $i++): ?>
+
+            <?php if($ch->mustShow($time,1)): ?>
+
+            <tr>
+                <th style="padding: 0.1em; font-size:1em">
+                    <?php echo $time->format("H:i"); ?>
+                </th>
+
+                <?php foreach ($calendars as $calendar): ?>
+                    <td></td>
+                <?php endforeach; ?>
+
+            </tr>
+            <?php endif; ?>
+
+            <?php $time->modify("+30 minutes"); ?>
+        <?php endfor; ?>
+
+
+    </table>
+</div>
