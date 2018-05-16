@@ -10,7 +10,8 @@ return array(
             \ZfMetal\Calendar\Controller\TicketController::class => \ZfMetal\Calendar\Factory\Controller\TicketControllerFactory::class,
             \ZfMetal\Calendar\Controller\TicketScheduleController::class => \ZfMetal\Calendar\Factory\Controller\TicketScheduleControllerFactory::class,
             \ZfMetal\Calendar\Controller\TicketStateController::class => \ZfMetal\Calendar\Factory\Controller\TicketStateControllerFactory::class,
-            \ZfMetal\Calendar\Controller\CalendarApiController::class => \ZfMetal\Calendar\Factory\Controller\CalendarApiControllerFactory::class,
+           \ZfMetal\Calendar\Controller\ApiCalendarController::class => \ZfMetal\Calendar\Factory\Controller\ApiCalendarControllerFactory::class,
+            \ZfMetal\Calendar\Controller\ApiEventController::class => \ZfMetal\Calendar\Factory\Controller\ApiEventControllerFactory::class,
         ),
     ),
 );

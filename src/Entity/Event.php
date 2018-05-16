@@ -7,7 +7,8 @@ use Zend\Form\Annotation as Annotation;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\UniqueConstraint as UniqueConstraint;
 use Gedmo\Mapping\Annotation as Gedmo;
-
+use Indaxia\OTR\ITransformable;
+use Indaxia\OTR\Traits\Transformable;
 /**
  * Event
  *
@@ -19,9 +20,10 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * @ORM\Table(name="cal_events")
  * @ORM\Entity(repositoryClass="ZfMetal\Calendar\Repository\EventRepository")
  */
-class Event
+class Event implements ITransformable
 {
 
+    use Transformable;
 
     /**
      * @Annotation\Type("Zend\Form\Element\Text")

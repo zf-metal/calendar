@@ -4,203 +4,204 @@ return [
     'router' => [
         'routes' => [
             'ZfMetal\\Calendar' => [
-                'type' => 'Literal',
                 'mayTerminate' => false,
                 'options' => [
-                    'route' => '/calendar',
-                    'defaults' => [
-                        'controller' => \ZfMetal\Calendar\Controller\CalendarController::CLASS,
-                        'action' => 'grid',
-                    ],
+                    'route' => '/zfmc',
                 ],
+                'type' => 'Literal',
                 'child_routes' => [
                     'Calendar' => [
-                        'type' => 'Literal',
                         'mayTerminate' => false,
                         'options' => [
-                            'route' => '/calendar',
                             'defaults' => [
                                 'controller' => \ZfMetal\Calendar\Controller\CalendarController::CLASS,
                                 'action' => 'grid',
                             ],
+                            'route' => '/calendar',
                         ],
+                        'type' => 'Literal',
                         'child_routes' => [
                             'Grid' => [
-                                'type' => 'Segment',
                                 'mayTerminate' => true,
                                 'options' => [
-                                    'route' => '/grid',
                                     'defaults' => [
                                         'controller' => \ZfMetal\Calendar\Controller\CalendarController::CLASS,
                                         'action' => 'grid',
                                     ],
+                                    'route' => '/grid',
                                 ],
+                                'type' => 'Segment',
                             ],
                         ],
                     ],
                     'ManagerCalendar' => [
-                        'type' => 'Literal',
                         'mayTerminate' => false,
                         'options' => [
-                            'route' => '/manager-calendar',
                             'defaults' => [
                                 'controller' => \ZfMetal\Calendar\Controller\ManagerCalendarController::CLASS,
                                 'action' => 'list',
                             ],
+                            'route' => '/manager-calendar',
                         ],
+                        'type' => 'Literal',
                         'child_routes' => [
                             'List' => [
-                                'type' => 'Segment',
                                 'mayTerminate' => true,
                                 'options' => [
-                                    'route' => '/list',
                                     'defaults' => [
                                         'controller' => \ZfMetal\Calendar\Controller\ManagerCalendarController::CLASS,
                                         'action' => 'list',
                                     ],
+                                    'route' => '/list',
                                 ],
+                                'type' => 'Segment',
                             ],
                             'Manage' => [
-                                'type' => 'Segment',
                                 'mayTerminate' => true,
                                 'options' => [
-                                    'route' => '/manage[/:id]',
                                     'defaults' => [
                                         'controller' => \ZfMetal\Calendar\Controller\ManagerCalendarController::CLASS,
                                         'action' => 'manage',
                                     ],
+                                    'route' => '/manage[/:id]',
                                 ],
+                                'type' => 'Segment',
                             ],
                         ],
                     ],
                     'Holiday' => [
-                        'type' => 'Literal',
                         'mayTerminate' => false,
                         'options' => [
-                            'route' => '/holiday',
                             'defaults' => [
                                 'controller' => \ZfMetal\Calendar\Controller\HolidayController::CLASS,
                                 'action' => 'grid',
                             ],
+                            'route' => '/holiday',
                         ],
+                        'type' => 'Literal',
                         'child_routes' => [
                             'Grid' => [
-                                'type' => 'Segment',
                                 'mayTerminate' => true,
                                 'options' => [
-                                    'route' => '/grid',
                                     'defaults' => [
                                         'controller' => \ZfMetal\Calendar\Controller\HolidayController::CLASS,
                                         'action' => 'grid',
                                     ],
+                                    'route' => '/grid',
                                 ],
+                                'type' => 'Segment',
                             ],
                         ],
                     ],
                     'Ticket' => [
-                        'type' => 'Literal',
                         'mayTerminate' => false,
                         'options' => [
-                            'route' => '/ticket',
                             'defaults' => [
                                 'controller' => \ZfMetal\Calendar\Controller\TicketScheduleController::CLASS,
                                 'action' => 'schedule',
                             ],
+                            'route' => '/ticket',
                         ],
+                        'type' => 'Literal',
                         'child_routes' => [
                             'Schedule' => [
-                                'type' => 'Segment',
                                 'mayTerminate' => true,
                                 'options' => [
-                                    'route' => '/schedule',
                                     'defaults' => [
                                         'controller' => \ZfMetal\Calendar\Controller\TicketScheduleController::CLASS,
                                         'action' => 'schedule',
                                     ],
+                                    'route' => '/schedule',
                                 ],
+                                'type' => 'Segment',
                             ],
                             'Grid' => [
-                                'type' => 'Segment',
                                 'mayTerminate' => true,
                                 'options' => [
-                                    'route' => '/grid',
                                     'defaults' => [
                                         'controller' => \ZfMetal\Calendar\Controller\TicketController::CLASS,
                                         'action' => 'grid',
                                     ],
+                                    'route' => '/grid',
                                 ],
+                                'type' => 'Segment',
                             ],
                         ],
                     ],
                     'TicketSchedule' => [
-                        'type' => 'Literal',
                         'mayTerminate' => false,
                         'options' => [
-                            'route' => '/ticket-schedule',
                             'defaults' => [
                                 'controller' => \ZfMetal\Calendar\Controller\TicketScheduleController::CLASS,
                                 'action' => 'schedule',
                             ],
+                            'route' => '/ticket-schedule',
                         ],
+                        'type' => 'Literal',
                         'child_routes' => [
                             'Schedule' => [
-                                'type' => 'Segment',
                                 'mayTerminate' => true,
                                 'options' => [
-                                    'route' => '/schedule[/:date]',
                                     'defaults' => [
                                         'controller' => \ZfMetal\Calendar\Controller\TicketScheduleController::CLASS,
                                         'action' => 'schedule',
                                     ],
+                                    'route' => '/schedule[/:date]',
                                 ],
+                                'type' => 'Segment',
                             ],
                         ],
                     ],
                     'TicketState' => [
-                        'type' => 'Literal',
                         'mayTerminate' => false,
                         'options' => [
-                            'route' => '/ticket-state',
                             'defaults' => [
                                 'controller' => \ZfMetal\Calendar\Controller\TicketStateController::CLASS,
                                 'action' => 'grid',
                             ],
+                            'route' => '/ticket-state',
                         ],
+                        'type' => 'Literal',
                         'child_routes' => [
                             'Grid' => [
-                                'type' => 'Segment',
                                 'mayTerminate' => true,
                                 'options' => [
-                                    'route' => '/grid',
                                     'defaults' => [
                                         'controller' => \ZfMetal\Calendar\Controller\TicketStateController::CLASS,
                                         'action' => 'grid',
                                     ],
+                                    'route' => '/grid',
                                 ],
+                                'type' => 'Segment',
                             ],
                         ],
                     ],
-                    'Api' => [
-                        'type' => 'Literal',
+                    'api' => [
                         'mayTerminate' => false,
                         'options' => [
                             'route' => '/api',
-                            'defaults' => [
-                                'controller' => \ZfMetal\Calendar\Controller\CalendarApiController::CLASS,
-                                'action' => 'list',
-                            ],
                         ],
+                        'type' => 'Literal',
                         'child_routes' => [
-                            'List' => [
-                                'type' => 'Segment',
-                                'mayTerminate' => true,
+                            'calendars' => [
+                                'mayTerminate' => false,
                                 'options' => [
-                                    'route' => '/list',
+                                    'route' => '/calendars[/:id]',
                                     'defaults' => [
-                                        'controller' => \ZfMetal\Calendar\Controller\CalendarApiController::CLASS,
-                                        'action' => 'list',
+                                        'controller' => \ZfMetal\Calendar\Controller\ApiCalendarController::CLASS,
                                     ],
                                 ],
+                                'type' => 'Segment',
+                            ],
+                            'events' => [
+                                'mayTerminate' => false,
+                                'options' => [
+                                    'route' => '/events[/:id]',
+                                    'defaults' => [
+                                        'controller' => \ZfMetal\Calendar\Controller\ApiEventController::CLASS,
+                                    ],
+                                ],
+                                'type' => 'Segment',
                             ],
                         ],
                     ],
