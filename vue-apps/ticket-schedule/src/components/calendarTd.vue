@@ -1,5 +1,5 @@
 <template>
-    <td class="zfc-column-calendar">
+    <td class="zfc-column-calendar" :id="tid">
         <drop @drop="handleDrop" class="zfc-dropcell">
         </drop>
     </td>
@@ -10,23 +10,30 @@
 
   export default {
     name: 'calnedarTd',
-    props: ['id', 'name', 'hour', 'parentTop', 'parentLeft'],
+    props: ['calendarId', 'tid', 'name', 'hour', 'parentTop', 'parentLeft'],
     components: {Drag, Drop},
     data() {
       return {}
     },
+    mounted: function () {
+    },
     methods: {
       handleDrop: function (data) {
-        var top = this.$el.getBoundingClientRect().top - this.parentTop;
-        var left = this.$el.getBoundingClientRect().left - this.parentLeft + 10;
         if (data.type != undefined && data.type == 't') {
-          this.$emit("dropForNewEvent",  {id: this.id, name: this.name}, data.id, this.hour, top, left);
+          this.$emit("dropForNewEvent", this.calendarId, data.id, data.subject, data.location, this.hour, this.getTop, this.getLeft);
         }
         if (data.type != undefined && data.type == 'e') {
-          this.$emit("dropForChangeEvent", {id: this.id, name: this.name}, data.id, this.hour, top, left);
+          this.$emit("dropForChangeEvent", this.calendarId, data.id,  this.hour, this.getTop, this.getLeft);
         }
-      }
-      ,
+      },
+    },
+    computed: {
+      getTop: function () {
+        return this.$el.getBoundingClientRect().top - this.parentTop;
+      },
+      getLeft: function () {
+        return this.$el.getBoundingClientRect().left - this.parentLeft + 10;
+      },
     }
   }
 </script>

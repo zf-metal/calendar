@@ -42,7 +42,7 @@
   },
   "autoload": {
     "psr-4": {
-      "ZfMetal\\Security\\": "src/"
+      "ZfMetal\\Calendar\\": "src/"
     }
   }
 }

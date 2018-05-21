@@ -3,10 +3,12 @@
 namespace ZfMetal\Calendar\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection as ArrayCollection;
+
 use Zend\Form\Annotation as Annotation;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\UniqueConstraint as UniqueConstraint;
 use Gedmo\Mapping\Annotation as Gedmo;
+use ZfMetal\Restful\Transformation;
 
 /**
  * Ticket
@@ -19,10 +21,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * @ORM\Table(name="cal_ticket")
  * @ORM\Entity(repositoryClass="ZfMetal\Calendar\Repository\TicketRepository")
  */
-class Ticket
-{
-
-
+class Ticket implements TicketInterface {
 
     /**
      * @Annotation\Type("Zend\Form\Element\Text")
@@ -35,6 +34,7 @@ class Ticket
     public $id = null;
 
     /**
+     * @Transformation\Policy\FormatDateTime(format="Y-m-d H:i:s")
      * @Annotation\Exclude()
      * @Gedmo\Timestampable(on="create")
      * @ORM\Column(type="datetime", unique=false, nullable=true, name="created_at")
@@ -42,6 +42,7 @@ class Ticket
     public $createdAt = null;
 
     /**
+     * @Transformation\Policy\FormatDateTime(format="Y-m-d H:i:s")
      * @Annotation\Exclude()
      * @Gedmo\Timestampable(on="update")
      * @ORM\Column(type="datetime", unique=false, nullable=true, name="updated_at")
@@ -52,11 +53,13 @@ class Ticket
      * @Annotation\Type("DoctrineModule\Form\Element\ObjectMultiCheckbox")
      * @Annotation\Options({"label":"Evento","target_class":"\ZfMetal\Calendar\Entity\Event",
      * "description":""})
-     * @ORM\OneToMany(targetEntity="\ZfMetal\Calendar\Entity\Event", mappedBy="ticket")
+     * @ORM\OneToOne(targetEntity="\ZfMetal\Calendar\Entity\Event")
+     * @ORM\JoinColumn(name="event_id", referencedColumnName="id")
      */
     public $event = null;
 
     /**
+     * @Transformation\Policy\Custom(transform= "\ZfMetal\Calendar\PolicyHandler\EntityIdName::transform")
      * @Annotation\Type("DoctrineModule\Form\Element\ObjectSelect")
      * @Annotation\Options({"label":"Estado","empty_option": "",
      * "target_class":"\ZfMetal\Calendar\Entity\TicketState", "description":""})
@@ -73,6 +76,16 @@ class Ticket
      * name="subject")
      */
     public $subject = null;
+
+    /**
+     * @Annotation\Type("Zend\Form\Element\Text")
+     * @Annotation\Attributes({"type":"text"})
+     * @Annotation\Options({"label":"Ubicación", "description":"", "addon":""})
+     * @ORM\Column(type="string", length=120, unique=false, nullable=true,
+     * name="location")
+     */
+    public $location = null;
+
 
     public function getId()
     {
@@ -134,6 +147,24 @@ class Ticket
     {
         $this->state = $state;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getLocation()
+    {
+        return $this->location;
+    }
+
+    /**
+     * @param mixed $location
+     */
+    public function setLocation($location)
+    {
+        $this->location = $location;
+    }
+
+
 
     public function __toString()
     {

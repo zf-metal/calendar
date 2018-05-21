@@ -177,33 +177,33 @@ return [
                         ],
                     ],
                     'api' => [
+                        'type' => 'Segment',
                         'mayTerminate' => false,
                         'options' => [
                             'route' => '/api',
                         ],
-                        'type' => 'Literal',
                         'child_routes' => [
-                            'calendars' => [
+                            'ticket' => [
+                                'type' => 'Segment',
                                 'mayTerminate' => false,
                                 'options' => [
-                                    'route' => '/calendars[/:id]',
+                                    'route' => '/tickets[/:id]',
                                     'defaults' => [
-                                        'controller' => \ZfMetal\Calendar\Controller\ApiCalendarController::CLASS,
+                                        'controller' => \ZfMetal\Calendar\Controller\ApiTicketController::CLASS,
                                     ],
                                 ],
-                                'type' => 'Segment',
                             ],
-                            'events' => [
+                            'entity' => [
+                                'type' => 'Segment',
                                 'mayTerminate' => false,
                                 'options' => [
-                                    'route' => '/events[/:id]',
+                                    'route' => '/:entityAlias[/:id]',
                                     'defaults' => [
-                                        'controller' => \ZfMetal\Calendar\Controller\ApiEventController::CLASS,
+                                        'controller' => \ZfMetal\Restful\Controller\MainController::CLASS,
                                     ],
                                 ],
-                                'type' => 'Segment',
-                            ],
-                        ],
+                            ]
+                        ]
                     ],
                 ],
             ],

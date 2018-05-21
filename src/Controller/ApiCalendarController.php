@@ -55,7 +55,7 @@ class ApiCalendarController extends AbstractRestfulController
 
         try {
             $query = $this->getRequest()->getQuery();
-            var_dump($query);die;
+
             if($query){
                 $calendars = $this->getCalendarRepository()->queryFilter($query);
             }else {
@@ -78,23 +78,20 @@ class ApiCalendarController extends AbstractRestfulController
     {
 
         try {
-            $query = $this->getRequest()->getQuery();
 
-            if($query){
-                $calendars = $this->getCalendarRepository()->queryFilter($query);
-            }else {
-                $calendars = $this->getCalendarRepository()->fullList();
+            if ($id) {
+                $object = $this->getEntityRepository()->find($id);
+                if (!$object) {
+                    throw new ItemNotExistException();
+                }
+                $results = $object->toArray();
             }
 
-            $results = Transformable::toArrays($calendars);
-
             return new JsonModel($results);
-
+        } catch (ItemNotExistException $e) {
+            return $this->responseSpecificException($e);
         } catch (\Exception $e) {
-            $a = [
-                "messages" => $e->getMessage()
-            ];
-            return new JsonModel($a);
+            return $this->responseGeneralException($e);
         }
     }
 

@@ -1,5 +1,5 @@
 <template>
-    <drag :transfer-data="{id: obj.id,type: 't'}" :draggable="isDraggable" >
+    <drag :transfer-data="{id: obj.id,subject:obj.subject,location: obj.location,type: 't'}" :draggable="isDraggable" >
         <div class="zfc-ticket" :class="{'zfc-ticket-a' : !isDraggable}">
             {{obj.id}} - {{obj.subject}}
         </div>
@@ -19,6 +19,8 @@
         obj: {
           id: '',
           subject: '',
+          location: '',
+          description: '',
           time: 60
         }
       }

@@ -7,6 +7,7 @@ use Zend\Form\Annotation as Annotation;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\UniqueConstraint as UniqueConstraint;
 use Gedmo\Mapping\Annotation as Gedmo;
+use ZfMetal\Restful\Transformation;
 
 /**
  * TicketState
