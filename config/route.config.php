@@ -177,7 +177,7 @@ return [
                         ],
                     ],
                     'api' => [
-                        'type' => 'Segment',
+                        'type' => 'Literal',
                         'mayTerminate' => false,
                         'options' => [
                             'route' => '/api',
@@ -202,8 +202,21 @@ return [
                                         'controller' => \ZfMetal\Restful\Controller\MainController::CLASS,
                                     ],
                                 ],
-                            ]
-                        ]
+                            ],
+
+                        ],
+                    ],
+                    'Home' => [
+                        'mayTerminate' => true,
+                        'options' => [
+                            'route' => '/home',
+                            'defaults' => [
+                                'controller' => \ZfMetal\Calendar\Controller\HomeController::CLASS,
+                                'action' => 'index',
+                            ],
+                        ],
+                        'type' => 'Literal',
+
                     ],
                 ],
             ],

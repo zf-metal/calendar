@@ -52,14 +52,10 @@ class TicketScheduleController extends AbstractActionController
 
     public function scheduleAction()
     {
-
-        //@TODO change method findall
-        $tickets = $this->getTicketRepository()->findAll();
-
-        $calendars = $this->getEntityRepository()->findAll();
+        $this->layout()->setTemplate('zf-metal/calendar/layout/ticket-schedule');
 
         $this->layoutHelper()->setPageTitle("Programación de tickets");
-        return ["tickets" => $tickets,"calendars" => $calendars];
+        return [];
     }
 
 

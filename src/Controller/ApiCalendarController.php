@@ -7,6 +7,7 @@ use Zend\Mvc\Controller\AbstractActionController;
 use Zend\Mvc\Controller\AbstractRestfulController;
 use Zend\View\Model\JsonModel;
 use ZfMetal\Calendar\Repository\CalendarRepository;
+use ZfMetal\Restful\Transformation\Transform;
 
 /**
  * ApiCalendarController
@@ -62,7 +63,7 @@ class ApiCalendarController extends AbstractRestfulController
                 $calendars = $this->getCalendarRepository()->fullList();
             }
 
-            $results = Transformable::toArrays($calendars);
+            $results = Transform::toArrays($calendars);
 
             return new JsonModel($results);
 
