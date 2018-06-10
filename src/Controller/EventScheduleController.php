@@ -50,6 +50,9 @@ class EventScheduleController extends AbstractActionController
 
     public function scheduleAction()
     {
+        $this->layout()->setTemplate('zf-metal/calendar/layout/schedule');
+
+        $this->layoutHelper()->setPageTitle("Programación de eventos");
         return [];
     }
 

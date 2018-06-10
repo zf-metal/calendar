@@ -1,0 +1,19 @@
+
+<div id="app">
+</div>
+
+
+<script>
+  //    var dataTickets = <?php //echo \ZfMetal\Restful\Facade\Service\Resource::getList(\ZfMetal\Calendar\Entity\Ticket::class); ?>//;
+</script>
+
+<?php
+$this->headScript()
+    ->appendScript($this->partial('zf-metal/calendar/vue-apps/ticket-schedule/dist/static/js/manifest.js'), 'text/javascript')
+    ->appendScript($this->partial('zf-metal/calendar/vue-apps/ticket-schedule/dist/static/js/vendor.js'), 'text/javascript')
+    ->appendScript($this->partial('zf-metal/calendar/vue-apps/ticket-schedule/dist/static/js/app.js'), 'text/javascript')
+?>
+
+<style>
+    <?php echo $this->partial('zf-metal/calendar/vue-apps/ticket-schedule/dist/static/css/app.css'); ?>
+</style>

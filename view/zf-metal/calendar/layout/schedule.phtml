@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" >
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title><?php echo $this->layoutHelper()->getTabTitle();?></title>
+
+    <?php echo $this->partial('layout/partials/meta'); ?>
+
+    <!-- Le styles -->
+    <?= $this->headLink(['rel' => 'shortcut icon', 'type' => 'image/vnd.microsoft.icon', 'href' => $this->basePath() . '/img/favicon.ico'])
+        ->prependStylesheet($this->basePath('shared/bootstrap/css/bootstrap.min.css'))
+    ?>
+
+
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+          rel="stylesheet">
+
+
+
+    <style>
+        h2, h3 {
+            padding-left: 14px;
+        }
+    </style>
+
+</head>
+<body>
+<div class="wrapper">
+
+
+    <div class="main-panel ps-container ps-theme-default ps-active-y">
+        <a href="/"><i class="material-icons">home</i></a>
+
+        <!-- Main content -->
+        <div class="content">
+            <?= $this->content ?>
+        </div>
+    </div>
+
+</div>
+<!-- Scripts -->
+<?= $this->headScript(); ?>
+
+</body>
+</html>
