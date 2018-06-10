@@ -20,7 +20,9 @@
     methods: {
       handleDrop: function (data) {
         if (data.type != undefined && data.type == 't') {
-          this.$emit("dropForNewEvent", this.calendarId, data.id, data.subject, data.location, this.hour, this.getTop, this.getLeft);
+          data.obj.calendar = this.calendarId;
+          data.obj.hour = this.hour;
+          this.$emit("dropForNewEvent", data.obj,data.index, this.getTop, this.getLeft);
         }
         if (data.type != undefined && data.type == 'e') {
           this.$emit("dropForChangeEvent", this.calendarId, data.id,  this.hour, this.getTop, this.getLeft);

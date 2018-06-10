@@ -4,6 +4,9 @@ namespace ZfMetal\Calendar;
 
 return [
     'doctrine' => [
+        'fixture' => array(
+            __NAMESPACE__ => __DIR__ . '/../src/DataFixture',
+        ),
         'driver' => array(
             __NAMESPACE__ => array(
                 'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',

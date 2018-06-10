@@ -2,8 +2,9 @@
     <div class="row">
         <div class="col-lg-2">
             <h3>Tickets</h3>
-            <ticket v-if="tickets" v-for="ticket in tickets" :ticket="ticket" :key="ticket.id" :event="ticket.event">
-            </ticket>
+            <preEvent v-if="preEvents" v-for="(preEvent,index) in preEvents" :preEvent="preEvent"
+                      :key="preEvent.id" :index="index">
+            </preEvent>
         </div>
 
         <div class="col-lg-10">
@@ -12,7 +13,7 @@
                     <loading :isLoading="loading"></loading>
                 </div>
                 <div class="col-lg-8">
-                        <day v-model="getDate" v-on:changeDate="onChangeDate"></day>
+                    <day v-model="getDate" v-on:changeDate="onChangeDate"></day>
                 </div>
             </div>
             <div class="clearfix"></div>
@@ -65,10 +66,10 @@
         </div>
 
         <modal :title="titleModal" :showModal="showModal" @close="showModal = false">
-                <form-event :calendars="calendars"  v-model="eventForm"
-                            :index="eventIndex" v-on:remove="removeEvent"
-                v-on:eventUpdate="onEventUpdate"
-                />
+            <form-event :calendars="calendars" v-model="eventForm"
+                        :index="eventIndex" v-on:remove="removeEvent"
+                        v-on:eventUpdate="onEventUpdate"
+            />
         </modal>
 
     </div>
@@ -88,13 +89,13 @@
   import day from './day.vue'
   import calendarTd from './calendarTd.vue'
   import event from './event.vue'
-  import ticket from "./ticket.vue";
+  import preEvent from "./preEvent.vue";
 
   import formEvent from './forms/form-event.vue'
 
   const http = axios.create({
     baseURL: '/zfmc/api/',
-    timeout: 5000,
+    timeout: 15000,
     headers: {
       accept: 'application/json'
     }
@@ -103,12 +104,13 @@
 
   export default {
     name: 'calendars',
-    components: {day, calendarTd, event, ticket, Drag, Drop, modal, loading, formEvent},
+    components: {day, calendarTd, event, preEvent, Drag, Drop, modal, loading, formEvent},
     data() {
       return {
-        calendars: [],
-        tickets: [],
         date: moment().locale('es'),
+        mytz: 'America/Argentina/Buenos_Aires',
+        calendars: [],
+        preEvents: [],
         events: [],
         tds: {},
         top: 0,
@@ -117,12 +119,12 @@
         eventIndex: '',
         loading: false,
         showModal: false,
-        titleModal:''
+        titleModal: ''
       }
     },
     created: function () {
       this.calendarList();
-      this.ticketList();
+      this.eventPendingList();
 
     },
     mounted() {
@@ -139,9 +141,9 @@
           this.loadEvents();
         })
       },
-      ticketList: function () {
-        http.get('tickets').then((response) => {
-          this.tickets = response.data;
+      eventPendingList: function () {
+        http.get('events?calendar=isNull').then((response) => {
+          this.preEvents = response.data;
         })
       },
       removeEvent: function () {
@@ -162,13 +164,13 @@
         if (event.calendar && event.hour) {
           var hs = event.hour.split(":");
           var hour = "";
-          if(hs[1] == "00" || hs[1] == "30") {
+          if (hs[1] == "00" || hs[1] == "30") {
             hour = event.hour
-          }else{
-            if(hs[1]>30 ){
-              hour = hs[0]+":30"
-            }else{
-              hour = hs[0]+":00"
+          } else {
+            if (hs[1] > 30) {
+              hour = hs[0] + ":30"
+            } else {
+              hour = hs[0] + ":00"
             }
           }
           return this.getCalendarTdRef(event.calendar, hour)
@@ -178,13 +180,16 @@
       onEditEvent: function (index) {
         this.eventForm = this.events[index]
         this.eventIndex = index
-        this.titleModal = 'Evento: '+this.eventForm.title
+        this.titleModal = 'Evento: ' + this.eventForm.title
         this.showModal = true
       },
       onChangeDate: function (d) {
-        this.events = [];
-        this.date = moment(d)
-        this.loadEvents()
+        var d = moment(d)
+        if (d.isValid()) {
+          this.date = d
+          this.events = []
+          this.loadEvents()
+        }
       },
       loadEvents: function () {
         this.loading = true;
@@ -193,14 +198,16 @@
           var events = [];
           for (var i = 0; i < response.data.length; i++) {
             var event = response.data[i]
-            //Hour
-            event.hour = moment(event.start).tz('America/Argentina/Buenos_Aires').format("HH:mm");
-            //Duration
-            event.duration = this.calculateEventDuraction(event);
-            //TOP-LEFT
-            event.top = this.getCalendarTdTop(this.getEventTid(event));
-            event.left = this.getCalendarTdLeft(this.getEventTid(event));
-            events.push(event);
+            if (event.calendar != null) {
+              //Hour
+              event.hour = moment(event.start).tz(this.mytz).format("HH:mm");
+              //Duration
+              event.duration = this.calculateEventDuraction(event);
+              //TOP-LEFT
+              event.top = this.getCalendarTdTop(this.getEventTid(event));
+              event.left = this.getCalendarTdLeft(this.getEventTid(event));
+              events.push(event);
+            }
           }
           this.events = events;
           this.loading = false;
@@ -229,25 +236,24 @@
           this.loading = false;
         })
       },
-      onDropForNewEvent: function (calendar, ticketId,ticketSubject,ticketLocation, hour, top, left) {
-        if (this.getTicketById(ticketId)) {
-          var event = {}
-          event.id = ''
-          event.calendar = calendar
-          event.ticket = ticketId
-          event.title = ticketSubject
-          event.location = ticketLocation
-          event.hour = hour
-          event.top = top + this.getScrollX() + this.getBodyScrollTop()
-          event.left = left + this.getScrollY() + this.getBodyScrollLeft()
-          event.duration = 60
-          event.date = this.date
-          event.start = this.getDate + " " + hour
-          var end = moment(this.getDate + " " + hour)
-          event.end = end.add(event.duration, "minutes").tz('America/Argentina/Buenos_Aires').format("YYYY-MM-DD HH:mm")
-          this.createEvent(event)
-        }
+      onDropForNewEvent: function (preEvent, index, top, left) {
+        var event = preEvent;
+        event.top = top + this.getScrollX() + this.getBodyScrollTop()
+        event.left = left + this.getScrollY() + this.getBodyScrollLeft()
+        event.duration = 60
+        event.date = this.date
+        event.start = this.getDate + " " + event.hour
+        event.end = this.getEndByStartDuration(event.start, event.duration)
+        this.updateEvent(event)
+        console.log(index)
+        this.preEvents.splice(index, 1)
+        this.events.push(event)
 
+      },
+      getEndByStartDuration: function (start, duration) {
+        var end = moment(start)
+        end.add(duration, "minutes")
+        return end.tz('America/Argentina/Buenos_Aires').format("YYYY-MM-DD HH:mm")
       },
       onDropForChangeEvent: function (calendar, eventKey, hour, top, left) {
         this.events[eventKey].top = top + this.getScrollX() + this.getBodyScrollTop()
@@ -255,18 +261,18 @@
         this.events[eventKey].hour = hour
         this.events[eventKey].calendar = calendar
         this.events[eventKey].start = this.getDate + " " + hour
-        var end = moment(this.getDate + " " + hour)
-        this.events[eventKey].end = end.add(this.events[eventKey].duration, "minutes").tz('America/Argentina/Buenos_Aires').format("YYYY-MM-DD HH:mm")
+        this.events[eventKey].end = this.getEndByStartDuration(this.events[eventKey].start, this.events[eventKey].duration)
         this.updateEvent(this.events[eventKey])
       },
-      onEventUpdate: function(event){
-        if(this.getDate != moment(event.start).format("YYYY-MM-DD") ){
-          this.events.splice(this.eventIndex,1)
-        }else{
-          event.hour = moment(event.start).tz('America/Argentina/Buenos_Aires').format("HH:mm");
-          event.duration = this.calculateEventDuraction(event);
-          event.top = this.getCalendarTdTop(this.getEventTid(event));
-          event.left = this.getCalendarTdLeft(this.getEventTid(event));
+      onEventUpdate: function (event) {
+        if (this.getDate != moment(event.start).format("YYYY-MM-DD")) {
+          this.events.splice(this.eventIndex, 1)
+        } else {
+          var eventid = this.getEventTid(event)
+          if (eventid != null) {
+            event.top = this.getCalendarTdTop(eventid);
+            event.left = this.getCalendarTdLeft(eventid);
+          }
 
         }
       },

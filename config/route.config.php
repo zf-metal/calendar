@@ -97,7 +97,7 @@ return [
                         'mayTerminate' => false,
                         'options' => [
                             'defaults' => [
-                                'controller' => \ZfMetal\Calendar\Controller\TicketScheduleController::CLASS,
+                                'controller' => 'ZfMetal\\Calendar\\Controller\\TicketScheduleController',
                                 'action' => 'schedule',
                             ],
                             'route' => '/ticket',
@@ -108,7 +108,7 @@ return [
                                 'mayTerminate' => true,
                                 'options' => [
                                     'defaults' => [
-                                        'controller' => \ZfMetal\Calendar\Controller\TicketScheduleController::CLASS,
+                                        'controller' => 'ZfMetal\\Calendar\\Controller\\TicketScheduleController',
                                         'action' => 'schedule',
                                     ],
                                     'route' => '/schedule',
@@ -119,7 +119,7 @@ return [
                                 'mayTerminate' => true,
                                 'options' => [
                                     'defaults' => [
-                                        'controller' => \ZfMetal\Calendar\Controller\TicketController::CLASS,
+                                        'controller' => 'ZfMetal\\Calendar\\Controller\\TicketController',
                                         'action' => 'grid',
                                     ],
                                     'route' => '/grid',
@@ -132,7 +132,7 @@ return [
                         'mayTerminate' => false,
                         'options' => [
                             'defaults' => [
-                                'controller' => \ZfMetal\Calendar\Controller\TicketScheduleController::CLASS,
+                                'controller' => 'ZfMetal\\Calendar\\Controller\\TicketScheduleController',
                                 'action' => 'schedule',
                             ],
                             'route' => '/ticket-schedule',
@@ -143,7 +143,7 @@ return [
                                 'mayTerminate' => true,
                                 'options' => [
                                     'defaults' => [
-                                        'controller' => \ZfMetal\Calendar\Controller\TicketScheduleController::CLASS,
+                                        'controller' => 'ZfMetal\\Calendar\\Controller\\TicketScheduleController',
                                         'action' => 'schedule',
                                     ],
                                     'route' => '/schedule[/:date]',
@@ -156,7 +156,7 @@ return [
                         'mayTerminate' => false,
                         'options' => [
                             'defaults' => [
-                                'controller' => \ZfMetal\Calendar\Controller\TicketStateController::CLASS,
+                                'controller' => 'ZfMetal\\Calendar\\Controller\\TicketStateController',
                                 'action' => 'grid',
                             ],
                             'route' => '/ticket-state',
@@ -167,7 +167,7 @@ return [
                                 'mayTerminate' => true,
                                 'options' => [
                                     'defaults' => [
-                                        'controller' => \ZfMetal\Calendar\Controller\TicketStateController::CLASS,
+                                        'controller' => 'ZfMetal\\Calendar\\Controller\\TicketStateController',
                                         'action' => 'grid',
                                     ],
                                     'route' => '/grid',
@@ -189,7 +189,7 @@ return [
                                 'options' => [
                                     'route' => '/tickets[/:id]',
                                     'defaults' => [
-                                        'controller' => \ZfMetal\Calendar\Controller\ApiTicketController::CLASS,
+                                        'controller' => 'ZfMetal\\Calendar\\Controller\\ApiTicketController',
                                     ],
                                 ],
                             ],
@@ -199,11 +199,10 @@ return [
                                 'options' => [
                                     'route' => '/:entityAlias[/:id]',
                                     'defaults' => [
-                                        'controller' => \ZfMetal\Restful\Controller\MainController::CLASS,
+                                        'controller' => 'ZfMetal\\Restful\\Controller\\MainController',
                                     ],
                                 ],
                             ],
-
                         ],
                     ],
                     'Home' => [
@@ -216,7 +215,54 @@ return [
                             ],
                         ],
                         'type' => 'Literal',
-
+                    ],
+                    'EventSchedule' => [
+                        'mayTerminate' => false,
+                        'options' => [
+                            'route' => '/event-schedule',
+                            'defaults' => [
+                                'controller' => \ZfMetal\Calendar\Controller\EventScheduleController::CLASS,
+                                'action' => 'schedule',
+                            ],
+                        ],
+                        'type' => 'Literal',
+                        'child_routes' => [
+                            'Schedule' => [
+                                'mayTerminate' => true,
+                                'options' => [
+                                    'route' => '/schedule',
+                                    'defaults' => [
+                                        'controller' => \ZfMetal\Calendar\Controller\EventScheduleController::CLASS,
+                                        'action' => 'schedule',
+                                    ],
+                                ],
+                                'type' => 'Segment',
+                            ],
+                        ],
+                    ],
+                    'Event' => [
+                        'mayTerminate' => false,
+                        'options' => [
+                            'route' => '/event',
+                            'defaults' => [
+                                'controller' => \ZfMetal\Calendar\Controller\EventController::CLASS,
+                                'action' => 'grid',
+                            ],
+                        ],
+                        'type' => 'Literal',
+                        'child_routes' => [
+                            'Grid' => [
+                                'mayTerminate' => true,
+                                'options' => [
+                                    'route' => '/grid',
+                                    'defaults' => [
+                                        'controller' => \ZfMetal\Calendar\Controller\EventController::CLASS,
+                                        'action' => 'grid',
+                                    ],
+                                ],
+                                'type' => 'Segment',
+                            ],
+                        ],
                     ],
                 ],
             ],

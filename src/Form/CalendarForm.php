@@ -2,6 +2,7 @@
 
 namespace ZfMetal\Calendar\Form;
 
+use DoctrineModule\Form\Element\ObjectSelect;
 use Zend\Form\Element\Collection;
 use Doctrine\Common\Persistence\ObjectManager;
 use Zend\Form\Fieldset;
@@ -67,6 +68,22 @@ class CalendarForm extends \Zend\Form\Form implements \DoctrineModule\Persistenc
                 'label' => 'Nombre del Calendario',
             )
         ));
+
+        $this->add([
+            'type' => ObjectSelect::class,
+            'name' => 'user',
+            'attributes' => array(
+                'class' => 'form-control',
+            ),
+            'options' => [
+                'label' => 'Usuario',
+                'object_manager' => $this->getObjectManager(),
+                'target_class' => '\ZfMetal\Security\Entity\User',
+                'property' => 'username',
+                'display_empty_item' => true,
+                'empty_item_label' => 'Usuario',
+            ],
+        ]);
 
         $this->add(array(
             'name' => 'description',

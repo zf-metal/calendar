@@ -5,7 +5,7 @@
                 <a class="btn btn-xs"> <i class="material-icons" @click="edit">edit</i></a>
             </div>
             <div class="col-lg-9">
-                <span> {{ticketId}} - {{title}}</span><br>
+                <span> {{id}} - {{title}}</span><br>
 
             </div>
         </div>

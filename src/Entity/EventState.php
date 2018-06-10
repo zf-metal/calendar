@@ -10,9 +10,9 @@ use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * EventState
- *
- *
- *
+ * 
+ * 
+ * 
  * @author
  * @license
  * @link
@@ -27,8 +27,7 @@ class EventState
      * @Annotation\Attributes({"type":"text"})
      * @Annotation\Options({"label":"ID", "description":"", "addon":""})
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     * @ORM\Column(type="integer", length=11, unique=false, nullable=false, name="id")
+     * @ORM\Column(type="integer", length=11, unique=true, nullable=false, name="id")
      */
     public $id = null;
 
@@ -62,7 +61,7 @@ class EventState
 
     public function __toString()
     {
-        return (string)  $this->id;
+        return (string) $this->name;
     }
 
 

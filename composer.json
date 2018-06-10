@@ -33,6 +33,8 @@
     "zendframework/zend-i18n": "^2.7",
     "zendframework/zend-mvc-console": "^1.1",
     "doctrine/doctrine-orm-module": "^1.0",
+    "doctrine/data-fixtures": "^1.2.2",
+    "dkorsak/doctrine-data-fixture-module": "1.0.0",
     "gedmo/doctrine-extensions": "^2.4.24",
     "zf-metal/commons": "^1.0.0",
     "zf-metal/datagrid": "^1.0.0",

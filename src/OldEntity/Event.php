@@ -372,7 +372,6 @@ class Event
         $this->postalCode = $postalCode;
     }
 
-
     /**
      * @return mixed
      */
@@ -388,6 +387,8 @@ class Event
     {
         $this->service = $service;
     }
+
+
 
 
     public function __toString()

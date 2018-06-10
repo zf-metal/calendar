@@ -77,6 +77,23 @@
             </div>
         </div>
 
+
+        <div class="col-lg-12 col-md-12 col-xs-12">
+            <div class="form-group">
+
+                <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 control-label">
+                    <label class="control-label">Duración</label>
+                </div>
+
+                <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
+                    <input type="number" name="duration" class=" form-control" ref="duration"
+                           v-model="entity.duration" @keydown="refreshEnd" @change="refreshEnd">
+                    <fe :errors="errors.duration"/>
+                </div>
+
+            </div>
+        </div>
+
         <div class="col-lg-12 col-md-12 col-xs-12">
             <div class="form-group">
                 <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 control-label">
@@ -84,7 +101,7 @@
                 </div>
 
                 <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
-                    <input type="datetime" name="end" class=" form-control" ref="end"
+                    <input disabled="disabled" type="datetime" name="end" class=" form-control" ref="end"
                            v-model="entity.end" @keydown="unsaved">
                     <fe :errors="errors.end"/>
                 </div>
@@ -120,12 +137,17 @@
   import fe from '../helpers/form-errors.vue'
   import saveStatus from '../helpers/save-status.vue'
   import alert from '../helpers/alert.vue'
+
   import axios from 'axios'
+
+  import moment from 'moment'
+  import momenttz from 'moment-timezone'
+  import 'moment/locale/es';
 
 
   export default {
     name: 'form-event',
-    props: ['value', 'isSaved','calendars'],
+    props: ['value', 'isSaved', 'calendars'],
     components: {fe, saveStatus, alert},
     data() {
       return {
@@ -146,17 +168,25 @@
     mounted: function () {
       this.$refs.title.focus()
     },
+    created: function () {
+      this.entity = this.value
+    },
     methods: {
       populate: function (data) {
         this.entity.id = data.id
         this.entity.title = data.title
         this.entity.description = data.description
         this.entity.start = data.start
+        this.entity.duration = data.duration
         this.entity.end = data.end
         this.entity.calendar = data.calendar
       },
       unsaved: function () {
         this.h.isSaved = false
+      },
+      refreshEnd: function () {
+        this.entity.end = moment(this.entity.start).add(this.entity.duration, "minutes").format("YYYY-MM-DD HH:mm")
+        this.unsaved()
       },
       iSave: function () {
         this.h.alertShow = false
@@ -178,7 +208,11 @@
           this.create()
         }
       },
+      setHour: function(){
+        this.entity.hour = moment(this.entity.start).format("HH:mm");
+      },
       create: function () {
+        this.setHour()
         axios.post("/zfmc/api/events", this.entity
         ).then((response) => {
           this.entity.id = response.data.id
@@ -191,6 +225,7 @@
         })
       },
       update: function () {
+        this.setHour()
         this.iSave()
         axios.put("/zfmc/api/events/" + this.entity.id, this.entity
         ).then((response) => {
@@ -204,9 +239,6 @@
 
         })
       }
-    },
-    created: function () {
-      this.entity = this.value
-    },
+    }
   }
 </script>

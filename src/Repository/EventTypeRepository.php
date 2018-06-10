@@ -5,23 +5,23 @@ namespace ZfMetal\Calendar\Repository;
 use Doctrine\ORM\EntityRepository;
 
 /**
- * EventStateRepository
- * 
- * 
- * 
+ * EventTypeRepository
+ *
+ *
+ *
  * @author
  * @license
  * @link
  */
-class EventStateRepository extends EntityRepository
+class EventTypeRepository extends EntityRepository
 {
 
-    public function save(\ZfMetal\Calendar\Entity\EventState $entity)
+    public function save(\ZfMetal\Calendar\Entity\EventType $entity)
     {
         $this->getEntityManager()->persist($entity); $this->getEntityManager()->flush();
     }
 
-    public function remove(\ZfMetal\Calendar\Entity\EventState $entity)
+    public function remove(\ZfMetal\Calendar\Entity\EventType $entity)
     {
         $this->getEntityManager()->remove($entity); $this->getEntityManager()->flush();
     }

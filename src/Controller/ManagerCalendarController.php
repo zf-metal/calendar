@@ -80,6 +80,8 @@ class ManagerCalendarController extends AbstractActionController
 
                 $this->getEm()->persist($calendar);
                 $this->getEm()->flush();
+                $this->redirect()->toRoute($this->getEvent()->getRouteMatch()->getMatchedRouteName(), ["id" => $calendar->getId()]);
+
             }
         }
 

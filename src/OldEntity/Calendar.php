@@ -40,18 +40,6 @@ class Calendar
      */
     public $name = null;
 
-
-    /**
-     * @Annotation\Type("DoctrineModule\Form\Element\ObjectSelect")
-     * @Annotation\Options({"label":"Usuario","empty_option": "",
-     * "target_class":"\ZfMetal\Security\Entity\User", "description":""})
-     * @ORM\ManyToOne(targetEntity="\ZfMetal\Security\Entity\User")
-     * @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=true)
-     * @Transformation\Policy\Custom(transform= "\ZfMetal\Calendar\PolicyHandler\EntityId::transform")
-     */
-    public $user = null;
-
-
     /**
      * @Annotation\ComposedObject({"name":"schedules", "target_object":"\ZfMetal\Calendar\Entity\Schedule", "is_collection":"true",
      * "options":{ "target_element": {"type": {"schedule": "\ZfMetal\Calendar\Entity\Schedule"}}, "count":1, "should_create_template":"true", "allow_add":"true", "allow_remove":"true"}})
@@ -232,22 +220,6 @@ class Calendar
     public function setDescription($description)
     {
         $this->description = $description;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getUser()
-    {
-        return $this->user;
-    }
-
-    /**
-     * @param mixed $user
-     */
-    public function setUser($user)
-    {
-        $this->user = $user;
     }
 
 
