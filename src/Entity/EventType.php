@@ -98,7 +98,7 @@ class EventType
 
     public function __toString()
     {
-        return (string);
+        return (string) $this->getName();
     }
 
 
