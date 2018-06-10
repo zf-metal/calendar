@@ -27,7 +27,6 @@ class EventType
      * @Annotation\Attributes({"type":"text"})
      * @Annotation\Options({"label":"ID", "description":"", "addon":""})
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
      * @ORM\Column(type="integer", length=11, unique=false, nullable=false, name="id")
      */
     public $id = null;
@@ -98,7 +97,7 @@ class EventType
 
     public function __toString()
     {
-        return (string) $this->getName();
+        return (string) $this->name;
     }
 
 
