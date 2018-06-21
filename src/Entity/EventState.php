@@ -27,7 +27,7 @@ class EventState
      * @Annotation\Attributes({"type":"text"})
      * @Annotation\Options({"label":"ID", "description":"", "addon":""})
      * @ORM\Id
-     * @ORM\Column(type="integer", length=11, unique=true, nullable=false, name="id")
+     * @ORM\Column(type="integer", length=11, unique=false, nullable=false, name="id")
      */
     public $id = null;
 
@@ -38,6 +38,31 @@ class EventState
      * @ORM\Column(type="string", length=30, unique=false, nullable=true, name="name")
      */
     public $name = null;
+
+    /**
+     * @Annotation\Type("Zend\Form\Element\Text")
+     * @Annotation\Attributes({"type":"text"})
+     * @Annotation\Options({"label":"Color de Fondo", "description":"", "addon":""})
+     * @ORM\Column(type="string", length=7, unique=false, nullable=true,
+     * name="bg_color")
+     */
+    public $bgColor = null;
+
+    /**
+     * @Annotation\Type("Zend\Form\Element\Text")
+     * @Annotation\Attributes({"type":"text"})
+     * @Annotation\Options({"label":"color", "description":"", "addon":""})
+     * @ORM\Column(type="string", length=7, unique=false, nullable=true, name="color")
+     */
+    public $color = null;
+
+    /**
+     * @Annotation\Type("Zend\Form\Element\Text")
+     * @Annotation\Attributes({"type":"text"})
+     * @Annotation\Options({"label":"Icono", "description":"", "addon":""})
+     * @ORM\Column(type="string", length=20, unique=false, nullable=true, name="icon")
+     */
+    public $icon = null;
 
     public function getId()
     {
@@ -57,6 +82,36 @@ class EventState
     public function setName($name)
     {
         $this->name = $name;
+    }
+
+    public function getBgColor()
+    {
+        return $this->bgColor;
+    }
+
+    public function setBgColor($bgColor)
+    {
+        $this->bgColor = $bgColor;
+    }
+
+    public function getColor()
+    {
+        return $this->color;
+    }
+
+    public function setColor($color)
+    {
+        $this->color = $color;
+    }
+
+    public function getIcon()
+    {
+        return $this->icon;
+    }
+
+    public function setIcon($icon)
+    {
+        $this->icon = $icon;
     }
 
     public function __toString()

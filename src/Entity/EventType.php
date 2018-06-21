@@ -51,9 +51,18 @@ class EventType
      * @Annotation\Type("Zend\Form\Element\Text")
      * @Annotation\Attributes({"type":"text"})
      * @Annotation\Options({"label":"Color", "description":"", "addon":""})
-     * @ORM\Column(type="string", length=10, unique=false, nullable=true, name="color")
+     * @ORM\Column(type="string", length=7, unique=false, nullable=true, name="color")
      */
     public $color = null;
+
+    /**
+     * @Annotation\Type("Zend\Form\Element\Text")
+     * @Annotation\Attributes({"type":"text"})
+     * @Annotation\Options({"label":"Color de Fondo", "description":"", "addon":""})
+     * @ORM\Column(type="string", length=7, unique=false, nullable=true,
+     * name="bg_color")
+     */
+    public $bgColor = null;
 
     public function getId()
     {
@@ -93,6 +102,16 @@ class EventType
     public function setColor($color)
     {
         $this->color = $color;
+    }
+
+    public function getBgColor()
+    {
+        return $this->bgColor;
+    }
+
+    public function setBgColor($bgColor)
+    {
+        $this->bgColor = $bgColor;
     }
 
     public function __toString()
