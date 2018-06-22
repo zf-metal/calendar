@@ -86,7 +86,7 @@ class Event
     /**
      * @Transformation\Policy\FormatDateTime(format="Y-m-d H:i")
      * @Annotation\Type("Zend\Form\Element\DateTimeLocal")
-     * @Annotation\Attributes({"type":"datetime"})
+     * @Annotation\Attributes({"type":"datetime","class":"datetimepicker"})
      * @Annotation\Options({"label":"start", "description":"", "addon":"", "format" : "Y-m-d H:i"})
      * @Annotation\Validator({"name":"Date", "options": {"format":"Y-m-d H:i",
      * "messages": {"dateInvalidDate": "Fecha no válida. Formato: Año-Mes-Dia Hora:Minuto (Ej: 1985-12-31 23:59)",
@@ -108,7 +108,7 @@ class Event
     /**
      * @Transformation\Policy\FormatDateTime(format="Y-m-d H:i")
      * @Annotation\Type("Zend\Form\Element\DateTimeLocal")
-     * @Annotation\Attributes({"type":"datetime"})
+     * @Annotation\Attributes({"type":"datetime","class":"datetimepicker"})
      * @Annotation\Options({"label":"end", "description":"", "addon":"", "format" : "Y-m-d H:i"})
      * @Annotation\Validator({"name":"Date", "options": {"format":"Y-m-d H:i",
      * "messages": {"dateInvalidDate": "Fecha no válida. Formato: Año-Mes-Dia Hora:Minuto (Ej: 1985-12-31 23:59)",

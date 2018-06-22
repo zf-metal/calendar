@@ -229,6 +229,30 @@ return [
                             ],
                         ],
                     ],
+                    'OutOfService' => [
+                        'mayTerminate' => false,
+                        'options' => [
+                            'route' => '/out-of-service',
+                            'defaults' => [
+                                'controller' => \ZfMetal\Calendar\Controller\OutOfServiceController::CLASS,
+                                'action' => 'grid',
+                            ],
+                        ],
+                        'type' => 'Literal',
+                        'child_routes' => [
+                            'Grid' => [
+                                'mayTerminate' => true,
+                                'options' => [
+                                    'route' => '/grid',
+                                    'defaults' => [
+                                        'controller' => \ZfMetal\Calendar\Controller\OutOfServiceController::CLASS,
+                                        'action' => 'grid',
+                                    ],
+                                ],
+                                'type' => 'Segment',
+                            ],
+                        ],
+                    ],
                 ],
             ],
         ],
