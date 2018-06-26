@@ -60,7 +60,7 @@ class EventState
      * @Annotation\Type("Zend\Form\Element\Text")
      * @Annotation\Attributes({"type":"text"})
      * @Annotation\Options({"label":"Icono", "description":"", "addon":""})
-     * @ORM\Column(type="string", length=20, unique=false, nullable=true, name="icon")
+     * @ORM\Column(type="string", length=60, unique=false, nullable=true, name="icon")
      */
     public $icon = null;
 

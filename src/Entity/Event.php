@@ -55,6 +55,17 @@ class Event
 
     /**
      * @Annotation\Type("DoctrineModule\Form\Element\ObjectSelect")
+     * @Annotation\Options({"label":"Tipo","empty_option": "",
+     * "target_class":"\ZfMetal\Calendar\Entity\EventType", "description":""})
+     * @ORM\ManyToOne(targetEntity="\ZfMetal\Calendar\Entity\EventType")
+     * @ORM\JoinColumn(name="type_id", referencedColumnName="id", nullable=true)
+     * @Transformation\Policy\Custom(transform= "\ZfMetal\Calendar\PolicyHandler\EntityId::transform")
+     */
+    public $type = null;
+
+
+    /**
+     * @Annotation\Type("DoctrineModule\Form\Element\ObjectSelect")
      * @Annotation\Options({"label":"calendar","empty_option": "",
      * "target_class":"\ZfMetal\Calendar\Entity\Calendar", "description":""})
      * @ORM\ManyToOne(targetEntity="\ZfMetal\Calendar\Entity\Calendar")
@@ -388,6 +399,24 @@ class Event
     {
         $this->service = $service;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    /**
+     * @param mixed $type
+     */
+    public function setType($type)
+    {
+        $this->type = $type;
+    }
+
+
 
 
     public function __toString()

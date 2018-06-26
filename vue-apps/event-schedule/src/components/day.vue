@@ -1,12 +1,30 @@
 <template>
-    <div>
-        <a class="btn btn-xs material-icons" @click="before"> <i class="material-icons">navigate_before</i></a>
-        <input type="date" class="" v-model="date" v-on:change="onChange">
-        <a class="btn btn-xs material-icons" @click="next"><i class="material-icons">navigate_next</i></a>
-    </div>
+
+    <ul class="nav navbar-nav">
+        <li>
+            <a @click="before">
+                <i class="btn btn-xs material-icons" style="font-size:18px">navigate_before</i>
+            </a>
+        </li>
+        <li>
+            <form class="navbar-form navbar-left">
+                <div class="form-group">
+                    <input type="date" class="form-control" v-model="date" v-on:change="onChange">
+                </div>
+            </form>
+        </li>
+        <li>
+            <a @click="next">
+                <i class="btn btn-xs material-icons" style="font-size:18px">navigate_next</i>
+            </a>
+        </li>
+    </ul>
+
 </template>
 
 <script>
+  import {mapGetters, mapActions} from 'vuex';
+
   import moment from 'moment'
   import momenttz from 'moment-timezone'
   import 'moment/locale/es';
@@ -23,24 +41,25 @@
       this.date = this.value;
     },
     methods: {
+      ...mapActions([
+        'changeDate'
+      ]),
       before: function () {
         var d = moment(this.date)
         d.subtract(1, 'day')
         this.date = d.tz('America/Argentina/Buenos_Aires').format("YYYY-MM-DD")
-        this.emitChange(d)
+        this.changeDate(this.date)
       },
       next: function () {
         var d = moment(this.date)
         d.add(1, 'day')
         this.date = d.tz('America/Argentina/Buenos_Aires').format("YYYY-MM-DD")
-        this.emitChange(d)
+        console.log(this.date)
+        this.changeDate(this.date)
       },
       onChange: function () {
         var d = moment(this.date)
-        this.emitChange(d)
-      },
-      emitChange: function (d) {
-        this.$emit("changeDate", d)
+        this.changeDate(d)
       },
       getDate: function () {
         return this.date.tz('America/Argentina/Buenos_Aires').format("YYYY-MM-DD")

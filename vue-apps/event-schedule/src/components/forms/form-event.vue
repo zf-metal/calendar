@@ -9,11 +9,30 @@
             <div class="form-group">
                 <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 control-label">
 
+                    <label class="control-label">Estado</label>
+                </div>
+                <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
+                    <select name="state" class=" form-control" v-model="entity.state" @change="unsaved">
+                        <option  v-for="state in getEventStates"
+                                v-bind:value="state.id" :key="state.id"
+                                :selected="entity.state == state.id">
+                            {{state.name}}
+                        </option>
+                    </select>
+                    <fe :errors="errors.calendar"/>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-12 col-md-12 col-xs-12">
+            <div class="form-group">
+                <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 control-label">
+
                     <label class="control-label">Calendario</label>
                 </div>
                 <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
-                    <select name="state" class=" form-control" v-model="entity.calendar" @change="unsaved">
-                        <option v-if="calendars" v-for="calendar in calendars"
+                    <select name="calendar" class=" form-control" v-model="entity.calendar" @change="unsaved">
+                        <option v-if="hasCalendars" v-for="calendar in getCalendars"
                                 v-bind:value="calendar.id" :key="calendar.id"
                                 :selected="entity.calendar == calendar.id">
                             {{calendar.name}}
@@ -70,7 +89,7 @@
 
                 <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
                     <input type="datetime" name="start" class=" form-control" ref="start"
-                           v-model="entity.start" @keydown="unsaved">
+                           v-model="entity.start" @keyup="refreshEnd" @change="refreshEnd">
                     <fe :errors="errors.start"/>
                 </div>
 
@@ -87,7 +106,7 @@
 
                 <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
                     <input type="number" name="duration" class=" form-control" ref="duration"
-                           v-model="entity.duration" @keydown="refreshEnd" @change="refreshEnd">
+                           v-model="entity.duration" @keyup="refreshEnd" @change="refreshEnd">
                     <fe :errors="errors.duration"/>
                 </div>
 
@@ -134,11 +153,13 @@
 
 
 <script>
+  import {mapGetters, mapActions} from 'vuex';
+  import {HTTP} from './../../utils/http-client'
+  import {calculateEnd} from './../../utils/helpers'
   import fe from '../helpers/form-errors.vue'
   import saveStatus from '../helpers/save-status.vue'
   import alert from '../helpers/alert.vue'
 
-  import axios from 'axios'
 
   import moment from 'moment'
   import momenttz from 'moment-timezone'
@@ -147,7 +168,7 @@
 
   export default {
     name: 'form-event',
-    props: ['value', 'isSaved', 'calendars'],
+    props: ['index', 'value', 'isSaved', 'calendars'],
     components: {fe, saveStatus, alert},
     data() {
       return {
@@ -171,7 +192,20 @@
     created: function () {
       this.entity = this.value
     },
+    computed: {
+      ...mapGetters([
+        'getEventStates',
+        'getEventTypes',
+        'getCalendars',
+        'hasCalendars',
+        'getCoordinate',
+        'getLoading',
+      ])
+    },
     methods: {
+      ...mapActions([
+        'updateEvent'
+      ]),
       populate: function (data) {
         this.entity.id = data.id
         this.entity.title = data.title
@@ -185,7 +219,7 @@
         this.h.isSaved = false
       },
       refreshEnd: function () {
-        this.entity.end = moment(this.entity.start).add(this.entity.duration, "minutes").format("YYYY-MM-DD HH:mm")
+        this.entity.end = calculateEnd(this.entity.start,this.entity.duration)
         this.unsaved()
       },
       iSave: function () {
@@ -208,35 +242,25 @@
           this.create()
         }
       },
-      setHour: function(){
+      setHour: function () {
         this.entity.hour = moment(this.entity.start).format("HH:mm");
-      },
-      create: function () {
-        this.setHour()
-        axios.post("/zfmc/api/events", this.entity
-        ).then((response) => {
-          this.entity.id = response.data.id
-          this.h.submitInProgress = false
-          this.$emit("eventCreate", this.entity)
-        }).catch((error) => {
-          this.h.submitInProgress = false
-          this.errors = error.response.data.errors
-
-        })
       },
       update: function () {
         this.setHour()
         this.iSave()
-        axios.put("/zfmc/api/events/" + this.entity.id, this.entity
+
+        this.entity.top = this.getCoordinate(this.entity.calendar,this.entity.hour,'top');
+        this.entity.left = this.getCoordinate(this.entity.calendar,this.entity.hour,'left');
+
+        HTTP.put("events/" + this.entity.id, this.entity
         ).then((response) => {
           this.fSave()
-          this.$emit("eventUpdate", this.entity)
+          this.$store.commit('UPDATE_EVENT',{index: this.index, event: this.entity})
         }).catch((error) => {
           this.fSave()
           this.h.alertMsg = error.response.data.message
           this.h.alertShow = true
           this.errors = error.response.data.errors
-
         })
       }
     }

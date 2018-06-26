@@ -1,13 +1,15 @@
 <template>
     <drag :transfer-data="{obj: obj, index:index, type: 't'}" :draggable="isDraggable" >
         <div class="zfc-pre-event" :class="{'zfc-pre-event-a' : !isDraggable}">
-            {{obj.id}} - {{obj.title}}
+            <span> {{obj.id}} - {{obj.title}} </span>
+
+            <i class="material-icons zfc-pre-type-icon pull-right">{{getEventTypeIcon(obj.type)}} </i>
         </div>
     </drag>
 </template>
 
 <script>
-
+  import {mapGetters, mapActions} from 'vuex';
   import {Drag, Drop} from 'vue-drag-drop';
 
   export default {
@@ -22,6 +24,8 @@
           title: '',
           location: '',
           description: '',
+          state: '',
+          type: '',
           time: 60
         }
       }
@@ -32,6 +36,11 @@
     methods: {
     },
     computed: {
+      ...mapGetters([
+        'getEventStates',
+        'getEventStateBgColor',
+        'getEventTypeIcon'
+      ]),
       isDraggable: function(){
         if(this.obj.calendar == null){
           return true;
@@ -52,8 +61,10 @@
         margin: 2px;
     }
 
-    .zfc-pre-event-a{
-        background: #5c6667;
+    .zfc-type-icon {
+        font-size: 10px;
+        color: #000000;
+        padding: 1px;
     }
 
 </style>
