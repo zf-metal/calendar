@@ -21,30 +21,53 @@ return [
             'columnsConfig' => [
                 'id' => [
                     'displayName' => 'ID',
+                    'priority' => 10
                 ],
+                'name' => [
+                    'displayName' => 'Nombre',
+                    'priority' => 20
+                ],
+                'user' => [
+                    'displayName' => 'Usuario',
+                    'priority' => 30
+                ],
+                'description' => [
+                    'displayName' => 'Descripción',
+                    'hidden' => true,
+                ],
+                'schedules' => [
+                    'displayName' => 'schedules',
+                    'hidden' => true,
+                ],
+                'events' => [
+                    'displayName' => 'Eventos',
+                    'hidden' => true,
+                ],
+                'specificSchedules' => [
+                    'displayName' => 'Programaciones Especificas',
+                    'hidden' => true,
+                ],
+                'predefinedEvents' => [
+                    'displayName' => 'Eventos predefinidos',
+                    'hidden' => true,
+                ]
             ],
             'crudConfig' => [
                 'enable' => true,
                 'displayName' => null,
                 'add' => [
                     'enable' => true,
-                    'class' => ' glyphicon glyphicon-plus cursor-pointer',
-                    'value' => '',
+                    'action' => 'href="/zfmc/manager-calendar/manage"',
                 ],
                 'edit' => [
                     'enable' => true,
-                    'class' => ' glyphicon glyphicon-edit cursor-pointer',
-                    'value' => '',
+                    'action' => 'href="/zfmc/manager-calendar/manage/{{id}}"',
                 ],
                 'del' => [
                     'enable' => true,
-                    'class' => ' glyphicon glyphicon-trash cursor-pointer',
-                    'value' => '',
                 ],
                 'view' => [
-                    'enable' => true,
-                    'class' => ' glyphicon glyphicon-list-alt cursor-pointer',
-                    'value' => '',
+                    'enable' => false,
                 ],
             ],
         ],

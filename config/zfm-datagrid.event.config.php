@@ -79,23 +79,15 @@ return [
                 'displayName' => null,
                 'add' => [
                     'enable' => true,
-                    'class' => ' glyphicon glyphicon-plus cursor-pointer',
-                    'value' => '',
                 ],
                 'edit' => [
                     'enable' => true,
-                    'class' => ' glyphicon glyphicon-edit cursor-pointer',
-                    'value' => '',
                 ],
                 'del' => [
                     'enable' => true,
-                    'class' => ' glyphicon glyphicon-trash cursor-pointer',
-                    'value' => '',
                 ],
                 'view' => [
-                    'enable' => true,
-                    'class' => ' glyphicon glyphicon-list-alt cursor-pointer',
-                    'value' => '',
+                    'enable' => false,
                 ],
             ],
         ],

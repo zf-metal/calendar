@@ -33,15 +33,23 @@ return [
             'columnsConfig' => [
                 'id' => [
                     'displayName' => 'ID',
+                    'priority' => 10
                 ],
                 'name' => [
                     'displayName' => 'Nombre',
+                    'priority' => 20
                 ],
                 'icon' => [
                     'displayName' => 'Icono',
+                    'priority' => 30
+                ],
+                'bgColor' => [
+                    'displayName' => 'Color de Fondo',
+                    'priority' => 40
                 ],
                 'color' => [
                     'displayName' => 'Color',
+                    'priority' => 50
                 ],
             ],
             'crudConfig' => [
@@ -49,23 +57,15 @@ return [
                 'displayName' => null,
                 'add' => [
                     'enable' => true,
-                    'class' => ' glyphicon glyphicon-plus cursor-pointer',
-                    'value' => '',
                 ],
                 'edit' => [
                     'enable' => true,
-                    'class' => ' glyphicon glyphicon-edit cursor-pointer',
-                    'value' => '',
                 ],
                 'del' => [
                     'enable' => true,
-                    'class' => ' glyphicon glyphicon-trash cursor-pointer',
-                    'value' => '',
                 ],
                 'view' => [
                     'enable' => true,
-                    'class' => ' glyphicon glyphicon-list-alt cursor-pointer',
-                    'value' => '',
                 ],
             ],
         ],

@@ -14,61 +14,59 @@ return [
             'multi_filter_config' => [
                 'enable' => true,
                 'properties_disabled' => [
-                    
+
                 ],
             ],
             'multi_search_config' => [
                 'enable' => false,
                 'properties_enabled' => [
-                    
+
                 ],
             ],
             'formConfig' => [
                 'columns' => 'one',
                 'style' => 'vertical',
                 'groups' => [
-                    
+
                 ],
             ],
             'columnsConfig' => [
                 'id' => [
                     'displayName' => 'ID',
+                    'priority' => 10
                 ],
                 'name' => [
-                    'displayName' => 'Estado',
-                ],
-                'bgColor' => [
-                    'displayName' => 'Color de Fondo',
-                ],
-                'color' => [
-                    'displayName' => 'color',
+                    'displayName' => 'Nombre',
+                    'priority' => 20
                 ],
                 'icon' => [
                     'displayName' => 'Icono',
+                    'priority' => 30
                 ],
+                'bgColor' => [
+                    'displayName' => 'Color de Fondo',
+                    'priority' => 40
+                ],
+                'color' => [
+                    'displayName' => 'color',
+                    'priority' => 50
+                ],
+
             ],
             'crudConfig' => [
                 'enable' => true,
                 'displayName' => null,
                 'add' => [
                     'enable' => true,
-                    'class' => ' glyphicon glyphicon-plus cursor-pointer',
-                    'value' => '',
                 ],
                 'edit' => [
                     'enable' => true,
-                    'class' => ' glyphicon glyphicon-edit cursor-pointer',
-                    'value' => '',
                 ],
                 'del' => [
                     'enable' => true,
-                    'class' => ' glyphicon glyphicon-trash cursor-pointer',
-                    'value' => '',
                 ],
                 'view' => [
                     'enable' => true,
-                    'class' => ' glyphicon glyphicon-list-alt cursor-pointer',
-                    'value' => '',
                 ],
             ],
         ],

@@ -21,14 +21,17 @@ return [
             'columnsConfig' => [
                 'id' => [
                     'displayName' => 'ID',
+                    'priority' => 10
                 ],
                 'date' => [
                     'type' => 'date',
                     'format' => 'Y-m-d',
                     'displayName' => 'Fecha',
+                    'priority' => 30
                 ],
                 'title' => [
                     'displayName' => 'Titulo',
+                    'priority' => 20
                 ],
             ],
             'crudConfig' => [
@@ -36,23 +39,15 @@ return [
                 'displayName' => null,
                 'add' => [
                     'enable' => true,
-                    'class' => ' glyphicon glyphicon-plus cursor-pointer',
-                    'value' => '',
                 ],
                 'edit' => [
                     'enable' => true,
-                    'class' => ' glyphicon glyphicon-edit cursor-pointer',
-                    'value' => '',
                 ],
                 'del' => [
                     'enable' => true,
-                    'class' => ' glyphicon glyphicon-trash cursor-pointer',
-                    'value' => '',
                 ],
                 'view' => [
                     'enable' => true,
-                    'class' => ' glyphicon glyphicon-list-alt cursor-pointer',
-                    'value' => '',
                 ],
             ],
         ],

@@ -10,9 +10,9 @@ use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * OutOfService
- *
- *
- *
+ * 
+ * 
+ * 
  * @author
  * @license
  * @link
@@ -42,18 +42,18 @@ class OutOfService
     public $reason = null;
 
     /**
-     * @Annotation\Type("Zend\Form\Element\DateTime")
-     * @Annotation\Attributes({"type":"datetime","class":"datetimepicker"})
+     * @Annotation\Type("Zend\Form\Element\Date")
+     * @Annotation\Attributes({"type":"date"})
      * @Annotation\Options({"label":"Desde", "description":"", "addon":""})
-     * @ORM\Column(type="datetime", unique=false, nullable=false, name="start")
+     * @ORM\Column(type="date", unique=false, nullable=false, name="start")
      */
     public $start = null;
 
     /**
-     * @Annotation\Type("Zend\Form\Element\DateTime")
-     * @Annotation\Attributes({"type":"datetime","class":"datetimepicker"})
+     * @Annotation\Type("Zend\Form\Element\Date")
+     * @Annotation\Attributes({"type":"date"})
      * @Annotation\Options({"label":"Hasta", "description":"", "addon":""})
-     * @ORM\Column(type="datetime", unique=false, nullable=false, name="end")
+     * @ORM\Column(type="date", unique=false, nullable=false, name="end")
      */
     public $end = null;
 
