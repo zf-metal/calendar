@@ -3,7 +3,7 @@
 
         <vue-tabs>
             <v-tab title="P">
-                <h4>Pendientes</h4>
+                <h4>Visitas Pendientes</h4>
                 <preEvent v-if="getPreEvents" v-for="(preEvent,index) in getPreEvents" :preEvent="preEvent"
                           :key="preEvent.id" :index="index">
                 </preEvent>
