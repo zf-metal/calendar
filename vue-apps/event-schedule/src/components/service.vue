@@ -1,6 +1,6 @@
 <template>
     <div >
-        <ul id="v-for-object" class="demo" style="list-style: none; padding: 2px;">
+        <ul id="v-for-object" class="zfc-service-ul">
             <li v-for="(value,index) in service" :key="index">
                 <b>{{ index }}</b> : {{ value }}
             </li>
@@ -22,4 +22,9 @@
 
 <style scoped>
 
+    .zfc-service-ul{
+        list-style: none;
+        padding: 2px;
+        font-size: 12px;
+    }
 </style>
