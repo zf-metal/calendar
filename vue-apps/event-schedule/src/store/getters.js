@@ -19,7 +19,7 @@ export const getters = {
     return state.eventSelected
   },
   getServiceSelected: state => {
-    if (state.eventSelected) {
+    if (state.eventSelected != undefined && state.eventSelected != null) {
       return state.events[state.eventSelected].service;
     } else {
       return {};

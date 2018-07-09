@@ -81,6 +81,7 @@ class Event
      * @Annotation\Options({"label":"Servicio", "description":"", "addon":""})
      * @ORM\Column(type="integer", length=11, unique=false, nullable=true,
      * name="service_id")
+     * @Transformation\Policy\Custom(format="\ZfMetal\Calendar\PolicyHandler\Service::format")
      */
     public $service = null;
 
