@@ -95,6 +95,54 @@ class Event
     public $ticket = null;
 
     /**
+     * @Transformation\Policy\FormatDateTime(format="Y-m-d")
+     * @Annotation\Type("Zend\Form\Element\Date")
+     * @Annotation\Attributes({"type":"datetime"})
+     * @Annotation\Options({"label":"Date From", "description":"Fecha que indica desde cuando es posible agendar este evento", "addon":"", "format" : "Y-m-d"})
+     * @Annotation\Validator({"name":"Date", "options": {"format":"Y-m-d",
+     * "messages": {"dateInvalidDate": "Fecha no válida. Formato: Año-Mes-Dia  (Ej: 1985-12-31)",
+     * "dateFalseFormat":"Fecha no válida. Formato: Año-Mes-Dia  (Ej: 1985-12-31)"}}})
+     * @ORM\Column(type="date", unique=false, nullable=true, name="date_from")
+     */
+    public $dateFrom = null;
+
+    /**
+     * @Transformation\Policy\FormatDateTime(format="Y-m-d")
+     * @Annotation\Type("Zend\Form\Element\Date")
+     * @Annotation\Attributes({"type":"datetime"})
+     * @Annotation\Options({"label":"Date To", "description":"Fecha que indica hasta cuando es posible agendar este evento", "addon":"", "format" : "Y-m-d"})
+     * @Annotation\Validator({"name":"Date", "options": {"format":"Y-m-d",
+     * "messages": {"dateInvalidDate": "Fecha no válida. Formato: Año-Mes-Dia  (Ej: 1985-12-31)",
+     * "dateFalseFormat":"Fecha no válida. Formato: Año-Mes-Dia  (Ej: 1985-12-31)"}}})
+     * @ORM\Column(type="date", unique=false, nullable=true, name="date_to")
+     */
+    public $dateTo = null;
+
+    /**
+     * @Transformation\Policy\FormatDateTime(format="H:i")
+     * @Annotation\Type("Zend\Form\Element\Time")
+     * @Annotation\Attributes({"type":"datetime"})
+     * @Annotation\Options({"label":"Date From", "description":"Hora que indica desde cuando es posible agendar este evento", "addon":"", "format" : "H:i"})
+     * @Annotation\Validator({"name":"Date", "options": {"format":"H:i",
+     * "messages": {"dateInvalidDate": "Fecha no válida. Formato: Hora:Minuto  (Ej: 18:30)",
+     * "dateFalseFormat":"Fecha no válida. Formato: Hora:Minuto (Ej: 18:30)"}}})
+     * @ORM\Column(type="time", unique=false, nullable=true, name="time_from")
+     */
+    public $timeFrom = null;
+
+    /**
+     * @Transformation\Policy\FormatDateTime(format="H:i")
+     * @Annotation\Type("Zend\Form\Element\Time")
+     * @Annotation\Attributes({"type":"datetime"})
+     * @Annotation\Options({"label":"Date To", "description":"Hora que indica hasta cuando es posible agendar este evento", "addon":"", "format" : "H:i"})
+     * @Annotation\Validator({"name":"Date", "options": {"format":"H:i",
+     * "messages": {"dateInvalidDate": "Fecha no válida. Formato: Hora:Minuto  (Ej: 18:30)",
+     * "dateFalseFormat":"Fecha no válida. Formato: Hora:Minuto (Ej: 18:30)"}}})
+     * @ORM\Column(type="time", unique=false, nullable=true, name="time_to")
+     */
+    public $timeTo = null;
+
+    /**
      * @Transformation\Policy\FormatDateTime(format="Y-m-d H:i")
      * @Annotation\Type("Zend\Form\Element\DateTimeLocal")
      * @Annotation\Attributes({"type":"datetime","class":"datetimepicker"})
@@ -423,6 +471,71 @@ class Event
     {
         return (string)$this->title;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getDateFrom()
+    {
+        return $this->dateFrom;
+    }
+
+    /**
+     * @param mixed $dateFrom
+     */
+    public function setDateFrom($dateFrom)
+    {
+        $this->dateFrom = $dateFrom;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDateTo()
+    {
+        return $this->dateTo;
+    }
+
+    /**
+     * @param mixed $dateTo
+     */
+    public function setDateTo($dateTo)
+    {
+        $this->dateTo = $dateTo;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTimeFrom()
+    {
+        return $this->timeFrom;
+    }
+
+    /**
+     * @param mixed $timeFrom
+     */
+    public function setTimeFrom($timeFrom)
+    {
+        $this->timeFrom = $timeFrom;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTimeTo()
+    {
+        return $this->timeTo;
+    }
+
+    /**
+     * @param mixed $timeTo
+     */
+    public function setTimeTo($timeTo)
+    {
+        $this->timeTo = $timeTo;
+    }
+
 
 
 }
