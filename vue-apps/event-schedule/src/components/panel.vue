@@ -20,7 +20,7 @@
             </v-tab>
 
             <v-tab title="S">
-                <h4>Servicios</h4>
+                <h4>Info Servicio</h4>
                 <service :service="getServiceSelected"></service>
             </v-tab>
         </vue-tabs>
