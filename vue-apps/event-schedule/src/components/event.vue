@@ -102,9 +102,9 @@
         background: #1c5c87;
         color: #FFFFFF;
         z-index: 10;
-        min-width: 160px;
-        width: 160px;
-        min-height: 25px;
+        min-width: 230px;
+        width: 230px;
+        min-height: 35px;
     }
 
     .zfc-event-selected {

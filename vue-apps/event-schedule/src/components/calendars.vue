@@ -206,16 +206,16 @@
     }
 
     .zfc-column-calendar {
-        width: 180px;
-        min-width: 180px;
-        max-width: 180px;
+        width: 250px;
+        min-width: 250px;
+        max-width: 250px;
         overflow: hidden;
         text-align: center;
     }
 
     table.zfc-td > tbody > tr > td, table.zfc-td > tbody > tr > th {
         font-size: 14px;
-        height: 25px;
+        height: 35px;
         padding: 0;
         margin: 0;
         text-align: center;

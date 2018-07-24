@@ -82,6 +82,7 @@ class Event
      * @ORM\Column(type="integer", length=11, unique=false, nullable=true,
      * name="service_id")
      * @Transformation\Policy\Custom(format="\ZfMetal\Calendar\PolicyHandler\Service::format")
+     * @Annotation\Exclude()
      */
     public $service = null;
 

@@ -1,12 +1,13 @@
+import {state} from './state'
 import moment from 'moment'
 import tz from 'moment-timezone'
 import 'moment/locale/es';
-
 import {calculateDistance} from './../utils/helpers'
 
-export const getters = {
+const getters = {
   getDistanceFromEventSelected: (state) => (dlat, dlng) => {
     if (state.eventSelected != undefined) {
+
       var lat = state.events[state.eventSelected].lat;
       var lng = state.events[state.eventSelected].lng;
       var distance = calculateDistance(lat, lng, dlat, dlng);
