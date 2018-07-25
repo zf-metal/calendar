@@ -2,9 +2,6 @@
     <Drag :transfer-data="{id: $vnode.key, type: 'e'}"
           :class="getMainClass" :style="getStyle" >
         <div class="" style="padding: 3px; height: 100%;" @click="selectEvent">
-            <!--<div class="col-lg-3">-->
-            <!--<a class="btn btn-xs"> </a>-->
-            <!--</div>-->
             <span @click="edit"><i class="material-icons zfc-edit-btn" @click="edit">edit</i> {{id}} - {{title}}</span>
             <i class="material-icons zfc-type-icon pull-right">{{getEventTypeIcon(type)}}</i>
             <br>
@@ -77,9 +74,9 @@
         return 'background-color:' + this.getEventStateBgColor(this.state) + '; top: ' + this.top + 'px;' + ' left: ' + this.left + 'px;' + ' height:' + this.getHeight + "px;";
       },
       getHeight: function () {
-        var height = 25;
+        var height = 35;
         if (this.duration > 30) {
-          height = Math.ceil(this.duration / 30) * 25;
+          height = Math.ceil(this.duration / 30) * 35;
         }
         if (height > 600) {
           height = 600

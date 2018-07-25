@@ -9,7 +9,7 @@
   import {mapGetters, mapActions} from 'vuex';
 
   export default {
-    name: 'checkCalendar',
+    name: 'checkZone',
     props: ['index', 'id', 'name'],
     components: {},
     data() {
@@ -21,14 +21,14 @@
     },
     methods: {
       ...mapActions([
-        'showCalendar',
-        'hideCalendar',
+        'showZone',
+        'hideZone',
       ]),
       toggleCalendar: function () {
         if(this.active){
-          this.showCalendar(this.index);
+          this.showZone(this.index);
         }else{
-          this.hideCalendar(this.index);
+          this.hideZone(this.index);
         }
       }
     }

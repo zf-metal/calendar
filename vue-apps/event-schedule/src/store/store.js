@@ -9,11 +9,11 @@ import {HTTP} from './../utils/http-client'
 import {calculateDistance} from './../utils/helpers'
 
 import {
-  SET_DATE,
-  ADD_CALENDAR, SET_CALENDARS, HIDE_CALENDAR, SHOW_CALENDAR,
-  SET_PRE_EVENTS, SET_EVENTS, CLEAR_EVENTS, ADD_EVENT, UPDATE_EVENT, REMOVE_PRE_EVENTS,
-  SET_COORDINATE, SET_BODY_SCROLL, SET_CALENDAR_SCROLL, SET_CALENDAR_POSITION,
-  SET_EVENT_STATES, SET_EVENT_TYPES, SET_EVENT_SELECTED
+    SET_DATE,
+    ADD_CALENDAR, SET_CALENDARS, HIDE_CALENDAR, SHOW_CALENDAR,
+    SET_PRE_EVENTS, SET_EVENTS, CLEAR_EVENTS, ADD_EVENT, UPDATE_EVENT, REMOVE_PRE_EVENTS,
+    SET_COORDINATE, SET_BODY_SCROLL, SET_CALENDAR_SCROLL, SET_CALENDAR_POSITION,
+    SET_EVENT_STATES, SET_EVENT_TYPES, SET_EVENT_SELECTED, SET_ZONES, SET_HIDDEN_ZONE, SHOW_ZONE
 } from './mutation-types'
 
 Vue.use(Vuex)
@@ -26,20 +26,23 @@ Vue.use(Vuex)
 */
 
 const state = {
-  loading: 0,
-  coordinates: {},
-  calendarPosition: {top: 0, left: 0},
-  bodyScroll: {top: 0, left: 0},
-  calendarScroll: {top: 0, left: 0},
-  date: moment().tz('America/Argentina/Buenos_Aires').locale('es'),
-  calendars: [],
-  vcalendars: [],
-  rc: 1,
-  preEvents: [],
-  events: [],
-  eventStates: [],
-  eventTypes: [],
-  eventSelected: null,
+    loading: 0,
+    coordinates: {},
+    calendarPosition: {top: 0, left: 0},
+    bodyScroll: {top: 0, left: 0},
+    calendarScroll: {top: 0, left: 0},
+    date: moment().tz('America/Argentina/Buenos_Aires').locale('es'),
+    calendars: [],
+    vcalendars: [],
+    rc: 1,
+    preEvents: [],
+    preEventsByZone: {},
+    events: [],
+    eventStates: [],
+    zones: [],
+    hiddenZones: [],
+    eventTypes: [],
+    eventSelected: null,
 };
 
 /*
@@ -49,157 +52,172 @@ const state = {
 */
 
 const getters = {
-  getDistanceFromEventSelected: (state) => (dlat, dlng) => {
-    if (state.eventSelected != undefined) {
+    getDistanceFromEventSelected: (state) => (dlat, dlng) => {
+        if (state.eventSelected != undefined) {
 
-      var lat = state.events[state.eventSelected].lat;
-      var lng = state.events[state.eventSelected].lng;
-      var distance = calculateDistance(lat, lng, dlat, dlng);
-      return parseFloat(Math.round(distance * 100) / 100).toFixed(2);
+            var lat = state.events[state.eventSelected].lat;
+            var lng = state.events[state.eventSelected].lng;
+            var distance = calculateDistance(lat, lng, dlat, dlng);
+            return parseFloat(Math.round(distance * 100) / 100).toFixed(2);
 
-    }
-    return '-';
-  },
-  getIndexEventSelected: state => {
-    return state.eventSelected
-  },
-  getServiceSelected: state => {
-    if (state.eventSelected != undefined && state.eventSelected != null) {
-      return state.events[state.eventSelected].service;
-    } else {
-      return {};
-    }
-  },
-  getRc: state => {
-    return state.rc
-  },
-  getCoordinates: state => {
-    return state.coordinates;
-  },
-  getCoordinate: (state) => (calendar, hour, type) => {
-    if (state.coordinates[calendar][hour] == undefined) {
-      return state.coordinates[calendar]['fb'][type];
-    }
-    // console.log(calendar, hour, type, state.coordinates[calendar][hour][type]);
-    return state.coordinates[calendar][hour][type];
-  },
-  getLoading: state => {
-    return state.loading;
-  },
-  isVisibleCalendar: (state) => (id) => {
-    var calendar = state.calendars.find(calendar => calendar.id === id);
-    if (calendar.hidden == true) {
-      return false
-    }
-    return true
-  },
-  getCalendars: state => {
-    return state.calendars;
-  },
-  getVisibleCalendars: state => {
-    return state.calendars.filter(calendar => calendar.hidden != true);
-  },
-  hasCalendars: (state) => {
-    if (state.calendars != undefined && state.calendars.length > 0) {
-      return true;
-    }
-    return false;
-  },
-  getPreEvents: state => {
-    return state.preEvents;
-  },
-  getEvents: state => {
-    return state.events;
-  },
-  getEventStates: state => {
-    return state.eventStates;
-  },
-  getEventStateById: (state) => (id) => {
-    return state.eventStates.find(eventState => eventState.id === id)
-  },
-  getEventStateBgColor: (state, getters) => (stateId) => {
-    var state = getters.getEventStateById(stateId);
-    if (state != undefined && state.bgColor != undefined && state.bgColor != "") {
-      return state.bgColor;
-    }
-    return '#1c5c87';
-  },
-  getEventTypeById: (state) => (id) => {
-    return state.eventTypes.find(eventType => eventType.id === id)
-  },
-  getEventTypeIcon: (state, getters) => (typeId) => {
-    var type = getters.getEventTypeById(typeId);
-    if (type != undefined && type.icon != undefined && type.type != "") {
-      return type.icon;
-    }
-    return 'all_out';
-  },
-  getEventTypes: state => {
-    return state.eventTypes;
-  },
-  getEventByKey: (state) => (key) => {
-    return state.events[key];
-  },
-  getDate: state => {
-    return state.date.format("YYYY-MM-DD");
-  },
-  getNextDate: (state, getters) => {
-    var nextDate = tz(getters.getDate);
-    return nextDate.add(1, 'day').format("YYYY-MM-DD");
-  },
-  getDay: state => {
-    return state.date.day() + 1;
-  },
-  getStart: (state, getters) => {
-    var rstart = null;
-    if (getters.hasCalendars) {
-      for (var index = 0; index < state.calendars.length; ++index) {
-        if (state.calendars[index].schedules != undefined) {
-          for (var i = 0; i < state.calendars[index].schedules.length; ++i) {
-            if (state.calendars[index].schedules[i].day == getters.getDay) {
-              if (state.calendars[index].schedules[i].start < rstart || rstart == null) {
-                rstart = state.calendars[index].schedules[i].start;
-              }
+        }
+        return '-';
+    },
+    getIndexEventSelected: state => {
+        return state.eventSelected
+    },
+    getServiceSelected: state => {
+        if (state.eventSelected != undefined && state.eventSelected != null) {
+            return state.events[state.eventSelected].service;
+        } else {
+            return {};
+        }
+    },
+    getRc: state => {
+        return state.rc
+    },
+    getCoordinates: state => {
+        return state.coordinates;
+    },
+    getCoordinate: (state) => (calendar, hour, type) => {
+        if (state.coordinates[calendar][hour] == undefined) {
+            return state.coordinates[calendar]['fb'][type];
+        }
+        // console.log(calendar, hour, type, state.coordinates[calendar][hour][type]);
+        return state.coordinates[calendar][hour][type];
+    },
+    getLoading: state => {
+        return state.loading;
+    },
+    isVisibleCalendar: (state) => (id) => {
+        var calendar = state.calendars.find(calendar => calendar.id === id);
+        if (calendar.hidden == true) {
+            return false
+        }
+        return true
+    },
+    getCalendars: state => {
+        return state.calendars;
+    },
+    getVisibleCalendars: state => {
+        return state.calendars.filter(calendar => calendar.hidden != true);
+    },
+    hasCalendars: (state) => {
+        if (state.calendars != undefined && state.calendars.length > 0) {
+            return true;
+        }
+        return false;
+    },
+    getPreEvents: state => {
+        return state.preEvents;
+    },
+    getPreEventsByZone: state => {
+        state.preEventsByZone = {};
+        for(var i=0; i<state.preEvents.length; i++){
+            var e = state.preEvents[i];
+            if(state.preEventsByZone[e["zone"]] == undefined){
+                state.preEventsByZone[e["zone"]] = {};
             }
-          }
+            state.preEventsByZone[e["zone"]][i] = e;
         }
-      }
-    }
-    return rstart;
-  },
-  getEnd: (state, getters) => {
-    var rend = null;
-    if (getters.hasCalendars) {
-      for (var index = 0; index < state.calendars.length; ++index) {
-        if (state.calendars[index].schedules != undefined) {
-          for (var i = 0; i < state.calendars[index].schedules.length; ++i) {
-            if (state.calendars[index].schedules[i].day == getters.getDay) {
-              if (state.calendars[index].schedules[i].end > rend || rend == null) {
-                rend = state.calendars[index].schedules[i].end;
-              }
+
+        return state.preEventsByZone;
+    },
+    getZones: state => {
+        return state.zones;
+    },
+    getEvents: state => {
+        return state.events;
+    },
+    getEventStates: state => {
+        return state.eventStates;
+    },
+    getEventStateById: (state) => (id) => {
+        return state.eventStates.find(eventState => eventState.id === id)
+    },
+    getEventStateBgColor: (state, getters) => (stateId) => {
+        var state = getters.getEventStateById(stateId);
+        if (state != undefined && state.bgColor != undefined && state.bgColor != "") {
+            return state.bgColor;
+        }
+        return '#1c5c87';
+    },
+    getEventTypeById: (state) => (id) => {
+        return state.eventTypes.find(eventType => eventType.id === id)
+    },
+    getEventTypeIcon: (state, getters) => (typeId) => {
+        var type = getters.getEventTypeById(typeId);
+        if (type != undefined && type.icon != undefined && type.type != "") {
+            return type.icon;
+        }
+        return 'all_out';
+    },
+    getEventTypes: state => {
+        return state.eventTypes;
+    },
+    getEventByKey: (state) => (key) => {
+        return state.events[key];
+    },
+    getDate: state => {
+        return state.date.format("YYYY-MM-DD");
+    },
+    getNextDate: (state, getters) => {
+        var nextDate = tz(getters.getDate);
+        return nextDate.add(1, 'day').format("YYYY-MM-DD");
+    },
+    getDay: state => {
+        return state.date.day() + 1;
+    },
+    getStart: (state, getters) => {
+        var rstart = null;
+        if (getters.hasCalendars) {
+            for (var index = 0; index < state.calendars.length; ++index) {
+                if (state.calendars[index].schedules != undefined) {
+                    for (var i = 0; i < state.calendars[index].schedules.length; ++i) {
+                        if (state.calendars[index].schedules[i].day == getters.getDay) {
+                            if (state.calendars[index].schedules[i].start < rstart || rstart == null) {
+                                rstart = state.calendars[index].schedules[i].start;
+                            }
+                        }
+                    }
+                }
             }
-          }
         }
-      }
-    }
-    return rend;
-  },
-  getHours: (state, getters) => {
-    var hours = [];
-    if (getters.hasCalendars) {
-      var flag = true;
-      var t = moment(getters.getStart, "HH:mm");
-      var e = moment(getters.getEnd, "HH:mm");
-      while (flag) {
-        hours.push(t.format("HH:mm"));
-        t.add(30, "minutes");
-        if (t >= e) {
-          flag = false;
+        return rstart;
+    },
+    getEnd: (state, getters) => {
+        var rend = null;
+        if (getters.hasCalendars) {
+            for (var index = 0; index < state.calendars.length; ++index) {
+                if (state.calendars[index].schedules != undefined) {
+                    for (var i = 0; i < state.calendars[index].schedules.length; ++i) {
+                        if (state.calendars[index].schedules[i].day == getters.getDay) {
+                            if (state.calendars[index].schedules[i].end > rend || rend == null) {
+                                rend = state.calendars[index].schedules[i].end;
+                            }
+                        }
+                    }
+                }
+            }
         }
-      }
+        return rend;
+    },
+    getHours: (state, getters) => {
+        var hours = [];
+        if (getters.hasCalendars) {
+            var flag = true;
+            var t = moment(getters.getStart, "HH:mm");
+            var e = moment(getters.getEnd, "HH:mm");
+            while (flag) {
+                hours.push(t.format("HH:mm"));
+                t.add(30, "minutes");
+                if (t >= e) {
+                    flag = false;
+                }
+            }
+        }
+        return hours;
     }
-    return hours;
-  }
 
 };
 
@@ -210,175 +228,192 @@ const getters = {
 */
 
 const actions = {
-  hideCalendar({commit, dispatch, state}, index) {
-    commit('HIDE_CALENDAR', index);
-  },
-  showCalendar({commit, dispatch}, index) {
-    commit('SHOW_CALENDAR', index);
-  },
-  changeDate({state, commit, dispatch}, date) {
-    console.log(date)
-    var newDate = moment(date)
-    if (newDate.isValid()) {
-      commit('SET_DATE', newDate);
-      commit('CLEAR_EVENTS', newDate);
-      dispatch('eventList');
-    }
-  },
-  eventStateList({commit}) {
-    state.loading = state.loading + 1;
-    HTTP.get('event-states').then((response) => {
-      commit("SET_EVENT_STATES", response.data);
-      state.loading = state.loading - 1;
-    })
-  },
-  eventTypeList({commit}) {
-    state.loading = state.loading + 1;
-    HTTP.get('event-types').then((response) => {
-      commit("SET_EVENT_TYPES", response.data);
-      state.loading = state.loading - 1;
-    })
-  },
-  calendarList({state, commit, dispatch}) {
-    state.loading = state.loading + 1;
-    HTTP.get('calendars').then((response) => {
-      commit(SET_CALENDARS, response.data);
-      state.loading = state.loading - 1;
-      dispatch('eventList');
-    })
-  },
-  preEventList({commit,getters,state}) {
-    state.loading = state.loading + 1;
-
-    console.log(getters.getDate);
-
-    HTTP.get('events?calendar=isNull&dateFrom=<=' + getters.getDate +'').then((response) => {
-      commit("SET_PRE_EVENTS", response.data);
-      state.loading = state.loading - 1;
-    });
-
-  },
-  eventList({state, getters, commit, dispatch}) {
-
-    state.loading = state.loading + 1;
-    HTTP.get("events?calendar=isNotNull&start=" + getters.getDate + "<>" + getters.getNextDate
-    ).then((response) => {
-      var events = [];
-      for (var i = 0; i < response.data.length; i++) {
-        var event = response.data[i];
-        if (event.calendar != null) {
-          event.hour = moment(event.start).tz('America/Argentina/Buenos_Aires').format("HH:mm");
-          events.push(event);
+    setHiddenZone({commit}, name) {
+        commit('SET_HIDDEN_ZONE', name);
+    },
+    hideCalendar({commit}, index) {
+        commit('HIDE_CALENDAR', index);
+    },
+    showCalendar({commit, dispatch}, index) {
+        commit('SHOW_CALENDAR', index);
+    },
+    changeDate({commit, dispatch}, date) {
+        console.log(date)
+        var newDate = moment(date)
+        if (newDate.isValid()) {
+            commit('SET_DATE', newDate);
+            commit('CLEAR_EVENTS', newDate);
+            dispatch('eventList');
         }
-      }
-      commit("SET_EVENTS", events);
-      state.loading = state.loading - 1;
-    })
-  },
-  pushEvent({state, commit, getters}, event) {
-    event.hour = moment(event.start).tz('America/Argentina/Buenos_Aires').format("HH:mm");
-    state.loading = state.loading + 1;
+    },
+    eventStateList({commit}) {
+        state.loading = state.loading + 1;
+        HTTP.get('event-states').then((response) => {
+            commit("SET_EVENT_STATES", response.data);
+            state.loading = state.loading - 1;
+        })
+    },
+    zoneList({commit}) {
+        state.loading = state.loading + 1;
+        HTTP.get('zones').then((response) => {
+            commit("SET_ZONES", response.data);
+            state.loading = state.loading - 1;
+        })
+    },
+    eventTypeList({commit}) {
+        state.loading = state.loading + 1;
+        HTTP.get('event-types').then((response) => {
+            commit("SET_EVENT_TYPES", response.data);
+            state.loading = state.loading - 1;
+        })
+    },
+    calendarList({state, commit, dispatch}) {
+        state.loading = state.loading + 1;
+        HTTP.get('calendars').then((response) => {
+            commit(SET_CALENDARS, response.data);
+            state.loading = state.loading - 1;
+            dispatch('eventList');
+        })
+    },
+    preEventList({commit, getters, state}) {
+        state.loading = state.loading + 1;
 
-    HTTP.put("events/" + event.id, event
-    ).then((response) => {
-      state.loading = state.loading - 1;
-      commit('ADD_EVENT', event);
-    }).catch((error) => {
-      state.loading = state.loading - 1;
-    })
-  },
-  updateEvent({state, commit, getters}, {index, event}) {
+        HTTP.get('events?calendar=isNull&dateFrom=<=' + getters.getDate + '').then((response) => {
+            commit("SET_PRE_EVENTS", response.data);
+            state.loading = state.loading - 1;
+        });
 
-    state.loading = state.loading + 1;
-    HTTP.put("events/" + event.id, event
-    ).then((response) => {
-      state.loading = state.loading - 1;
-      commit(UPDATE_EVENT, {index: index, event: event})
-    }).catch((error) => {
-      state.loading = state.loading - 1;
-    })
-  },
-  removePreEvent({commit}, index) {
-    commit("REMOVE_PRE_EVENTS", index);
-  }
+    },
+    eventList({state, getters, commit}) {
+
+        state.loading = state.loading + 1;
+        HTTP.get("events?calendar=isNotNull&start=" + getters.getDate + "<>" + getters.getNextDate
+        ).then((response) => {
+            var events = [];
+            for (var i = 0; i < response.data.length; i++) {
+                var event = response.data[i];
+                if (event.calendar != null) {
+                    event.hour = moment(event.start).tz('America/Argentina/Buenos_Aires').format("HH:mm");
+                    events.push(event);
+                }
+            }
+            commit("SET_EVENTS", events);
+            state.loading = state.loading - 1;
+        })
+    },
+    pushEvent({state, commit}, event) {
+        event.hour = moment(event.start).tz('America/Argentina/Buenos_Aires').format("HH:mm");
+        state.loading = state.loading + 1;
+
+        HTTP.put("events/" + event.id, event
+        ).then((response) => {
+            state.loading = state.loading - 1;
+            commit('ADD_EVENT', event);
+        }).catch((error) => {
+            state.loading = state.loading - 1;
+        })
+    },
+    updateEvent({state, commit}, {index, event}) {
+
+        state.loading = state.loading + 1;
+        HTTP.put("events/" + event.id, event
+        ).then((response) => {
+            state.loading = state.loading - 1;
+            commit(UPDATE_EVENT, {index: index, event: event})
+        }).catch((error) => {
+            state.loading = state.loading - 1;
+        })
+    },
+    removePreEvent({commit}, index) {
+        commit("REMOVE_PRE_EVENTS", index);
+    }
 
 };
 
 const mutations = {
-  [SET_DATE](state, newDate) {
-    state.date = newDate;
-  },
-  [ADD_CALENDAR](state, calendar) {
-    state.calendars.push(calendar);
-  },
-  [SHOW_CALENDAR](state, index) {
-    Vue.set(state.calendars[index], 'hidden', false);
-    state.rc++;
-  },
-  [HIDE_CALENDAR](state, index) {
-    Vue.set(state.calendars[index], 'hidden', true)
-    state.rc++;
-  },
-  [SET_EVENT_STATES](state, eventStates) {
-    state.eventStates = eventStates;
-  },
-  [SET_EVENT_TYPES](state, eventTypes) {
-    state.eventTypes = eventTypes;
-  },
-  [SET_CALENDARS](state, calendars) {
-    state.calendars = calendars;
-  },
-  [SET_PRE_EVENTS](state, preEvents) {
-    state.preEvents = preEvents;
-  },
-  [SET_EVENT_SELECTED](state, index) {
-    state.eventSelected = index;
-  },
-  [SET_EVENTS](state, events) {
-    state.events = events;
-  },
-  [CLEAR_EVENTS](state) {
-    state.events = []
-  },
-  [REMOVE_PRE_EVENTS](state, index) {
-    state.preEvents.splice(index, 1);
-  },
-  [ADD_EVENT](state, event) {
-    state.events.push(event);
-  },
-  [UPDATE_EVENT](state, {index, event}) {
-    state.events[index] = event;
-  },
-  [SET_COORDINATE](state, {calendar, hour, type, value}) {
-    if (state.coordinates[calendar] == undefined) {
-      state.coordinates[calendar] = {};
+    [SET_DATE](state, newDate) {
+        state.date = newDate;
+    },
+    [ADD_CALENDAR](state, calendar) {
+        state.calendars.push(calendar);
+    },
+    [SHOW_CALENDAR](state, index) {
+        Vue.set(state.calendars[index], 'hidden', false);
+        state.rc++;
+    },
+    [HIDE_CALENDAR](state, index) {
+        Vue.set(state.calendars[index], 'hidden', true)
+        state.rc++;
+    },
+    [SHOW_ZONE](state, index) {
+        Vue.set(state.zones[index], 'hidden', false);
+    },
+    [HIDE_ZONE](state, index) {
+        Vue.set(state.zones[index], 'hidden', true)
+    },
+    [SET_ZONES](state, zones) {
+        state.zones = zones;
+    },
+    [SET_EVENT_STATES](state, eventStates) {
+        state.eventStates = eventStates;
+    },
+    [SET_EVENT_TYPES](state, eventTypes) {
+        state.eventTypes = eventTypes;
+    },
+    [SET_CALENDARS](state, calendars) {
+        state.calendars = calendars;
+    },
+    [SET_PRE_EVENTS](state, preEvents) {
+        state.preEvents = preEvents;
+    },
+    [SET_EVENT_SELECTED](state, index) {
+        state.eventSelected = index;
+    },
+    [SET_EVENTS](state, events) {
+        state.events = events;
+    },
+    [CLEAR_EVENTS](state) {
+        state.events = []
+    },
+    [REMOVE_PRE_EVENTS](state, index) {
+        state.preEvents.splice(index, 1);
+    },
+    [ADD_EVENT](state, event) {
+        state.events.push(event);
+    },
+    [UPDATE_EVENT](state, {index, event}) {
+        state.events[index] = event;
+    },
+    [SET_COORDINATE](state, {calendar, hour, type, value}) {
+        if (state.coordinates[calendar] == undefined) {
+            state.coordinates[calendar] = {};
+        }
+        if (state.coordinates[calendar][hour] == undefined) {
+            state.coordinates[calendar][hour] = {};
+        }
+        Vue.set(state.coordinates[calendar][hour], type, value);
+        //  console.log("SET_COOR", calendar, hour, type, state.coordinates[calendar][hour][type])
+    },
+    [SET_CALENDAR_POSITION](state, {top, left}) {
+        state.calendarPosition.top = top;
+        state.calendarPosition.left = left;
+    },
+    [SET_BODY_SCROLL](state, {top, left}) {
+        state.bodyScroll.top = top;
+        state.bodyScroll.left = left;
+    },
+    [SET_CALENDAR_SCROLL](state, {top, left}) {
+        state.calendarScroll.top = top;
+        state.calendarScroll.left = left;
     }
-    if (state.coordinates[calendar][hour] == undefined) {
-      state.coordinates[calendar][hour] = {};
-    }
-    Vue.set(state.coordinates[calendar][hour], type, value);
-    //  console.log("SET_COOR", calendar, hour, type, state.coordinates[calendar][hour][type])
-  },
-  [SET_CALENDAR_POSITION](state, {top, left}) {
-    state.calendarPosition.top = top;
-    state.calendarPosition.left = left;
-  },
-  [SET_BODY_SCROLL](state, {top, left}) {
-    state.bodyScroll.top = top;
-    state.bodyScroll.left = left;
-  },
-  [SET_CALENDAR_SCROLL](state, {top, left}) {
-    state.calendarScroll.top = top;
-    state.calendarScroll.left = left;
-  }
 };
 
 
 const store = new Vuex.Store({
-  state,
-  getters,
-  actions,
-  mutations
+    state,
+    getters,
+    actions,
+    mutations
 });
 
 

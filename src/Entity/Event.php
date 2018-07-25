@@ -226,6 +226,15 @@ class Event
     public $postalCode = null;
 
     /**
+     * @Annotation\Type("Zend\Form\Element\Text")
+     * @Annotation\Attributes({"type":"text"})
+     * @Annotation\Options({"label":"Zona", "description":"", "addon":""})
+     * @ORM\Column(type="string", length=50, unique=false, nullable=true,
+     * name="zone")
+     */
+    public $zone = null;
+
+    /**
      * @return mixed
      */
     public function getId()
@@ -536,6 +545,22 @@ class Event
     public function setTimeTo($timeTo)
     {
         $this->timeTo = $timeTo;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getZone()
+    {
+        return $this->zone;
+    }
+
+    /**
+     * @param mixed $zone
+     */
+    public function setZone($zone)
+    {
+        $this->zone = $zone;
     }
 
 
