@@ -18,6 +18,13 @@ import {
 
 Vue.use(Vuex)
 
+
+/*
+*
+* STATE
+*
+*/
+
 const state = {
   loading: 0,
   coordinates: {},
@@ -34,6 +41,13 @@ const state = {
   eventTypes: [],
   eventSelected: null,
 };
+
+/*
+*
+* GETTERS
+*
+*/
+
 const getters = {
   getDistanceFromEventSelected: (state) => (dlat, dlng) => {
     if (state.eventSelected != undefined) {
@@ -189,6 +203,11 @@ const getters = {
 
 };
 
+/*
+*
+* ACTIONS
+*
+*/
 
 const actions = {
   hideCalendar({commit, dispatch, state}, index) {
@@ -228,20 +247,19 @@ const actions = {
       dispatch('eventList');
     })
   },
-  preEventList({commit}) {
+  preEventList({commit,getters,state}) {
     state.loading = state.loading + 1;
 
-    // HTTP.get('events?calendar=isNull&dateFrom=<=' + getters.getDate +'').then((response) => {
-    //   commit("SET_PRE_EVENTS", response.data);
-    //   state.loading = state.loading - 1;
-    // })
+    console.log(getters.getDate);
 
-    HTTP.get('events?calendar=isNull').then((response) => {
+    HTTP.get('events?calendar=isNull&dateFrom=<=' + getters.getDate +'').then((response) => {
       commit("SET_PRE_EVENTS", response.data);
       state.loading = state.loading - 1;
     });
+
   },
   eventList({state, getters, commit, dispatch}) {
+
     state.loading = state.loading + 1;
     HTTP.get("events?calendar=isNotNull&start=" + getters.getDate + "<>" + getters.getNextDate
     ).then((response) => {
@@ -286,7 +304,7 @@ const actions = {
 
 };
 
- const mutations = {
+const mutations = {
   [SET_DATE](state, newDate) {
     state.date = newDate;
   },
