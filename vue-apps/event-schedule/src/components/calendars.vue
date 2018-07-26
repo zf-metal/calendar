@@ -126,6 +126,7 @@
                 'hasCalendars',
                 'getCalendars',
                 'getVisibleCalendars',
+                'getPreEventById',
                 'getPreEvents',
                 'getEvents',
                 'getEventByKey',
@@ -166,7 +167,8 @@
                 event.start = this.getDate + " " + event.hour
                 event.end = calculateEnd(event.start, event.duration)
                 this.pushEvent(event);
-                this.removePreEvent(index);
+                var i = this.getPreEventById(event.id);
+                this.removePreEvent(i);
             },
             onDropForChangeEvent: function (calendar, eventKey, hour) {
                 var event = this.getEventByKey(eventKey);

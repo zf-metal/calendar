@@ -225,12 +225,13 @@ class Event
      */
     public $postalCode = null;
 
+
     /**
-     * @Annotation\Type("Zend\Form\Element\Text")
-     * @Annotation\Attributes({"type":"text"})
-     * @Annotation\Options({"label":"Zona", "description":"", "addon":""})
-     * @ORM\Column(type="string", length=50, unique=false, nullable=true,
-     * name="zone")
+     * @Annotation\Type("DoctrineModule\Form\Element\ObjectSelect")
+     * @Annotation\Options({"label":"Zonas","empty_option": "",
+     * "target_class":"\ZfMetal\Calendar\Entity\Zone", "description":""})
+     * @ORM\ManyToOne(targetEntity="\ZfMetal\Calendar\Entity\Zone")
+     * @ORM\JoinColumn(name="zone_id", referencedColumnName="id", nullable=true)
      */
     public $zone = null;
 

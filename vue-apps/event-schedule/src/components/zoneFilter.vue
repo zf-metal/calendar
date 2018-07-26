@@ -1,9 +1,9 @@
 <template>
     <div class="zoneFilter">
-        <div v-for="zone in getZones" :key="zone.name">
+        <p>Seleccionar las zonas que se desean ocultar</p>
+        <div v-for="(zone,index) in getZones" :key="zone.name">
             <div class="col-lg-3">
-            <label>{{zone.name}}</label>
-            <input type="checkbox" :name="zone.name" />
+           <check-zone :name="zone.name" :id="zone.id" :index="index"></check-zone>
             </div>
         </div>
     </div>
@@ -11,11 +11,12 @@
 
 <script>
     import {mapGetters, mapActions} from 'vuex';
+import checkZone from './checkZone.vue'
 
     export default {
         name: 'zoneFilter',
         props:[],
-        components: {},
+        components: {checkZone},
         methods: {},
         computed: {
             ...mapGetters([

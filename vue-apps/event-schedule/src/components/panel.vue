@@ -12,19 +12,25 @@
 
             <v-tab title="Z">
                 <h4>Visitas por Zona</h4>
-                <button  class="btn btn-default material-icons" @click="showModalZone">filter_list</button>
+                <button class="btn btn-default material-icons" @click="showModalZone">filter_list</button>
 
-                <modal :title="'Filtro de Zonas'" :showModal="showModal" @close="showModal = false">
+                <modal :title="'Zonas'" :showModal="showModal" @close="showModal = false">
                     <zone-filter></zone-filter>
+                    <div class="clearfix"></div>
+                    <div class="text-right">
+                        <button class="btn btn-primary text-center" type="button" style="margin:10px"
+                                @click="closeModalZone">Ok
+                        </button>
+                    </div>
                 </modal>
 
-                <div v-if="getPreEventsByZone" v-for="(zones,zoneName) in getPreEventsByZone" :key="zoneName">
-                    <h6>{{zoneName}}</h6>
-
-                    <preEvent v-for="(preEvent,index) in zones" :preEvent="preEvent"
+                <div v-if="!zone.hidden" v-for="zone in getZones" :key="zone.id">
+                    <div v-if="getPreEventsByZone(zone.id).length > 0" >
+                    <h6>{{zone.name}}</h6>
+                    <preEvent  v-for="(preEvent,index) in getPreEventsByZone(zone.id)" :preEvent="preEvent"
                               :key="preEvent.id" :index="index">
                     </preEvent>
-
+                    </div>
                 </div>
 
             </v-tab>
@@ -51,36 +57,40 @@
 </template>
 
 <script>
-    import {mapGetters, mapActions} from 'vuex';
-    import preEvent from "./preEvent.vue";
-    import zoneFilter from './zoneFilter.vue'
-    import checkCalendar from "./checkCalendar.vue"
-    import service from "./service.vue"
-    import modal from './helpers/modal.vue'
-    import {VueTabs, VTab} from 'vue-nav-tabs'
-    import 'vue-nav-tabs/themes/vue-tabs.css'
+  import {mapGetters, mapActions} from 'vuex';
+  import preEvent from "./preEvent.vue";
+  import zoneFilter from './zoneFilter.vue'
+  import checkCalendar from "./checkCalendar.vue"
+  import service from "./service.vue"
+  import modal from './helpers/modal.vue'
+  import {VueTabs, VTab} from 'vue-nav-tabs'
+  import 'vue-nav-tabs/themes/vue-tabs.css'
 
-    export default {
-        name: 'panel',
-        data() {
-            return {
-                showModal: false,
-            }
-        },
-        components: {preEvent, checkCalendar, service, VueTabs, VTab, modal,zoneFilter},
-        computed: {
-            ...mapGetters([
-                'getPreEventsByZone',
-                'getPreEvents',
-                'hasCalendars',
-                'getCalendars',
-                'getServiceSelected'
-            ]),
-        },
-        methods: {
-            showModalZone: function () {
-                this.showModal = true
-            },
-        }
+  export default {
+    name: 'panel',
+    data() {
+      return {
+        showModal: false,
+      }
+    },
+    components: {preEvent, checkCalendar, service, VueTabs, VTab, modal, zoneFilter},
+    computed: {
+      ...mapGetters([
+        'getZones',
+        'getPreEventsByZone',
+        'getPreEvents',
+        'hasCalendars',
+        'getCalendars',
+        'getServiceSelected'
+      ]),
+    },
+    methods: {
+      showModalZone: function () {
+        this.showModal = true
+      },
+      closeModalZone: function () {
+        this.showModal = false
+      },
     }
+  }
 </script>
