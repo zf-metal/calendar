@@ -1,6 +1,5 @@
 <template>
     <div class="zoneFilter">
-        <p>Seleccionar las zonas que se desean ocultar</p>
         <div v-for="(zone,index) in getZones" :key="zone.name">
             <div class="col-lg-3">
            <check-zone :name="zone.name" :id="zone.id" :index="index"></check-zone>

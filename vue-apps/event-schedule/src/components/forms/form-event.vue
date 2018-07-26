@@ -132,12 +132,12 @@
         <div class="col-lg-12 col-md-12 col-xs-12">
             <div class="form-group">
                 <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 control-label">
-                    <label class="control-label">Descripcion</label>
+                    <label class="control-label">Comentarios</label>
                 </div>
                 <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
-                <textarea name="description" class=" form-control" v-model="entity.description" ref="description"
+                <textarea name="comments" class=" form-control" v-model="entity.comments" ref="comments"
                           @keydown="unsaved"></textarea>
-                    <fe :errors="errors.description"/>
+                    <fe :errors="errors.comments"/>
                 </div>
 
             </div>
@@ -210,6 +210,7 @@
         this.entity.id = data.id
         this.entity.title = data.title
         this.entity.description = data.description
+        this.entity.comments = data.comments
         this.entity.start = data.start
         this.entity.duration = data.duration
         this.entity.end = data.end

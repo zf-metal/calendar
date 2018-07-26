@@ -1,10 +1,9 @@
 <template>
     <drag :transfer-data="{obj: obj, index:index, type: 't'}" :draggable="isDraggable" >
         <div class="zfc-pre-event" :class="{'zfc-pre-event-a' : !isDraggable}">
-            <span>Index: {{index}}</span>
             <span> {{obj.id}} - {{obj.title}} </span>
-
             <i class="material-icons zfc-pre-type-icon pull-right">{{getEventTypeIcon(obj.type)}} </i>
+            <div v-html="obj.description"> </div>
         </div>
     </drag>
 </template>

@@ -183,10 +183,21 @@ class Event
      * @Annotation\Type("Zend\Form\Element\Textarea")
      * @Annotation\Attributes({"type":"textarea"})
      * @Annotation\Options({"label":"description", "description":""})
-     * @ORM\Column(type="string", length=500, unique=false, nullable=true,
+     * @ORM\Column(type="string", length=300, unique=false, nullable=true,
      * name="description")
      */
     public $description = null;
+
+
+    /**
+     * @Annotation\Type("Zend\Form\Element\Textarea")
+     * @Annotation\Attributes({"type":"textarea"})
+     * @Annotation\Options({"label":"description", "description":""})
+     * @ORM\Column(type="string", length=500, unique=false, nullable=true,
+     * name="comments")
+     */
+    public $comments = null;
+
 
     /**
      * @Annotation\Type("Zend\Form\Element\Text")
@@ -563,6 +574,23 @@ class Event
     {
         $this->zone = $zone;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getComments()
+    {
+        return $this->comments;
+    }
+
+    /**
+     * @param mixed $comments
+     */
+    public function setComments($comments)
+    {
+        $this->comments = $comments;
+    }
+
 
 
 

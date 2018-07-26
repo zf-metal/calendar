@@ -2,11 +2,11 @@
     <Drag :transfer-data="{id: $vnode.key, type: 'e'}"
           :class="getMainClass" :style="getStyle" >
         <div class="" style="padding: 3px; height: 100%;" @click="selectEvent">
-            <span @click="edit"><i class="material-icons zfc-edit-btn" @click="edit">edit</i> {{id}} - {{title}}</span>
-            <i class="material-icons zfc-type-icon pull-right">{{getEventTypeIcon(type)}}</i>
+            <span @click="edit"><i class="material-icons zfc-type-icon pull-left">{{getEventTypeIcon(type)}}</i> {{id}} - {{title}}</span>
+            <span class="pull-right">{{getDistanceFromEventSelected(lat,lng)}} Km</span>
             <br>
-            <span>{{getDistanceFromEventSelected(lat,lng)}} Km</span>
 
+            <div v-html="description"> </div>
         </div>
 
     </Drag>
@@ -99,8 +99,8 @@
         background: #1c5c87;
         color: #FFFFFF;
         z-index: 10;
-        min-width: 230px;
-        width: 230px;
+        min-width: 254px;
+        width: 254px;
         min-height: 35px;
     }
 

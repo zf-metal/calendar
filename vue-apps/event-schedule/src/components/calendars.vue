@@ -210,9 +210,9 @@
     }
 
     .zfc-column-calendar {
-        width: 250px;
-        min-width: 250px;
-        max-width: 250px;
+        width: 260px;
+        min-width: 260px;
+        max-width: 260px;
         overflow: hidden;
         text-align: center;
     }

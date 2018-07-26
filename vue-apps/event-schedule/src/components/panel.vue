@@ -11,8 +11,8 @@
             </v-tab>
 
             <v-tab title="Z">
-                <h4>Visitas por Zona</h4>
-                <button class="btn btn-default material-icons" @click="showModalZone">filter_list</button>
+                <h4><button class="btn btn-default btn-sm material-icons" @click="showModalZone">filter_list</button> Visitas por Zona  </h4>
+
 
                 <modal :title="'Zonas'" :showModal="showModal" @close="showModal = false">
                     <zone-filter></zone-filter>
