@@ -246,6 +246,19 @@ class Event
      */
     public $zone = null;
 
+
+    /**
+     * @Annotation\Type("DoctrineModule\Form\Element\ObjectSelect")
+     * @Annotation\Options({"label":"Zonas","empty_option": "",
+     * "target_class":"\ZfMetal\Calendar\Entity\EventLink", "description":""})
+     * @ORM\ManyToOne(targetEntity="\ZfMetal\Calendar\Entity\EventLink")
+     * @ORM\JoinColumn(name="link_id", referencedColumnName="id", nullable=true)
+     */
+    public $link = null;
+
+
+
+
     /**
      * @return mixed
      */
@@ -590,6 +603,24 @@ class Event
     {
         $this->comments = $comments;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getLink()
+    {
+        return $this->link;
+    }
+
+    /**
+     * @param mixed $link
+     */
+    public function setLink($link)
+    {
+        $this->link = $link;
+    }
+
+
 
 
 
