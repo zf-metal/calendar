@@ -43,6 +43,7 @@ const state = {
   hiddenZones: [],
   eventTypes: [],
   eventSelected: null,
+  weekDays: {1: "Lunes",2:"Martes",3: "Miercoles",4:"Jueves",5:"Viernes",6:"Sabado",7:"Domingo"}
 };
 
 /*
@@ -117,20 +118,6 @@ const getters = {
 
     return state.preEvents.filter(preEvent => preEvent.zone.id === id);
 
-    // state.preEventsByZone = {};
-    // for (var i = 0; i < state.preEvents.length; i++) {
-    //   var e = state.preEvents[i];
-    //
-    //   if (state.preEventsByZone[e.zone.id] == undefined) {
-    //     state.preEventsByZone[e.zone.id] = {};
-    //
-    //   }
-    //   state.preEventsByZone[e.zone.id][i] = e;
-    // }
-    //
-    // return state.preEventsByZone;
-
-
   },
   getZones: state => {
     return state.zones;
@@ -175,7 +162,10 @@ const getters = {
     return nextDate.add(1, 'day').format("YYYY-MM-DD");
   },
   getDay: state => {
-    return state.date.day() + 1;
+    return state.date.isoWeekday();
+  },
+  getDayName: state => {
+    return state.weekDays[state.date.isoWeekday()];
   },
   getStart: (state, getters) => {
     var rstart = null;

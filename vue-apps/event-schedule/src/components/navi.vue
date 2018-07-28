@@ -3,20 +3,18 @@
         <nav class="navbar navbar-default ">
             <div class="container-fluid">
                 <div class="navbar-header">
-                    <a class="navbar-brand" href="#">
-                        AGENDA
+                    <a class="navbar-brand" href="/"><i class="material-icons">home</i>
                     </a>
                 </div>
 
 
-                <ul class="nav navbar-nav ">
-                    <li>
 
-                    </li>
-                </ul>
 
                 <day v-model="getDate"></day>
-
+                <ul class="nav navbar-nav ">
+                    <li>
+                    </li>
+                </ul>
 
                 <form class="navbar-form navbar-left">
                     <div class="form-group">
@@ -45,6 +43,7 @@
     components: {day, loading},
     computed: {
       ...mapGetters([
+        'getDayName',
         'getDate',
         'getLoading'
       ]),

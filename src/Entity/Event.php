@@ -81,10 +81,18 @@ class Event
      * @Annotation\Options({"label":"Servicio", "description":"", "addon":""})
      * @ORM\Column(type="integer", length=11, unique=false, nullable=true,
      * name="service_id")
-     * @Transformation\Policy\Custom(format="\ZfMetal\Calendar\PolicyHandler\Service::format")
      * @Annotation\Exclude()
      */
     public $service = null;
+
+    /**
+     * @Annotation\Type("Zend\Form\Element\Textarea")
+     * @Annotation\Attributes({"type":"textarea"})
+     * @Annotation\Options({"label":"service", "description":""})
+     * @ORM\Column(type="string", length=600, unique=false, nullable=true,
+     * name="service_description")
+     */
+    public $serviceDescription = null;
 
 
     /**
@@ -619,6 +627,23 @@ class Event
     {
         $this->link = $link;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getServiceDescription()
+    {
+        return $this->serviceDescription;
+    }
+
+    /**
+     * @param mixed $serviceDescription
+     */
+    public function setServiceDescription($serviceDescription)
+    {
+        $this->serviceDescription = $serviceDescription;
+    }
+
 
 
 

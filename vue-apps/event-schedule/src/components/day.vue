@@ -9,7 +9,8 @@
         <li>
             <form class="navbar-form navbar-left">
                 <div class="form-group">
-                    <input type="date" class="form-control" v-model="date" v-on:change="onChange">
+                    <input type="date" class="form-control" v-model="date" v-on:change="onChange"><br>
+
                 </div>
             </form>
         </li>
@@ -17,6 +18,9 @@
             <a @click="next">
                 <i class="btn btn-xs material-icons" style="font-size:18px">navigate_next</i>
             </a>
+        </li>
+        <li>
+            <span class="navbar-brand">{{getDayName}}</span>
         </li>
     </ul>
 
@@ -39,6 +43,11 @@
     },
     created: function () {
       this.date = this.value;
+    },
+    computed: {
+      ...mapGetters([
+        'getDayName'
+      ]),
     },
     methods: {
       ...mapActions([
