@@ -43,7 +43,7 @@ const state = {
   hiddenZones: [],
   eventTypes: [],
   eventSelected: null,
-  weekDays: {1: "Lunes",2:"Martes",3: "Miercoles",4:"Jueves",5:"Viernes",6:"Sabado",7:"Domingo"}
+  weekDays: {1: "Lunes", 2: "Martes", 3: "Miercoles", 4: "Jueves", 5: "Viernes", 6: "Sabado", 7: "Domingo"}
 };
 
 /*
@@ -69,10 +69,11 @@ const getters = {
   },
   getServiceSelected: state => {
     if (state.eventSelected != undefined && state.eventSelected != null) {
-      return state.events[state.eventSelected].service;
-    } else {
-      return {};
+      if (state.events[state.eventSelected].serviceDescription != undefined) {
+        return state.events[state.eventSelected].serviceDescription;
+      }
     }
+    return {};
   },
   getRc: state => {
     return state.rc
@@ -109,7 +110,9 @@ const getters = {
     return false;
   },
   getPreEventById: (state) => (id) => {
-    return state.preEvents.map(function(x) {return x.id; }).indexOf(id);
+    return state.preEvents.map(function (x) {
+      return x.id;
+    }).indexOf(id);
   },
   getPreEvents: state => {
     return state.preEvents;
@@ -261,7 +264,7 @@ const actions = {
       var zones = {};
       for (var i = 0; i < response.data.length; i++) {
         var zone = response.data[i];
-        zones[zone.id] = {id:zone.id ,name: zone.name};
+        zones[zone.id] = {id: zone.id, name: zone.name};
       }
       commit("SET_ZONES", zones);
       state.loading = state.loading - 1;
