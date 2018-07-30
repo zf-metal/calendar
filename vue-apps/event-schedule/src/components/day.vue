@@ -49,6 +49,7 @@
     },
     computed: {
       ...mapGetters([
+        'getLoading',
         'getMonthName',
         'getDayName',
         'getNumberOfDayInMonthOrdinal'
@@ -59,17 +60,21 @@
         'changeDate'
       ]),
       before: function () {
-        var d = moment(this.date)
-        d.subtract(1, 'day')
-        this.date = d.tz('America/Argentina/Buenos_Aires').format("YYYY-MM-DD")
-        this.changeDate(this.date)
+        if(this.getLoading == 0) {
+          var d = moment(this.date)
+          d.subtract(1, 'day')
+          this.date = d.tz('America/Argentina/Buenos_Aires').format("YYYY-MM-DD")
+          this.changeDate(this.date)
+        }
       },
       next: function () {
-        var d = moment(this.date)
-        d.add(1, 'day')
-        this.date = d.tz('America/Argentina/Buenos_Aires').format("YYYY-MM-DD")
-        console.log(this.date)
-        this.changeDate(this.date)
+        if(this.getLoading == 0) {
+          var d = moment(this.date)
+          d.add(1, 'day')
+          this.date = d.tz('America/Argentina/Buenos_Aires').format("YYYY-MM-DD")
+          console.log(this.date)
+          this.changeDate(this.date)
+        }
       },
       onChange: function () {
         var d = moment(this.date)
