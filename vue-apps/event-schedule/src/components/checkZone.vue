@@ -1,8 +1,7 @@
 <template>
-    <div class="">
+    <div v-if="getPreEventsByZone(id).length > 0" class="col-lg-6">
         <input type="checkbox" :name='id' v-on:change="toggleCalendar" v-model="active" />
         <label>{{name}} ({{getPreEventsByZone(id).length}})</label>
-
     </div>
 </template>
 
