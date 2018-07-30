@@ -6,7 +6,7 @@ import tz from 'moment-timezone'
 import 'moment/locale/es';
 
 import {HTTP} from './../utils/http-client'
-import {calculateDistance} from './../utils/helpers'
+import {calculateDistance,getRandomColor} from './../utils/helpers'
 
 import {
   SET_DATE,
@@ -43,7 +43,8 @@ const state = {
   hiddenZones: [],
   eventTypes: [],
   eventSelected: null,
-  weekDays: {1: "Lunes", 2: "Martes", 3: "Miercoles", 4: "Jueves", 5: "Viernes", 6: "Sabado", 7: "Domingo"}
+  weekDays: {1: "Lunes", 2: "Martes", 3: "Miercoles", 4: "Jueves", 5: "Viernes", 6: "Sabado", 7: "Domingo"},
+  months: {1: "Enero", 2: "Febrero", 3: "Marzo", 4: "Abril", 5: "Mayo", 6: "Junio", 7: "Julio", 8:  "Agosto",9: "Septiembre",10:"Octubre",11: "Noviembre",12:"Diciembre"}
 };
 
 /*
@@ -118,9 +119,13 @@ const getters = {
     return state.preEvents;
   },
   getPreEventsByZone: (state) => (id) => {
-
     return state.preEvents.filter(preEvent => preEvent.zone.id === id);
-
+  },
+  getZoneBgColor: (state) => (id) => {
+    if(state.zones[id] != undefined && state.zones[id].bgColor != undefined) {
+      return state.zones[id].bgColor;
+    }
+    return "";
   },
   getZones: state => {
     return state.zones;
@@ -167,8 +172,35 @@ const getters = {
   getDay: state => {
     return state.date.isoWeekday();
   },
+  getMonthName: state => {
+    return state.date.format('MMMM').replace(/\w/, c => c.toUpperCase());
+  },
   getDayName: state => {
-    return state.weekDays[state.date.isoWeekday()];
+    return state.date.format('dddd').replace(/\w/, c => c.toUpperCase());
+  },
+  getNumberOfDayInMonth: state => {
+    var cloneDate = state.date.clone();
+    var count = 0;
+    do {
+      count++;
+      cloneDate.subtract(1, 'week');
+    }while (state.date.month() == cloneDate.month())
+    return count;
+  },
+  getNumberOfDayInMonthOrdinal:  (state, getters) => {
+    switch (getters.getNumberOfDayInMonth){
+      case 1:
+        return "1er";
+      case 2:
+        return "2do";
+      case 3:
+        return "3er";
+      case 4:
+        return "4to";
+      case 5:
+        return "5to";
+    }
+    return "";
   },
   getStart: (state, getters) => {
     var rstart = null;
@@ -258,13 +290,19 @@ const actions = {
       state.loading = state.loading - 1;
     })
   },
-  zoneList({commit}) {
+  getRandomColor: function(){
+    return '#'+(Math.random()*0xFFFFFF<<0).toString(16);
+  },
+  zoneList({commit,dispatch}) {
     state.loading = state.loading + 1;
     HTTP.get('zones').then((response) => {
       var zones = {};
       for (var i = 0; i < response.data.length; i++) {
         var zone = response.data[i];
-        zones[zone.id] = {id: zone.id, name: zone.name};
+        if(zone.bgColor == undefined){
+          zone.bgColor = getRandomColor();
+        }
+        zones[zone.id] = zone;
       }
       commit("SET_ZONES", zones);
       state.loading = state.loading - 1;

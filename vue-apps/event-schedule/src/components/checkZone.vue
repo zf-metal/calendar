@@ -1,6 +1,6 @@
 <template>
     <div class="">
-        <label>{{name}}</label>
+        <label>{{name}} ({{getPreEventsByZone(id).length}})</label>
         <input type="checkbox" :name='id' v-on:change="toggleCalendar" v-model="active" />
     </div>
 </template>
@@ -17,7 +17,10 @@
         active: true,
       }
     },
-    created: function () {
+    computed: {
+      ...mapGetters([
+        'getPreEventsByZone',
+      ]),
     },
     methods: {
       ...mapActions([

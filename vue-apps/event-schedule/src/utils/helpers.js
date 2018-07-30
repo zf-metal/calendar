@@ -9,6 +9,10 @@ export function calculateEventDuraction(event) {
   return null;
 }
 
+export function getRandomColor(){
+  return '#'+(Math.random()*0xFFFFFF<<0).toString(16);
+}
+
 export function  calculateEnd (start, duration) {
   var end = moment(start)
   end.add(duration, "minutes")

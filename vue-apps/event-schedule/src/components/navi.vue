@@ -1,6 +1,6 @@
 <template>
-    <div>
-        <nav class="navbar navbar-default ">
+
+        <nav class="navbar navbar-default" style="margin: 0;">
             <div class="container-fluid">
                 <div class="navbar-header">
                     <a class="navbar-brand" href="/"><i class="material-icons">home</i>
@@ -30,7 +30,7 @@
 
             </div>
         </nav>
-    </div>
+
 </template>
 
 <script>

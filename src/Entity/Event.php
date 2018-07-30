@@ -48,7 +48,7 @@ class Event
      * "target_class":"\ZfMetal\Calendar\Entity\EventState", "description":""})
      * @ORM\ManyToOne(targetEntity="\ZfMetal\Calendar\Entity\EventState")
      * @ORM\JoinColumn(name="state_id", referencedColumnName="id", nullable=true)
-     * @Transformation\Policy\Custom(transform= "\ZfMetal\Calendar\PolicyHandler\EntityId::transform")
+     * @Transformation\Policy\Custom(transform="ZfMetal\Restful\Transformation\Policy\Common\Id::transform")
      */
     public $state = null;
 
@@ -59,7 +59,7 @@ class Event
      * "target_class":"\ZfMetal\Calendar\Entity\EventType", "description":""})
      * @ORM\ManyToOne(targetEntity="\ZfMetal\Calendar\Entity\EventType")
      * @ORM\JoinColumn(name="type_id", referencedColumnName="id", nullable=true)
-     * @Transformation\Policy\Custom(transform= "\ZfMetal\Calendar\PolicyHandler\EntityId::transform")
+     * @Transformation\Policy\Custom(transform="ZfMetal\Restful\Transformation\Policy\Common\Id::transform")
      */
     public $type = null;
 
@@ -70,7 +70,7 @@ class Event
      * "target_class":"\ZfMetal\Calendar\Entity\Calendar", "description":""})
      * @ORM\ManyToOne(targetEntity="\ZfMetal\Calendar\Entity\Calendar")
      * @ORM\JoinColumn(name="calendar_id", referencedColumnName="id", nullable=true)
-     * @Transformation\Policy\Custom(transform= "\ZfMetal\Calendar\PolicyHandler\EntityId::transform")
+     * @Transformation\Policy\Custom(transform="ZfMetal\Restful\Transformation\Policy\Common\Id::transform")
      */
     public $calendar = null;
 
@@ -82,15 +82,15 @@ class Event
      * @ORM\Column(type="integer", length=11, unique=false, nullable=true,
      * name="service_id")
      * @Annotation\Exclude()
+     * @Transformation\Policy\Custom(transform="ZfMetal\Restful\Transformation\Policy\Common\Id::transform")
      */
     public $service = null;
 
     /**
-     * @Annotation\Type("Zend\Form\Element\Textarea")
-     * @Annotation\Attributes({"type":"textarea"})
-     * @Annotation\Options({"label":"service", "description":""})
+     * @Annotation\Exclude()
      * @ORM\Column(type="string", length=600, unique=false, nullable=true,
      * name="service_description")
+     * @Transformation\Policy\Custom(format="ZfMetal\Restful\Transformation\Policy\Common\Json::format")
      */
     public $serviceDescription = null;
 
@@ -188,14 +188,11 @@ class Event
 
 
     /**
-     * @Annotation\Type("Zend\Form\Element\Textarea")
-     * @Annotation\Attributes({"type":"textarea"})
-     * @Annotation\Options({"label":"description", "description":""})
+     * @Annotation\Exclude()
      * @ORM\Column(type="string", length=300, unique=false, nullable=true,
      * name="description")
      */
     public $description = null;
-
 
     /**
      * @Annotation\Type("Zend\Form\Element\Textarea")
@@ -206,6 +203,14 @@ class Event
      */
     public $comments = null;
 
+    /**
+     * @Annotation\Type("Zend\Form\Element\Text")
+     * @Annotation\Attributes({"type":"text"})
+     * @Annotation\Options({"label":"Cliente", "description":"", "addon":""})
+     * @ORM\Column(type="string", length=120, unique=false, nullable=true,
+     * name="client")
+     */
+    public $client = null;
 
     /**
      * @Annotation\Type("Zend\Form\Element\Text")
@@ -251,6 +256,7 @@ class Event
      * "target_class":"\ZfMetal\Calendar\Entity\Zone", "description":""})
      * @ORM\ManyToOne(targetEntity="\ZfMetal\Calendar\Entity\Zone")
      * @ORM\JoinColumn(name="zone_id", referencedColumnName="id", nullable=true)
+     * @Transformation\Policy\Custom(transform="\ZfMetal\Restful\Transformation\Policy\Common\IdName::transform")
      */
     public $zone = null;
 
@@ -264,8 +270,13 @@ class Event
      */
     public $link = null;
 
-
-
+    /**
+     * @Annotation\Exclude()
+     * @ORM\Column(type="string", length=500, unique=false, nullable=true,
+     * name="availability")
+     * @Transformation\Policy\Custom(format="\ZfMetal\Restful\Transformation\Policy\Common\Json::format")
+     */
+    public $availability = null;
 
     /**
      * @return mixed
@@ -644,8 +655,37 @@ class Event
         $this->serviceDescription = $serviceDescription;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getAvailability()
+    {
+        return $this->availability;
+    }
 
+    /**
+     * @param mixed $availability
+     */
+    public function setAvailability($availability)
+    {
+        $this->availability = $availability;
+    }
 
+    /**
+     * @return mixed
+     */
+    public function getClient()
+    {
+        return $this->client;
+    }
+
+    /**
+     * @param mixed $client
+     */
+    public function setClient($client)
+    {
+        $this->client = $client;
+    }
 
 
 

@@ -1,0 +1,57 @@
+<template>
+        <div>
+                <span class="timeSpan" v-if="getFrom && getTo">{{getFrom}} - {{getTo}}</span>
+                <span class="timeSpan" v-if="getFrom2">&</span>
+                <span class="timeSpan" v-if="getFrom2 && getTo2">{{getFrom2}} - {{getTo2}}</span>
+        </div>
+</template>
+
+<script>
+
+
+    export default {
+        name: 'availabilityTime',
+        props:['data'],
+        components: {},
+        created: function () {
+        },
+        methods: {
+        },
+        computed: {
+          getFrom: function(){
+            if(this.data.timeRange != undefined && this.data.timeRange.from != undefined){
+              return this.data.timeRange.from;
+            }
+            return false;
+          },
+          getTo: function(){
+            if(this.data.timeRange != undefined && this.data.timeRange.to != undefined){
+              return this.data.timeRange.to;
+            }
+            return false;
+          },
+          getFrom2: function(){
+            if(this.data.timeRange2 != undefined && this.data.timeRange2.from != undefined){
+              return this.data.timeRange2.from;
+            }
+            return false;
+          },
+          getTo2: function(){
+            if(this.data.timeRange2 != undefined && this.data.timeRange2.to != undefined){
+              return this.data.timeRange2.to;
+            }
+            return false;
+          },
+
+        }
+    }
+</script>
+
+<style scoped>
+
+    .timeSpan{
+        font-size: 1.2em;
+        padding:1px;
+    }
+
+</style>

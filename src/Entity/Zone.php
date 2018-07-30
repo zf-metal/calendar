@@ -40,6 +40,15 @@ class Zone
      */
     public $name = null;
 
+    /**
+     * @Annotation\Type("Zend\Form\Element\Text")
+     * @Annotation\Attributes({"type":"text"})
+     * @Annotation\Options({"label":"Color de Fondo", "description":"", "addon":""})
+     * @ORM\Column(type="string", length=7, unique=false, nullable=true,
+     * name="bg_color")
+     */
+    public $bgColor = null;
+
     public function getId()
     {
         return $this->id;
@@ -64,6 +73,23 @@ class Zone
     {
         return (string) $this->name;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getBgColor()
+    {
+        return $this->bgColor;
+    }
+
+    /**
+     * @param mixed $bgColor
+     */
+    public function setBgColor($bgColor)
+    {
+        $this->bgColor = $bgColor;
+    }
+
 
 
 }

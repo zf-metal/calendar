@@ -1,13 +1,13 @@
 <template>
     <div>
-
         <vue-tabs>
             <v-tab title="P">
                 <h4>Visitas Pendientes</h4>
-
+                <div class="zfc-panel-preevents">
                 <preEvent v-if="getPreEvents" v-for="(preEvent,index) in getPreEvents" :preEvent="preEvent"
                           :key="preEvent.id" :index="index">
                 </preEvent>
+                </div>
             </v-tab>
 
             <v-tab title="Z">
@@ -24,15 +24,11 @@
                     </div>
                 </modal>
 
-                <div v-if="!zone.hidden" v-for="zone in getZones" :key="zone.id">
-                    <div v-if="getPreEventsByZone(zone.id).length > 0" >
-                    <h6>{{zone.name}}</h6>
-                    <preEvent  v-for="(preEvent,index) in getPreEventsByZone(zone.id)" :preEvent="preEvent"
-                              :key="preEvent.id" :index="index">
-                    </preEvent>
-                    </div>
+                <div class="zfc-panel-preevents">
+                <div  v-for="zone in getZones" :key="zone.id">
+                   <zone :zone="zone"></zone>
                 </div>
-
+                </div>
             </v-tab>
 
 
@@ -59,6 +55,7 @@
 <script>
   import {mapGetters, mapActions} from 'vuex';
   import preEvent from "./preEvent.vue";
+  import zone from "./zone.vue"
   import zoneFilter from './zoneFilter.vue'
   import checkCalendar from "./checkCalendar.vue"
   import service from "./service.vue"
@@ -73,7 +70,7 @@
         showModal: false,
       }
     },
-    components: {preEvent, checkCalendar, service, VueTabs, VTab, modal, zoneFilter},
+    components: {preEvent, checkCalendar, service, VueTabs, VTab, modal, zone,zoneFilter},
     computed: {
       ...mapGetters([
         'getZones',
@@ -94,3 +91,10 @@
     }
   }
 </script>
+
+<style scoped>
+    .zfc-panel-preevents{
+        height: 500px;
+        overflow: auto;
+    }
+    </style>

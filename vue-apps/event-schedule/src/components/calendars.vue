@@ -1,13 +1,13 @@
 <template>
-    <div class="row">
+    <div>
         <navi></navi>
 
         <div class="clearfix"></div>
-        <div class="col-lg-2">
+        <div class="col-lg-2" style="margin: 0; padding:0;">
             <panel v-on:forceUpdate="onForceUpdate"></panel>
         </div>
 
-        <div class="col-lg-10">
+        <div class="col-lg-10" style="margin: 0; padding:0;" >
             <loading :isLoading="getLoading"></loading>
             <div class="clearfix"></div>
             <div class="zfc-calendars" ref="zfcCalendars" v-on:scroll="handleCalendarScroll">
@@ -57,6 +57,8 @@
                        :left="getCoordinate(event.calendar,event.hour,'left')"
                        :start="event.start" :end="event.end" :state="event.state" :type="event.type"
                        :lat="event.lat" :lng="event.lng"
+                       :zone="event.zone"  :client="event.client" :location="event.location"
+                       :serviceDescription="event.serviceDescription"
                        v-on:editEvent="onEditEvent">
                 </event>
             </div>
@@ -219,7 +221,7 @@
 
     table.zfc-td > tbody > tr > td, table.zfc-td > tbody > tr > th {
         font-size: 14px;
-        height: 35px;
+        height: 40px;
         padding: 0;
         margin: 0;
         text-align: center;

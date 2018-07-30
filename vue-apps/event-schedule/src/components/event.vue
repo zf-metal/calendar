@@ -2,11 +2,25 @@
     <Drag :transfer-data="{id: $vnode.key, type: 'e'}"
           :class="getMainClass" :style="getStyle" >
         <div class="" style="padding: 3px; height: 100%;" @click="selectEvent">
-            <span @click="edit"><i class="material-icons zfc-type-icon pull-left">{{getEventTypeIcon(type)}}</i> {{id}} - {{title}}</span>
+            <span @click="edit"><i class="material-icons zfc-type-icon pull-left">{{getEventTypeIcon(type)}}</i> {{id}}. {{title}}</span>
             <span class="pull-right">{{getDistanceFromEventSelected(lat,lng)}} Km</span>
             <br>
 
-            <div v-html="description"> </div>
+            <table class="table">
+                <tbody>
+                <tr>
+                    <td><i class="material-icons" style="vertical-align: bottom;">account_box</i></td>
+                    <td>{{getCliente}}</td>
+                </tr>
+                <tr>
+                    <td :style="getSucColor"><i class="material-icons" style="vertical-align: bottom;">business</i></td>
+                    <td>{{getLocation}}  </td>
+                </tr>
+                </tbody>
+            </table>
+
+            <div v-html="description">
+            </div>
         </div>
 
     </Drag>
@@ -39,7 +53,11 @@
       'state',
       'type',
       'lat',
-      'lng'
+      'lng',
+      'zone',
+      'client',
+      'location',
+      'serviceDescription'
     ],
     components: {Drag},
     data() {
@@ -57,12 +75,31 @@
     },
     computed: {
       ...mapGetters([
+        'getZoneBgColor',
         'getEventStates',
         'getEventStateBgColor',
         'getEventTypeIcon',
         'getIndexEventSelected',
         'getDistanceFromEventSelected'
       ]),
+      getCliente: function(){
+        if(this.client != undefined){
+          return this.client;
+        }
+        return "";
+      },
+      getLocation: function(){
+        if(this.location != undefined){
+          return this.location;
+        }
+        return "";
+      },
+      getSucColor: function (){
+        if(this.zone != undefined && this.zone.id != undefined) {
+          return "background-color:" + this.getZoneBgColor(this.zone.id);
+        }
+        return "";
+      },
       getMainClass: function () {
         if(this.getIndexEventSelected == this.index) {
           return 'zfc-event zfc-event-selected';
@@ -76,7 +113,7 @@
       getHeight: function () {
         var height = 35;
         if (this.duration > 30) {
-          height = Math.ceil(this.duration / 30) * 35;
+          height = Math.ceil(this.duration / 30) * 40;
         }
         if (height > 600) {
           height = 600
@@ -89,8 +126,19 @@
 
 <style scoped>
 
+    .table{
+        margin:0;
+    }
+
+    .table td{
+        vertical-align: middle;
+        padding: 3px;
+    }
+
+
     .zfc-event {
         position: absolute;
+        overflow: hidden;
         display: block;
         font-size: .85em;
         line-height: 1.3;
@@ -101,7 +149,7 @@
         z-index: 10;
         min-width: 254px;
         width: 254px;
-        min-height: 35px;
+        min-height: 40px;
     }
 
     .zfc-event-selected {

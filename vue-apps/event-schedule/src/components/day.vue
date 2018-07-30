@@ -20,7 +20,10 @@
             </a>
         </li>
         <li>
+            <span class="navbar-brand">{{getMonthName}}</span>
+            <span class="navbar-brand">{{getNumberOfDayInMonthOrdinal}}</span>
             <span class="navbar-brand">{{getDayName}}</span>
+
         </li>
     </ul>
 
@@ -46,7 +49,9 @@
     },
     computed: {
       ...mapGetters([
-        'getDayName'
+        'getMonthName',
+        'getDayName',
+        'getNumberOfDayInMonthOrdinal'
       ]),
     },
     methods: {
