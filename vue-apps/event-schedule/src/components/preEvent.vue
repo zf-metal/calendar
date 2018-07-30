@@ -4,7 +4,7 @@
         <div class="card">
             <div class="card-header card-header-preevent">
                 <h4 class="card-title">{{obj.id}}. {{obj.title}}
-                    <i class="material-icons zfc-pre-type-icon pull-right">{{getEventTypeIcon(obj.type)}} </i>
+                    <!--<i class="material-icons zfc-pre-type-icon pull-right">{{getEventTypeIcon(obj.type)}} </i>-->
                 </h4>
 
             </div>

@@ -1,5 +1,5 @@
 <template>
-    <td class="zfc-column-calendar" :id="tid">
+    <td class="zfc-column-calendar" :id="tid" style="height: 100px" :style="getCalendarTdStyle">
         <drop @drop="handleDrop" class="zfc-dropcell">
         </drop>
     </td>
@@ -11,7 +11,7 @@
 
   export default {
     name: 'calnedarTd',
-    props: ['calendarId', 'tid', 'name', 'hour', 'parentTop', 'parentLeft','rc'],
+    props: ['calendarId', 'tid', 'name', 'hour', 'parentTop', 'parentLeft','rc','cellHeight'],
     components: {Drag, Drop},
     data() {
       return {
@@ -56,6 +56,9 @@
       }
     },
     computed: {
+      getCalendarTdStyle: function(){
+        return "height:"+this.cellHeight+"px";
+      }
     }
   }
 </script>

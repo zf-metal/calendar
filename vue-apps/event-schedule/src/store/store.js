@@ -13,7 +13,7 @@ import {
   ADD_CALENDAR, SET_CALENDARS, HIDE_CALENDAR, SHOW_CALENDAR,
   SET_PRE_EVENTS, SET_EVENTS, CLEAR_EVENTS, ADD_EVENT, UPDATE_EVENT, REMOVE_PRE_EVENTS,
   SET_COORDINATE, SET_BODY_SCROLL, SET_CALENDAR_SCROLL, SET_CALENDAR_POSITION,
-  SET_EVENT_STATES, SET_EVENT_TYPES, SET_EVENT_SELECTED, SET_ZONES, HIDE_ZONE, SHOW_ZONE
+  SET_EVENT_STATES, SET_EVENT_TYPES, SET_EVENT_SELECTED, SET_ZONES, HIDE_ZONE, SHOW_ZONE,SET_CELL_HEIGHT,UPDATE_RC
 } from './mutation-types'
 
 Vue.use(Vuex)
@@ -26,6 +26,7 @@ Vue.use(Vuex)
 */
 
 const state = {
+  cellHeight:  60,
   loading: 0,
   coordinates: {},
   calendarPosition: {top: 0, left: 0},
@@ -54,6 +55,9 @@ const state = {
 */
 
 const getters = {
+  getCellHeight: (state) => {
+    return state.cellHeight;
+  },
   getDistanceFromEventSelected: (state) => (dlat, dlng) => {
     if (state.eventSelected != undefined) {
 
@@ -70,7 +74,7 @@ const getters = {
   },
   getServiceSelected: state => {
     if (state.eventSelected != undefined && state.eventSelected != null) {
-      if (state.events[state.eventSelected].serviceDescription != undefined) {
+      if (state.events[state.eventSelected] != undefined && state.events[state.eventSelected].serviceDescription != undefined) {
         return state.events[state.eventSelected].serviceDescription;
       }
     }
@@ -454,6 +458,10 @@ const mutations = {
   [SET_CALENDAR_SCROLL](state, {top, left}) {
     state.calendarScroll.top = top;
     state.calendarScroll.left = left;
+  },
+  [SET_CELL_HEIGHT](state, cellHeight) {
+    state.cellHeight = cellHeight;
+    state.rc++;
   }
 };
 

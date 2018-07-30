@@ -2,7 +2,9 @@
     <Drag :transfer-data="{id: $vnode.key, type: 'e'}"
           :class="getMainClass" :style="getStyle" >
         <div class="" style="padding: 3px; height: 100%;" @click="selectEvent">
-            <span @click="edit"><i class="material-icons zfc-type-icon pull-left">{{getEventTypeIcon(type)}}</i> {{id}}. {{title}}</span>
+            <span @click="edit">
+                <!--<i class="material-icons zfc-type-icon pull-left">{{getEventTypeIcon(type)}}</i>-->
+                {{id}}. {{title}}</span>
             <span class="pull-right">{{getDistanceFromEventSelected(lat,lng)}} Km</span>
             <br>
 
@@ -63,8 +65,6 @@
     data() {
       return {}
     },
-    created: function () {
-    },
     methods: {
       edit: function () {
         this.$emit("editEvent", this.index);
@@ -75,6 +75,7 @@
     },
     computed: {
       ...mapGetters([
+        'getCellHeight',
         'getZoneBgColor',
         'getEventStates',
         'getEventStateBgColor',
@@ -111,13 +112,11 @@
         return 'background-color:' + this.getEventStateBgColor(this.state) + '; top: ' + this.top + 'px;' + ' left: ' + this.left + 'px;' + ' height:' + this.getHeight + "px;";
       },
       getHeight: function () {
-        var height = 35;
+        var height = this.getCellHeight;
         if (this.duration > 30) {
-          height = Math.ceil(this.duration / 30) * 40;
+          height = Math.ceil(this.duration / 30) * this.getCellHeight;
         }
-        if (height > 600) {
-          height = 600
-        }
+
         return height
       }
     }
