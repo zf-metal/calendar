@@ -101,6 +101,7 @@
       }
     },
     created: function () {
+      console.log("v1.0.0");
       this.eventStateList();
       this.zoneList();
       this.eventTypeList();
