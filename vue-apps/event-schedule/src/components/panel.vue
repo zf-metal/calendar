@@ -4,9 +4,9 @@
             <v-tab title="P">
                 <h4>Visitas Pendientes</h4>
                 <div class="zfc-panel-preevents">
-                <preEvent v-if="getPreEvents" v-for="(preEvent,index) in getPreEvents" :preEvent="preEvent"
-                          :key="preEvent.id" :index="index">
-                </preEvent>
+                    <preEvent v-if="getPreEvents" v-for="(preEvent,index) in getPreEvents" :preEvent="preEvent"
+                              :key="preEvent.id" :index="index">
+                    </preEvent>
                 </div>
             </v-tab>
 
@@ -25,9 +25,9 @@
                 </modal>
 
                 <div class="zfc-panel-preevents">
-                <div  v-for="zone in getZones" :key="zone.id">
-                   <zone :zone="zone"></zone>
-                </div>
+                    <div  v-for="zone in getZones" :key="zone.id">
+                        <zone :zone="zone"></zone>
+                    </div>
                 </div>
             </v-tab>
 
@@ -42,12 +42,8 @@
                 ></check-calendar>
             </v-tab>
 
-            <v-tab title="S">
-                <h4>Info Servicio</h4>
-                <service :service="getServiceSelected"></service>
-            </v-tab>
-        </vue-tabs>
 
+        </vue-tabs>
     </div>
 
 </template>
@@ -94,7 +90,7 @@
 
 <style scoped>
     .zfc-panel-preevents{
-        height: 500px;
+        /*height: 500px;*/
         overflow: auto;
     }
     </style>

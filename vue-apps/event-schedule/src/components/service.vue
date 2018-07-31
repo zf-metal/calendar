@@ -1,11 +1,7 @@
 <template>
-    <div >
-        <ul id="v-for-object" class="zfc-service-ul">
-            <li v-for="(value,index) in service" :key="index">
-                <b>{{ index }}</b> : {{ value }}
-            </li>
-        </ul>
-    </div>
+  <div>
+      {{service}}
+  </div>
 </template>
 
 <script>
@@ -15,7 +11,14 @@
         name: 'service',
         props:['service'],
         components: {},
-        methods: {},
+        methods: {
+          getV: function(a){
+            if(this.service[a] != undefined){
+              return this.service[a];
+            }
+            return "";
+          }
+        },
         computed: {}
     }
 </script>

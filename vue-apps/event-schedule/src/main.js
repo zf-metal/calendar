@@ -3,6 +3,10 @@
 import Vue from 'vue'
 import store from './store/store';
 import App from './App'
+import Tippy from 'v-tippy'
+import 'v-tippy/dist/tippy.css'
+import 'v-tippy/'
+Vue.use(Tippy)
 
 Vue.config.productionTip = false
 

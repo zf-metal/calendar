@@ -1,14 +1,32 @@
 <template>
     <Drag :transfer-data="{id: $vnode.key, type: 'e'}"
-          :class="getMainClass" :style="getStyle" >
-        <div class="" style="padding: 3px; height: 100%;" @click="selectEvent">
+          :class="getMainClass" :style="getStyle">
+
+        <div class="" style="padding: 3px; height: 100%;" @click="selectEvent" :title="serviceDescription"
+             v-tippy="{
+             allowTitleHTML: true,
+             dynamicTitle:true,
+             arrow:true,
+             performance:true,
+             placement:'right',
+             flip:true,
+             followCursor: false,
+             hideOnClick: true,
+             trigger: 'click',
+             interactive: true,
+             maxWidth: '500px',
+              theme: 'lulu'
+             }">
+
+
+
             <span @click="edit">
                 <!--<i class="material-icons zfc-type-icon pull-left">{{getEventTypeIcon(type)}}</i>-->
                 {{id}}. {{title}}</span>
-            <span class="pull-right">{{getDistanceFromEventSelected(lat,lng)}} Km</span>
+            <span class="pull-right">{{getDistanceFromEventSelected(lat, lng)}} Km</span>
             <br>
 
-            <table class="table">
+            <table class="table eventTable">
                 <tbody>
                 <tr>
                     <td><i class="material-icons" style="vertical-align: bottom;">account_box</i></td>
@@ -33,8 +51,7 @@
   import axios from "axios"
   import moment from 'moment'
   import 'moment/locale/es';
-
-
+  import service from './service.vue'
   import {Drag, Drop} from 'vue-drag-drop';
 
   export default {
@@ -61,7 +78,7 @@
       'location',
       'serviceDescription'
     ],
-    components: {Drag},
+    components: {Drag, service},
     data() {
       return {}
     },
@@ -69,8 +86,8 @@
       edit: function () {
         this.$emit("editEvent", this.index);
       },
-      selectEvent: function(){
-        this.$store.commit('SET_EVENT_SELECTED',this.index);
+      selectEvent: function () {
+        this.$store.commit('SET_EVENT_SELECTED', this.index);
       }
     },
     computed: {
@@ -83,28 +100,31 @@
         'getIndexEventSelected',
         'getDistanceFromEventSelected'
       ]),
-      getCliente: function(){
-        if(this.client != undefined){
+      getSdId: function () {
+        return this.$el.querySelector("sd1")
+      },
+      getCliente: function () {
+        if (this.client != undefined) {
           return this.client;
         }
         return "";
       },
-      getLocation: function(){
-        if(this.location != undefined){
+      getLocation: function () {
+        if (this.location != undefined) {
           return this.location;
         }
         return "";
       },
-      getSucColor: function (){
-        if(this.zone != undefined && this.zone.id != undefined) {
+      getSucColor: function () {
+        if (this.zone != undefined && this.zone.id != undefined) {
           return "background-color:" + this.getZoneBgColor(this.zone.id);
         }
         return "";
       },
       getMainClass: function () {
-        if(this.getIndexEventSelected == this.index) {
+        if (this.getIndexEventSelected == this.index) {
           return 'zfc-event zfc-event-selected';
-        }else{
+        } else {
           return 'zfc-event';
         }
       },
@@ -123,15 +143,22 @@
   }
 </script>
 
+
+
 <style scoped>
 
-    .table{
-        margin:0;
+    .eventTable {
+        margin: 0;
     }
 
-    .table td{
+    .eventTable td {
         vertical-align: middle;
-        padding: 3px;
+        padding: 1px;
+        font-size: 0.85em;
+    }
+
+    .eventTable td i {
+        font-size: 0.85em;
     }
 
 

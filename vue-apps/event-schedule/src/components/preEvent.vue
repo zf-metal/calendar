@@ -1,7 +1,20 @@
 <template>
-    <drag :transfer-data="{obj: obj, index:index, type: 't'}" :draggable="isDraggable" >
+    <drag :transfer-data="{obj: obj, index:index, type: 't'}" :draggable="isDraggable">
 
-        <div class="card">
+        <div class="card" :title="obj.serviceDescription"
+             v-tippy="{
+             allowTitleHTML: true,
+             dynamicTitle:true,
+             arrow:true,
+             placement:'right',
+             performance:true,
+             flip:false,
+             followCursor: false,
+             hideOnClick: true,
+             trigger: 'click',
+             popperOptions: { modifiers: { preventOverflow: { enabled: false}}}
+        }"
+        >
             <div class="card-header card-header-preevent">
                 <h4 class="card-title">{{obj.id}}. {{obj.title}}
                     <!--<i class="material-icons zfc-pre-type-icon pull-right">{{getEventTypeIcon(obj.type)}} </i>-->
@@ -16,17 +29,22 @@
                         <td>{{getCliente}}</td>
                     </tr>
                     <tr>
-                        <td :style="getSucColor"><i class="material-icons" style="vertical-align: bottom;">business</i></td>
+                        <td :style="getSucColor"><i class="material-icons" style="vertical-align: bottom;">business</i>
+                        </td>
                         <td>{{getLocation}}</td>
                     </tr>
                     <tr>
                         <td><i class="material-icons" style="vertical-align: bottom;">today</i></td>
-                        <td> <availabilityDay :data="obj.availability"></availabilityDay></td>
+                        <td>
+                            <availabilityDay :data="obj.availability"></availabilityDay>
+                        </td>
                     </tr>
 
                     <tr>
                         <td><i class="material-icons" style="vertical-align: bottom;">hourglass_full</i></td>
-                        <td> <availabilityTime :data="obj.availability"></availabilityTime></td>
+                        <td>
+                            <availabilityTime :data="obj.availability"></availabilityTime>
+                        </td>
                     </tr>
 
                     </tbody>
@@ -45,8 +63,8 @@
 
   export default {
     name: 'preEvent',
-    props: ['preEvent','index'],
-    components: {Drag, Drop, availabilityDay,availabilityTime},
+    props: ['preEvent', 'index'],
+    components: {Drag, Drop, availabilityDay, availabilityTime},
     data() {
       return {
         obj: {
@@ -64,8 +82,7 @@
     created: function () {
       this.obj = this.preEvent
     },
-    methods: {
-    },
+    methods: {},
     computed: {
       ...mapGetters([
         'getZoneBgColor',
@@ -73,28 +90,28 @@
         'getEventStateBgColor',
         'getEventTypeIcon'
       ]),
-      getCliente: function(){
-        if(this.obj.client != undefined){
+      getCliente: function () {
+        if (this.obj.client != undefined) {
           return this.obj.client;
         }
         return "";
       },
-      getLocation: function(){
-        if(this.obj.location != undefined){
+      getLocation: function () {
+        if (this.obj.location != undefined) {
           return this.obj.location;
         }
         return "";
       },
-      getSucColor: function (){
-        if(this.obj.zone.id != undefined) {
+      getSucColor: function () {
+        if (this.obj.zone.id != undefined) {
           return "background-color:" + this.getZoneBgColor(this.obj.zone.id);
         }
         return "";
       },
-      isDraggable: function(){
-        if(this.obj.calendar == null){
+      isDraggable: function () {
+        if (this.obj.calendar == null) {
           return true;
-        }else{
+        } else {
           return false;
         }
       }
@@ -104,15 +121,14 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-    .table{
-        margin:0;
+    .table {
+        margin: 0;
     }
 
-    .table td{
+    .table td {
         vertical-align: middle;
         padding: 3px;
     }
-
 
     .card {
         border: 0;
@@ -122,7 +138,7 @@
         color: #333;
         background: #fff;
         width: 100%;
-        box-shadow: 0 2px 2px 0 rgba(0,0,0,.14), 0 3px 1px -2px rgba(0,0,0,.2), 0 1px 5px 0 rgba(0,0,0,.12);
+        box-shadow: 0 2px 2px 0 rgba(0, 0, 0, .14), 0 3px 1px -2px rgba(0, 0, 0, .2), 0 1px 5px 0 rgba(0, 0, 0, .12);
         position: relative;
         display: flex;
         flex-direction: column;
@@ -135,12 +151,12 @@
         font-size: .875rem;
     }
 
-    .card-title{
+    .card-title {
         font-size: 1.5em;
     }
 
     .card .card-header {
-        z-index: 3!important;
+        z-index: 3 !important;
         padding: 1px;
         position: relative;
         color: #fff;

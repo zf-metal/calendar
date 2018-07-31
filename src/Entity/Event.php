@@ -90,7 +90,6 @@ class Event
      * @Annotation\Exclude()
      * @ORM\Column(type="string", length=600, unique=false, nullable=true,
      * name="service_description")
-     * @Transformation\Policy\Custom(format="ZfMetal\Restful\Transformation\Policy\Common\Json::format")
      */
     public $serviceDescription = null;
 

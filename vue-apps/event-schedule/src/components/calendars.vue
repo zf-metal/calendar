@@ -239,3 +239,23 @@
         background: #0d6aad;
     }
 </style>
+
+<style>
+    .lulu-theme {
+        background: #ffffcc;
+        background-color: #ffffcc;
+        color: #0c0c0c;
+        font-size: .9em;
+    }
+
+    .lulu-theme > .tippy-arrow{
+        background: #ffffcc !important;
+        background-color: #ffffcc !important;
+        color: #ffffcc !important;
+    }
+
+    .tooltipTable{
+        text-align: left;
+    }
+
+</style>
