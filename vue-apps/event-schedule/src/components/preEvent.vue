@@ -12,7 +12,7 @@
              followCursor: false,
              hideOnClick: true,
              trigger: 'click',
-             popperOptions: { modifiers: { preventOverflow: { enabled: false}}}
+             popperOptions: { modifiers: { hide: { enabled: false }, preventOverflow: { enabled: false}}}
         }"
         >
             <div class="card-header card-header-preevent">
