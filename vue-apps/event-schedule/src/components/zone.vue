@@ -1,38 +1,39 @@
 <template>
-    <div class="card"  v-if="getPreEventsByZone(zone.id).length > 0">
-        <h4 class="card-header"><i :style="getStyleColor" class="material-icons" style="vertical-align: bottom;">business</i> {{zone.name}}
+    <div class="card" v-if="getPreEventsByZone(zone.id).length > 0">
+        <h4 class="card-header"><i :style="getStyleColor" class="material-icons" style="vertical-align: bottom;">business</i>
+            {{zone.name}}
             <span class="pull-right">{{getPreEventsByZone(zone.id).length}}</span>
         </h4>
         <div v-if="!zone.hidden" class="card-content">
-        <preEvent v-for="(preEvent,index) in getPreEventsByZone(zone.id)" :preEvent="preEvent"
-                  :key="preEvent.id" :index="index">
-        </preEvent>
+            <preEvent v-for="(preEvent,index) in getPreEventsByZone(zone.id)" :preEvent="preEvent"
+                      :key="preEvent.id" :index="index">
+            </preEvent>
         </div>
     </div>
 </template>
 
 <script>
-  import {mapGetters, mapActions} from 'vuex';
-  import preEvent from "./preEvent.vue";
+    import {mapGetters, mapActions} from 'vuex';
+    import preEvent from "./preEvent.vue";
 
-  export default {
-    name: 'zone',
-    props: ['zone'],
-    components: {preEvent},
-    methods: {
-    },
-    computed: {
-      getStyleColor: function(){
-        if(this.zone.bgColor != undefined){
-          return "background-color:"+this.zone.bgColor;
-        }
-      },
-      ...mapGetters([
-        'getZones',
-        'getPreEventsByZone',
-      ]),
-    },
-  }
+    export default {
+        name: 'zone',
+        props: ['zone'],
+        components: {preEvent},
+        methods: {},
+        computed: {
+            getStyleColor: function () {
+                if (this.zone.bgColor != undefined) {
+                    return "background-color:" + this.zone.bgColor;
+                }
+            },
+        ...mapGetters([
+            'getZones',
+            'getPreEventsByZone',
+        ]),
+    }
+    ,
+    }
 </script>
 
 <style scoped>
@@ -57,7 +58,7 @@
     }
 
     .card .card-header {
-        z-index: 3!important;
+        z-index: 3 !important;
         padding: 1px;
         position: relative;
         border-bottom: none;

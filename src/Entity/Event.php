@@ -88,7 +88,7 @@ class Event
 
     /**
      * @Annotation\Exclude()
-     * @ORM\Column(type="string", length=600, unique=false, nullable=true,
+     * @ORM\Column(type="string", length=2000, unique=false, nullable=true,
      * name="service_description")
      */
     public $serviceDescription = null;

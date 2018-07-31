@@ -123,7 +123,15 @@ const getters = {
     return state.preEvents;
   },
   getPreEventsByZone: (state) => (id) => {
-    return state.preEvents.filter(preEvent => preEvent.zone.id === id);
+  //  return state.preEvents.filter(preEvent => preEvent.zone.id === id);
+      return state.preEvents.filter(function(el) {
+        if(el.zone != undefined && el.zone.id != undefined && el.zone.id == id){
+          return true;
+        }
+          return false;
+      }
+      );
+
   },
   getZoneBgColor: (state) => (id) => {
     if(state.zones[id] != undefined && state.zones[id].bgColor != undefined) {

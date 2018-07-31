@@ -103,7 +103,7 @@
         return "";
       },
       getSucColor: function () {
-        if (this.obj.zone.id != undefined) {
+        if (this.obj.zone != undefined && this.obj.zone.id != undefined) {
           return "background-color:" + this.getZoneBgColor(this.obj.zone.id);
         }
         return "";
