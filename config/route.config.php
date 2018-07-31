@@ -3,7 +3,7 @@
 return [
     'router' => [
         'routes' => [
-            'ZfMetal\\Calendar' => [
+            'ZfMetalCalendar' => [
                 'mayTerminate' => false,
                 'options' => [
                     'route' => '/zfmc',
