@@ -149,7 +149,7 @@ const getters = {
             return state.preEvents.filter(function (e) {
                     if(
                         (e.zone != undefined && e.zone.id != undefined && (state.filterZone == null || state.filterZone == "" || e.zone.id == state.filterZone)) &&
-                        (e.client.toLowerCase().indexOf(state.filterString) > -1)
+                        (state.filterString == "" || state.filterString == null || e.client.toLowerCase().indexOf(state.filterString) > -1)
                     ){
                         return true;
                     }
