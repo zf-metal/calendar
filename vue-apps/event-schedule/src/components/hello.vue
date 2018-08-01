@@ -4,7 +4,7 @@
 </template>
 
 <script>
-    import axios from "axios"
+    import {mapGetters, mapActions} from 'vuex';
 
     export default {
         name: 'hello',
@@ -18,7 +18,11 @@
         created: function () {
         },
         methods: {},
-        computed: {}
+        computed: {
+            ...mapGetters([
+                'getLoading'
+            ]),
+        },
     }
 </script>
 

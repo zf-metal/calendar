@@ -16,7 +16,8 @@ import checkZone from './checkZone.vue'
         name: 'zoneFilter',
         props:[],
         components: {checkZone},
-        methods: {},
+        methods: {
+        },
         computed: {
             ...mapGetters([
                 'getZones'

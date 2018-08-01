@@ -1,0 +1,96 @@
+<template>
+    <div>
+        <vue-tabs>
+            <v-tab title="P">
+                <h4>Visitas Pendientes</h4>
+                <div class="zfc-panel-preevents">
+                    <preEvent v-if="getPreEvents" v-for="(preEvent,index) in getPreEvents" :preEvent="preEvent"
+                              :key="preEvent.id" :index="index">
+                    </preEvent>
+                </div>
+            </v-tab>
+
+            <v-tab title="Z">
+                <h4><button class="btn btn-default btn-sm material-icons" @click="showModalZone">filter_list</button> Visitas por Zona  </h4>
+
+
+                <modal :title="'Zonas'" :showModal="showModal" @close="showModal = false">
+                    <zone-filter></zone-filter>
+                    <div class="clearfix"></div>
+                    <div class="text-right">
+                        <button class="btn btn-primary text-center" type="button" style="margin:10px"
+                                @click="closeModalZone">Ok
+                        </button>
+                    </div>
+                </modal>
+
+                <div class="zfc-panel-preevents">
+                    <div  v-for="zone in getZones" :key="zone.id">
+                        <zone :zone="zone"></zone>
+                    </div>
+                </div>
+            </v-tab>
+
+
+            <v-tab title="C">
+                <h4>Calendarios</h4>
+                <check-calendar
+                        v-if="hasCalendars"
+                        v-for="(calendar,index) in getCalendars" :key="index"
+                        :index="index" :name="calendar.name" :id="calendar.id"
+
+                ></check-calendar>
+            </v-tab>
+
+
+        </vue-tabs>
+    </div>
+
+</template>
+
+<script>
+  import {mapGetters, mapActions} from 'vuex';
+  import preEvent from "./preEvent.vue";
+  import zone from "./zone.vue"
+  import zoneFilter from './zoneFilter.vue'
+  import checkCalendar from "./checkCalendar.vue"
+  import service from "./service.vue"
+  import modal from './helpers/modal.vue'
+  import {VueTabs, VTab} from 'vue-nav-tabs'
+  import 'vue-nav-tabs/themes/vue-tabs.css'
+
+  export default {
+    name: 'panel2',
+    data() {
+      return {
+        showModal: false,
+      }
+    },
+    components: {preEvent, checkCalendar, service, VueTabs, VTab, modal, zone,zoneFilter},
+    computed: {
+      ...mapGetters([
+        'getZones',
+        'getPreEventsByZone',
+        'getPreEvents',
+        'hasCalendars',
+        'getCalendars',
+        'getServiceSelected'
+      ]),
+    },
+    methods: {
+      showModalZone: function () {
+        this.showModal = true
+      },
+      closeModalZone: function () {
+        this.showModal = false
+      },
+    }
+  }
+</script>
+
+<style scoped>
+    .zfc-panel-preevents{
+        height: 700px;
+        overflow: auto;
+    }
+    </style>
