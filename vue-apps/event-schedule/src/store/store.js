@@ -265,6 +265,10 @@ const getters = {
                 }
             }
         }
+
+        if(rstart == null){
+          rstart = "00:00"
+        }
         return rstart;
     },
     getEnd: (state, getters) => {
@@ -282,6 +286,9 @@ const getters = {
                 }
             }
         }
+      if(rend == null){
+        rend = "23:00"
+      }
         return rend;
     },
     getHours: (state, getters) => {
