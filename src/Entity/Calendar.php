@@ -98,6 +98,12 @@ class Calendar
      */
     public $description = null;
 
+    /**
+     * Many Users have Many Groups.
+     * @ORM\ManyToMany(targetEntity="\ZfMetal\Calendar\Entity\CalendarGroup", mappedBy="calendars")
+     *
+     */
+    private $groups;
 
     /**
      * Calendar constructor.
@@ -106,6 +112,7 @@ class Calendar
     public function __construct()
     {
         $this->schedules = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->groups = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
 
@@ -248,6 +255,57 @@ class Calendar
     public function setUser($user)
     {
         $this->user = $user;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getGroups()
+    {
+        return $this->groups;
+    }
+
+    /**
+     * @param mixed $groups
+     */
+    public function setGroups($groups)
+    {
+        $this->groups = $groups;
+    }
+
+
+
+    public function addGroups(\Doctrine\Common\Collections\ArrayCollection $groups)
+    {
+        foreach ($groups as $group) {
+            $this->addGroup($group);
+        }
+    }
+
+    public function removeGroups(\Doctrine\Common\Collections\ArrayCollection $groups)
+    {
+        foreach ($groups as $group) {
+            $this->removeGroup($group);
+        }
+    }
+
+    public function addGroup(CalendarGroup $group)
+    {
+        if ($this->groups->contains($group)) {
+            return;
+        }
+        $this->groups->add($group);
+        $group->addCalendar($this);
+
+    }
+
+    public function removeGroup(CalendarGroup $group)
+    {
+        if (!$this->groups->contains($group)) {
+            return;
+        }
+        $group->removeCalendar($this);
+        $this->groups->removeElement($group);
     }
 
 

@@ -24,18 +24,19 @@ $elementsReady = array();
     </div>
 </div>
 
-<div class="card">
-    <div class="card-content">
-        <h4>Eventos predefinidos</h4>
-        <p>Configuración de eventos pre-establecidos, con una duracion por defecto.</p>
-<!--        --><?php //$predefinedEvents = $form->get("predefinedEvents"); ?>
-<!--        --><?php //echo $this->renderFormElement($predefinedEvents->get('id')); ?>
-<!--        --><?php //echo $this->renderFormElement($predefinedEvents->get('interval')); ?>
-<!--        --><?php //echo $this->renderFormElement($predefinedEvents->get('break')); ?>
+<?php if($this->ZfMetalCalendarOptions()->getPreEventEnable()): ?>
 
-        <?php echo $this->formCollection($form->get('predefinedEvents')); ?>
+    <div class="card">
+        <div class="card-content">
+            <h4>Eventos predefinidos</h4>
+            <p>Configuración de eventos pre-establecidos, con una duracion por defecto.</p>
+
+            <?php echo $this->formCollection($form->get('predefinedEvents')); ?>
+        </div>
     </div>
-</div>
+
+<?php endif; ?>
+
 
 
 <div class="card">

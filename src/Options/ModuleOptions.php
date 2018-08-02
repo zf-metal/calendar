@@ -16,7 +16,9 @@ class ModuleOptions extends \Zend\Stdlib\AbstractOptions
 
     private $routeTicketList = '';
 
-    private $ticketEntity = '\\ZfMetal\\Calendar\\Entity\\Ticket';
+    private $ticketEntity = '';
+
+    private $preEventEnable = false;
 
     public function getTicketEntity()
     {
@@ -36,6 +38,16 @@ class ModuleOptions extends \Zend\Stdlib\AbstractOptions
     public function setRouteTicketList($routeTicketList)
     {
         $this->routeTicketList= $routeTicketList;
+    }
+
+    public function getPreEventEnable()
+    {
+        return $this->preEventEnable;
+    }
+
+    public function setPreEventEnable($preEventEnable)
+    {
+        $this->preEventEnable= $preEventEnable;
     }
 
 

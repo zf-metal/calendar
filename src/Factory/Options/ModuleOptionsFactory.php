@@ -20,7 +20,7 @@ class ModuleOptionsFactory implements FactoryInterface
     public function __invoke(\Interop\Container\ContainerInterface $container, $requestedName, array $options = null)
     {
         $config = $container->get('Config');
-         return new \ZfMetal\Calendar\Options\ModuleOptions(isset($config['ZfMetal\Calendar.options']) ? $config['ZfMetal\Calendar.options'] : array());
+         return new \ZfMetal\Calendar\Options\ModuleOptions(isset($config['ZfMetalCalendar.options']) ? $config['ZfMetalCalendar.options'] : array());
     }
 
 

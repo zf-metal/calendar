@@ -77,7 +77,7 @@ class ScheduleForm extends \Zend\Form\Fieldset implements \DoctrineModule\Persis
 
 
         $this->add(array(
-            'name' => 'startBreak',
+            'name' => 'start2',
             'attributes' => array(
                 'type' => 'time',
                 'class' => 'form-control ',
@@ -86,7 +86,7 @@ class ScheduleForm extends \Zend\Form\Fieldset implements \DoctrineModule\Persis
         ));
 
         $this->add(array(
-            'name' => 'endBreak',
+            'name' => 'end2',
             'attributes' => array(
                 'type' => 'time',
                 'class' => 'form-control ',

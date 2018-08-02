@@ -19,7 +19,7 @@ class OptionsFactory implements FactoryInterface
 
     public function __invoke(\Interop\Container\ContainerInterface $container, $requestedName, array $options = null)
     {
-        $servicio = $container->get('ZfMetal\Calendar.options');
+        $servicio = $container->get('ZfMetalCalendar.options');
         return new \ZfMetal\Calendar\Controller\Plugin\Options($servicio);
     }
 

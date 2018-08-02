@@ -74,20 +74,20 @@ class Schedule
     /**
      * @Annotation\Type("Zend\Form\Element\Time")
      * @Annotation\Attributes({"type":"time"})
-     * @Annotation\Options({"label":"startBreak", "description":"", "addon":""})
-     * @ORM\Column(type="time", unique=false, nullable=true, name="start_break")
+     * @Annotation\Options({"label":"Start 2", "description":"", "addon":""})
+     * @ORM\Column(type="time", unique=false, nullable=true, name="start_2")
      * @Transformation\Policy\KeepDateTime
      */
-    public $startBreak = null;
+    public $start2 = null;
 
     /**
      * @Annotation\Type("Zend\Form\Element\Time")
      * @Annotation\Attributes({"type":"time"})
-     * @Annotation\Options({"label":"endBreak", "description":"", "addon":""})
-     * @ORM\Column(type="time", unique=false, nullable=true, name="end_break")
+     * @Annotation\Options({"label":"End 2", "description":"", "addon":""})
+     * @ORM\Column(type="time", unique=false, nullable=true, name="end_2")
      * @Transformation\Policy\KeepDateTime
      */
-    public $endBreak = null;
+    public $end2 = null;
 
     public function getId()
     {
@@ -151,42 +151,43 @@ class Schedule
         $this->end = $end;
     }
 
-    public function getStartBreak($formatDate = false)
+    public function getStart2($formatDate = false)
     {
-        if(is_a($this->startBreak,"DateTime")){
+        if(is_a($this->start2,"DateTime")){
             if($formatDate){
-                return $this->startBreak;
+                return $this->start2;
             }
-            return $this->startBreak->format("H:i");
+            return $this->start2->format("H:i");
         }
         return null;
     }
 
-    public function setStartBreak($startBreak)
+    public function setStart2($start2)
     {
-        $this->startBreak = $startBreak;
+        $this->start2 = $start2;
     }
 
-    public function getEndBreak($formatDate = false){
+    public function getEnd2($formatDate = false){
 
-        if(is_a($this->endBreak,"DateTime")){
+        if(is_a($this->end2,"DateTime")){
             if($formatDate){
-                return $this->endBreak;
+                return $this->end2;
             }
-         return $this->endBreak->format("H:i");
+         return $this->end2->format("H:i");
         }
         return null;
     }
 
-    public function setEndBreak($endBreak)
+    public function setEnd2($end2)
     {
-        $this->endBreak = $endBreak;
+        $this->end2 = $end2;
     }
 
     public function __toString()
     {
         return (string) $this->day;
     }
+
 
 
 

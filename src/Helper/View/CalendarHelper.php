@@ -53,10 +53,6 @@ class CalendarHelper extends \Zend\View\Helper\AbstractHelper
      */
     protected function isHourActiveInSchedule($schedule, $time)
     {
-//                    echo "<pre>";
-//                    var_dump($time);
-//                    var_dump($schedule->getStart(true));
-//                    echo "</pre>";
         if ($time >= $schedule->getStart(true) && $time < $schedule->getEnd(true) ){
             return true;
         }

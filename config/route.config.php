@@ -14,7 +14,7 @@ return [
                         'mayTerminate' => false,
                         'options' => [
                             'defaults' => [
-                                'controller' => \ZfMetal\Calendar\Controller\CalendarController::CLASS,
+                                'controller' => 'ZfMetal\\Calendar\\Controller\\CalendarController',
                                 'action' => 'grid',
                             ],
                             'route' => '/calendar',
@@ -25,7 +25,7 @@ return [
                                 'mayTerminate' => true,
                                 'options' => [
                                     'defaults' => [
-                                        'controller' => \ZfMetal\Calendar\Controller\CalendarController::CLASS,
+                                        'controller' => 'ZfMetal\\Calendar\\Controller\\CalendarController',
                                         'action' => 'grid',
                                     ],
                                     'route' => '/grid',
@@ -38,7 +38,7 @@ return [
                         'mayTerminate' => false,
                         'options' => [
                             'defaults' => [
-                                'controller' => \ZfMetal\Calendar\Controller\ManagerCalendarController::CLASS,
+                                'controller' => 'ZfMetal\\Calendar\\Controller\\ManagerCalendarController',
                                 'action' => 'list',
                             ],
                             'route' => '/manager-calendar',
@@ -49,7 +49,7 @@ return [
                                 'mayTerminate' => true,
                                 'options' => [
                                     'defaults' => [
-                                        'controller' => \ZfMetal\Calendar\Controller\ManagerCalendarController::CLASS,
+                                        'controller' => 'ZfMetal\\Calendar\\Controller\\ManagerCalendarController',
                                         'action' => 'list',
                                     ],
                                     'route' => '/list',
@@ -60,7 +60,7 @@ return [
                                 'mayTerminate' => true,
                                 'options' => [
                                     'defaults' => [
-                                        'controller' => \ZfMetal\Calendar\Controller\ManagerCalendarController::CLASS,
+                                        'controller' => 'ZfMetal\\Calendar\\Controller\\ManagerCalendarController',
                                         'action' => 'manage',
                                     ],
                                     'route' => '/manage[/:id]',
@@ -73,7 +73,7 @@ return [
                         'mayTerminate' => false,
                         'options' => [
                             'defaults' => [
-                                'controller' => \ZfMetal\Calendar\Controller\HolidayController::CLASS,
+                                'controller' => 'ZfMetal\\Calendar\\Controller\\HolidayController',
                                 'action' => 'grid',
                             ],
                             'route' => '/holiday',
@@ -84,7 +84,7 @@ return [
                                 'mayTerminate' => true,
                                 'options' => [
                                     'defaults' => [
-                                        'controller' => \ZfMetal\Calendar\Controller\HolidayController::CLASS,
+                                        'controller' => 'ZfMetal\\Calendar\\Controller\\HolidayController',
                                         'action' => 'grid',
                                     ],
                                     'route' => '/grid',
@@ -121,6 +121,236 @@ return [
                                 ],
                             ],
                         ],
+                    ],
+                    'Home' => [
+                        'mayTerminate' => true,
+                        'options' => [
+                            'route' => '/home',
+                            'defaults' => [
+                                'controller' => 'ZfMetal\\Calendar\\Controller\\HomeController',
+                                'action' => 'index',
+                            ],
+                        ],
+                        'type' => 'Literal',
+                    ],
+                    'EventSchedule' => [
+                        'mayTerminate' => false,
+                        'options' => [
+                            'route' => '/event-schedule',
+                            'defaults' => [
+                                'controller' => 'ZfMetal\\Calendar\\Controller\\EventScheduleController',
+                                'action' => 'schedule',
+                            ],
+                        ],
+                        'type' => 'Literal',
+                        'child_routes' => [
+                            'Schedule' => [
+                                'mayTerminate' => true,
+                                'options' => [
+                                    'route' => '/schedule',
+                                    'defaults' => [
+                                        'controller' => 'ZfMetal\\Calendar\\Controller\\EventScheduleController',
+                                        'action' => 'schedule',
+                                    ],
+                                ],
+                                'type' => 'Segment',
+                            ],
+                        ],
+                    ],
+                    'Event' => [
+                        'mayTerminate' => false,
+                        'options' => [
+                            'route' => '/event',
+                            'defaults' => [
+                                'controller' => 'ZfMetal\\Calendar\\Controller\\EventController',
+                                'action' => 'grid',
+                            ],
+                        ],
+                        'type' => 'Literal',
+                        'child_routes' => [
+                            'Grid' => [
+                                'mayTerminate' => true,
+                                'options' => [
+                                    'route' => '/grid',
+                                    'defaults' => [
+                                        'controller' => 'ZfMetal\\Calendar\\Controller\\EventController',
+                                        'action' => 'grid',
+                                    ],
+                                ],
+                                'type' => 'Segment',
+                            ],
+                        ],
+                    ],
+                    'EventState' => [
+                        'mayTerminate' => false,
+                        'options' => [
+                            'route' => '/event-state',
+                            'defaults' => [
+                                'controller' => 'ZfMetal\\Calendar\\Controller\\EventStateController',
+                                'action' => 'grid',
+                            ],
+                        ],
+                        'type' => 'Literal',
+                        'child_routes' => [
+                            'Grid' => [
+                                'mayTerminate' => true,
+                                'options' => [
+                                    'route' => '/grid',
+                                    'defaults' => [
+                                        'controller' => 'ZfMetal\\Calendar\\Controller\\EventStateController',
+                                        'action' => 'grid',
+                                    ],
+                                ],
+                                'type' => 'Segment',
+                            ],
+                        ],
+                    ],
+                    'EventType' => [
+                        'mayTerminate' => false,
+                        'options' => [
+                            'route' => '/event-type',
+                            'defaults' => [
+                                'controller' => 'ZfMetal\\Calendar\\Controller\\EventTypeController',
+                                'action' => 'grid',
+                            ],
+                        ],
+                        'type' => 'Literal',
+                        'child_routes' => [
+                            'Grid' => [
+                                'mayTerminate' => true,
+                                'options' => [
+                                    'route' => '/grid',
+                                    'defaults' => [
+                                        'controller' => 'ZfMetal\\Calendar\\Controller\\EventTypeController',
+                                        'action' => 'grid',
+                                    ],
+                                ],
+                                'type' => 'Segment',
+                            ],
+                        ],
+                    ],
+                    'OutOfService' => [
+                        'mayTerminate' => false,
+                        'options' => [
+                            'route' => '/out-of-service',
+                            'defaults' => [
+                                'controller' => 'ZfMetal\\Calendar\\Controller\\OutOfServiceController',
+                                'action' => 'grid',
+                            ],
+                        ],
+                        'type' => 'Literal',
+                        'child_routes' => [
+                            'Grid' => [
+                                'mayTerminate' => true,
+                                'options' => [
+                                    'route' => '/grid',
+                                    'defaults' => [
+                                        'controller' => 'ZfMetal\\Calendar\\Controller\\OutOfServiceController',
+                                        'action' => 'grid',
+                                    ],
+                                ],
+                                'type' => 'Segment',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'ZfMetal\\Calendar' => [
+                'mayTerminate' => false,
+                'options' => [
+                    'route' => '/zfmc',
+                ],
+                'type' => 'Literal',
+                'child_routes' => [
+                    'Calendar' => [
+                        'mayTerminate' => false,
+                        'options' => [
+                            'route' => '/calendar',
+                            'defaults' => [
+                                'controller' => \ZfMetal\Calendar\Controller\CalendarController::CLASS,
+                                'action' => 'grid',
+                            ],
+                        ],
+                        'type' => 'Literal',
+                        'child_routes' => [
+                            'Grid' => [
+                                'mayTerminate' => true,
+                                'options' => [
+                                    'route' => '/grid',
+                                    'defaults' => [
+                                        'controller' => \ZfMetal\Calendar\Controller\CalendarController::CLASS,
+                                        'action' => 'grid',
+                                    ],
+                                ],
+                                'type' => 'Segment',
+                            ],
+                        ],
+                    ],
+                    'ManagerCalendar' => [
+                        'mayTerminate' => false,
+                        'options' => [
+                            'route' => '/manager-calendar',
+                            'defaults' => [
+                                'controller' => \ZfMetal\Calendar\Controller\ManagerCalendarController::CLASS,
+                                'action' => 'list',
+                            ],
+                        ],
+                        'type' => 'Literal',
+                        'child_routes' => [
+                            'List' => [
+                                'mayTerminate' => true,
+                                'options' => [
+                                    'route' => '/list',
+                                    'defaults' => [
+                                        'controller' => \ZfMetal\Calendar\Controller\ManagerCalendarController::CLASS,
+                                        'action' => 'list',
+                                    ],
+                                ],
+                                'type' => 'Segment',
+                            ],
+                            'Manage' => [
+                                'mayTerminate' => true,
+                                'options' => [
+                                    'route' => '/manage[/:id]',
+                                    'defaults' => [
+                                        'controller' => \ZfMetal\Calendar\Controller\ManagerCalendarController::CLASS,
+                                        'action' => 'manage',
+                                    ],
+                                ],
+                                'type' => 'Segment',
+                            ],
+                        ],
+                    ],
+                    'Holiday' => [
+                        'mayTerminate' => false,
+                        'options' => [
+                            'route' => '/holiday',
+                            'defaults' => [
+                                'controller' => \ZfMetal\Calendar\Controller\HolidayController::CLASS,
+                                'action' => 'grid',
+                            ],
+                        ],
+                        'type' => 'Literal',
+                        'child_routes' => [
+                            'Grid' => [
+                                'mayTerminate' => true,
+                                'options' => [
+                                    'route' => '/grid',
+                                    'defaults' => [
+                                        'controller' => \ZfMetal\Calendar\Controller\HolidayController::CLASS,
+                                        'action' => 'grid',
+                                    ],
+                                ],
+                                'type' => 'Segment',
+                            ],
+                        ],
+                    ],
+                    'api' => [
+                        'mayTerminate' => false,
+                        'options' => [
+                            'route' => '/api',
+                        ],
+                        'type' => 'Literal',
                     ],
                     'Home' => [
                         'mayTerminate' => true,
@@ -246,6 +476,30 @@ return [
                                     'route' => '/grid',
                                     'defaults' => [
                                         'controller' => \ZfMetal\Calendar\Controller\OutOfServiceController::CLASS,
+                                        'action' => 'grid',
+                                    ],
+                                ],
+                                'type' => 'Segment',
+                            ],
+                        ],
+                    ],
+                    'CalendarGroup' => [
+                        'mayTerminate' => false,
+                        'options' => [
+                            'route' => '/calendar-group',
+                            'defaults' => [
+                                'controller' => \ZfMetal\Calendar\Controller\CalendarGroupController::CLASS,
+                                'action' => 'grid',
+                            ],
+                        ],
+                        'type' => 'Literal',
+                        'child_routes' => [
+                            'Grid' => [
+                                'mayTerminate' => true,
+                                'options' => [
+                                    'route' => '/grid',
+                                    'defaults' => [
+                                        'controller' => \ZfMetal\Calendar\Controller\CalendarGroupController::CLASS,
                                         'action' => 'grid',
                                     ],
                                 ],
