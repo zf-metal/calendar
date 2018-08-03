@@ -2,7 +2,6 @@
     <div>
         <vue-tabs>
             <v-tab title="P">
-                <h4>Visitas Pendientes</h4>
                 <filter-string></filter-string>
                 <filterZone></filterZone>
                 <div class="zfc-panel-preevents">
@@ -22,6 +21,10 @@
                 ></check-calendar>
             </v-tab>
 
+            <v-tab title="F">
+                <form-event :calendars="getCalendars" v-model="getEventSelected" v-if="getIndexEventSelected !=  null"
+                            :index="getIndexEventSelected"/>
+            </v-tab>
 
         </vue-tabs>
     </div>
@@ -39,6 +42,7 @@
     import modal from './helpers/modal.vue'
     import {VueTabs, VTab} from 'vue-nav-tabs'
     import 'vue-nav-tabs/themes/vue-tabs.css'
+    import formEvent from './forms/form-event.vue'
 
     export default {
         name: 'panel',
@@ -47,7 +51,7 @@
                 showModal: false,
             }
         },
-        components: {preEvent, checkCalendar, service, VueTabs, VTab, modal, filterZone,filterString},
+        components: {preEvent, checkCalendar, service, VueTabs, VTab, modal, filterZone,filterString,formEvent},
         computed: {
             ...mapGetters([
                 'getPreEventsFiltered',
@@ -56,6 +60,8 @@
                 'getPreEvents',
                 'hasCalendars',
                 'getCalendars',
+                'getEventSelected',
+                'getIndexEventSelected',
                 'getServiceSelected'
             ]),
         },

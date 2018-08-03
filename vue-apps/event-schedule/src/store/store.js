@@ -94,6 +94,9 @@ const getters = {
   getIndexEventSelected: state => {
     return state.eventSelected
   },
+  getEventSelected: state => {
+    return state.events[state.eventSelected];
+  },
   getServiceSelected: state => {
     if (state.eventSelected != undefined && state.eventSelected != null) {
       if (state.events[state.eventSelected] != undefined && state.events[state.eventSelected].serviceDescription != undefined) {
@@ -144,6 +147,9 @@ const getters = {
     return state.preEvents.map(function (x) {
       return x.id;
     }).indexOf(id);
+  },
+  getPreEventByKey: (state) => (key) => {
+    return state.preEvents[key];
   },
   getPreEvents: state => {
     return state.preEvents;
@@ -321,26 +327,25 @@ const getters = {
 */
 
 const actions = {
-  hideZone({commit}, index) {
-    commit('HIDE_ZONE', index);
-  },
-  showZone({commit}, index) {
-    commit('SHOW_ZONE', index);
-  },
-  hideCalendar({commit}, index) {
-    commit('HIDE_CALENDAR', index);
-  },
-  showCalendar({commit}, index) {
-    commit('SHOW_CALENDAR', index);
-  },
-  changeDate({commit, dispatch}, date) {
-    console.log(date)
-    var newDate = moment(date)
-    if (newDate.isValid()) {
-      commit('SET_DATE', newDate);
-      commit('CLEAR_EVENTS', newDate);
+  startList({commit,dispatch}) {
+    state.loading = state.loading + 1;
+    HTTP.get('start').then((response) => {
+      commit(SET_CALENDARS, response.data.calendars);
+      commit(SET_EVENT_STATES, response.data.eventStates);
+      commit(SET_EVENT_TYPES, response.data.eventTypes);
+      var zones = {};
+      for (var i = 0; i < response.data.zones.length; i++) {
+        var zone = response.data.zones[i];
+        if (zone.bgColor == undefined) {
+          zone.bgColor = getRandomColor();
+        }
+        zones[zone.id] = zone;
+      }
+      commit("SET_ZONES", zones);
       dispatch('eventList');
-    }
+
+      state.loading = state.loading - 1;
+    })
   },
   eventStateList({commit}) {
     state.loading = state.loading + 1;
@@ -349,10 +354,7 @@ const actions = {
       state.loading = state.loading - 1;
     })
   },
-  getRandomColor: function () {
-    return '#' + (Math.random() * 0xFFFFFF << 0).toString(16);
-  },
-  zoneList({commit, dispatch}) {
+  zoneList({commit}) {
     state.loading = state.loading + 1;
     HTTP.get('zones').then((response) => {
       var zones = {};
@@ -385,11 +387,6 @@ const actions = {
   preEventList({commit, getters, state}) {
     state.loading = state.loading + 1;
     HTTP.get('events?calendar=isNull&dateFrom=<=' + getters.getDate + '&orderby=zone').then((response) => {
-      // var events = {};
-      // for (var i = 0; i < response.data.length; i++) {
-      //   var event = response.data[i];
-      //   events[event.id] = event;
-      // }
       commit("SET_PRE_EVENTS", response.data);
       state.loading = state.loading - 1;
     });
@@ -410,6 +407,31 @@ const actions = {
       state.loading = state.loading - 1;
     })
   },
+  hideZone({commit}, index) {
+    commit('HIDE_ZONE', index);
+  },
+  showZone({commit}, index) {
+    commit('SHOW_ZONE', index);
+  },
+  hideCalendar({commit}, index) {
+    commit('HIDE_CALENDAR', index);
+  },
+  showCalendar({commit}, index) {
+    commit('SHOW_CALENDAR', index);
+  },
+  changeDate({commit, dispatch}, date) {
+    console.log(date)
+    var newDate = moment(date)
+    if (newDate.isValid()) {
+      commit('SET_DATE', newDate);
+      commit('CLEAR_EVENTS', newDate);
+      dispatch('eventList');
+    }
+  },
+  getRandomColor: function () {
+    return '#' + (Math.random() * 0xFFFFFF << 0).toString(16);
+  },
+
   pushEvent({state, commit}, event) {
     event.hour = moment(event.start).tz('America/Argentina/Buenos_Aires').format("HH:mm");
     state.loading = state.loading + 1;
@@ -500,7 +522,6 @@ const mutations = {
       state.coordinates[calendar][hour] = {};
     }
     Vue.set(state.coordinates[calendar][hour], type, value);
-    //  console.log("SET_COOR", calendar, hour, type, state.coordinates[calendar][hour][type])
   },
   [SET_CALENDAR_POSITION](state, {top, left}) {
     state.calendarPosition.top = top;

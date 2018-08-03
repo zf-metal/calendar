@@ -1,6 +1,7 @@
 <template>
 
     <ul class="nav navbar-nav">
+
         <li>
             <a @click="before">
                 <i class="btn btn-xs material-icons" style="font-size:18px">navigate_before</i>
@@ -20,9 +21,9 @@
             </a>
         </li>
         <li>
-            <span class="navbar-brand">{{getMonthName}}</span>
             <span class="navbar-brand">{{getNumberOfDayInMonthOrdinal}}</span>
             <span class="navbar-brand">{{getDayName}}</span>
+            <span class="navbar-brand">{{getMonthName}}</span>
 
         </li>
     </ul>

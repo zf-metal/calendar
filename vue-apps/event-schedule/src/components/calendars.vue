@@ -1,14 +1,14 @@
 <template>
     <div>
         <navi></navi>
-
+        <loading :isLoading="getLoading"></loading>
         <div class="clearfix"></div>
         <div class="col-lg-2" style="margin: 0; padding:0;">
             <panel v-on:forceUpdate="onForceUpdate"></panel>
         </div>
 
         <div class="col-lg-10" style="margin: 0; padding:0;">
-            <loading :isLoading="getLoading"></loading>
+
             <div class="clearfix"></div>
             <div class="zfc-calendars" ref="zfcCalendars" v-on:scroll="handleCalendarScroll">
                 <table class="table-bordered table-striped table-responsive  zfc-td">
@@ -29,11 +29,10 @@
                         <calendarTd
                                 v-for="calendar in getVisibleCalendars"
                                 :key='calendar.id + hour'
-                                :calendarId="calendar.id" :name="calendar.name" :hour="hour"
+                                :calendarId="calendar.id" :name="calendar.name"
+                                :date="getDate" :hour="hour"
                                 :parentTop="top" :parentLeft="left" :rc="getRc"
-                                :cellHeight="getCellHeight"
-                                v-on:dropForNewEvent="onDropForNewEvent"
-                                v-on:dropForChangeEvent="onDropForChangeEvent">
+                                :cellHeight="getCellHeight">
                         </calendarTd>
                     </tr>
 
@@ -49,17 +48,9 @@
                 </table>
 
                 <event v-for="(event,index) in getEvents" v-if="isVisibleCalendar(event.calendar)" :key="index"
-                       :index="index"
-                       :id="event.id" :title="event.title" :description="event.description"
-                       :duration="event.duration"
-                       :date="event.getDate" :calendar="event.calendar" :hour="event.hour"
-                       :ticketId="event.ticket"
+                       :index="index" :event="event"
                        :top="getCoordinate(event.calendar,event.hour,'top')"
                        :left="getCoordinate(event.calendar,event.hour,'left')"
-                       :start="event.start" :end="event.end" :state="event.state" :type="event.type"
-                       :lat="event.lat" :lng="event.lng"
-                       :zone="event.zone" :client="event.client" :location="event.location"
-                       :serviceDescription="event.serviceDescription"
                        v-on:editEvent="onEditEvent">
                 </event>
             </div>
@@ -101,11 +92,14 @@
       }
     },
     created: function () {
-      console.log("v1.0.3");
-      this.eventStateList();
-      this.zoneList();
-      this.eventTypeList();
-      this.calendarList();
+      console.log("v1.0.4");
+//      this.eventStateList();
+//      this.zoneList();
+//      this.eventTypeList();
+//      this.calendarList();
+      this.startList();
+
+
       this.preEventList();
     },
     mounted() {
@@ -149,6 +143,7 @@
     },
     methods: {
       ...mapActions([
+        'startList',
         'zoneList',
         'eventStateList',
         'eventTypeList',
@@ -163,30 +158,14 @@
         this.$forceUpdate();
       },
       removeEvent: function () {
-
+        //TODO
+        console.log('todo');
       },
       onEditEvent: function (index) {
         this.eventForm = this.getEventByKey(index)
         this.eventIndex = index
         this.titleModal = 'Evento: ' + this.eventForm.title
         this.showModal = true
-      },
-      onDropForNewEvent: function (preEvent, index) {
-        var event = preEvent;
-        event.date = this.date
-        event.start = this.getDate + " " + event.hour
-        event.end = calculateEnd(event.start, event.duration)
-        this.pushEvent(event);
-        var i = this.getPreEventById(event.id);
-        this.removePreEvent(i);
-      },
-      onDropForChangeEvent: function (calendar, eventKey, hour) {
-        var event = this.getEventByKey(eventKey);
-        event.hour = hour
-        event.calendar = calendar
-        event.start = this.getDate + " " + hour
-        event.end = calculateEnd(event.start, event.duration)
-        this.updateEvent({index: eventKey, event: event});
       },
       handleCalendarPosition: function () {
         this.top = this.$refs.zfcCalendars.getBoundingClientRect().top;

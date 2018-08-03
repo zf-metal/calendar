@@ -8,10 +8,11 @@
 <script>
   import {mapGetters, mapActions} from 'vuex';
   import {Drag, Drop} from 'vue-drag-drop';
+  import {calculateEnd} from './../utils/helpers'
 
   export default {
     name: 'calnedarTd',
-    props: ['calendarId', 'tid', 'name', 'hour', 'parentTop', 'parentLeft', 'rc', 'cellHeight'],
+    props: ['calendarId', 'tid', 'name', 'date','hour', 'parentTop', 'parentLeft', 'rc', 'cellHeight'],
     components: {Drag, Drop},
     data() {
       return {
@@ -24,14 +25,25 @@
       this.calculateLeft();
     },
     methods: {
+      ...mapActions([
+        'removePreEvent',
+        'updateEvent',
+        'pushEvent'
+      ]),
       handleDrop: function (data) {
-        if (data.type != undefined && data.type == 't') {
-          data.obj.calendar = this.calendarId;
-          data.obj.hour = this.hour;
-          this.$emit("dropForNewEvent", data.obj, data.index);
+
+        var event = data.event;
+        event.calendar = this.calendarId;
+        event.start = this.date + " " + this.hour;
+        event.end = calculateEnd(event.start, event.duration);
+        event.hour = this.hour;
+
+        if (data.op != undefined && data.op == 'push') {
+          this.pushEvent(event);
+          this.removePreEvent(data.index);
         }
-        if (data.type != undefined && data.type == 'e') {
-          this.$emit("dropForChangeEvent", this.calendarId, data.id, this.hour);
+        if (data.op != undefined && data.op == 'update') {
+          this.updateEvent({index: data.index, event: event});
         }
       },
       calculateTop() {
@@ -68,6 +80,7 @@
     computed: {
       ...mapGetters([
         'getCalendarSchedule',
+        'getEventByKey'
       ]),
       getCalendarTdStyle: function () {
         return "height:" + this.cellHeight + "px";
@@ -98,6 +111,6 @@
     }
 
     .zfc-hour-inactive{
-        background-color: #F5F5DC;
+        background-color: #CFC9C8;
     }
 </style>

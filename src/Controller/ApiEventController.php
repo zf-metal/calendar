@@ -46,22 +46,6 @@ class ApiEventController extends AbstractRestfulController
         $this->em = $em;
     }
 
-    public function getList(){
-
-        try {
-            $events = $this->getEventRepository()->findAll();
-
-            $results = Transformable::toArrays($events);
-
-            return new JsonModel($results);
-
-        } catch (\Exception $e) {
-            $a = [
-                "messages" => $e->getMessage()
-            ];
-            return new JsonModel($a);
-        }
-    }
 
 
 }

@@ -1,9 +1,21 @@
 <template>
-    <Drag :transfer-data="{id: $vnode.key, type: 'e'}"
+    <Drag :transfer-data="{event: event, index: index, op: 'update'}"
           :class="getMainClass" :style="getStyle">
 
-        <div class="" style="padding: 3px; height: 100%;" @click="selectEvent" :title="serviceDescription"
-             v-tippy="{
+        <div class="cursorPointer" style="padding: 3px; height: 100%;" @click="selectEvent" >
+
+
+
+            <span  @click="edit">
+                <!--<i class="material-icons zfc-type-icon pull-left">{{getEventTypeIcon(type)}}</i>-->
+                {{event.id}}. {{event.title}}</span>
+            <span class="pull-right">{{getDistanceFromEventSelected(event.lat, event.lng)}} Km</span>
+            <br>
+
+            <table class="table eventTable">
+                <tbody>
+                <tr class="cursorHelp" :title="event.serviceDescription"
+                    v-tippy="{
              allowTitleHTML: true,
              dynamicTitle:true,
              arrow:true,
@@ -17,30 +29,16 @@
              maxWidth: '500px',
               theme: 'lulu'
              }">
-
-
-
-            <span @click="edit">
-                <!--<i class="material-icons zfc-type-icon pull-left">{{getEventTypeIcon(type)}}</i>-->
-                {{id}}. {{title}}</span>
-            <span class="pull-right">{{getDistanceFromEventSelected(lat, lng)}} Km</span>
-            <br>
-
-            <table class="table eventTable">
-                <tbody>
-                <tr>
-                    <td><i class="material-icons" style="vertical-align: bottom;">account_box</i></td>
+                    <td><i class="material-icons" style="vertical-align: text-bottom;">account_box</i></td>
                     <td>{{getCliente}}</td>
                 </tr>
                 <tr>
-                    <td :style="getSucColor"><i class="material-icons" style="vertical-align: bottom;">business</i></td>
+                    <td :style="getSucColor"><i class="material-icons" style="vertical-align: text-bottom;">business</i></td>
                     <td>{{getLocation}}  </td>
                 </tr>
                 </tbody>
             </table>
 
-            <div v-html="description">
-            </div>
         </div>
 
     </Drag>
@@ -58,25 +56,9 @@
     name: 'event',
     props: [
       'index',
-      'id',
-      'title',
-      'description',
-      'calendar',
-      'ticketId',
-      'hour',
+      'event',
       'top',
-      'left',
-      'duration',
-      'start',
-      'end',
-      'state',
-      'type',
-      'lat',
-      'lng',
-      'zone',
-      'client',
-      'location',
-      'serviceDescription'
+      'left'
     ],
     components: {Drag, service},
     data() {
@@ -100,24 +82,21 @@
         'getIndexEventSelected',
         'getDistanceFromEventSelected'
       ]),
-      getSdId: function () {
-        return this.$el.querySelector("sd1")
-      },
       getCliente: function () {
-        if (this.client != undefined) {
-          return this.client;
+        if (this.event.client != undefined) {
+          return this.event.client;
         }
         return "";
       },
       getLocation: function () {
-        if (this.location != undefined) {
-          return this.location;
+        if (this.event.location != undefined) {
+          return this.event.location;
         }
         return "";
       },
       getSucColor: function () {
-        if (this.zone != undefined && this.zone.id != undefined) {
-          return "background-color:" + this.getZoneBgColor(this.zone.id);
+        if (this.event.zone != undefined && this.event.zone.id != undefined) {
+          return "background-color:" + this.getZoneBgColor(this.event.zone.id);
         }
         return "";
       },
@@ -129,7 +108,7 @@
         }
       },
       getStyle: function () {
-        return 'background-color:' + this.getEventStateBgColor(this.state) + '; top: ' + this.top + 'px;' + ' left: ' + this.left + 'px;' + ' height:' + this.getHeight + "px;";
+        return 'background-color:' + this.getEventStateBgColor(this.event.state) + '; top: ' + this.top + 'px;' + ' left: ' + this.left + 'px;' + ' height:' + this.getHeight + "px;";
       },
       getHeight: function () {
         var height = this.getCellHeight;
@@ -154,11 +133,11 @@
     .eventTable td {
         vertical-align: middle;
         padding: 1px;
-        font-size: 0.85em;
+        font-size: 0.95em;
     }
 
     .eventTable td i {
-        font-size: 0.85em;
+        font-size: 1em;
     }
 
 
@@ -166,7 +145,7 @@
         position: absolute;
         overflow: hidden;
         display: block;
-        font-size: .85em;
+        font-size: .90em;
         line-height: 1.3;
         border-radius: 3px;
         border: 1px solid #5c6667;
@@ -175,11 +154,14 @@
         z-index: 10;
         min-width: 254px;
         width: 254px;
-        min-height: 40px;
+        min-height: 30px;
     }
 
     .zfc-event-selected {
-        border: 3px solid #01FF70;
+      //  border: solid 2px  #d010bd ;
+        -webkit-box-shadow: 3px 3px 4px 0px rgba(148,2,148,1);
+        -moz-box-shadow: 3px 3px 4px 0px rgba(148,2,148,1);
+        box-shadow: 3px 3px 4px 0px rgba(148,2,148,1);
     }
 
     .zfc-edit-btn {
@@ -193,5 +175,14 @@
         color: #ffffff;
         padding: 1px;
     }
+
+    .cursorPointer{
+        cursor: pointer;
+    }
+
+    .cursorHelp{
+        cursor: help;
+    }
+
 
 </style>

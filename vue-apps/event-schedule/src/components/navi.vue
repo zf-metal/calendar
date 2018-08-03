@@ -18,7 +18,7 @@
 
                 <form class="navbar-form navbar-left">
                     <div class="form-group">
-                        <button  class="btn btn-default material-icons">refresh</button>
+                        <button  class="btn btn-default btn-sm material-icons">refresh</button>
                     </div>
                 </form>
 
