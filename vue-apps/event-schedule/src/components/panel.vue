@@ -78,7 +78,7 @@
 
 <style scoped>
     .zfc-panel-preevents {
-        height: 700px;
+        height: 450px;
         overflow: auto;
     }
 </style>
