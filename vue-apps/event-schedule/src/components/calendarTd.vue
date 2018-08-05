@@ -50,6 +50,7 @@
         this.top = this.$el.getBoundingClientRect().top - this.parentTop;
         this.$store.commit('SET_COORDINATE', {
           calendar: this.calendarId,
+          date: this.date,
           hour: this.hour,
           type: 'top',
           value: this.top
@@ -59,6 +60,7 @@
         this.left = this.$el.getBoundingClientRect().left - this.parentLeft + 10;
         this.$store.commit('SET_COORDINATE', {
           calendar: this.calendarId,
+          date: this.date,
           hour: this.hour,
           type: 'left',
           value: this.left
