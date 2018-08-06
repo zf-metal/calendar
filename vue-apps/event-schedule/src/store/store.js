@@ -14,7 +14,7 @@ import {
   SET_PRE_EVENTS, SET_EVENTS, CLEAR_EVENTS, ADD_EVENT, UPDATE_EVENT, REMOVE_PRE_EVENTS,
   SET_COORDINATE, SET_BODY_SCROLL, SET_CALENDAR_SCROLL, SET_CALENDAR_POSITION,
   SET_EVENT_STATES, SET_EVENT_TYPES, SET_EVENT_SELECTED, SET_ZONES, HIDE_ZONE, SHOW_ZONE, SET_CELL_HEIGHT,
-  UPDATE_RC, SET_FILTER_ZONE, SET_FILTER_STRING
+  UPDATE_RC, SET_FILTER_ZONE, SET_FILTER_STRING, LOADING_LESS,LOADING_PLUS
 } from './mutation-types'
 
 Vue.use(Vuex)
@@ -72,6 +72,9 @@ const state = {
 */
 
 const getters = {
+  getCalendarScroll: state =>{
+    return state.calendarScroll;
+  },
   getFilterZone: (state) => {
     return state.filterZone;
   },
@@ -115,9 +118,13 @@ const getters = {
   getCoordinates: state => {
     return state.coordinates;
   },
-  getCoordinate: (state) => (calendar,date, hour, type) => {
-    if (state.coordinates[calendar][date][hour] == undefined) {
-      return state.coordinates[calendar][date]['fb'][type];
+  getCoordinate: (state) => (event, type) => {
+    var calendar = event.calendar;
+    var date = event.start.substr(0, 10);
+    var hour = event.start.substr(11, 5);
+
+    if (state.coordinates[calendar] != undefined && state.coordinates[calendar][date] != undefined && state.coordinates[calendar][date][hour] == undefined) {
+      return state.coordinates[calendar]['fb']['fb'][type];
     }
     return state.coordinates[calendar][date][hour][type];
   },
@@ -131,9 +138,9 @@ const getters = {
     }
     return true
   },
-  getCalendarSchedule: (state, getters) => (id) => {
+  getCalendarSchedule: (state, getters) => (id,day) => {
     var calendar = state.calendars.find(calendar => calendar.id === id);
-    return calendar.schedules.find(schedule => schedule.day === getters.getDay);
+    return calendar.schedules.find(schedule => schedule.day === day);
   },
   getCalendars: state => {
     return state.calendars;
@@ -230,15 +237,23 @@ const getters = {
   getDay: state => {
     return state.date.isoWeekday();
   },
-  getNextDate: (state, getters) => {
+  getNextDateObj: (state, getters) => {
     if (state.nextDate == null || state.nextDate == undefined) {
       state.nextDate = tz(getters.getDate);
       state.nextDate.add(1, 'day');
     }
-    return state.nextDate.format("YYYY-MM-DD");
+    return state.nextDate
   },
-  getNextDay: state => {
-    return state.nextDate.isoWeekday();
+  getNextDate: (state, getters) => {
+    return getters.getNextDateObj.format("YYYY-MM-DD");
+  },
+  getNextDay: (state,getters) => {
+    return getters.getNextDateObj.isoWeekday();
+  },
+  getNextTwoDate: (state, getters) => {
+    var ntd = tz(getters.getDate);
+    ntd.add(2, 'day');
+    return ntd.format("YYYY-MM-DD");
   },
   getMonthName: state => {
     return state.date.format('MMMM').replace(/\w/, c => c.toUpperCase());
@@ -326,15 +341,15 @@ const getters = {
       for (var index = 0; index < state.calendars.length; ++index) {
         if (state.calendars[index].schedules != undefined) {
           var schedule = state.calendars[index].schedules.find(schedule => schedule.day == getters.getNextDay);
-          if (schedule != undefined) {
-            if (schedule.end != undefined && schedule.end > rend) {
+          if (schedule != undefined && schedule.start != undefined && schedule.end != undefined) {
+            if (schedule.start == '00:00' && (rend == null || schedule.end > rend)) {
               rend = schedule.end;
             }
           }
         }
       }
     }
-    if (rend == null) rend = "23:59";
+    if (rend == null) rend = "00:01";
     return rend;
   },
   getHours: (state, getters) => {
@@ -445,7 +460,7 @@ const actions = {
   },
   eventList({state, getters, commit}) {
     state.loading = state.loading + 1;
-    HTTP.get("events?calendar=isNotNull&start=" + getters.getDate + "<>" + getters.getNextDate
+    HTTP.get("events?calendar=isNotNull&start=" + getters.getDate + "<>" + getters.getNextTwoDate
     ).then((response) => {
       var events = [];
       for (var i = 0; i < response.data.length; i++) {
@@ -566,7 +581,7 @@ const mutations = {
   [UPDATE_EVENT](state, {index, event}) {
     state.events[index] = event;
   },
-  [SET_COORDINATE](state, {calendar,date, hour, type, value}) {
+  [SET_COORDINATE](state, {calendar, date, hour, type, value}) {
     if (state.coordinates[calendar] == undefined) {
       state.coordinates[calendar] = {};
     }
@@ -604,6 +619,12 @@ const mutations = {
   },
   [SET_FILTER_STRING](state, filterString) {
     state.filterString = filterString;
+  },
+  [LOADING_LESS](state) {
+    state.loading--;
+  },
+  [LOADING_PLUS](state) {
+    state.loading++;
   }
 };
 

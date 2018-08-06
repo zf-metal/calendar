@@ -14,6 +14,7 @@
                     :position="getPosition(e)"
                     :clickable="true"
                     :draggable="true"
+                    :title="e.start + ' - ' + e.client "
                     @click="center=m.position"
             />
 

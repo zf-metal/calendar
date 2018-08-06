@@ -22,8 +22,11 @@
             </v-tab>
 
             <v-tab title="F">
-                <form-event :calendars="getCalendars" v-model="getEventSelected" v-if="getIndexEventSelected !=  null"
-                            :index="getIndexEventSelected"/>
+                <form-event :calendars="getCalendars"
+                            v-model="getEventSelected"
+                            v-if="getIndexEventSelected !=  null"
+                            :index="getIndexEventSelected"
+                />
             </v-tab>
 
         </vue-tabs>
@@ -78,7 +81,9 @@
 
 <style scoped>
     .zfc-panel-preevents {
-        height: 88%;
+        height: 92%;
         overflow: auto;
+        z-index: 22;
+        position: relative;
     }
 </style>

@@ -12,7 +12,7 @@
 
   export default {
     name: 'calnedarTd',
-    props: ['calendarId', 'tid', 'name', 'date','hour', 'parentTop', 'parentLeft', 'rc', 'cellHeight'],
+    props: ['calendarId', 'tid', 'name', 'date','hour', 'parentTop', 'parentLeft', 'rc', 'cellHeight','isNextDay', 'day'],
     components: {Drag, Drop},
     data() {
       return {
@@ -57,7 +57,7 @@
         });
       },
       calculateLeft() {
-        this.left = this.$el.getBoundingClientRect().left - this.parentLeft + 10;
+        this.left = this.$el.getBoundingClientRect().left - this.parentLeft + 5;
         this.$store.commit('SET_COORDINATE', {
           calendar: this.calendarId,
           date: this.date,
@@ -88,13 +88,18 @@
         return "height:" + this.cellHeight + "px";
       },
       getClassDependingHour: function () {
-        var schedule = this.getCalendarSchedule(this.calendarId);
+        var schedule = this.getCalendarSchedule(this.calendarId,this.day);
 
-        if (
-          (this.hour >= schedule.start && this.hour < schedule.end) ||
-          (this.hour >= schedule.start2 && this.hour < schedule.end2)
-        ) {
-          return 'zfc-hour-active';
+        if(schedule != undefined && schedule.start != undefined  && schedule.end != undefined  ) {
+          if ((this.hour >= schedule.start && this.hour < schedule.end) || (this.hour >= schedule.start2 && this.hour < schedule.end2)) {
+            if (this.nextDay == true) {
+              return 'zfc-hour-active-nd';
+            }
+            return 'zfc-hour-active';
+          }
+          if (this.nextDay == true) {
+            return 'zfc-hour-inactive-nd';
+          }
         }
         return 'zfc-hour-inactive';
       }
@@ -109,10 +114,18 @@
     }
 
     .zfc-hour-active{
-        background-color: #F0F8FF;
+        background-color: #fcfaee;
     }
 
     .zfc-hour-inactive{
-        background-color: #CFC9C8;
+        background-color: #a5a0a0;
+    }
+
+    .zfc-hour-active-nd{
+        background-color: #faf5dd;
+    }
+
+    .zfc-hour-inactive-nd{
+        background-color: #7c7878;
     }
 </style>

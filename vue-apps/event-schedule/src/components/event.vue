@@ -2,15 +2,16 @@
     <Drag :transfer-data="{event: event, index: index, op: 'update'}"
           :class="getMainClass" :style="getStyle">
 
-        <div class="cursorPointer" style="padding: 3px; height: 100%;" @click="selectEvent" >
+        <div class="cursorPointer" style="height: 100%;" @click="selectEvent" >
+
+            <div :style="getStateStyle" style="padding:1px">
+                <i class="material-icons btn btn-xs" style="font-size: 1em"  @click="edit">edit</i>
+                <span>{{event.id}}. {{event.title}}</span>
+                <span class="pull-right" style="padding:1px">{{getDistanceFromEventSelected(event.lat, event.lng)}} Km</span>
+                <br>
+            </div>
 
 
-
-            <span  @click="edit">
-                <!--<i class="material-icons zfc-type-icon pull-left">{{getEventTypeIcon(type)}}</i>-->
-                {{event.id}}. {{event.title}}</span>
-            <span class="pull-right">{{getDistanceFromEventSelected(event.lat, event.lng)}} Km</span>
-            <br>
 
             <table class="table eventTable">
                 <tbody>
@@ -108,12 +109,15 @@
         }
       },
       getStyle: function () {
-        return 'background-color:' + this.getEventStateBgColor(this.event.state) + '; top: ' + this.top + 'px;' + ' left: ' + this.left + 'px;' + ' height:' + this.getHeight + "px;";
+        return 'top: ' + this.top + 'px;' + ' left: ' + this.left + 'px;' + ' height:' + this.getHeight + "px;";
+      },
+      getStateStyle: function () {
+        return 'background-color:' + this.getEventStateBgColor(this.event.state) ;
       },
       getHeight: function () {
         var height = this.getCellHeight;
-        if (this.duration > 30) {
-          height = Math.ceil(this.duration / 30) * this.getCellHeight;
+        if (this.event.duration > 30) {
+          height = Math.ceil(this.event.duration / 30) * this.getCellHeight;
         }
 
         return height
@@ -148,33 +152,26 @@
         font-size: .90em;
         line-height: 1.3;
         border-radius: 3px;
-        border: 1px solid #5c6667;
-        background: #1c5c87;
-        color: #FFFFFF;
+        /*border: 1px solid #5c6667;*/
+        background-color: #ffffff ;
+        color: #0c0c0c;
         z-index: 10;
-        min-width: 254px;
-        width: 254px;
+        min-width: 255px;
+        width: 255px;
         min-height: 30px;
+        padding: 0;
+        -webkit-box-shadow: 2px 2px 3px 0px rgba(0,0,0,0.75);
+        -moz-box-shadow: 2px 2px 3px 0px rgba(0,0,0,0.75);
+        box-shadow: 2px 2px 3px 0px rgba(0,0,0,0.75);
     }
 
     .zfc-event-selected {
-      //  border: solid 2px  #d010bd ;
-        -webkit-box-shadow: 3px 3px 4px 0px rgba(148,2,148,1);
-        -moz-box-shadow: 3px 3px 4px 0px rgba(148,2,148,1);
-        box-shadow: 3px 3px 4px 0px rgba(148,2,148,1);
+        -webkit-box-shadow: 2px 2px 3px 0px rgba(20,158,36,1);
+        -moz-box-shadow: 2px 2px 3px 0px rgba(20,158,36,1);
+        box-shadow: 2px 2px 3px 0px rgba(20,158,36,1);
     }
 
-    .zfc-edit-btn {
-        font-size: 10px;
-        color: #ffffff;
-        padding: 1px;
-    }
 
-    .zfc-type-icon {
-        font-size: 10px;
-        color: #ffffff;
-        padding: 1px;
-    }
 
     .cursorPointer{
         cursor: pointer;

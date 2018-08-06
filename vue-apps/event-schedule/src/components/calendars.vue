@@ -7,20 +7,23 @@
             <panel v-on:forceUpdate="onForceUpdate"></panel>
         </div>
 
-        <div class="col-lg-10 zfc-calendars" ref="zfcCalendars" v-on:scroll="handleCalendarScroll">
-            <table class="table-bordered table-striped table-responsive  zfc-td">
+        <div class="col-lg-10 zfc-calendars-parent">
+            <table class="table-bordered table-striped table-responsive zfc-calendar-table"  :style="getStyleHeaderFix" >
                 <thead>
                 <tr v-if="hasCalendars">
                     <th class="zfc-column-hours"></th>
-                    <th class="zfc-column-calendar" @click="showMap(calendar.id,calendar.name)"
+                    <th class="zfc-column-calendar"
                         v-for="calendar in getVisibleCalendars"
                         :key="calendar.id">
-                            <span>{{calendar.name}}
-                                <i class="material-icons cursorPointer" style="vertical-align: bottom">map</i></span>
+                                <span>{{calendar.name}}
+                                    <i @click="showMap(calendar.id,calendar.name)" class="material-icons cursorPointer pull-right" style="vertical-align: bottom">map</i></span>
 
                     </th>
                 </tr>
                 </thead>
+            </table>
+            <div class="zfc-calendars" ref="zfcCalendars" v-on:scroll="handleCalendarScroll">
+            <table class="table-bordered table-striped table-responsive zfc-td">
 
                 <tbody>
 
@@ -32,13 +35,14 @@
                             :key='getDate + calendar.id + hour'
                             :calendarId="calendar.id" :name="calendar.name"
                             :date="getDate" :hour="hour"
-                            :parentTop="top" :parentLeft="left" :rc="getRc"
+                            :parentTop="top" :parentLeft="left" :rc="getRc" :isNextDay="false" :day="getDay"
                             :cellHeight="getCellHeight">
                     </calendarTd>
                 </tr>
 
-                <tr>
-                    <th v-if="hasCalendars" class="zfc-column-hours">ND</th>
+                <tr style="height: 3px;">
+                    <th v-if="hasCalendars" class="zfc-column-hours" style="background-color: #0c0c0c ">
+                    </th>
 
                     <td v-for="calendar in getVisibleCalendars" :key='calendar.id+"_nd"'
                         style="background-color: #0c0c0c ">
@@ -53,7 +57,7 @@
                             :key='getNextDate + calendar.id + hour'
                             :calendarId="calendar.id" :name="calendar.name"
                             :date="getNextDate" :hour="hour"
-                            :parentTop="top" :parentLeft="left" :rc="getRc"
+                            :parentTop="top" :parentLeft="left" :rc="getRc" :isNextDay="true" :day="getNextDay"
                             :cellHeight="getCellHeight">
                     </calendarTd>
                 </tr>
@@ -64,7 +68,7 @@
 
                     <calendarTd v-for="calendar in getVisibleCalendars"
                                 :key='calendar.id+"_fb"'
-                                :calendarId="calendar.id" :name="calendar.name" :hour="'fb'"
+                                :calendarId="calendar.id" :name="calendar.name" :date="'fb'" :hour="'fb'"
                                 :parentTop="top" :parentLeft="left">
                     </calendarTd>
                 </tr>
@@ -75,13 +79,15 @@
 
             <event v-for="(event,index) in getEvents" v-if="isVisibleCalendar(event.calendar)" :key="index"
                    :index="index" :event="event"
-                   :top="getCoordinate(event.calendar,getEventDate(event.start),event.hour,'top')"
-                   :left="getCoordinate(event.calendar,getEventDate(event.start),event.hour,'left')"
+                   :top="getCoordinate(event,'top')"
+                   :left="getCoordinate(event,'left')"
                    v-on:editEvent="onEditEvent">
             </event>
-
+            </div>
         </div>
-        <modal :title="eventForm.title" :showModal="showModal" @close="showModal = false">
+
+
+        <modal :title="eventForm.id + '. '+ eventForm.title" :showModal="showModal" @close="showModal = false">
             <form-event :calendars="getCalendars" v-model="eventForm"
                         :index="eventIndex" v-on:remove="removeEvent"/>
         </modal>
@@ -96,7 +102,6 @@
   import {mapGetters, mapActions} from 'vuex';
   import {calculateEnd} from './../utils/helpers'
   import {Drag, Drop} from 'vue-drag-drop';
-
 
   import modal from './helpers/modal.vue'
   import loading from './helpers/loading.vue'
@@ -125,7 +130,7 @@
       }
     },
     created: function () {
-      console.log("v1.2");
+      console.log("v1.3");
 //      this.eventStateList();
 //      this.zoneList();
 //      this.eventTypeList();
@@ -169,11 +174,17 @@
         'getEventByKey',
         'getDate',
         'getNextDate',
+        'getNextDay',
         'getDay',
         'getHours',
         'getNextHours',
         'getRc',
+        'getCalendarScroll'
       ]),
+      getStyleHeaderFix: function(){
+        var left = this.left - this.getCalendarScroll.left;
+        return 'left: '+ left+'px';
+      }
     },
     methods: {
       ...mapActions([
@@ -235,30 +246,51 @@
         max-height: 100vh;
     }
 
-    .zfc-calendars {
-        position: relative;
-        overflow-y: auto;
-        overflow-x: auto;
+    .zfc-calendars-parent{
         height: 88%;
-        margin: 0;
         padding: 0;
     }
 
+    .zfc-calendars {
+        overflow-y: auto;
+        overflow-x: auto;
+        height: 95%;
+        margin: 0;
+        padding: 0;
+        position: relative;
+    }
+
     .zfc-column-hours {
-        width: 50px;
+        width: 50px !important;
+        min-width: 50px;
+        max-width: 50px;
     }
 
     .zfc-column-calendar {
-        width: 260px;
-        min-width: 260px;
-        max-width: 260px;
-        overflow: hidden;
+        width: 260px !important;
+        min-width: 260px !important;
+        max-width: 260px !important;
         text-align: center;
+    }
+
+    .zfc-calendar-table{
+        position: fixed;
+        z-index: 11;
+    }
+
+
+    .zfc-calendar-table  th{
+        background-color: #0e2c44 !important;
+        color: #ffffcc;
+
+    }
+
+    table.zfc-td{
+        margin-top: 28px;
     }
 
     table.zfc-td > tbody > tr > td, table.zfc-td > tbody > tr > th {
         font-size: 14px;
-        /*height: 40px;*/
         padding: 0;
         margin: 0;
         text-align: center;

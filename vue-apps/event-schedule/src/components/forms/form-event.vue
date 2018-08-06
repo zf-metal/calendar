@@ -1,7 +1,7 @@
 <template>
 
 
-    <form method="POST" name="EventForm" v-on:submit.prevent="save">
+    <form method="POST" class="eventForm" name="EventForm" v-on:submit.prevent="save">
         <alert :show="h.alertShow" :msg="h.alertMsg" :type="h.alertType" v-on:close="h.alertShow = false"></alert>
         <saveStatus :isSaved="h.isSaved"></saveStatus>
 
@@ -9,10 +9,10 @@
         <div class="form-group">
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <label class="control-label">Estado</label>
-                <select name="state" class=" form-control" v-model="entity.state" @change="unsaved">
+                <select name="state" class=" form-control" v-model="value.state" @change="unsaved">
                     <option v-for="state in getEventStates"
                             v-bind:value="state.id" :key="state.id"
-                            :selected="entity.state == state.id">
+                            :selected="value.state == state.id">
                         {{state.name}}
                     </option>
                 </select>
@@ -25,10 +25,10 @@
 
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <label class="control-label">Calendario</label>
-                <select name="calendar" class=" form-control" v-model="entity.calendar" @change="unsaved">
+                <select name="calendar" class=" form-control" v-model="value.calendar" @change="unsaved">
                     <option v-if="hasCalendars" v-for="calendar in getCalendars"
                             v-bind:value="calendar.id" :key="calendar.id"
-                            :selected="entity.calendar == calendar.id">
+                            :selected="value.calendar == calendar.id">
                         {{calendar.name}}
                     </option>
                 </select>
@@ -41,7 +41,7 @@
 
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <label class="control-label">Titulo</label>
-                <input type="text" name="title" class=" form-control" v-model="entity.title" ref="title"
+                <input type="text" name="title" class=" form-control" v-model="value.title" ref="title"
                        @keydown="unsaved">
                 <fe :errors="errors.title"/>
             </div>
@@ -49,20 +49,18 @@
 
         </div>
 
-        <div class="form-group">
-            <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 control-label">
-                <label class="control-label">Ubicación</label>
-            </div>
+        <!--<div class="form-group">-->
+            <!--<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 control-label">-->
+                <!--<label class="control-label">Ubicación</label>-->
+            <!--</div>-->
 
 
-            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                <input type="text" name="location" class=" form-control" v-model="entity.location" ref="location"
-                       @keydown="unsaved">
-                <fe :errors="errors.location"/>
-            </div>
-
-
-        </div>
+            <!--<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">-->
+                <!--<input type="text" name="location" class=" form-control" v-model="value.location" ref="location"-->
+                       <!--@keydown="unsaved">-->
+                <!--<fe :errors="errors.location"/>-->
+            <!--</div>-->
+        <!--</div>-->
 
         <div class="form-group">
 
@@ -72,7 +70,7 @@
 
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <input type="datetime" name="start" class=" form-control" ref="start"
-                       v-model="entity.start" @keyup="refreshEnd" @change="refreshEnd">
+                       v-model="value.start" @keyup="refreshEnd" @change="refreshEnd">
                 <fe :errors="errors.start"/>
             </div>
 
@@ -87,7 +85,7 @@
 
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <input type="number" name="duration" class=" form-control" ref="duration"
-                       v-model="entity.duration" @keyup="refreshEnd" @change="refreshEnd">
+                       v-model="value.duration" @keyup="refreshEnd" @change="refreshEnd">
                 <fe :errors="errors.duration"/>
             </div>
 
@@ -100,7 +98,7 @@
 
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <input disabled="disabled" type="datetime" name="end" class=" form-control" ref="end"
-                       v-model="entity.end" @keydown="unsaved">
+                       v-model="value.end" @keydown="unsaved">
                 <fe :errors="errors.end"/>
             </div>
 
@@ -110,7 +108,7 @@
 
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <label class="control-label">Comentarios</label>
-                <textarea name="comments" class=" form-control" v-model="entity.comments" ref="comments"
+                <textarea name="comments" class=" form-control" v-model="value.comments" ref="comments"
                           @keydown="unsaved"></textarea>
                 <fe :errors="errors.comments"/>
             </div>
@@ -175,7 +173,10 @@
         'hasCalendars',
         'getCoordinate',
         'getLoading',
-      ])
+      ]),
+      getEvent: function () {
+        return this.value;
+      }
     },
     methods: {
       ...mapActions([
@@ -185,7 +186,7 @@
         this.h.isSaved = false
       },
       refreshEnd: function () {
-        this.entity.end = calculateEnd(this.entity.start, this.entity.duration)
+        this.value.end = calculateEnd(this.value.start, this.value.duration)
         this.unsaved()
       },
       iSave: function () {
@@ -202,33 +203,42 @@
         this.h.submitInProgress = false
       },
       save: function () {
-        if (this.entity.id) {
+        if (this.value.id) {
           this.update()
         } else {
           this.create()
         }
       },
       setHour: function () {
-        this.entity.hour = moment(this.entity.start).format("HH:mm");
+        this.value.hour = moment(this.value.start).format("HH:mm");
       },
       update: function () {
-        this.setHour()
-        this.iSave()
+        this.setHour();
+        this.iSave();
+        this.$store.commit('LOADING_PLUS');
+        this.value.top = this.getCoordinate(this.getEvent, 'top');
+        this.value.left = this.getCoordinate(this.getEvent, 'left');
 
-        this.entity.top = this.getCoordinate(this.entity.calendar, this.entity.hour, 'top');
-        this.entity.left = this.getCoordinate(this.entity.calendar, this.entity.hour, 'left');
-
-        HTTP.put("events/" + this.entity.id, this.entity
+        HTTP.put("events/" + this.value.id, this.value
         ).then((response) => {
-          this.fSave()
-          this.$store.commit('UPDATE_EVENT', {index: this.index, event: this.entity})
+          this.fSave();
+          this.$store.commit('UPDATE_EVENT', {index: this.index, event: this.value});
+          this.$store.commit('LOADING_LESS');
         }).catch((error) => {
           this.fSave()
-          this.h.alertMsg = error.response.data.message
-          this.h.alertShow = true
-          this.errors = error.response.data.errors
+          this.h.alertMsg = error.response.data.message;
+          this.h.alertShow = true;
+          this.errors = error.response.data.errors;
+          this.$store.commit('LOADING_LESS');
         })
       }
     }
   }
 </script>
+
+<style scoped>
+    .eventForm label{
+        font-size: 12px;
+        color: #1c2529;
+    }
+</style>

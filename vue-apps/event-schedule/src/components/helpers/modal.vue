@@ -56,6 +56,10 @@
         transition: opacity .3s ease;
     }
 
+    .modal-body{
+        padding: 2px 15px;
+    }
+
     .modal-wrapper {
         display: table-cell;
         vertical-align: middle;
