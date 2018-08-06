@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="zfc-panel">
         <vue-tabs>
             <v-tab title="P">
                 <filter-string></filter-string>
@@ -80,10 +80,10 @@
 </script>
 
 <style scoped>
-    .zfc-panel-preevents {
-        height: 92%;
+    .zfc-panel{
+        height: 95%;
         overflow: auto;
-        z-index: 22;
-        position: relative;
     }
+
+
 </style>

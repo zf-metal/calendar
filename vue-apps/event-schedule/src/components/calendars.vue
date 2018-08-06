@@ -3,7 +3,7 @@
         <navi></navi>
         <loading :isLoading="getLoading"></loading>
         <div class="clearfix"></div>
-        <div class="col-lg-2" style="margin: 0; padding:0;">
+        <div class="col-lg-2 zfc-calendars-parent" style="margin: 0; padding:0;">
             <panel v-on:forceUpdate="onForceUpdate"></panel>
         </div>
 
