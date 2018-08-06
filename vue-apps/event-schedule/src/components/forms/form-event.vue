@@ -26,6 +26,7 @@
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <label class="control-label">Calendario</label>
                 <select name="calendar" class=" form-control" v-model="value.calendar" @change="unsaved">
+                    <option value=""></option>
                     <option v-if="hasCalendars" v-for="calendar in getCalendars"
                             v-bind:value="calendar.id" :key="calendar.id"
                             :selected="value.calendar == calendar.id">

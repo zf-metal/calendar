@@ -32,7 +32,7 @@
     },
     methods: {
       getDayClass: function (day) {
-        if (this.data.days[day] == true) {
+        if (this.data != undefined && this.data.days[day] == true) {
           return "dayOk";
         } else {
           return "dayNo";
@@ -41,13 +41,13 @@
     },
     computed: {
       getEspecificDays: function () {
-        if (this.data.especificDays != undefined) {
+        if (this.data != undefined && this.data.especificDays != undefined) {
           return this.data.especificDays;
         }
         return false;
       },
       getDays: function () {
-        if (this.data.days != undefined) {
+        if (this.data != undefined && this.data.days != undefined) {
           return this.data.days;
         }
         return false;

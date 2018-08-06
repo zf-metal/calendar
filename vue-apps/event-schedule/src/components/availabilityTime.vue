@@ -19,25 +19,25 @@
         },
         computed: {
           getFrom: function(){
-            if(this.data.timeRange != undefined && this.data.timeRange.from != undefined){
+            if(this.data != undefined && this.data.timeRange != undefined && this.data.timeRange.from != undefined){
               return this.data.timeRange.from;
             }
             return false;
           },
           getTo: function(){
-            if(this.data.timeRange != undefined && this.data.timeRange.to != undefined){
+            if(this.data != undefined && this.data.timeRange != undefined && this.data.timeRange.to != undefined){
               return this.data.timeRange.to;
             }
             return false;
           },
           getFrom2: function(){
-            if(this.data.timeRange2 != undefined && this.data.timeRange2.from != undefined){
+            if(this.data != undefined && this.data.timeRange2 != undefined && this.data.timeRange2.from != undefined){
               return this.data.timeRange2.from;
             }
             return false;
           },
           getTo2: function(){
-            if(this.data.timeRange2 != undefined && this.data.timeRange2.to != undefined){
+            if(this.data != undefined && this.data.timeRange2 != undefined && this.data.timeRange2.to != undefined){
               return this.data.timeRange2.to;
             }
             return false;

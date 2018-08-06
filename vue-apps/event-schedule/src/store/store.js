@@ -120,10 +120,15 @@ const getters = {
   },
   getCoordinate: (state) => (event, type) => {
     var calendar = event.calendar;
+
+    if (state.coordinates[calendar] == undefined){
+      return false;
+    }
+
     var date = event.start.substr(0, 10);
     var hour = event.start.substr(11, 5);
 
-    if (state.coordinates[calendar] != undefined && state.coordinates[calendar][date] != undefined && state.coordinates[calendar][date][hour] == undefined) {
+    if (state.coordinates[calendar] == undefined || state.coordinates[calendar][date] == undefined || state.coordinates[calendar][date][hour] == undefined) {
       return state.coordinates[calendar]['fb']['fb'][type];
     }
     return state.coordinates[calendar][date][hour][type];
@@ -133,7 +138,7 @@ const getters = {
   },
   isVisibleCalendar: (state) => (id) => {
     var calendar = state.calendars.find(calendar => calendar.id === id);
-    if (calendar.hidden == true) {
+    if (calendar != undefined && calendar.hidden == true) {
       return false
     }
     return true
