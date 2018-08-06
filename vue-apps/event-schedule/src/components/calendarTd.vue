@@ -1,7 +1,12 @@
 <template>
     <td class="zfc-column-calendar" :class="getClassDependingHour" :id="tid" style="height: 100px"
-        :style="getCalendarTdStyle">
+        :style="getCalendarTdStyle" @mouseover="upHere = true" @mouseleave="upHere = false">
         <drop @drop="handleDrop" class="zfc-dropcell">
+
+            <div v-if="upHere">
+               Calendar: {{calendarId}} - Date: {{date}} - Hour: {{hour}} - Day: {{day}}
+            </div>
+
         </drop>
     </td>
 </template>
@@ -19,6 +24,7 @@
             return {
                 top: 0,
                 left: 0,
+                upHere: false,
             }
         },
         mounted: function () {
@@ -69,19 +75,22 @@
             }
         },
         watch: {
-            rc: function () {
+            getRc: function () {
                 this.calculateTop()
                 this.calculateLeft()
             },
             parentTop: function () {
-                this.calculateTop()
+                this.calculateTop();
+                this.calculateLeft();
             },
             parentLeft: function () {
-                this.calculateLeft()
+                this.calculateTop();
+                this.calculateLeft();
             }
         },
         computed: {
             ...mapGetters([
+                'getRc',
                 'getCalendarSchedule',
                 'getEventByKey',
                 'getPreEventById'

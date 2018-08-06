@@ -157,6 +157,11 @@
                     this.$forceUpdate();
                 });
             },
+//            getRc: function(){
+//                this.$nextTick(() => {
+//                    this.$forceUpdate();
+//                });
+//            }
         },
         computed: {
             ...mapGetters([

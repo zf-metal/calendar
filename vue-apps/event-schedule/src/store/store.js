@@ -137,9 +137,21 @@ const getters = {
         var date = event.start.substr(0, 10);
         var hour = event.start.substr(11, 5);
 
+        if(event.id == 9){
+            console.log("Mo")
+            // console.log(type)
+            // console.log(event)
+            // console.log(date)
+            // console.log(hour)
+            console.log(state.coordinates)
+        }
+
         if (state.coordinates[calendar] == undefined || state.coordinates[calendar][date] == undefined || state.coordinates[calendar][date][hour] == undefined) {
+            return false;
             return state.coordinates[calendar]['fb']['fb'][type];
         }
+
+
         return state.coordinates[calendar][date][hour][type];
     },
     getLoading: state => {
@@ -252,11 +264,9 @@ const getters = {
         return state.date.isoWeekday();
     },
     getNextDateObj: (state, getters) => {
-        if (state.nextDate == null || state.nextDate == undefined) {
-            state.nextDate = tz(getters.getDate);
-            state.nextDate.add(1, 'day');
-        }
-        return state.nextDate
+        var nextDate = tz(getters.getDate);
+        nextDate.add(1, 'day');
+        return nextDate;
     },
     getNextDate: (state, getters) => {
         return getters.getNextDateObj.format("YYYY-MM-DD");
@@ -335,35 +345,25 @@ const getters = {
         return rend;
     },
     getNextStart: (state, getters) => {
-        var rstart = null;
-        if (getters.hasCalendars) {
-            for (var index = 0; index < state.calendars.length; ++index) {
-                if (state.calendars[index].schedules != undefined) {
-                    var schedule = state.calendars[index].schedules.find(s => s.day == getters.getNextDay);
-                    if (schedule != undefined && (schedule.start < rstart || rstart == null)) {
-                        rstart = schedule.start;
-                    }
-                }
-            }
-        }
-        if (rstart == null) rstart = "00:00";
+        var rstart = "00:00";
         return rstart;
     },
     getNextEnd: (state, getters) => {
         var rend = null;
-        if (getters.hasCalendars) {
-            for (var index = 0; index < state.calendars.length; ++index) {
-                if (state.calendars[index].schedules != undefined) {
-                    var schedule = state.calendars[index].schedules.find(schedule => schedule.day == getters.getNextDay);
-                    if (schedule != undefined && schedule.start != undefined && schedule.end != undefined) {
-                        if (schedule.start == '00:00' && (rend == null || schedule.end > rend)) {
-                            rend = schedule.end;
-                        }
-                    }
-                }
-            }
-        }
-        if (rend == null) rend = "00:01";
+        // if (getters.hasCalendars) {
+        //     for (var index = 0; index < state.calendars.length; ++index) {
+        //         if (state.calendars[index].schedules != undefined) {
+        //             var schedule = state.calendars[index].schedules.find(schedule => schedule.day == getters.getNextDay);
+        //             if (schedule != undefined && schedule.start != undefined && schedule.end != undefined) {
+        //                 if (schedule.start == '00:00' && (rend == null || schedule.end > rend)) {
+        //                     rend = schedule.end;
+        //                 }
+        //             }
+        //         }
+        //     }
+        // }
+        // if (rend == null) rend = "00:01";
+        rend =  "23:59";
         return rend;
     },
     getHours: (state, getters) => {
@@ -503,8 +503,10 @@ const actions = {
     changeDate({commit, dispatch}, date) {
         console.log(date)
         var newDate = moment(date)
+
         if (newDate.isValid()) {
             commit('SET_DATE', newDate);
+
             commit('CLEAR_EVENTS', newDate);
             dispatch('eventList');
         }
@@ -512,7 +514,6 @@ const actions = {
     getRandomColor: function () {
         return '#' + (Math.random() * 0xFFFFFF << 0).toString(16);
     },
-
     pushEvent({state, commit}, event) {
         event.hour = moment(event.start).tz('America/Argentina/Buenos_Aires').format("HH:mm");
         state.loading = state.loading + 1;
@@ -543,16 +544,22 @@ const actions = {
 
 const mutations = {
     [SET_DATE](state, newDate) {
+        delete state.coordinates;
+        state.coordinates = {};
         state.date = newDate;
     },
     [ADD_CALENDAR](state, calendar) {
         state.calendars.push(calendar);
     },
     [SHOW_CALENDAR](state, index) {
+        delete state.coordinates;
+        state.coordinates = {};
         Vue.set(state.calendars[index], 'hidden', false);
         state.rc++;
     },
     [HIDE_CALENDAR](state, index) {
+        delete state.coordinates;
+        state.coordinates = {};
         Vue.set(state.calendars[index], 'hidden', true)
         state.rc++;
     },
