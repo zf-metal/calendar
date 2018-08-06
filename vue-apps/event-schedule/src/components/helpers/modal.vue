@@ -1,13 +1,14 @@
 <template>
     <div v-if="showModal" v-on:keyup.esc="$emit('close')">
         <transition name="modal">
-            <div class="modal-mask"  >
+            <div class="modal-mask">
                 <div class="modal-wrapper">
                     <div class="modal-dialog" :class="[ modalSize ? modalSize : '' ]" role="document"
                          ref="modal">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <button type="button" @click="$emit('close')"  class="close" data-dismiss="modal" aria-label="Close"><span
+                                <button type="button" @click="$emit('close')" class="close" data-dismiss="modal"
+                                        aria-label="Close"><span
                                         aria-hidden="true">&times;</span></button>
                                 <h4 class="modal-title">{{ title }}
 
@@ -16,7 +17,7 @@
 
                             <div class="modal-body">
                                 <div class="row">
-                                    <slot></slot>
+                                    <slot v-on:closeModal="closeModal"></slot>
                                 </div>
                             </div>
                         </div>
@@ -28,18 +29,22 @@
 </template>
 
 <script>
-  export default {
-    name: 'modal',
-    props: ['showModal','modalId', 'modalClass', 'modalSize', 'title'],
-    data: function () {
-      return {}
-    },
-    methods:{
-      onEscapeClose: function(key){
+    export default {
+        name: 'modal',
+        props: ['showModal', 'modalId', 'modalClass', 'modalSize', 'title'],
+        data: function () {
+            return {}
+        },
+        methods: {
+            closeModal: function () {
+                console.log("Close Modal");
+                this.$emit('close');
+            },
+            onEscapeClose: function (key) {
 
-      }
+            }
+        }
     }
-  }
 </script>
 
 
@@ -56,7 +61,7 @@
         transition: opacity .3s ease;
     }
 
-    .modal-body{
+    .modal-body {
         padding: 2px 15px;
     }
 
@@ -65,7 +70,7 @@
         vertical-align: middle;
     }
 
-    .modal-dialog{
+    .modal-dialog {
         z-index: 9999;
     }
 </style>
