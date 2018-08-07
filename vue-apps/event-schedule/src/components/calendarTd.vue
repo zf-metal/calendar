@@ -23,8 +23,10 @@
       }
     },
     mounted: function () {
-      this.calculateTop();
-      this.calculateLeft();
+      this.$nextTick(() => {
+        this.calculateTop();
+        this.calculateLeft();
+      });
     },
     methods: {
       ...mapActions([
