@@ -173,6 +173,7 @@
                 'getCalendars',
                 'hasCalendars',
                 'getLoading',
+                'getEventIndexById'
             ]),
             getEvent: function () {
                 return this.value;
@@ -220,7 +221,7 @@
                 HTTP.put("events/" + this.value.id, this.value
                 ).then((response) => {
                     this.fSave();
-                    this.$store.commit('UPDATE_EVENT', {index: this.index, event: this.value});
+                    this.$store.commit('UPDATE_EVENT', {index: this.getEventIndexById(this.value.id), event: this.value});
                     this.$store.commit('LOADING_LESS');
 
                     if (this.value.calendar == null || this.value.calendar == undefined || this.value.calendar == "") {
