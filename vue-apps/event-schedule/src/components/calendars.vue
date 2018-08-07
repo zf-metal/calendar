@@ -132,21 +132,6 @@
             this.handleCalendarPosition();
         },
         watch: {
-            getVisibleCalendars: function () {
-                this.$nextTick(() => {
-                    this.$forceUpdate();
-                });
-            },
-            getCellHeight: function () {
-                this.$nextTick(() => {
-                    this.$forceUpdate();
-                });
-            },
-//            getRc: function(){
-//                this.$nextTick(() => {
-//                    this.$forceUpdate();
-//                });
-//            }
         },
         computed: {
             ...mapGetters([
@@ -192,14 +177,10 @@
                 'calendarList',
                 'preEventList',
                 'removePreEvent',
-                'updateEvent',
                 'pushEvent'
             ]),
             closeModalForm: function(){
                 this.$store.commit('SET_SHOW_MODAL_FORM', false);
-            },
-            getEventDate: function (start) {
-                return start.substr(0, 10);
             },
             showMap: function (id, name) {
                 this.calendarId = id;

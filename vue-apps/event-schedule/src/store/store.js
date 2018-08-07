@@ -238,11 +238,11 @@ const getters = {
         return state.events[key];
     },
     getEventIndexById: (state) => (id) => {
-        return state.events.find(e => e.id === id)
+        return state.events.findIndex(e => e.id === id)
     },
-    getEventByTd: (state, getters) => (calendar, start) => {
+    getEventByTd: (state, getters) => (calendar, start,end) => {
         return state.events.filter(function (e) {
-            if (e.calendar == calendar && e.start == start) {
+            if (e.calendar == calendar && e.start >= start && e.start < end) {
                 return true;
             }
             return false;

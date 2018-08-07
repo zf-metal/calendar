@@ -1,7 +1,7 @@
 <template>
     <td class="zfc-column-calendar" :class="getClassDependingHour" :id="ki" :style="getCalendarTdStyle">
         <drop @drop="handleDrop" class="zfc-dropcell">
-            <event v-for="(event,index) in getEventByTd(calendarId,start)"  :key="index"
+            <event v-for="(event,index) in getEventByTd(calendarId,start,end)"  :key="index"
                    :index="index" :event="event"
                    v-on:editEvent="onEditEvent">
             </event>
@@ -15,6 +15,11 @@
     import {calculateEnd} from './../utils/helpers'
     import event from './event.vue'
 
+
+    import moment from 'moment'
+    import tz from 'moment-timezone'
+    import 'moment/locale/es';
+
     export default {
         name: 'calnedarTd',
         props: ['calendarId', 'ki', 'name', 'date', 'hour', 'parentTop', 'parentLeft', 'rc', 'cellHeight', 'isNextDay', 'day'],
@@ -24,8 +29,16 @@
                 top: 0,
                 left: 0,
                 upHere: false,
+                start: null,
+                end: null,
             }
         },
+      mounted: function(){
+        this.start = this.date+ " "+ this.hour;
+        var end = moment(this.start, "YYYY-MM-DD HH:mm");
+        end.add(30, "minutes");
+        this.end = end.format("YYYY-MM-DD HH:mm");
+      },
         computed: {
             ...mapGetters([
                 'getRc',
@@ -35,9 +48,6 @@
                 'getEventByTd',
                 'getEventIndexById'
             ]),
-            start: function(){
-                return this.date+ " "+ this.hour;
-            },
             getCalendarTdStyle: function () {
                 return "height:" + this.cellHeight + "px";
             },

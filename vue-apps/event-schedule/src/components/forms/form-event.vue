@@ -221,15 +221,16 @@
                 HTTP.put("events/" + this.value.id, this.value
                 ).then((response) => {
                     this.fSave();
-                    this.$store.commit('UPDATE_EVENT', {index: this.getEventIndexById(this.value.id), event: this.value});
-                    this.$store.commit('LOADING_LESS');
+                  this.$store.commit('LOADING_LESS');
 
-                    if (this.value.calendar == null || this.value.calendar == undefined || this.value.calendar == "") {
-                        this.$store.commit('REMOVE_EVENT', this.index);
+                    if (this.value.calendar) {
+                      this.$store.commit('UPDATE_EVENT', {index: this.getEventIndexById(this.value.id), event: this.value});
+                    }else{
+                        this.$store.commit('REMOVE_EVENT', this.getEventIndexById(this.value.id));
                         this.$store.commit('ADD_PRE_EVENT', this.value);
+                        this.$store.commit('SET_EVENT_ID_SELECTED', null);
                         this.$store.commit('SET_EVENT_SELECTED', null);
-                        this.$store.commit('SET_EVENT_FORM', null);
-                        this.$store.commit('SET_EVENT_INDEX', null);
+                        this.$store.commit('SET_EVENT_INDEX_SELECTED', null);
                         this.$emit('closeModal');
                     }
 
