@@ -10,7 +10,7 @@
         <div class="col-lg-10 zfc-calendars-parent">
 
 
-            <table class="table-bordered table-striped table-responsive zfc-header-table" :style="getStyleHeaderFix">
+            <table class="table-bordered table-striped table-responsive zfc-calendar-table" :style="getStyleHeaderFix">
                 <thead>
                 <tr v-if="hasCalendars">
                     <th class="zfc-column-hours"></th>
@@ -26,7 +26,7 @@
                 </thead>
             </table>
             <div class="zfc-calendars" ref="zfcCalendars" v-on:scroll="handleCalendarScroll">
-                <table class="table-bordered table-striped table-responsive zfc-td" border="1">
+                <table class="table-bordered table-striped table-responsive zfc-td">
 
                     <tbody>
 
@@ -220,24 +220,12 @@
                 this.$store.commit('SET_CALENDAR_POSITION', {top: this.top, left: this.left});
             },
             handleCalendarScroll: function (e) {
-                var target = null;
-                if(e.target != undefined){
-                    target = e.target;
-                }else{
-                    target = e.srcElement;
-                }
-                this.$store.commit('SET_CALENDAR_SCROLL', {top: target.scrollTop, left: target.scrollLeft});
+                this.$store.commit('SET_CALENDAR_SCROLL', {top: e.srcElement.scrollTop, left: e.srcElement.scrollLeft});
             },
             handleWindowScroll: function (e) {
-                var target = null;
-                if(e.target != undefined){
-                    target = e.target;
-                }else{
-                    target = e.srcElement;
-                }
                 this.$store.commit('SET_BODY_SCROLL', {
-                    top: target.scrollTop || window.pageYOffset,
-                    left: target.scrollLeft || window.pageXOffset
+                    top: e.srcElement.scrollTop || window.pageYOffset,
+                    left: e.srcElement.scrollLeft || window.pageXOffset
                 });
             },
         }
@@ -281,25 +269,15 @@
 
 
 
-    .zfc-header-table{
+    .zfc-calendar-table {
         position: fixed;
         z-index: 11;
     }
 
-    .zfc-header-table th {
+    .zfc-calendar-table th {
         background-color: #0e2c44 !important;
         color: #ffffcc;
 
-    }
-
-    table.zfc-td td:first-child,
-    table.zfc-td th:first-child {
-        position: -webkit-sticky;
-        position: sticky;
-        left:0;
-        z-index: 30;
-        background-color: #FAFAFA;
-        border: 1px solid #d9d9d9;
     }
 
     table.zfc-td {
@@ -310,8 +288,11 @@
         font-size: 14px;
         padding: 0;
         margin: 0;
-        border: 1px solid #d9d9d9;
-        border-width: 1px !important;
+    }
+
+    table.zfc-td > tbody > tr > td > div {
+        height: 100%;
+        background: #0d6aad;
     }
 
     .cursorPointer {

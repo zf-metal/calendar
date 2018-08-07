@@ -10,26 +10,22 @@
         <div class="col-lg-10 zfc-calendars-parent">
 
 
-            <table class="table-bordered table-striped table-responsive zfc-header-table" :style="getStyleHeaderFix">
-                <thead>
-                <tr v-if="hasCalendars">
-                    <th class="zfc-column-hours"></th>
-                    <th class="zfc-column-calendar"
-                        v-for="calendar in getVisibleCalendars"
-                        :key="calendar.id">
+            <vue-scrolling-table>
+                <template slot="thead">
+                    <tr v-if="hasCalendars">
+                        <th class="zfc-column-hours"></th>
+                        <th class="zfc-column-calendar"
+                            v-for="calendar in getVisibleCalendars"
+                            :key="calendar.id">
                                 <span>{{calendar.name}}
                                     <i @click="showMap(calendar.id,calendar.name)"
                                        class="material-icons cursorPointer pull-right" style="vertical-align: bottom">map</i></span>
 
-                    </th>
-                </tr>
-                </thead>
-            </table>
-            <div class="zfc-calendars" ref="zfcCalendars" v-on:scroll="handleCalendarScroll">
-                <table class="table-bordered table-striped table-responsive zfc-td" border="1">
+                        </th>
+                    </tr>
+                </template>
 
-                    <tbody>
-
+                <template slot="tbody">
                     <!--TODAY-->
                     <tr v-if="hasCalendars" v-for="hour in getHours" v-bind:key="getDate + hour">
                         <td class="zfc-column-hours">{{hour}}</td>
@@ -37,11 +33,11 @@
                                 v-for="calendar in getVisibleCalendars"
                                 :key='getRc + getDate + calendar.id + hour' :ki="getRc + getDate + calendar.id + hour"
                                 :calendarId="calendar.id" :name="calendar.name"
-                                :date="getDate" :hour="hour"
-                                :parentTop="top" :parentLeft="left" :rc="getRc" :isNextDay="false" :day="getDay"
+                                :date="getDate" :hour="hour" :rc="getRc" :isNextDay="false" :day="getDay"
                                 :cellHeight="getCellHeight">
                         </calendarTd>
                     </tr>
+
 
                     <tr style="height: 3px;">
                         <th v-if="hasCalendars" class="zfc-column-hours" style="background-color: #0c0c0c ">
@@ -57,19 +53,18 @@
                         <td class="zfc-column-hours">{{hour}}</td>
                         <calendarTd
                                 v-for="calendar in getVisibleCalendars"
-                                :key='getRc + getNextDate + calendar.id + hour' :ki="getRc + getNextDate + calendar.id + hour"
+                                :key='getRc + getNextDate + calendar.id + hour'
+                                :ki="getRc + getNextDate + calendar.id + hour"
                                 :calendarId="calendar.id" :name="calendar.name"
-                                :date="getNextDate" :hour="hour"
-                                :parentTop="top" :parentLeft="left" :rc="getRc" :isNextDay="true" :day="getNextDay"
+                                :date="getNextDate" :hour="hour" :rc="getRc" :isNextDay="true" :day="getNextDay"
                                 :cellHeight="getCellHeight">
                         </calendarTd>
                     </tr>
+                </template>
 
-                    </tbody>
-                </table>
+            </vue-scrolling-table>
 
 
-            </div>
         </div>
 
 
@@ -82,6 +77,7 @@
             <maps :calendarId="calendarId" :calendarName="calendarName"></maps>
         </modal>
     </div>
+
 </template>
 
 <script>
@@ -102,7 +98,7 @@
 
     export default {
         name: 'calendars',
-        components: {calendarTd, preEvent, Drag, Drop, modal, loading, formEvent, navi, panel, maps,vueScrollingTable},
+        components: {calendarTd, preEvent, Drag, Drop, modal, loading, formEvent, navi, panel, maps, vueScrollingTable},
         data() {
             return {
                 tds: {},
@@ -129,7 +125,7 @@
                 window.addEventListener('scroll', this.handleWindowScroll);
                 window.addEventListener('resize', this.handleCalendarPosition);
             });
-            this.handleCalendarPosition();
+           // this.handleCalendarPosition();
         },
         watch: {
             getVisibleCalendars: function () {
@@ -177,9 +173,9 @@
                 var left = this.left - this.getCalendarScroll.left;
                 return 'left: ' + left + 'px';
             },
-            getModalFormTitle: function (){
-                if(this.getEventForm){
-                    return this.getEventForm.id +'. '+this.getEventForm.title;
+            getModalFormTitle: function () {
+                if (this.getEventForm) {
+                    return this.getEventForm.id + '. ' + this.getEventForm.title;
                 }
             }
         },
@@ -195,7 +191,7 @@
                 'updateEvent',
                 'pushEvent'
             ]),
-            closeModalForm: function(){
+            closeModalForm: function () {
                 this.$store.commit('SET_SHOW_MODAL_FORM', false);
             },
             getEventDate: function (start) {
@@ -220,24 +216,12 @@
                 this.$store.commit('SET_CALENDAR_POSITION', {top: this.top, left: this.left});
             },
             handleCalendarScroll: function (e) {
-                var target = null;
-                if(e.target != undefined){
-                    target = e.target;
-                }else{
-                    target = e.srcElement;
-                }
-                this.$store.commit('SET_CALENDAR_SCROLL', {top: target.scrollTop, left: target.scrollLeft});
+                this.$store.commit('SET_CALENDAR_SCROLL', {top: e.srcElement.scrollTop, left: e.srcElement.scrollLeft});
             },
             handleWindowScroll: function (e) {
-                var target = null;
-                if(e.target != undefined){
-                    target = e.target;
-                }else{
-                    target = e.srcElement;
-                }
                 this.$store.commit('SET_BODY_SCROLL', {
-                    top: target.scrollTop || window.pageYOffset,
-                    left: target.scrollLeft || window.pageXOffset
+                    top: e.srcElement.scrollTop || window.pageYOffset,
+                    left: e.srcElement.scrollLeft || window.pageXOffset
                 });
             },
         }
@@ -246,6 +230,14 @@
 </script>
 
 <style scoped>
+
+    table.scrolling td:first-child,
+    table.scrolling th:first-child {
+        position: -webkit-sticky;
+        position: sticky;
+        left:0;
+    }
+
 
     .zfc-main-container {
         height: 100vh;
@@ -279,39 +271,27 @@
         max-width: 50px;
     }
 
-
-
-    .zfc-header-table{
+    .zfc-calendar-table {
         position: fixed;
         z-index: 11;
     }
 
-    .zfc-header-table th {
+    .zfc-calendar-table th {
         background-color: #0e2c44 !important;
         color: #ffffcc;
 
     }
 
-    table.zfc-td td:first-child,
-    table.zfc-td th:first-child {
-        position: -webkit-sticky;
-        position: sticky;
-        left:0;
-        z-index: 30;
-        background-color: #FAFAFA;
-        border: 1px solid #d9d9d9;
-    }
 
-    table.zfc-td {
-        margin-top: 28px;
-    }
-
-    table.zfc-td > tbody > tr > td, table.zfc-td > tbody > tr > th {
+    table.scrolling > tbody > tr > td, table.zfc-td > tbody > tr > th {
         font-size: 14px;
         padding: 0;
         margin: 0;
-        border: 1px solid #d9d9d9;
-        border-width: 1px !important;
+    }
+
+    table.scrolling > tbody > tr > td > div {
+        height: 100%;
+        background: #0d6aad;
     }
 
     .cursorPointer {

@@ -1,6 +1,6 @@
 <template>
     <div>
-        <input type="text" placeholder="Filtrar por cliente/dir" class="form-control" id="filterString"  @keyup="changeFilterString" v-model="filterString" />
+        <input type="text" placeholder="Filtrar por cliente/dirección" class="form-control" id="filterString"  @keyup="changeFilterString" v-model="filterString" />
     </div>
 </template>
 

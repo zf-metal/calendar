@@ -1,5 +1,7 @@
 <template>
     <div class="zfc-panel">
+        <div style="height: 30px; z-index: 12; position: sticky; background-color: #ffffff;"></div>
+        <div class="zfc-panel-child">
         <vue-tabs>
             <v-tab title="P">
                 <filter-string></filter-string>
@@ -31,7 +33,7 @@
 
         </vue-tabs>
     </div>
-
+    </div>
 </template>
 
 <script>
@@ -82,8 +84,12 @@
 <style scoped>
     .zfc-panel{
         height: 95%;
-        overflow: auto;
+        overflow: hidden;
     }
 
+    .zfc-panel-child{
+        height: 95%;
+        overflow: auto;
+    }
 
 </style>

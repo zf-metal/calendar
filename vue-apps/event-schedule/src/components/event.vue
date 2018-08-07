@@ -150,14 +150,14 @@
     .zfc-event {
         position: absolute;
         overflow: hidden;
-        display: block;
+        /*display: block;*/
         font-size: .90em;
         line-height: 1.3;
         border-radius: 3px;
         /*border: 1px solid #5c6667;*/
         background-color: #ffffff;
         color: #0c0c0c;
-        z-index: 10;
+        z-index: 1009;
         min-width: 255px;
         width: 255px;
         min-height: 30px;
