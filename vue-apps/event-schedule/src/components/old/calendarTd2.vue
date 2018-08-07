@@ -1,7 +1,13 @@
 <template>
     <td class="zfc-column-calendar" :class="getClassDependingHour" :id="ki" style="height: 100px"
-        :style="getCalendarTdStyle" >
+        :style="getCalendarTdStyle" @mouseover="upHere = true" @mouseleave="upHere = false" >
         <drop @drop="handleDrop" class="zfc-dropcell">
+
+            <div v-if="upHere">
+                {{ki}} <br>
+                Calendar: {{calendarId}} - Date: {{date}} - Hour: {{hour}} - top: {{top}} -  ParentTop {{parentTop}}
+            </div>
+
         </drop>
     </td>
 </template>
@@ -25,6 +31,7 @@
     mounted: function () {
       this.calculateTop();
       this.calculateLeft();
+      console.log("CalendarTD:  Mounted")
     },
     methods: {
       ...mapActions([
@@ -73,6 +80,22 @@
       },
 
     },
+    watch: {
+//      getRc: function () {
+//        this.calculateTop()
+//        this.calculateLeft()
+//
+//        console.log("CalendarTD: RC "+ this.ki)
+//      }
+//      parentTop: function () {
+//        this.calculateTop();
+//        this.calculateLeft();
+//      },
+//      parentLeft: function () {
+//        this.calculateTop();
+//        this.calculateLeft();
+//      }
+    },
     computed: {
       ...mapGetters([
         'getRc',
@@ -86,15 +109,18 @@
       getClassDependingHour: function () {
         var schedule = this.getCalendarSchedule(this.calendarId, this.day);
 
-        if (!schedule || (!schedule.start && !schedule.end)) {
-          return this.isNextDay == true ? 'zfc-hour-inactive-nd' : 'zfc-hour-inactive';
+        if (schedule != undefined && schedule.start != undefined && schedule.end != undefined) {
+          if ((this.hour >= schedule.start && this.hour < schedule.end) || (this.hour >= schedule.start2 && this.hour < schedule.end2)) {
+            if (this.isNextDay == true) {
+              return 'zfc-hour-active-nd';
+            }
+            return 'zfc-hour-active';
+          }
+          if (this.isNextDay == true) {
+            return 'zfc-hour-inactive-nd';
+          }
         }
-
-        if ((this.hour >= schedule.start && this.hour < schedule.end) || (this.hour >= schedule.start2 && this.hour < schedule.end2)) {
-          return this.isNextDay == true ? 'zfc-hour-active-nd' : 'zfc-hour-active';
-        }
-        return this.isNextDay == true ? 'zfc-hour-inactive-nd' : 'zfc-hour-inactive';
-
+        return 'zfc-hour-inactive';
       }
     }
   }

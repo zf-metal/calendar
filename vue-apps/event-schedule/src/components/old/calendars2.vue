@@ -63,6 +63,18 @@
                         </calendarTd>
                     </tr>
 
+
+                    <!--<tr>-->
+                        <!--<th v-if="hasCalendars" class="zfc-column-hours">FB</th>-->
+
+                        <!--<calendarTd v-for="calendar in getVisibleCalendars"-->
+                                    <!--:key='getRc + calendar.id+"_fb"' :ki='getRc + calendar.id+"_fb"'-->
+                                    <!--:calendarId="calendar.id" :name="calendar.name" :date="'fb'" :hour="'fb'"-->
+                                    <!--:parentTop="top" :parentLeft="left">-->
+                        <!--</calendarTd>-->
+                    <!--</tr>-->
+
+
                     </tbody>
                 </table>
 
