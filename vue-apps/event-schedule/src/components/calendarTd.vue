@@ -53,6 +53,7 @@
       },
       calculateTop() {
         this.top = this.$el.getBoundingClientRect().top - this.parentTop;
+    //    this.top = this.$el.getBoundingClientRect().top;
         this.$store.commit('SET_COORDINATE', {
           calendar: this.calendarId,
           date: this.date,
@@ -64,6 +65,7 @@
       },
       calculateLeft() {
         this.left = this.$el.getBoundingClientRect().left - this.parentLeft + 5;
+     //   this.left = this.$el.getBoundingClientRect().left + 5;
         this.$store.commit('SET_COORDINATE', {
           calendar: this.calendarId,
           date: this.date,

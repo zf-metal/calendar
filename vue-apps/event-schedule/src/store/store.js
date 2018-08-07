@@ -144,8 +144,15 @@ const getters = {
       return false;
     }
 
+    var plus = 0;
+    // if(type== 'top'){
+    //   plus = state.calendarScroll.top;
+    // }
+    // if(type== 'left'){
+    //   plus = state.calendarScroll.left;
+    // }
 
-    return state.coordinates[calendar][date][hour][type];
+    return state.coordinates[calendar][date][hour][type] - plus;
   },
   getLoading: state => {
     return state.loading;

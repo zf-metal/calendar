@@ -142,7 +142,6 @@ const getters = {
       return false;
     }
 
-
     return state.coordinates[calendar][date][hour][type];
   },
   getLoading: state => {
