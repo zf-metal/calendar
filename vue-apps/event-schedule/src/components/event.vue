@@ -157,7 +157,7 @@
         /*border: 1px solid #5c6667;*/
         background-color: #ffffff;
         color: #0c0c0c;
-        z-index: 1009;
+        z-index: 12;
         min-width: 255px;
         width: 255px;
         min-height: 30px;
