@@ -66,19 +66,14 @@
                     </tbody>
                 </table>
 
-                <event v-for="(event,index) in getEvents" v-if="isVisibleCalendar(event.calendar)" :key="getRc + index"
-                       :index="index" :event="event"
-                       :top="getCoordinate(event,'top')"
-                       :left="getCoordinate(event,'left')"
-                       v-on:editEvent="onEditEvent">
-                </event>
+
             </div>
         </div>
 
 
-        <modal :title="getModalFormTitle" :showModal="showModal" @close="showModal = false">
+        <modal :title="getModalFormTitle" :showModal="getShowModalForm" @close="closeModalForm">
             <form-event :calendars="getCalendars" v-model="getEventForm"
-                        :index="getEventIndex" v-on:remove="removeEvent"/>
+                        :index="getEventIndexSelected" v-on:remove="removeEvent"/>
         </modal>
 
         <modal :title="'Mapa: '+calendarName" :showModal="showModalMap" @close="showModalMap = false">
@@ -154,7 +149,7 @@
         computed: {
             ...mapGetters([
                 'getEventForm',
-                'getEventIndex',
+                'getEventIndexSelected',
                 'getCellHeight',
                 'getLoading',
                 'getCoordinate',
@@ -173,7 +168,8 @@
                 'getHours',
                 'getNextHours',
                 'getRc',
-                'getCalendarScroll'
+                'getCalendarScroll',
+                'getShowModalForm'
             ]),
             getStyleHeaderFix: function () {
                 var left = this.left - this.getCalendarScroll.left;
@@ -197,6 +193,9 @@
                 'updateEvent',
                 'pushEvent'
             ]),
+            closeModalForm: function(){
+                this.$store.commit('SET_SHOW_MODAL_FORM', false);
+            },
             getEventDate: function (start) {
                 return start.substr(0, 10);
             },
@@ -212,12 +211,6 @@
             removeEvent: function () {
                 //TODO
                 console.log('todo');
-            },
-            onEditEvent: function (index) {
-                this.$store.commit('SET_EVENT_FORM', this.getEventByKey(index));
-                this.$store.commit('SET_EVENT_INDEX', index);
-                this.titleModal = 'Evento: ' + this.getEventForm.title
-                this.showModal = true
             },
             handleCalendarPosition: function () {
                 this.top = this.$refs.zfcCalendars.getBoundingClientRect().top;
@@ -259,18 +252,20 @@
         position: relative;
     }
 
+    .zfc-column-calendar {
+        width: 260px !important;
+        min-width: 260px !important;
+        max-width: 260px !important;
+        position: relative;
+    }
+
     .zfc-column-hours {
         width: 50px !important;
         min-width: 50px;
         max-width: 50px;
     }
 
-    .zfc-column-calendar {
-        width: 260px !important;
-        min-width: 260px !important;
-        max-width: 260px !important;
-        text-align: center;
-    }
+
 
     .zfc-calendar-table {
         position: fixed;
@@ -291,7 +286,6 @@
         font-size: 14px;
         padding: 0;
         margin: 0;
-        text-align: center;
     }
 
     table.zfc-td > tbody > tr > td > div {

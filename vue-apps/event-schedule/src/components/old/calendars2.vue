@@ -90,7 +90,7 @@
 
         <modal :title="getModalFormTitle" :showModal="showModal" @close="showModal = false">
             <form-event :calendars="getCalendars" v-model="getEventForm"
-                        :index="getEventIndex" v-on:remove="removeEvent"/>
+                        :index="getEventIndexSelected" v-on:remove="removeEvent"/>
         </modal>
 
         <modal :title="'Mapa: '+calendarName" :showModal="showModalMap" @close="showModalMap = false">
@@ -166,7 +166,7 @@
         computed: {
             ...mapGetters([
                 'getEventForm',
-                'getEventIndex',
+                'getEventIndexSelected',
                 'getCellHeight',
                 'getLoading',
                 'getCoordinate',

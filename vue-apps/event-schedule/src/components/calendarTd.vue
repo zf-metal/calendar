@@ -1,112 +1,101 @@
 <template>
-    <td class="zfc-column-calendar" style="height: 60px;" :class="getClassDependingHour" :id="ki" :style="getCalendarTdStyle" >
+    <td class="zfc-column-calendar" :class="getClassDependingHour" :id="ki" :style="getCalendarTdStyle">
         <drop @drop="handleDrop" class="zfc-dropcell">
+            <event v-for="(event,index) in getEventByTd(calendarId,start)"  :key="index"
+                   :index="index" :event="event"
+                   v-on:editEvent="onEditEvent">
+            </event>
         </drop>
     </td>
 </template>
 
 <script>
-  import {mapGetters, mapActions} from 'vuex';
-  import {Drag, Drop} from 'vue-drag-drop';
-  import {calculateEnd} from './../utils/helpers'
+    import {mapGetters, mapActions} from 'vuex';
+    import {Drag, Drop} from 'vue-drag-drop';
+    import {calculateEnd} from './../utils/helpers'
+    import event from './event.vue'
 
-  export default {
-    name: 'calnedarTd',
-    props: ['calendarId', 'ki', 'name', 'date', 'hour', 'parentTop', 'parentLeft', 'rc', 'cellHeight', 'isNextDay', 'day'],
-    components: {Drag, Drop},
-    data() {
-      return {
-        top: 0,
-        left: 0,
-        upHere: false,
-      }
-    },
-    mounted: function () {
-      this.calculateTop();
-      this.calculateLeft();
-      this.$nextTick(() => {
-        this.calculateTop();
-        this.calculateLeft();
-      });
-    },
-    methods: {
-      ...mapActions([
-        'removePreEvent',
-        'updateEvent',
-        'pushEvent',
-      ]),
-      handleDrop: function (data) {
+    export default {
+        name: 'calnedarTd',
+        props: ['calendarId', 'ki', 'name', 'date', 'hour', 'parentTop', 'parentLeft', 'rc', 'cellHeight', 'isNextDay', 'day'],
+        components: {Drag, Drop,event},
+        data() {
+            return {
+                top: 0,
+                left: 0,
+                upHere: false,
+            }
+        },
+        computed: {
+            ...mapGetters([
+                'getRc',
+                'getCalendarSchedule',
+                'getEventByKey',
+                'getPreEventById',
+                'getEventByTd',
+                'getEventIndexById'
+            ]),
+            start: function(){
+                return this.date+ " "+ this.hour;
+            },
+            getCalendarTdStyle: function () {
+                return "height:" + this.cellHeight + "px";
+            },
+            getClassDependingHour: function () {
+                var schedule = this.getCalendarSchedule(this.calendarId, this.day);
 
-        var event = data.event;
-        event.calendar = this.calendarId;
-        event.start = this.date + " " + this.hour;
-        event.end = calculateEnd(event.start, event.duration);
-        event.hour = this.hour;
+                if (!schedule || (!schedule.start && !schedule.end)) {
+                    return this.isNextDay == true ? 'zfc-hour-inactive-nd' : 'zfc-hour-inactive';
+                }
 
-        if (data.op != undefined && data.op == 'push') {
-          this.pushEvent(event);
-          this.removePreEvent(this.getPreEventById(event.id));
-        }
-        if (data.op != undefined && data.op == 'update') {
-          this.updateEvent({index: data.index, event: event});
-        }
-      },
-      calculateTop() {
-        this.top = this.$el.getBoundingClientRect().top - this.parentTop;
-    //    this.top = this.$el.getBoundingClientRect().top;
-        this.$store.commit('SET_COORDINATE', {
-          calendar: this.calendarId,
-          date: this.date,
-          hour: this.hour,
-          type: 'top',
-          value: this.top
-        });
-        return this.top;
-      },
-      calculateLeft() {
-        this.left = this.$el.getBoundingClientRect().left - this.parentLeft + 5;
-     //   this.left = this.$el.getBoundingClientRect().left + 5;
-        this.$store.commit('SET_COORDINATE', {
-          calendar: this.calendarId,
-          date: this.date,
-          hour: this.hour,
-          type: 'left',
-          value: this.left
-        });
+                if ((this.hour >= schedule.start && this.hour < schedule.end) || (this.hour >= schedule.start2 && this.hour < schedule.end2)) {
+                    return this.isNextDay == true ? 'zfc-hour-active-nd' : 'zfc-hour-active';
+                }
+                return this.isNextDay == true ? 'zfc-hour-inactive-nd' : 'zfc-hour-inactive';
 
-        return this.left;
-      },
+            }
+        },
+        methods: {
+            ...mapActions([
+                'removePreEvent',
+                'updateEvent',
+                'pushEvent',
+            ]),
+            handleDrop: function (data) {
+                var event = data.event;
+                event.calendar = this.calendarId;
+                event.start = this.date + " " + this.hour;
+                event.end = calculateEnd(event.start, event.duration);
+                event.hour = this.hour;
 
-    },
-    computed: {
-      ...mapGetters([
-        'getRc',
-        'getCalendarSchedule',
-        'getEventByKey',
-        'getPreEventById'
-      ]),
-      getCalendarTdStyle: function () {
-        return "height:" + this.cellHeight + "px";
-      },
-      getClassDependingHour: function () {
-        var schedule = this.getCalendarSchedule(this.calendarId, this.day);
+                if (data.op != undefined && data.op == 'push') {
+                    this.pushEvent(event);
+                    this.removePreEvent(this.getPreEventById(event.id));
+                }
+                if (data.op != undefined && data.op == 'update') {
+                    this.updateEvent({index: this.getEventIndexById(event.id), event: event});
+                }
+            },
+            onEditEvent: function(){
 
-        if (!schedule || (!schedule.start && !schedule.end)) {
-          return this.isNextDay == true ? 'zfc-hour-inactive-nd' : 'zfc-hour-inactive';
-        }
+            }
 
-        if ((this.hour >= schedule.start && this.hour < schedule.end) || (this.hour >= schedule.start2 && this.hour < schedule.end2)) {
-          return this.isNextDay == true ? 'zfc-hour-active-nd' : 'zfc-hour-active';
-        }
-        return this.isNextDay == true ? 'zfc-hour-inactive-nd' : 'zfc-hour-inactive';
 
-      }
+        },
+
     }
-  }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+
+    .zfc-column-calendar {
+        width: 260px !important;
+        min-width: 260px !important;
+        max-width: 260px !important;
+        position: relative;
+    }
+
     .zfc-dropcell {
         height: 100%;
     }

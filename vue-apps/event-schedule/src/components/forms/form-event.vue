@@ -172,7 +172,6 @@
                 'getEventTypes',
                 'getCalendars',
                 'hasCalendars',
-                'getCoordinate',
                 'getLoading',
             ]),
             getEvent: function () {
@@ -217,8 +216,6 @@
                 this.setHour();
                 this.iSave();
                 this.$store.commit('LOADING_PLUS');
-                this.value.top = this.getCoordinate(this.getEvent, 'top');
-                this.value.left = this.getCoordinate(this.getEvent, 'left');
 
                 HTTP.put("events/" + this.value.id, this.value
                 ).then((response) => {

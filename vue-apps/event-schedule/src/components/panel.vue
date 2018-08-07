@@ -24,8 +24,8 @@
             <v-tab title="F">
                 <form-event :calendars="getCalendars"
                             v-model="getEventSelected"
-                            v-if="getIndexEventSelected !=  null"
-                            :index="getIndexEventSelected"
+                            v-if="getEventIndexSelected !=  null"
+                            :index="getEventIndexSelected"
                 />
             </v-tab>
 
@@ -64,7 +64,7 @@
                 'hasCalendars',
                 'getCalendars',
                 'getEventSelected',
-                'getIndexEventSelected',
+                'getEventIndexSelected',
                 'getServiceSelected'
             ]),
         },
