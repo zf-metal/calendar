@@ -1,5 +1,5 @@
 <template>
-    <td class="zfc-column-calendar" :class="getClassDependingHour" :id="ki" :style="getCalendarTdStyle" >
+    <td class="zfc-column-calendar" style="height: 60px;" :class="getClassDependingHour" :id="ki" :style="getCalendarTdStyle" >
         <drop @drop="handleDrop" class="zfc-dropcell">
         </drop>
     </td>
