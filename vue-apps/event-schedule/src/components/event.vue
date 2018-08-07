@@ -81,7 +81,8 @@
         'getEventStateBgColor',
         'getEventTypeIcon',
         'getIndexEventSelected',
-        'getDistanceFromEventSelected'
+        'getDistanceFromEventSelected',
+        'getCoordinate'
       ]),
       getCliente: function () {
         if (this.event.client != undefined) {
@@ -110,6 +111,8 @@
       },
       getStyle: function () {
         return 'top: ' + this.top + 'px;' + ' left: ' + this.left + 'px;' + ' height:' + this.getHeight + "px;";
+
+      //  return 'top: ' + this.getCoordinate(this.event,'top') + 'px;' + ' left: ' + this.getCoordinate(this.event,'left') + 'px;' + ' height:' + this.getHeight + "px;";
       },
       getStateStyle: function () {
         return 'background-color:' + this.getEventStateBgColor(this.event.state) ;

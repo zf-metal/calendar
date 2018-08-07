@@ -1,6 +1,5 @@
 <template>
-    <td class="zfc-column-calendar" :class="getClassDependingHour" :id="ki" style="height: 100px"
-        :style="getCalendarTdStyle" >
+    <td class="zfc-column-calendar" :class="getClassDependingHour" :id="ki" :style="getCalendarTdStyle" >
         <drop @drop="handleDrop" class="zfc-dropcell">
         </drop>
     </td>
@@ -23,6 +22,8 @@
       }
     },
     mounted: function () {
+      this.calculateTop();
+      this.calculateLeft();
       this.$nextTick(() => {
         this.calculateTop();
         this.calculateLeft();

@@ -131,6 +131,8 @@ const getters = {
     var calendar = event.calendar;
 
     if (state.coordinates[calendar] == undefined) {
+      console.log(event);
+      console.log(state.coordinates);
       return false;
     }
 
@@ -300,6 +302,61 @@ const getters = {
     }
     return "";
   },
+  getStart: (state, getters) => {
+    var rstart = null;
+    if (getters.hasCalendars) {
+      for (var index = 0; index < state.calendars.length; ++index) {
+        if (state.calendars[index].schedules != undefined) {
+          var schedule = state.calendars[index].schedules.find(s => s.day == getters.getDay);
+          if (schedule != undefined && (schedule.start < rstart || rstart == null)) {
+            rstart = schedule.start;
+          }
+        }
+      }
+    }
+    if (rstart == null) rstart = "00:00";
+    return rstart;
+  },
+  getEnd: (state, getters) => {
+    var rend = null;
+    if (getters.hasCalendars) {
+      for (var index = 0; index < state.calendars.length; ++index) {
+        if (state.calendars[index].schedules != undefined) {
+          var schedule = state.calendars[index].schedules.find(schedule => schedule.day == getters.getDay);
+          if (schedule != undefined) {
+
+            if (schedule.end2 != undefined && schedule.end2 > rend) {
+              rend = schedule.end2;
+            } else if (schedule.end != undefined && schedule.end > rend) {
+              rend = schedule.end;
+            }
+          }
+        }
+      }
+    }
+    if (rend == null) rend = "23:59";
+    return rend;
+  },
+  getNextStart: (state, getters) => {
+    var rstart = "00:00";
+    return rstart;
+  },
+  getNextEnd: (state, getters) => {
+    var rend = "00:01";
+    if (getters.hasCalendars) {
+      for (var index = 0; index < state.calendars.length; ++index) {
+        if (state.calendars[index].schedules != undefined) {
+          var schedule = state.calendars[index].schedules.find(schedule => schedule.day == getters.getNextDay);
+          if (schedule != undefined && schedule.start != undefined && schedule.end != undefined) {
+            if (schedule.start == '00:00' && schedule.end > rend) {
+              rend = schedule.end;
+            }
+          }
+        }
+      }
+    }
+    return rend;
+  },
   getHours: (state, getters) => {
     var hours = [];
     if (getters.hasCalendars) {
@@ -318,10 +375,11 @@ const getters = {
   },
   getNextHours: (state, getters) => {
     var hours = [];
+
     if (getters.hasCalendars) {
       var flag = true;
       var t = moment("00:00", "HH:mm");
-      var e = moment("23:59", "HH:mm");
+      var e = moment(getters.getNextEnd, "HH:mm");
       while (flag) {
         hours.push(t.format("HH:mm"));
         t.add(30, "minutes");
@@ -408,7 +466,7 @@ const actions = {
   },
   eventList({state, getters, commit}) {
     state.loading = state.loading + 1;
-    HTTP.get("events?calendar=isNotNull&start=" + getters.getDate + "<>" + getters.getNextTwoDate
+    HTTP.get("events?calendar=isNotNull&start=" + getters.getDate + "<>" + getters.getNextDate + " " + getters.getNextEnd
     ).then((response) => {
       var events = [];
       for (var i = 0; i < response.data.length; i++) {
@@ -563,6 +621,7 @@ const mutations = {
     state.bodyScroll.left = left;
   },
   [SET_CALENDAR_SCROLL](state, {top, left}) {
+    //console.log(top,left);
     state.calendarScroll.top = top;
     state.calendarScroll.left = left;
   },
