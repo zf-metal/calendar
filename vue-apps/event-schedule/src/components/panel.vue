@@ -14,13 +14,7 @@
             </v-tab>
 
             <v-tab title="C">
-                <h4>Calendarios</h4>
-                <check-calendar
-                        v-if="hasCalendars"
-                        v-for="(calendar,index) in getCalendars" :key="index"
-                        :index="index" :name="calendar.name" :id="calendar.id"
-
-                ></check-calendar>
+                <filter-calendars></filter-calendars>
             </v-tab>
 
             <v-tab title="F">
@@ -41,8 +35,8 @@
     import preEvent from "./preEvent.vue";
     import filterZone from './filterZone.vue'
     import filterString from './filterString.vue'
+    import filterCalendars from "./filterCalendars.vue"
 
-    import checkCalendar from "./checkCalendar.vue"
     import service from "./service.vue"
     import modal from './helpers/modal.vue'
     import {VueTabs, VTab} from 'vue-nav-tabs'
@@ -56,7 +50,8 @@
                 showModal: false,
             }
         },
-        components: {preEvent, checkCalendar, service, VueTabs, VTab, modal, filterZone,filterString,formEvent},
+        components: {
+          preEvent,  service, VueTabs, VTab, modal, filterZone,filterString,formEvent, filterCalendars},
         computed: {
             ...mapGetters([
                 'getPreEventsFiltered',

@@ -544,12 +544,10 @@ const mutations = {
         state.calendars.push(calendar);
     },
     [SHOW_CALENDAR](state, index) {
-        state.coordinates = {};
         Vue.set(state.calendars[index], 'hidden', false);
         state.rc++;
     },
     [HIDE_CALENDAR](state, index) {
-        state.coordinates = {};
         Vue.set(state.calendars[index], 'hidden', true)
         state.rc++;
     },

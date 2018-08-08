@@ -1,7 +1,7 @@
 <template>
-    <div class="">
+    <div class="form-group">
+        <input type="checkbox" :name='id' v-on:change="toggleCalendar" v-model="active"/>
         <label>{{name}}</label>
-        <input type="checkbox" :name='id' v-on:change="toggleCalendar" v-model="active" />
     </div>
 </template>
 
@@ -10,14 +10,27 @@
 
   export default {
     name: 'checkCalendar',
-    props: ['index', 'id', 'name'],
+    props: ['index', 'id', 'name','hidden'],
     components: {},
     data() {
       return {
         active: true,
       }
     },
-    created: function () {
+    watch: {
+      hidden: function(h){
+        if(h == true){
+          this.active = false;
+        }else{
+          this.active = true;
+        }
+
+      }
+    },
+    computed: {
+      ...mapGetters([
+        'getCalendars',
+      ]),
     },
     methods: {
       ...mapActions([
@@ -25,9 +38,9 @@
         'hideCalendar',
       ]),
       toggleCalendar: function () {
-        if(this.active){
+        if (this.hidden) {
           this.showCalendar(this.index);
-        }else{
+        } else {
           this.hideCalendar(this.index);
         }
       }
