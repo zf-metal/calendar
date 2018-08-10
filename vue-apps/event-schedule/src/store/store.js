@@ -15,7 +15,7 @@ import {
     SET_BODY_SCROLL, SET_CALENDAR_SCROLL, SET_CALENDAR_POSITION,
     SET_EVENT_STATES, SET_EVENT_TYPES, SET_ZONES, HIDE_ZONE, SHOW_ZONE, SET_CELL_HEIGHT,
     UPDATE_RC, SET_FILTER_ZONE, SET_FILTER_STRING, LOADING_LESS, LOADING_PLUS, ADD_PRE_EVENT, REMOVE_EVENT,
-    SET_EVENT_FORM, SET_EVENT_ID_SELECTED, SET_EVENT_INDEX_SELECTED, SET_SHOW_MODAL_FORM, SET_EVENT_SELECTED
+    SET_EVENT_FORM, SET_EVENT_ID_SELECTED, SET_EVENT_INDEX_SELECTED, SET_SHOW_MODAL_FORM, SET_EVENT_SELECTED, SET_CALENDAR_START
 } from './mutation-types'
 
 Vue.use(Vuex)
@@ -28,6 +28,7 @@ Vue.use(Vuex)
 */
 
 const state = {
+    calendarStart: "00:00",
     eventIndexSelected: null,
     eventIdSelected: null,
     eventSelected: {},
@@ -76,6 +77,9 @@ const state = {
 */
 
 const getters = {
+    getCalendarStart: state => {
+        return state.calendarStart;
+    },
     getShowModalForm: state => {
       return state.showModalForm;
     },
@@ -301,19 +305,19 @@ const getters = {
         return "";
     },
     getStart: (state, getters) => {
-        var rstart = null;
-        if (getters.hasCalendars) {
-            for (var index = 0; index < state.calendars.length; ++index) {
-                if (state.calendars[index].schedules != undefined) {
-                    var schedule = state.calendars[index].schedules.find(s => s.day == getters.getDay);
-                    if (schedule != undefined && (schedule.start < rstart || rstart == null)) {
-                        rstart = schedule.start;
-                    }
-                }
-            }
-        }
-        if (rstart == null) rstart = "00:00";
-        return rstart;
+        // var rstart = null;
+        // if (getters.hasCalendars) {
+        //     for (var index = 0; index < state.calendars.length; ++index) {
+        //         if (state.calendars[index].schedules != undefined) {
+        //             var schedule = state.calendars[index].schedules.find(s => s.day == getters.getDay);
+        //             if (schedule != undefined && (schedule.start < rstart || rstart == null)) {
+        //                 rstart = schedule.start;
+        //             }
+        //         }
+        //     }
+        // }
+        // if (rstart == null) rstart = "00:00";
+        return this.calendarStart;
     },
     getEnd: (state, getters) => {
         var rend = null;
@@ -359,7 +363,7 @@ const getters = {
         var hours = [];
         if (getters.hasCalendars) {
             var flag = true;
-            var t = moment("00:00", "HH:mm");
+            var t = moment(getters.getCalendarStart, "HH:mm");
             var e = moment("23:59", "HH:mm");
             while (flag) {
                 hours.push(t.format("HH:mm"));
@@ -636,6 +640,9 @@ const mutations = {
     },
     [SET_SHOW_MODAL_FORM](state, value) {
         state.showModalForm = value;
+    },
+    [SET_CALENDAR_START](state, value) {
+        state.calendarStart = value;
     },
 };
 
