@@ -1,5 +1,5 @@
 <template>
-    <div class="hello">
+    <div>
     </div>
 </template>
 
@@ -7,7 +7,7 @@
     import {mapGetters, mapActions} from 'vuex';
 
     export default {
-        name: 'hello',
+        name: 'filterGroupCalendar',
         props:[],
         components: {},
         data() {

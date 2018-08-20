@@ -44,6 +44,7 @@ const state = {
     date: moment().tz('America/Argentina/Buenos_Aires').locale('es'),
     nextDate: null,
     calendars: [],
+    calendarGroups: [],
     vcalendars: [],
     rc: 1,
     preEvents: [],
@@ -77,6 +78,9 @@ const state = {
 */
 
 const getters = {
+  getCalendarsGroups: state => {
+    return state.calendarStart;
+  },
     getCalendarStart: state => {
         return state.calendarStart;
     },

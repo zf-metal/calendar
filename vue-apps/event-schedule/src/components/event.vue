@@ -33,8 +33,15 @@
                     <td><i class="material-icons" style="vertical-align: text-bottom;">account_box</i></td>
                     <td>{{getCliente}}</td>
                 </tr>
+
                 <tr>
-                    <td :style="getSucColor"><i class="material-icons" style="vertical-align: text-bottom;">business</i>
+                    <td :style="getSucColor"><i class="material-icons" style="vertical-align: bottom;">business</i>
+                    </td>
+                    <td :style="getSucColor">{{getZone}}</td>
+                </tr>
+
+                <tr>
+                    <td><i class="material-icons" style="vertical-align: text-bottom;">business</i>
                     </td>
                     <td>{{getLocation}}  </td>
                 </tr>
@@ -47,87 +54,93 @@
 </template>
 
 <script>
-    import {mapGetters, mapActions} from 'vuex';
-    import axios from "axios"
-    import moment from 'moment'
-    import 'moment/locale/es';
-    import service from './service.vue'
-    import {Drag, Drop} from 'vue-drag-drop';
+  import {mapGetters, mapActions} from 'vuex';
+  import axios from "axios"
+  import moment from 'moment'
+  import 'moment/locale/es';
+  import service from './service.vue'
+  import {Drag, Drop} from 'vue-drag-drop';
 
-    export default {
-        name: 'event',
-        props: [
-            'index',
-            'event',
-        ],
-        components: {Drag, service},
-        data() {
-            return {}
-        },
-        methods: {
-            edit: function () {
-                this.selectEvent();
-                this.$store.commit('SET_SHOW_MODAL_FORM', true);
-            },
-            selectEvent: function () {
-                this.$store.commit('SET_EVENT_SELECTED', this.event);
-                this.$store.commit('SET_EVENT_ID_SELECTED', this.event.id);
-                this.$store.commit('SET_EVENT_INDEX_SELECTED', this.getEventIndexById(this.event.id));
-            }
-        },
-        computed: {
-            ...mapGetters([
-                'getEventIndexById',
-                'getCellHeight',
-                'getZoneBgColor',
-                'getEventStates',
-                'getEventStateBgColor',
-                'getEventTypeIcon',
-                'getEventIdSelected',
-                'getDistanceFromEventSelected',
-                'getCoordinate'
-            ]),
-            getCliente: function () {
-                if (this.event.client != undefined) {
-                    return this.event.client;
-                }
-                return "";
-            },
-            getLocation: function () {
-                if (this.event.location != undefined) {
-                    return this.event.location;
-                }
-                return "";
-            },
-            getSucColor: function () {
-                if (this.event.zone != undefined && this.event.zone.id != undefined) {
-                    return "background-color:" + this.getZoneBgColor(this.event.zone.id);
-                }
-                return "";
-            },
-            getMainClass: function () {
-                if (this.getEventIdSelected == this.event.id) {
-                    return 'zfc-event zfc-event-selected';
-                } else {
-                    return 'zfc-event';
-                }
-            },
-            getStyle: function () {
-                return 'height:' + this.getHeight + "px;";
-            },
-            getStateStyle: function () {
-                return 'background-color:' + this.getEventStateBgColor(this.event.state);
-            },
-            getHeight: function () {
-                var height = this.getCellHeight;
-                if (this.event.duration > 30) {
-                    height = Math.ceil(this.event.duration / 30) * this.getCellHeight;
-                }
-
-                return height
-            }
+  export default {
+    name: 'event',
+    props: [
+      'index',
+      'event',
+    ],
+    components: {Drag, service},
+    data() {
+      return {}
+    },
+    methods: {
+      edit: function () {
+        this.selectEvent();
+        this.$store.commit('SET_SHOW_MODAL_FORM', true);
+      },
+      selectEvent: function () {
+        this.$store.commit('SET_EVENT_SELECTED', this.event);
+        this.$store.commit('SET_EVENT_ID_SELECTED', this.event.id);
+        this.$store.commit('SET_EVENT_INDEX_SELECTED', this.getEventIndexById(this.event.id));
+      }
+    },
+    computed: {
+      ...mapGetters([
+        'getEventIndexById',
+        'getCellHeight',
+        'getZoneBgColor',
+        'getEventStates',
+        'getEventStateBgColor',
+        'getEventTypeIcon',
+        'getEventIdSelected',
+        'getDistanceFromEventSelected',
+        'getCoordinate'
+      ]),
+      getCliente: function () {
+        if (this.event.client != undefined) {
+          return this.event.client;
         }
+        return "";
+      },
+      getLocation: function () {
+        if (this.event.location != undefined) {
+          return this.event.location;
+        }
+        return "";
+      },
+      getZone: function () {
+        if (this.event.zone != undefined) {
+          return this.event.zone.name;
+        }
+        return "";
+      },
+      getSucColor: function () {
+        if (this.event.zone != undefined && this.event.zone.id != undefined) {
+          return "background-color:" + this.getZoneBgColor(this.event.zone.id);
+        }
+        return "";
+      },
+      getMainClass: function () {
+        if (this.getEventIdSelected == this.event.id) {
+          return 'zfc-event zfc-event-selected';
+        } else {
+          return 'zfc-event';
+        }
+      },
+      getStyle: function () {
+        return 'height:' + this.getHeight + "px;";
+      },
+      getStateStyle: function () {
+        return 'background-color:' + this.getEventStateBgColor(this.event.state);
+      },
+      getHeight: function () {
+        var height = this.getCellHeight;
+        if (this.event.duration > 30) {
+          height = Math.ceil(this.event.duration / 30) * this.getCellHeight;
+        }
+
+        return height
+      }
     }
+  }
 </script>
 
 
