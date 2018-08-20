@@ -47,7 +47,7 @@ class Calendar
      * "target_class":"\ZfMetal\Security\Entity\User", "description":""})
      * @ORM\ManyToOne(targetEntity="\ZfMetal\Security\Entity\User")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=true)
-     * @Transformation\Policy\Custom(transform= "\ZfMetal\Calendar\PolicyHandler\EntityId::transform")
+     * @Transformation\Policy\Custom(transform= "\ZfMetal\Restful\Transformation\Policy\Common\Id::transform")
      */
     public $user = null;
 
@@ -101,7 +101,7 @@ class Calendar
     /**
      * Many Users have Many Groups.
      * @ORM\ManyToMany(targetEntity="\ZfMetal\Calendar\Entity\CalendarGroup", mappedBy="calendars")
-     *
+     * @Transformation\Policy\Custom(transform="\ZfMetal\Restful\Transformation\Policy\Common\IdName::transform")
      */
     private $groups;
 

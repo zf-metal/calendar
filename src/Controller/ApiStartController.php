@@ -6,6 +6,7 @@ use Zend\Mvc\Controller\AbstractActionController;
 use Zend\Mvc\Controller\AbstractRestfulController;
 use Zend\View\Model\JsonModel;
 use ZfMetal\Calendar\Entity\Calendar;
+use ZfMetal\Calendar\Entity\CalendarGroup;
 use ZfMetal\Calendar\Entity\EventState;
 use ZfMetal\Calendar\Entity\EventType;
 use ZfMetal\Calendar\Entity\Zone;
@@ -27,6 +28,7 @@ class ApiStartController extends AbstractRestfulController
     const ENTITY = \ZfMetal\Calendar\Entity\Calendar::class;
 
     const CALENDAR = Calendar::class;
+    const CALENDAR_GROUPS = CalendarGroup::class;
     const ZONE = Zone::class;
     const EVENT_STATE = EventState::class;
     const EVENT_TYPE = EventType::class;
@@ -65,6 +67,8 @@ class ApiStartController extends AbstractRestfulController
                 return $this::EVENT_STATE;
             case "event-types":
                 return $this::EVENT_TYPE;
+            case "calendar-groups":
+                return $this::CALENDAR_GROUPS;
         }
     }
 
@@ -100,6 +104,11 @@ class ApiStartController extends AbstractRestfulController
         return $this->getEm()->getRepository($this->getEntityByAlias('calendars'));
     }
 
+    public function getCalendarGroupsRepository()
+    {
+        return $this->getEm()->getRepository($this->getEntityByAlias('calendar-groups'));
+    }
+
     public function __construct(\Doctrine\ORM\EntityManager $em)
     {
         $this->em = $em;
@@ -114,6 +123,9 @@ class ApiStartController extends AbstractRestfulController
             $calendars = $this->getCalendarRepository()->findAll();
             $calendars = $transform->toArrays($calendars);
 
+            $calendarGroups = $this->getCalendarGroupsRepository()->findAll();
+            $calendarGroups = $transform->toArrays($calendarGroups);
+
             $zones = $this->getZoneRepository()->findAll();
             $zones =$transform->toArrays($zones);
 
@@ -127,6 +139,7 @@ class ApiStartController extends AbstractRestfulController
             $results['zones'] = $zones;
             $results['eventStates'] = $eventStates;
             $results['eventTypes'] = $eventTypes;
+            $results['calendarGroups'] = $calendarGroups;
 
             return new JsonModel($results);
 

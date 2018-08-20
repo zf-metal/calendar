@@ -7,7 +7,7 @@ use Zend\Form\Annotation as Annotation;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\UniqueConstraint as UniqueConstraint;
 use Gedmo\Mapping\Annotation as Gedmo;
-
+use ZfMetal\Restful\Transformation;
 /**
  * CalendarGroup
  *
@@ -52,6 +52,7 @@ class CalendarGroup
      * @Annotation\AllowEmpty
      * @Annotation\Type("DoctrineModule\Form\Element\ObjectMultiCheckbox")
      * @Annotation\Options({"label":"calendars","target_class":"\ZfMetal\Calendar\Entity\Calendar", "property": "name", "required":"false"})
+     * @Transformation\Policy\Skip()
      */
     public $calendars = null;
 
