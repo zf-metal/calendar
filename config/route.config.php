@@ -106,7 +106,7 @@ return [
                                 'options' => [
                                     'route' => '/:entityAlias[/:id]',
                                     'defaults' => [
-                                        'controller' => \ZfMetal\Restful\Controller\MainController::class,
+                                        'controller' => 'ZfMetal\\Restful\\Controller\\MainController',
                                     ],
                                 ],
                             ],
@@ -116,7 +116,7 @@ return [
                                 'options' => [
                                     'route' => '/start',
                                     'defaults' => [
-                                        'controller' => \ZfMetal\Calendar\Controller\ApiStartController::class,
+                                        'controller' => 'ZfMetal\\Calendar\\Controller\\ApiStartController',
                                     ],
                                 ],
                             ],
@@ -271,6 +271,43 @@ return [
                                     'defaults' => [
                                         'controller' => \ZfMetal\Calendar\Controller\CalendarGroupController::CLASS,
                                         'action' => 'grid',
+                                    ],
+                                ],
+                                'type' => 'Segment',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'ZfMetal\\Calendar' => [
+                'mayTerminate' => false,
+                'options' => [
+                    'route' => '/zf-metal\\calendar',
+                    'defaults' => [
+                        'controller' => \ZfMetal\Calendar\Controller\EventExportController::CLASS,
+                        'action' => 'excel',
+                    ],
+                ],
+                'type' => 'Literal',
+                'child_routes' => [
+                    'EventExport' => [
+                        'mayTerminate' => false,
+                        'options' => [
+                            'route' => '/event-export',
+                            'defaults' => [
+                                'controller' => \ZfMetal\Calendar\Controller\EventExportController::CLASS,
+                                'action' => 'excel',
+                            ],
+                        ],
+                        'type' => 'Literal',
+                        'child_routes' => [
+                            'Excel' => [
+                                'mayTerminate' => true,
+                                'options' => [
+                                    'route' => '/excel',
+                                    'defaults' => [
+                                        'controller' => \ZfMetal\Calendar\Controller\EventExportController::CLASS,
+                                        'action' => 'excel',
                                     ],
                                 ],
                                 'type' => 'Segment',

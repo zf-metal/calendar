@@ -22,7 +22,7 @@
     components: {},
     data() {
       return {
-        groupId: null,
+        groupId: "",
       }
     },
     created: function () {
