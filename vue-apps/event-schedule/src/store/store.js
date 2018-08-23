@@ -6,7 +6,7 @@ import tz from 'moment-timezone'
 import 'moment/locale/es';
 
 import {HTTP} from './../utils/http-client'
-import {calculateDistance, getRandomColor} from './../utils/helpers'
+import {calculateDistance, getRandomColor,extractPriorityIntByTime} from './../utils/helpers'
 
 import {
   SET_DATE,
@@ -211,9 +211,12 @@ const getters = {
   getPreEvents: state => {
     return state.preEvents;
   },
-  getPreEventsFiltered: state => {
+  getPreEventsFiltered: (state, getters) => {
+    var pes = state.preEvents;
+
+    //FILTER
     if ((state.filterZone != null && state.filterZone != "") || (state.filterString != null && state.filterString != "")) {
-      return state.preEvents.filter(function (e) {
+      pes = state.preEvents.filter(function (e) {
         if (
           ((e.zone != undefined && e.zone.id != undefined && (state.filterZone == null || state.filterZone == "" || e.zone.id == state.filterZone)) || (e.zone == undefined && (state.filterZone == undefined || state.filterZone == "" ))) &&
           (state.filterString == "" || state.filterString == null || (e.client.toLowerCase().indexOf(state.filterString) > -1 || e.location.toLowerCase().indexOf(state.filterString) > -1))
@@ -223,7 +226,55 @@ const getters = {
         return false;
       });
     }
-    return state.preEvents;
+
+    //SORT
+    var priority = 5;
+    for (var i = 0; i < pes.length; i++) {
+
+      if (pes[i].availability != undefined) {
+       //Verifico Dias Especificos
+        if (pes[i].availability.especificDays != undefined ) {
+          for(var u=0; u<pes[i].availability.especificDays.length;u++ ){
+            if(pes[i].availability.especificDays[u].day != undefined && pes[i].availability.especificDays[u].ordinal != undefined){
+              //Exclusivo = 1
+              if (pes[i].availability.especificDays[u].day == getters.getDay
+                && pes[i].availability.especificDays[u].ordinal == getters.getNumberOfDayInMonth) {
+                priority = 1;
+                break;
+              }else{
+                  priority = 4;
+              }
+            }
+          }
+
+        } else if (pes[i].availability.days != undefined) {
+          //Dia ok = 2
+          if (pes[i].availability.days[getters.getDay] == true) {
+            priority = 2;
+          } else {
+            //Dia No ok = 3
+            priority = 3;
+          }
+        } else {
+          priority = 5;
+        }
+
+      }
+
+      if(pes[i].availability && pes[i].availability.timeRange && pes[i].availability.timeRange.from){
+        pes[i].priority = parseInt(priority + "" +pes[i].availability.timeRange.from.replace(":",""));
+      }else{
+        pes[i].priority = priority + "0000";
+      }
+
+      pes.sort(function compareNumbers(a, b) {
+        return a.priority - b.priority;
+      });
+
+
+    }
+
+    return pes;
   },
   getPreEventsByZone: (state) => (id) => {
     //  return state.preEvents.filter(preEvent => preEvent.zone.id === id);
@@ -526,12 +577,12 @@ const actions = {
   showZone({commit}, index) {
     commit('SHOW_ZONE', index);
   },
-  setVisibleCalendarByGroup({state,commit},groupSelected){
-   commit('SET_CALENDAR_GROUP_SELECTED',groupSelected);
-    for(var i=0;i < state.calendars.length;i++){
-      if(state.calendars[i].groups && state.calendars[i].groups.find(group => group.id == groupSelected)){
+  setVisibleCalendarByGroup({state, commit}, groupSelected) {
+    commit('SET_CALENDAR_GROUP_SELECTED', groupSelected);
+    for (var i = 0; i < state.calendars.length; i++) {
+      if (state.calendars[i].groups && state.calendars[i].groups.find(group => group.id == groupSelected)) {
         commit('SHOW_CALENDAR', i);
-      }else{
+      } else {
         commit('HIDE_CALENDAR', i);
       }
     }

@@ -45,6 +45,22 @@
                     </td>
                     <td>{{getLocation}}  </td>
                 </tr>
+
+
+                <tr>
+                    <td><i class="material-icons" style="vertical-align: bottom;">today</i></td>
+                    <td>
+                        <availabilityDay :data="event.availability"></availabilityDay>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td><i class="material-icons" style="vertical-align: bottom;">hourglass_full</i></td>
+                    <td>
+                        <availabilityTime :data="event.availability"></availabilityTime>
+                    </td>
+                </tr>
+
                 </tbody>
             </table>
 
@@ -60,6 +76,8 @@
   import 'moment/locale/es';
   import service from './service.vue'
   import {Drag, Drop} from 'vue-drag-drop';
+  import availabilityDay from './availabilityDay.vue';
+  import availabilityTime from './availabilityTime.vue';
 
   export default {
     name: 'event',
@@ -67,7 +85,7 @@
       'index',
       'event',
     ],
-    components: {Drag, service},
+    components: {Drag, service,availabilityDay,availabilityTime },
     data() {
       return {}
     },
