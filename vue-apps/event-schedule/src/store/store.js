@@ -213,8 +213,7 @@ const getters = {
     },
     getPreEventsFiltered: (state, getters) => {
         var pes = state.preEvents;
-        var priority = 5;
-        var lengthPriority = 0;
+
         store.commit(LOADING_PLUS);
         //FILTER
         if ((state.filterZone != null && state.filterZone != "") || (state.filterString != null && state.filterString != "")) {
@@ -231,7 +230,8 @@ const getters = {
 
         //SORT
         for (var i = 0; i < pes.length; i++) {
-
+            var priority = "5";
+            var lengthPriority = "8";
             if (pes[i].availability != undefined) {
                 //Verifico Dias Especificos
                 if (pes[i].availability.especificDays != undefined) {
@@ -240,10 +240,10 @@ const getters = {
                             //Exclusivo = 1
                             if (pes[i].availability.especificDays[u].day == getters.getDay
                                 && pes[i].availability.especificDays[u].ordinal == getters.getNumberOfDayInMonth) {
-                                priority = 1;
+                                priority = "1";
                                 break;
                             } else {
-                                priority = 4;
+                                priority = "4";
                             }
                         }
                     }
@@ -251,30 +251,39 @@ const getters = {
                 } else if (pes[i].availability.days != undefined) {
                     //Dia ok = 2
                     if (pes[i].availability.days[getters.getDay] == true) {
-                        lengthPriority = pes[i].availability.days.length
-                        priority = 2;
+                        priority = "2";
                     } else {
                         //Dia No ok = 3
-                        priority = 3;
+                        priority = "3";
                     }
+
+                    //Priorizo segun cantidad dias true
+                    var size = 0;
+                    for (var key in pes[i].availability.days) {
+                        if (pes[i].availability.days[key] == true) size++;
+                    }
+                    lengthPriority = size.toString()
+
                 } else {
-                    priority = 5;
+                    priority = "5";
                 }
 
             }
 
             if (pes[i].availability && pes[i].availability.timeRange && pes[i].availability.timeRange.from) {
-                pes[i].priority = parseInt(priority + lengthPriority + "" + pes[i].availability.timeRange.from.replace(":", ""));
+                pes[i].priority = parseInt(priority + "" + lengthPriority + "" + pes[i].availability.timeRange.from.replace(":", ""));
             } else {
-                pes[i].priority = priority + lengthPriority + "0000";
+                pes[i].priority = priority + "" + lengthPriority + "0000";
             }
-
-            pes.sort(function compareNumbers(a, b) {
-                return a.priority - b.priority;
-            });
 
 
         }
+
+
+        pes.sort(function compareNumbers(a, b) {
+            return a.priority - b.priority;
+        });
+
         store.commit(LOADING_LESS);
         return pes;
     },
