@@ -29,12 +29,17 @@
                         <td>{{getCliente}}</td>
                     </tr>
                     <tr>
+                        <td><i class="material-icons" style="vertical-align: bottom;">business</i>
+                        </td>
+                        <td>{{getBranchOffice}}</td>
+                    </tr>
+                    <tr>
                         <td><i class="material-icons" style="vertical-align: bottom;">my_location</i>
                         </td>
                         <td>{{getLocation}}</td>
                     </tr>
                     <tr>
-                        <td :style="getSucColor"><i class="material-icons" style="vertical-align: bottom;">business</i>
+                        <td :style="getSucColor"><i class="material-icons" style="vertical-align: bottom;">center_focus_strong</i>
                         </td>
                         <td :style="getSucColor">{{getZone}}</td>
                     </tr>
@@ -53,9 +58,9 @@
                     </tr>
 
                     <!--<tr>-->
-                        <!--<td><i class="material-icons" style="vertical-align: bottom;">add</i>-->
-                        <!--</td>-->
-                        <!--<td>{{getPriority}}</td>-->
+                    <!--<td><i class="material-icons" style="vertical-align: bottom;">add</i>-->
+                    <!--</td>-->
+                    <!--<td>{{getPriority}}</td>-->
                     <!--</tr>-->
 
                     </tbody>
@@ -67,52 +72,58 @@
 </template>
 
 <script>
-  import {mapGetters, mapActions} from 'vuex';
-  import {Drag, Drop} from 'vue-drag-drop';
-  import availabilityDay from './availabilityDay.vue';
-  import availabilityTime from './availabilityTime.vue';
+    import {mapGetters, mapActions} from 'vuex';
+    import {Drag, Drop} from 'vue-drag-drop';
+    import availabilityDay from './availabilityDay.vue';
+    import availabilityTime from './availabilityTime.vue';
 
-  export default {
-    name: 'preEvent',
-    props: ['preEvent', 'index'],
-    components: {Drag, Drop, availabilityDay, availabilityTime},
-    methods: {},
-    computed: {
-      ...mapGetters([
-        'getZoneBgColor',
-        'getEventStates',
-        'getEventStateBgColor',
-        'getEventTypeIcon'
-      ]),
-      getPriority: function () {
-        return this.preEvent.priority;
-      },
-      getCliente: function () {
-        if (this.preEvent.client != undefined) {
-          return this.preEvent.client;
+    export default {
+        name: 'preEvent',
+        props: ['preEvent', 'index'],
+        components: {Drag, Drop, availabilityDay, availabilityTime},
+        methods: {},
+        computed: {
+            ...mapGetters([
+                'getZoneBgColor',
+                'getEventStates',
+                'getEventStateBgColor',
+                'getEventTypeIcon'
+            ]),
+            getPriority: function () {
+                return this.preEvent.priority;
+            },
+            getCliente: function () {
+                if (this.preEvent.client != undefined) {
+                    return this.preEvent.client;
+                }
+                return "";
+            },
+            getBranchOffice: function () {
+                if (this.preEvent.branchOffice != undefined) {
+                    return this.preEvent.branchOffice;
+                }
+                return "";
+            },
+            getLocation: function () {
+                if (this.preEvent.location != undefined) {
+                    return this.preEvent.location;
+                }
+                return "";
+            },
+            getZone: function () {
+                if (this.preEvent.zone != undefined) {
+                    return this.preEvent.zone.name;
+                }
+                return "";
+            },
+            getSucColor: function () {
+                if (this.preEvent.zone != undefined && this.preEvent.zone.id != undefined) {
+                    return "background-color:" + this.getZoneBgColor(this.preEvent.zone.id);
+                }
+                return "";
+            }
         }
-        return "";
-      },
-      getLocation: function () {
-        if (this.preEvent.location != undefined) {
-          return this.preEvent.location;
-        }
-        return "";
-      },
-      getZone: function () {
-        if (this.preEvent.zone != undefined) {
-          return this.preEvent.zone.name;
-        }
-        return "";
-      },
-      getSucColor: function () {
-        if (this.preEvent.zone != undefined && this.preEvent.zone.id != undefined) {
-          return "background-color:" + this.getZoneBgColor(this.preEvent.zone.id);
-        }
-        return "";
-      }
     }
-  }
 </script>
 
 <style scoped>

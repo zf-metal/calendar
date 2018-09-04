@@ -214,6 +214,15 @@ class Event
     /**
      * @Annotation\Type("Zend\Form\Element\Text")
      * @Annotation\Attributes({"type":"text"})
+     * @Annotation\Options({"label":"Sucursal", "description":"", "addon":""})
+     * @ORM\Column(type="string", length=100, unique=false, nullable=true,
+     * name="branch_office")
+     */
+    public $branchOffice = null;
+
+    /**
+     * @Annotation\Type("Zend\Form\Element\Text")
+     * @Annotation\Attributes({"type":"text"})
      * @Annotation\Options({"label":"Ubicacion", "description":"", "addon":""})
      * @ORM\Column(type="string", length=120, unique=false, nullable=true,
      * name="location")
@@ -684,6 +693,22 @@ class Event
     public function setClient($client)
     {
         $this->client = $client;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getBranchOffice()
+    {
+        return $this->branchOffice;
+    }
+
+    /**
+     * @param mixed $branchOffice
+     */
+    public function setBranchOffice($branchOffice)
+    {
+        $this->branchOffice = $branchOffice;
     }
 
 

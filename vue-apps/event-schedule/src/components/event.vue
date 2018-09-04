@@ -35,17 +35,21 @@
                 </tr>
 
                 <tr>
-                    <td :style="getSucColor"><i class="material-icons" style="vertical-align: bottom;">business</i>
+                    <td><i class="material-icons" style="vertical-align: bottom;">business</i>
                     </td>
-                    <td :style="getSucColor">{{getZone}}</td>
+                    <td>{{getBranchOffice}}</td>
                 </tr>
 
                 <tr>
-                    <td><i class="material-icons" style="vertical-align: text-bottom;">business</i>
+                    <td><i class="material-icons" style="vertical-align: text-bottom;">my_location</i>
                     </td>
                     <td>{{getLocation}}  </td>
                 </tr>
-
+                <tr>
+                    <td :style="getSucColor"><i class="material-icons" style="vertical-align: bottom;">center_focus_strong</i>
+                    </td>
+                    <td :style="getSucColor">{{getZone}}</td>
+                </tr>
 
                 <tr>
                     <td><i class="material-icons" style="vertical-align: bottom;">today</i></td>
@@ -124,6 +128,12 @@
         }
         return "";
       },
+        getBranchOffice: function () {
+            if (this.event.branchOffice != undefined) {
+                return this.event.branchOffice;
+            }
+            return "";
+        },
       getZone: function () {
         if (this.event.zone != undefined) {
           return this.event.zone.name;
