@@ -327,7 +327,7 @@ const getters = {
         if (state != undefined && state.color != undefined && state.color != "") {
             return state.color;
         }
-        return '#000000';
+        return '#FFFFFF';
     },
     getEventTypeById: (state) => (id) => {
         return state.eventTypes.find(eventType => eventType.id === id)
