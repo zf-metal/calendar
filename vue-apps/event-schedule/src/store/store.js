@@ -322,6 +322,13 @@ const getters = {
         }
         return '#1c5c87';
     },
+    getEventStateColor: (state, getters) => (stateId) => {
+        var state = getters.getEventStateById(stateId);
+        if (state != undefined && state.color != undefined && state.color != "") {
+            return state.color;
+        }
+        return '#000000';
+    },
     getEventTypeById: (state) => (id) => {
         return state.eventTypes.find(eventType => eventType.id === id)
     },
@@ -602,6 +609,7 @@ const actions = {
             commit(SET_EVENT_INDEX_SELECTED, null);
             commit(SET_EVENT_ID_SELECTED, null);
             dispatch('eventList');
+            dispatch('preEventList');
         }
     },
     getRandomColor: function () {

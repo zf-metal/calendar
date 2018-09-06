@@ -111,6 +111,7 @@
         'getZoneBgColor',
         'getEventStates',
         'getEventStateBgColor',
+        'getEventStateColor',
         'getEventTypeIcon',
         'getEventIdSelected',
         'getDistanceFromEventSelected',
@@ -157,7 +158,7 @@
         return 'height:' + this.getHeight + "px;";
       },
       getStateStyle: function () {
-        return 'background-color:' + this.getEventStateBgColor(this.event.state);
+        return 'background-color:' + this.getEventStateBgColor(this.event.state) + "; color: "+this.getEventStateColor(this.event.state);
       },
       getHeight: function () {
         var height = this.getCellHeight;
