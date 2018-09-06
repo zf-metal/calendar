@@ -18,7 +18,7 @@ return array(
             \ZfMetal\Calendar\Controller\InitController::class => \ZfMetal\Calendar\Factory\Controller\InitControllerFactory::class,
             \ZfMetal\Calendar\Controller\CalendarGroupController::class => \ZfMetal\Calendar\Factory\Controller\CalendarGroupControllerFactory::class,
             \ZfMetal\Calendar\Controller\ApiStartController::class => \ZfMetal\Calendar\Factory\Controller\ApiStartControllerFactory::class,
-            \ZfMetal\Calendar\Controller\EventExportController::class => \ZfMetal\Calendar\Factory\Controller\EventExportControllerFactory::class,
+            \ZfMetal\Calendar\Controller\ExportController::class => \ZfMetal\Calendar\Factory\Controller\ExportControllerFactory::class,
         ),
     ),
 );

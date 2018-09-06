@@ -40,7 +40,8 @@
     "zf-metal/datagrid": "^1.0.0",
     "zf-metal/log": "^1.0.0",
     "zf-metal/mail": "^1.0.0",
-    "Indaxia/doctrine-orm-transformations": "2.*"
+    "Indaxia/doctrine-orm-transformations": "2.*",
+    "mk-j/php_xlsxwriter": "^0.37.0"
   },
   "autoload": {
     "psr-4": {

@@ -220,8 +220,7 @@ const getters = {
             pes = state.preEvents.filter(function (e) {
                 if (
                     ((e.zone != undefined && e.zone.id != undefined && (state.filterZone == null || state.filterZone == "" || e.zone.id == state.filterZone)) || (e.zone == undefined && (state.filterZone == undefined || state.filterZone == "" ))) &&
-                    (state.filterString == "" || state.filterString == null || (e.client.toLowerCase().indexOf(state.filterString) > -1 || e.location.toLowerCase().indexOf(state.filterString) > -1))
-                ) {
+                    (state.filterString == "" || state.filterString == null || ((e.client && e.client.toLowerCase().indexOf(state.filterString) > -1) || (e.location && e.location.toLowerCase().indexOf(state.filterString) > -1) || (e.branchOffice && e.branchOffice.toLowerCase().indexOf(state.filterString) > -1)))) {
                     return true;
                 }
                 return false;
