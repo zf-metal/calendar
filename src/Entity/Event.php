@@ -275,6 +275,7 @@ class Event
      * "target_class":"\ZfMetal\Calendar\Entity\EventLink", "description":""})
      * @ORM\ManyToOne(targetEntity="\ZfMetal\Calendar\Entity\EventLink")
      * @ORM\JoinColumn(name="link_id", referencedColumnName="id", nullable=true)
+     * @Transformation\Policy\Custom(transform="ZfMetal\Restful\Transformation\Policy\Common\Id::transform")
      */
     public $link = null;
 

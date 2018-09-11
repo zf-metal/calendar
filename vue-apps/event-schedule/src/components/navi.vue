@@ -67,7 +67,7 @@
 </template>
 
 <script>
-    import {mapGetters, mapActions} from 'vuex';
+    import {mapState, mapGetters, mapActions} from 'vuex';
     import day from './day.vue'
     import loading from './helpers/loading.vue'
 
@@ -82,7 +82,7 @@
         },
         created: function () {
             this.myCellHeight = this.getCellHeight;
-            this.start = this.getCalendarStart;
+            this.start = this.calendarStart;
         },
         methods: {
             applyCellHeight: function () {
@@ -93,12 +93,14 @@
             }
         },
         computed: {
+            ...mapState([
+                'cellHeight',
+                'loading',
+                'calendarStart'
+            ]),
             ...mapGetters([
-                'getCellHeight',
                 'getDayName',
                 'getDate',
-                'getLoading',
-                'getCalendarStart'
             ]),
         },
     }

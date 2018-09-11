@@ -7,7 +7,7 @@
                 <h4 class="card-title">{{preEvent.id}}. {{preEvent.title}}
                     <!--<i class="material-icons zfc-pre-type-icon pull-right">{{getEventTypeIcon(obj.type)}} </i>-->
                 </h4>
-
+                <coop :enable="coopEnable" :link="coopLink" :count="coopCount"></coop>
             </div>
             <div class="card-body table-responsive">
                 <table class="table table-hover">
@@ -57,6 +57,7 @@
                         </td>
                     </tr>
 
+
                     <!--<tr>-->
                     <!--<td><i class="material-icons" style="vertical-align: bottom;">add</i>-->
                     <!--</td>-->
@@ -76,11 +77,12 @@
     import {Drag, Drop} from 'vue-drag-drop';
     import availabilityDay from './availabilityDay.vue';
     import availabilityTime from './availabilityTime.vue';
+    import coop from './signals/coop.vue'
 
     export default {
         name: 'preEvent',
         props: ['preEvent', 'index'],
-        components: {Drag, Drop, availabilityDay, availabilityTime},
+        components: {Drag, Drop, availabilityDay, availabilityTime, coop},
         methods: {},
         computed: {
             ...mapGetters([
@@ -89,6 +91,16 @@
                 'getEventStateBgColor',
                 'getEventTypeIcon'
             ]),
+            coopEnable: function(){
+                return (this.preEvent.link)?true:false
+            },
+            coopLink: function(){
+                return (this.preEvent.link)?this.preEvent.link:null
+            },
+            coopCount: function(){
+                //TODO
+                return null
+            },
             getPriority: function () {
                 return this.preEvent.priority;
             },

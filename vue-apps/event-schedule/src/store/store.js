@@ -43,7 +43,8 @@ import {
     SET_EVENT_SELECTED,
     SET_CALENDAR_START,
     SET_CALENDAR_GROUPS,
-    SET_CALENDAR_GROUP_SELECTED
+    SET_CALENDAR_GROUP_SELECTED,
+    SET_FILTER_COOP
 } from './mutation-types'
 
 Vue.use(Vuex)
@@ -56,6 +57,7 @@ Vue.use(Vuex)
 */
 
 const state = {
+    filterCoop: null,
     calendarStart: "00:00",
     eventIndexSelected: null,
     eventIdSelected: null,
@@ -107,14 +109,8 @@ const state = {
 */
 
 const getters = {
-    getGroupSelected: state => {
-        return state.calendarGroupSelected;
-    },
-    getCalendarsGroups: state => {
-        return state.calendarGroups;
-    },
     getCalendarStart: state => {
-        return state.calendarStart;
+      return state.calendarStart
     },
     getShowModalForm: state => {
         return state.showModalForm;
@@ -218,6 +214,13 @@ const getters = {
         //FILTER
         if ((state.filterZone != null && state.filterZone != "") || (state.filterString != null && state.filterString != "")) {
             pes = state.preEvents.filter(function (e) {
+
+                if(state.filterCoop && e.link == state.filterCoop){
+                    return true
+                }else if(state.filterCoop && e.link != state.filterCoop){
+                    return false
+                }
+
                 if (
                     ((e.zone != undefined && e.zone.id != undefined && (state.filterZone == null || state.filterZone == "" || e.zone.id == state.filterZone)) || (e.zone == undefined && (state.filterZone == undefined || state.filterZone == "" ))) &&
                     (state.filterString == "" || state.filterString == null || ((e.client && e.client.toLowerCase().indexOf(state.filterString) > -1) || (e.location && e.location.toLowerCase().indexOf(state.filterString) > -1) || (e.branchOffice && e.branchOffice.toLowerCase().indexOf(state.filterString) > -1)))) {
@@ -387,10 +390,15 @@ const getters = {
     getNumberOfDayInMonth: state => {
         var cloneDate = state.date.clone();
         var count = 0;
+        var calls = 0;
+        var flag = true;
         do {
             count++;
             cloneDate.subtract(1, 'week');
-        } while (state.date.month() == cloneDate.month())
+            //Prevent Infinity Loop
+            calls += 1;
+            if (calls > 10) { debugger; flag = false; console.log("Loop: getNumberOfDayInMonth"); }
+        } while (state.date.month() == cloneDate.month() || flag == false)
         return count;
     },
     getNumberOfDayInMonthOrdinal: (state, getters) => {
@@ -408,8 +416,8 @@ const getters = {
         }
         return "";
     },
-    getStart: (state, getters) => {
-        return this.calendarStart;
+    getStart: (state) => {
+        return state.calendarStart;
     },
     getEnd: (state, getters) => {
         var rend = null;
@@ -452,34 +460,57 @@ const getters = {
         return rend;
     },
     getHours: (state, getters) => {
+        console.log("getHours")
         var hours = [];
         if (getters.hasCalendars) {
             var flag = true;
+
+            console.log(getters.getCalendarStart)
+
             var t = moment(getters.getCalendarStart, "HH:mm");
+            if(!t.isValid()){
+                console.log("GET HOURS - t - Fecha no valida")
+                return hours;
+            }
+
             var e = moment("23:59", "HH:mm");
+            if(!e.isValid()){
+                console.log("GET HOURS - e - Fecha no valida")
+                return hours;
+            }
+
+            var calls= 0;
+
             while (flag) {
                 hours.push(t.format("HH:mm"));
                 t.add(30, "minutes");
                 if (t >= e) {
                     flag = false;
                 }
+                //Prevent Infinity Loop
+                calls += 1;
+                if (calls > 40) { debugger; flag = false; console.log("Loop: getHours"); }
             }
         }
         return hours;
     },
     getNextHours: (state, getters) => {
         var hours = [];
-
+        console.log("getNextHours")
         if (getters.hasCalendars) {
             var flag = true;
             var t = moment("00:00", "HH:mm");
             var e = moment(getters.getNextEnd, "HH:mm");
+            var calls= 0;
             while (flag) {
                 hours.push(t.format("HH:mm"));
                 t.add(30, "minutes");
                 if (t >= e) {
                     flag = false;
                 }
+                //Prevent Infinity Loop
+                calls += 1;
+                if (calls > 40) { debugger; flag = false; alert("getNextHours"); }
             }
         }
         return hours;
@@ -495,13 +526,18 @@ const getters = {
 
 const actions = {
     startList({commit, dispatch}) {
-        state.loading = state.loading + 1;
+        commit(LOADING_PLUS);
+        console.log("start")
         HTTP.get('start').then((response) => {
+            console.log("calendars")
             commit(SET_CALENDARS, response.data.calendars);
+            console.log("calendars Groups")
             commit(SET_CALENDAR_GROUPS, response.data.calendarGroups);
+            console.log("states")
             commit(SET_EVENT_STATES, response.data.eventStates);
+            console.log("types")
             commit(SET_EVENT_TYPES, response.data.eventTypes);
-
+            console.log("zones")
             var zones = {};
             for (var i = 0; i < response.data.zones.length; i++) {
                 var zone = response.data.zones[i];
@@ -511,9 +547,14 @@ const actions = {
                 zones[zone.id] = zone;
             }
             commit("SET_ZONES", zones);
-            dispatch('eventList');
 
-            state.loading = state.loading - 1;
+
+
+
+           dispatch('eventList');
+
+            commit(LOADING_LESS);
+            console.log("finish")
         })
     },
     eventStateList({commit}) {
@@ -581,16 +622,6 @@ const actions = {
     },
     showZone({commit}, index) {
         commit('SHOW_ZONE', index);
-    },
-    setVisibleCalendarByGroup({state, commit}, groupSelected) {
-        commit('SET_CALENDAR_GROUP_SELECTED', groupSelected);
-        for (var i = 0; i < state.calendars.length; i++) {
-            if (state.calendars[i].groups && state.calendars[i].groups.find(group => group.id == groupSelected)) {
-                commit('SHOW_CALENDAR', i);
-            } else {
-                commit('HIDE_CALENDAR', i);
-            }
-        }
     },
     hideCalendar({commit}, index) {
         commit('HIDE_CALENDAR', index);
@@ -755,6 +786,9 @@ const mutations = {
     [SET_CALENDAR_GROUP_SELECTED](state, value) {
         state.calendarGroupSelected = value;
     },
+    [SET_FILTER_COOP](state, link) {
+        state.filterCoop = link;
+    }
 };
 
 
