@@ -531,7 +531,7 @@ const actions = {
     },
     preEventList({commit, getters, state}) {
         state.loading = state.loading + 1;
-        HTTP.get('events?calendar=isNull&dateFrom=<=' + getters.getDate + '&orderby=zone').then((response) => {
+        HTTP.get('events?calendar=isNull&state=!=3&dateFrom=<=' + getters.getDate + '&orderby=zone').then((response) => {
             commit("SET_PRE_EVENTS", response.data);
             state.loading = state.loading - 1;
         });
