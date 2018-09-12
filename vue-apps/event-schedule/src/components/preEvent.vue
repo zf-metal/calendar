@@ -87,7 +87,6 @@
         computed: {
             ...mapGetters([
                 'getZoneBgColor',
-                'getEventStates',
                 'getEventStateBgColor',
                 'getEventTypeIcon'
             ]),

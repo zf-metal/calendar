@@ -81,7 +81,7 @@
             }
         },
         created: function () {
-            this.myCellHeight = this.getCellHeight;
+            this.myCellHeight = this.cellHeight;
             this.start = this.calendarStart;
         },
         methods: {

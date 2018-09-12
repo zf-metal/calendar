@@ -29,7 +29,6 @@ import {
     HIDE_ZONE,
     SHOW_ZONE,
     SET_CELL_HEIGHT,
-    UPDATE_RC,
     SET_FILTER_ZONE,
     SET_FILTER_STRING,
     LOADING_LESS,
@@ -67,7 +66,6 @@ const state = {
     filterString: null,
     cellHeight: 60,
     loading: 0,
-    coordinates: {},
     calendarPosition: {top: 0, left: 0},
     bodyScroll: {top: 0, left: 0},
     calendarScroll: {top: 0, left: 0},
@@ -77,7 +75,6 @@ const state = {
     calendarGroups: [],
     calendarGroupSelected: null,
     vcalendars: [],
-    rc: 1,
     preEvents: [],
     preEventsByZone: {},
     events: [],
@@ -109,35 +106,14 @@ const state = {
 */
 
 const getters = {
-    getCalendarStart: state => {
-      return state.calendarStart
+    getLoading: state => {
+        return state.loading;
     },
-    getShowModalForm: state => {
-        return state.showModalForm;
+    getCalendars: state => {
+        return state.calendars;
     },
-    getEventForm: state => {
-        return state.eventSelected;
-    },
-    getEventSelected: state => {
-        return state.eventSelected;
-    },
-    getEventIndexSelected: state => {
-        return state.eventIndexSelected;
-    },
-    getEventIdSelected: state => {
-        return state.eventIdSelected;
-    },
-    getCalendarScroll: state => {
-        return state.calendarScroll;
-    },
-    getFilterZone: (state) => {
-        return state.filterZone;
-    },
-    getFilterString: (state) => {
-        return state.filterString;
-    },
-    getCellHeight: (state) => {
-        return state.cellHeight;
+    getZones: state => {
+        return state.zones;
     },
     getDistanceFromEventSelected: (state) => (dlat, dlng) => {
         if (state.eventIndexSelected != undefined && state.eventSelected.lat != undefined && state.eventSelected.lng != undefined) {
@@ -150,9 +126,6 @@ const getters = {
         }
         return '-';
     },
-    getEventSelected: state => {
-        return state.eventSelected;
-    },
     getEventsByCalendar: (state) => (index) => {
         return state.events.filter(e => e.calendar == index);
     },
@@ -164,15 +137,6 @@ const getters = {
         }
         return {};
     },
-    getRc: state => {
-        return state.rc
-    },
-    getCoordinates: state => {
-        return state.coordinates;
-    },
-    getLoading: state => {
-        return state.loading;
-    },
     isVisibleCalendar: (state) => (id) => {
         var calendar = state.calendars.find(calendar => calendar.id === id);
         if (calendar != undefined && calendar.hidden == true) {
@@ -183,9 +147,6 @@ const getters = {
     getCalendarSchedule: (state, getters) => (id, day) => {
         var calendar = state.calendars.find(calendar => calendar.id === id);
         return calendar.schedules.find(schedule => schedule.day === day);
-    },
-    getCalendars: state => {
-        return state.calendars;
     },
     getVisibleCalendars: state => {
         return state.calendars.filter(calendar => calendar.hidden != true);
@@ -201,28 +162,23 @@ const getters = {
             return x.id;
         }).indexOf(id);
     },
-    getPreEventByKey: (state) => (key) => {
-        return state.preEvents[key];
-    },
-    getPreEvents: state => {
-        return state.preEvents;
-    },
     getPreEventsFiltered: (state, getters) => {
         var pes = state.preEvents;
 
         store.commit(LOADING_PLUS);
         //FILTER
-        if ((state.filterZone != null && state.filterZone != "") || (state.filterString != null && state.filterString != "")) {
+        if (state.filterZone || state.filterString || state.filterCoop) {
+
             pes = state.preEvents.filter(function (e) {
 
-                if(state.filterCoop && e.link == state.filterCoop){
+                if (state.filterCoop && e.link == state.filterCoop) {
                     return true
-                }else if(state.filterCoop && e.link != state.filterCoop){
+                } else if (state.filterCoop && e.link != state.filterCoop) {
                     return false
                 }
 
                 if (
-                    ((e.zone != undefined && e.zone.id != undefined && (state.filterZone == null || state.filterZone == "" || e.zone.id == state.filterZone)) || (e.zone == undefined && (state.filterZone == undefined || state.filterZone == "" ))) &&
+                    ((e.zone != undefined && e.zone.id != undefined && (state.filterZone == null || state.filterZone == "" || e.zone.id == state.filterZone)) || (e.zone == undefined && (state.filterZone == undefined || state.filterZone == ""))) &&
                     (state.filterString == "" || state.filterString == null || ((e.client && e.client.toLowerCase().indexOf(state.filterString) > -1) || (e.location && e.location.toLowerCase().indexOf(state.filterString) > -1) || (e.branchOffice && e.branchOffice.toLowerCase().indexOf(state.filterString) > -1)))) {
                     return true;
                 }
@@ -258,18 +214,15 @@ const getters = {
                         //Dia No ok = 3
                         priority = "3";
                     }
-
                     //Priorizo segun cantidad dias true
                     var size = 0;
                     for (var key in pes[i].availability.days) {
                         if (pes[i].availability.days[key] == true) size++;
                     }
                     lengthPriority = size.toString()
-
                 } else {
                     priority = "5";
                 }
-
             }
 
             if (pes[i].availability && pes[i].availability.timeRange && pes[i].availability.timeRange.from) {
@@ -277,10 +230,7 @@ const getters = {
             } else {
                 pes[i].priority = priority + "" + lengthPriority + "0000";
             }
-
-
         }
-
 
         pes.sort(function compareNumbers(a, b) {
             return a.priority - b.priority;
@@ -290,7 +240,6 @@ const getters = {
         return pes;
     },
     getPreEventsByZone: (state) => (id) => {
-        //  return state.preEvents.filter(preEvent => preEvent.zone.id === id);
         return state.preEvents.filter(function (el) {
                 if (el.zone != undefined && el.zone.id != undefined && el.zone.id == id) {
                     return true;
@@ -298,22 +247,12 @@ const getters = {
                 return false;
             }
         );
-
     },
     getZoneBgColor: (state) => (id) => {
         if (state.zones[id] != undefined && state.zones[id].bgColor != undefined) {
             return state.zones[id].bgColor;
         }
         return "";
-    },
-    getZones: state => {
-        return state.zones;
-    },
-    getEvents: state => {
-        return state.events;
-    },
-    getEventStates: state => {
-        return state.eventStates;
     },
     getEventStateById: (state) => (id) => {
         return state.eventStates.find(eventState => eventState.id === id)
@@ -342,16 +281,10 @@ const getters = {
         }
         return 'all_out';
     },
-    getEventTypes: state => {
-        return state.eventTypes;
-    },
-    getEventByKey: (state) => (key) => {
-        return state.events[key];
-    },
     getEventIndexById: (state) => (id) => {
         return state.events.findIndex(e => e.id === id)
     },
-    getEventByTd: (state, getters) => (calendar, start, end) => {
+    getEventByTd: (state) => (calendar, start, end) => {
         return state.events.filter(function (e) {
             if (e.calendar == calendar && e.start >= start && e.start < end) {
                 return true;
@@ -397,7 +330,11 @@ const getters = {
             cloneDate.subtract(1, 'week');
             //Prevent Infinity Loop
             calls += 1;
-            if (calls > 10) { debugger; flag = false; console.log("Loop: getNumberOfDayInMonth"); }
+            if (calls > 10) {
+                debugger;
+                flag = false;
+                console.log("Loop: getNumberOfDayInMonth");
+            }
         } while (state.date.month() == cloneDate.month() || flag == false)
         return count;
     },
@@ -439,7 +376,7 @@ const getters = {
         if (rend == null) rend = "23:59";
         return rend;
     },
-    getNextStart: (state, getters) => {
+    getNextStart: () => {
         var rstart = "00:00";
         return rstart;
     },
@@ -460,26 +397,25 @@ const getters = {
         return rend;
     },
     getHours: (state, getters) => {
-        console.log("getHours")
         var hours = [];
         if (getters.hasCalendars) {
             var flag = true;
 
-            console.log(getters.getCalendarStart)
+            console.log(state.calendarStart)
 
-            var t = moment(getters.getCalendarStart, "HH:mm");
-            if(!t.isValid()){
+            var t = moment(state.calendarStart, "HH:mm");
+            if (!t.isValid()) {
                 console.log("GET HOURS - t - Fecha no valida")
                 return hours;
             }
 
             var e = moment("23:59", "HH:mm");
-            if(!e.isValid()){
+            if (!e.isValid()) {
                 console.log("GET HOURS - e - Fecha no valida")
                 return hours;
             }
 
-            var calls= 0;
+            var calls = 0;
 
             while (flag) {
                 hours.push(t.format("HH:mm"));
@@ -489,19 +425,22 @@ const getters = {
                 }
                 //Prevent Infinity Loop
                 calls += 1;
-                if (calls > 40) { debugger; flag = false; console.log("Loop: getHours"); }
+                if (calls > 100) {
+                    debugger;
+                    flag = false;
+                    console.log("Loop: getHours");
+                }
             }
         }
         return hours;
     },
     getNextHours: (state, getters) => {
         var hours = [];
-        console.log("getNextHours")
         if (getters.hasCalendars) {
             var flag = true;
             var t = moment("00:00", "HH:mm");
             var e = moment(getters.getNextEnd, "HH:mm");
-            var calls= 0;
+            var calls = 0;
             while (flag) {
                 hours.push(t.format("HH:mm"));
                 t.add(30, "minutes");
@@ -510,7 +449,11 @@ const getters = {
                 }
                 //Prevent Infinity Loop
                 calls += 1;
-                if (calls > 40) { debugger; flag = false; alert("getNextHours"); }
+                if (calls > 100) {
+                    debugger;
+                    flag = false;
+                    console.log("Loop: getNextHours");
+                }
             }
         }
         return hours;
@@ -527,17 +470,13 @@ const getters = {
 const actions = {
     startList({commit, dispatch}) {
         commit(LOADING_PLUS);
-        console.log("start")
+
         HTTP.get('start').then((response) => {
-            console.log("calendars")
+
             commit(SET_CALENDARS, response.data.calendars);
-            console.log("calendars Groups")
             commit(SET_CALENDAR_GROUPS, response.data.calendarGroups);
-            console.log("states")
             commit(SET_EVENT_STATES, response.data.eventStates);
-            console.log("types")
             commit(SET_EVENT_TYPES, response.data.eventTypes);
-            console.log("zones")
             var zones = {};
             for (var i = 0; i < response.data.zones.length; i++) {
                 var zone = response.data.zones[i];
@@ -548,13 +487,9 @@ const actions = {
             }
             commit("SET_ZONES", zones);
 
-
-
-
-           dispatch('eventList');
-
+            dispatch('eventList');
+            dispatch('preEventList');
             commit(LOADING_LESS);
-            console.log("finish")
         })
     },
     eventStateList({commit}) {
@@ -617,25 +552,13 @@ const actions = {
             state.loading = state.loading - 1;
         })
     },
-    hideZone({commit}, index) {
-        commit('HIDE_ZONE', index);
-    },
-    showZone({commit}, index) {
-        commit('SHOW_ZONE', index);
-    },
-    hideCalendar({commit}, index) {
-        commit('HIDE_CALENDAR', index);
-    },
-    showCalendar({commit}, index) {
-        commit('SHOW_CALENDAR', index);
-    },
     changeDate({commit, dispatch}, date) {
         console.log(date)
         var newDate = moment(date)
 
         if (newDate.isValid()) {
-            commit('SET_DATE', newDate);
-            commit('CLEAR_EVENTS', newDate);
+            commit(SET_DATE, newDate);
+            commit(CLEAR_EVENTS, newDate);
             commit(SET_EVENT_SELECTED, null);
             commit(SET_EVENT_INDEX_SELECTED, null);
             commit(SET_EVENT_ID_SELECTED, null);
@@ -668,28 +591,21 @@ const actions = {
             state.loading = state.loading - 1;
         })
     },
-    removePreEvent({commit}, index) {
-        commit("REMOVE_PRE_EVENTS", index);
-    }
 
 };
 
 const mutations = {
     [SET_DATE](state, newDate) {
-        state.coordinates = {};
         state.date = newDate;
-        state.rc++;
     },
     [ADD_CALENDAR](state, calendar) {
         state.calendars.push(calendar);
     },
     [SHOW_CALENDAR](state, index) {
         Vue.set(state.calendars[index], 'hidden', false);
-        state.rc++;
     },
     [HIDE_CALENDAR](state, index) {
         Vue.set(state.calendars[index], 'hidden', true)
-        state.rc++;
     },
     [SHOW_ZONE](state, index) {
         Vue.set(state.zones[index], 'hidden', false);
@@ -754,10 +670,6 @@ const mutations = {
     },
     [SET_CELL_HEIGHT](state, cellHeight) {
         state.cellHeight = cellHeight;
-        state.rc++;
-    },
-    [UPDATE_RC](state) {
-        state.rc++;
     },
     [SET_FILTER_ZONE](state, filterZoneId) {
         state.filterZone = filterZoneId;

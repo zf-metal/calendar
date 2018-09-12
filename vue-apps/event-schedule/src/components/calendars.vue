@@ -35,11 +35,11 @@
                         <td class="zfc-column-hours">{{hour}}</td>
                         <calendarTd
                                 v-for="calendar in getVisibleCalendars"
-                                :key='getRc + getDate + calendar.id + hour' :ki="getRc + getDate + calendar.id + hour"
+                                :key='getDate + calendar.id + hour' :ki="getDate + calendar.id + hour"
                                 :calendarId="calendar.id" :name="calendar.name"
                                 :date="getDate" :hour="hour"
-                                :parentTop="top" :parentLeft="left" :rc="getRc" :isNextDay="false" :day="getDay"
-                                :cellHeight="getCellHeight">
+                                :parentTop="top" :parentLeft="left"  :isNextDay="false" :day="getDay"
+                                :cellHeight="cellHeight">
                         </calendarTd>
                     </tr>
 
@@ -47,7 +47,7 @@
                         <th v-if="hasCalendars" class="zfc-column-hours" style="background-color: #0c0c0c ">
                         </th>
 
-                        <td v-for="calendar in getVisibleCalendars" :key='getRc + calendar.id+"_nd"'
+                        <td v-for="calendar in getVisibleCalendars" :key=' + calendar.id+"_nd"'
                             style="background-color: #0c0c0c ">
                         </td>
                     </tr>
@@ -57,11 +57,12 @@
                         <td class="zfc-column-hours">{{hour}}</td>
                         <calendarTd
                                 v-for="calendar in getVisibleCalendars"
-                                :key='getRc + getNextDate + calendar.id + hour' :ki="getRc + getNextDate + calendar.id + hour"
+                                :key=' getNextDate + calendar.id + hour'
+                                :ki="getNextDate + calendar.id + hour"
                                 :calendarId="calendar.id" :name="calendar.name"
                                 :date="getNextDate" :hour="hour"
-                                :parentTop="top" :parentLeft="left" :rc="getRc" :isNextDay="true" :day="getNextDay"
-                                :cellHeight="getCellHeight">
+                                :parentTop="top" :parentLeft="left"  :isNextDay="true" :day="getNextDay"
+                                :cellHeight="cellHeight">
                         </calendarTd>
                     </tr>
 
@@ -73,9 +74,9 @@
         </div>
 
 
-        <modal :title="getModalFormTitle" :showModal="getShowModalForm" @close="closeModalForm">
-            <form-event :calendars="getCalendars" v-model="getEventForm"
-                        :index="getEventIndexSelected" v-on:remove="removeEvent"/>
+        <modal :title="getModalFormTitle" :showModal="showModalForm" @close="closeModalForm">
+            <form-event :calendars="getCalendars" v-model="eventSelected"
+                        :index="eventIndexSelected" v-on:remove="removeEvent"/>
         </modal>
 
         <modal :title="'Mapa: '+calendarName" :showModal="showModalMap" @close="showModalMap = false">
@@ -85,7 +86,7 @@
 </template>
 
 <script>
-    import {mapGetters, mapActions} from 'vuex';
+    import {mapState, mapGetters, mapActions} from 'vuex';
     import {calculateEnd} from './../utils/helpers'
     import {Drag, Drop} from 'vue-drag-drop';
 
@@ -102,7 +103,7 @@
 
     export default {
         name: 'calendars',
-        components: {calendarTd, preEvent, Drag, Drop, modal, loading, formEvent, navi, panel, maps,vueScrollingTable},
+        components: {calendarTd, preEvent, Drag, Drop, modal, loading, formEvent, navi, panel, maps, vueScrollingTable},
         data() {
             return {
                 tds: {},
@@ -115,14 +116,7 @@
         },
         created: function () {
             console.log("v1.5");
-//      this.eventStateList();
-//      this.zoneList();
-//      this.eventTypeList();
-//      this.calendarList();
             this.startList();
-
-
-            this.preEventList();
         },
         mounted() {
             this.$nextTick(function () {
@@ -131,13 +125,16 @@
             });
             this.handleCalendarPosition();
         },
-        watch: {
-        },
+        watch: {},
         computed: {
+            ...mapState([
+                'showModalForm',
+                'eventSelected',
+                'eventIndexSelected',
+                'calendarScroll',
+                'cellHeight',
+            ]),
             ...mapGetters([
-                'getEventForm',
-                'getEventIndexSelected',
-                'getCellHeight',
                 'getLoading',
                 'getCoordinate',
                 'isVisibleCalendar',
@@ -145,26 +142,20 @@
                 'getCalendars',
                 'getVisibleCalendars',
                 'getPreEventById',
-                'getPreEvents',
-                'getEvents',
-                'getEventByKey',
                 'getDate',
                 'getNextDate',
                 'getNextDay',
                 'getDay',
                 'getHours',
-                'getNextHours',
-                'getRc',
-                'getCalendarScroll',
-                'getShowModalForm'
+                'getNextHours'
             ]),
             getStyleHeaderFix: function () {
-                var left = this.left - this.getCalendarScroll.left;
+                var left = this.left - this.calendarScroll.left;
                 return 'left: ' + left + 'px';
             },
-            getModalFormTitle: function (){
-                if(this.getEventForm){
-                    return this.getEventForm.id +'. '+this.getEventForm.title;
+            getModalFormTitle: function () {
+                if (this.eventSelected) {
+                    return this.eventSelected.id + '. ' + this.eventSelected.title;
                 }
             }
         },
@@ -176,10 +167,9 @@
                 'eventTypeList',
                 'calendarList',
                 'preEventList',
-                'removePreEvent',
                 'pushEvent'
             ]),
-            closeModalForm: function(){
+            closeModalForm: function () {
                 this.$store.commit('SET_SHOW_MODAL_FORM', false);
             },
             showMap: function (id, name) {
@@ -202,18 +192,18 @@
             },
             handleCalendarScroll: function (e) {
                 var target = null;
-                if(e.target != undefined){
+                if (e.target != undefined) {
                     target = e.target;
-                }else{
+                } else {
                     target = e.srcElement;
                 }
                 this.$store.commit('SET_CALENDAR_SCROLL', {top: target.scrollTop, left: target.scrollLeft});
             },
             handleWindowScroll: function (e) {
                 var target = null;
-                if(e.target != undefined){
+                if (e.target != undefined) {
                     target = e.target;
-                }else{
+                } else {
                     target = e.srcElement;
                 }
                 this.$store.commit('SET_BODY_SCROLL', {
@@ -260,9 +250,7 @@
         max-width: 50px;
     }
 
-
-
-    .zfc-header-table{
+    .zfc-header-table {
         position: fixed;
         z-index: 11;
     }
@@ -277,7 +265,7 @@
     table.zfc-td th:first-child {
         position: -webkit-sticky;
         position: sticky;
-        left:0;
+        left: 0;
         z-index: 30;
         background-color: #FAFAFA;
         border: 1px solid #d9d9d9;

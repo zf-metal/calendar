@@ -22,7 +22,7 @@
 
     export default {
         name: 'calnedarTd',
-        props: ['calendarId', 'ki', 'name', 'date', 'hour', 'parentTop', 'parentLeft', 'rc', 'cellHeight', 'isNextDay', 'day'],
+        props: ['calendarId', 'ki', 'name', 'date', 'hour', 'parentTop', 'parentLeft',  'cellHeight', 'isNextDay', 'day'],
         components: {Drag, Drop,event},
         data() {
             return {
@@ -41,9 +41,7 @@
       },
         computed: {
             ...mapGetters([
-                'getRc',
                 'getCalendarSchedule',
-                'getEventByKey',
                 'getPreEventById',
                 'getEventByTd',
                 'getEventIndexById'
@@ -80,7 +78,7 @@
 
                 if (data.op != undefined && data.op == 'push') {
                     this.pushEvent(event);
-                    this.removePreEvent(this.getPreEventById(event.id));
+                    this.$store.commit('REMOVE_PRE_EVENTS', this.getPreEventById(event.id));
                 }
                 if (data.op != undefined && data.op == 'update') {
                     this.updateEvent({index: this.getEventIndexById(event.id), event: event});

@@ -74,7 +74,7 @@
 </template>
 
 <script>
-  import {mapGetters, mapActions} from 'vuex';
+  import {mapState, mapGetters, mapActions} from 'vuex';
   import axios from "axios"
   import moment from 'moment'
   import 'moment/locale/es';
@@ -105,15 +105,16 @@
       }
     },
     computed: {
+        ...mapState([
+            'eventIdSelected',
+            'cellHeight'
+        ]),
       ...mapGetters([
         'getEventIndexById',
-        'getCellHeight',
         'getZoneBgColor',
-        'getEventStates',
         'getEventStateBgColor',
         'getEventStateColor',
         'getEventTypeIcon',
-        'getEventIdSelected',
         'getDistanceFromEventSelected',
         'getCoordinate'
       ]),
@@ -148,7 +149,7 @@
         return "";
       },
       getMainClass: function () {
-        if (this.getEventIdSelected == this.event.id) {
+        if (this.eventIdSelected == this.event.id) {
           return 'zfc-event zfc-event-selected';
         } else {
           return 'zfc-event';
@@ -161,9 +162,9 @@
         return 'background-color:' + this.getEventStateBgColor(this.event.state) + "; color: "+this.getEventStateColor(this.event.state);
       },
       getHeight: function () {
-        var height = this.getCellHeight;
+        var height = this.cellHeight;
         if (this.event.duration > 30) {
-          height = Math.ceil(this.event.duration / 30) * this.getCellHeight;
+          height = Math.ceil(this.event.duration / 30) * this.cellHeight;
         }
 
         return height

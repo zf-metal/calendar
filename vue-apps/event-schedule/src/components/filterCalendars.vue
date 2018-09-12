@@ -16,7 +16,7 @@
 </template>
 
 <script>
-  import {mapGetters, mapActions} from 'vuex';
+  import {mapGetters} from 'vuex';
   import checkCalendar from "./checkCalendar.vue"
   import filterGroupCalendar from "./filterGroupCalendar.vue"
 
@@ -32,20 +32,16 @@
     created: function () {
     },
     methods: {
-      ...mapActions([
-        'showCalendar',
-        'hideCalendar',
-      ]),
       all: function () {
         this.$store.commit('SET_CALENDAR_GROUP_SELECTED',"");
         for (var index = 0; index < this.getCalendars.length; ++index) {
-          this.showCalendar(index);
+            this.$store.commit('SHOW_CALENDAR', index);
         }
       },
       neither: function () {
         this.$store.commit('SET_CALENDAR_GROUP_SELECTED',"");
         for (var index = 0; index < this.getCalendars.length; ++index) {
-          this.hideCalendar(index);
+            this.$store.commit('HIDE_CALENDAR', index);
         }
       }
     },

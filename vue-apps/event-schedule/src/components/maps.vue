@@ -49,7 +49,6 @@
         computed: {
             ...mapGetters([
                 'getEventsByCalendar',
-                'getEvents'
             ]),
             getCenter: function(){
                 var first = this.getEventsByCalendar(this.calendarId)[0];

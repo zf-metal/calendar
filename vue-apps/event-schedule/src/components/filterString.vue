@@ -5,7 +5,6 @@
 </template>
 
 <script>
-    import {mapGetters, mapActions} from 'vuex';
 
     export default {
         name: 'filterString',
@@ -24,9 +23,6 @@
             }
         },
         computed: {
-            ...mapGetters([
-                'getFilterString',
-            ]),
         },
     }
 </script>

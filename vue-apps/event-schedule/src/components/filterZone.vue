@@ -15,7 +15,7 @@
 </template>
 
 <script>
-    import {mapGetters, mapActions} from 'vuex';
+    import {mapGetters, mapState} from 'vuex';
 
     export default {
         name: 'filterZone',
@@ -35,7 +35,6 @@
         },
         computed: {
             ...mapGetters([
-                'getFilterZone',
                 'getZones',
                 'getPreEventsByZone'
             ]),

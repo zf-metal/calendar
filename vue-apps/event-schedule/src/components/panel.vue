@@ -19,9 +19,9 @@
 
             <v-tab title="F">
                 <form-event :calendars="getCalendars"
-                            v-model="getEventSelected"
-                            v-if="getEventIndexSelected !=  null"
-                            :index="getEventIndexSelected"
+                            v-model="eventSelected"
+                            v-if="eventIndexSelected !=  null"
+                            :index="eventIndexSelected"
                 />
             </v-tab>
 
@@ -31,7 +31,7 @@
 </template>
 
 <script>
-    import {mapGetters, mapActions} from 'vuex';
+    import {mapState, mapGetters, mapActions} from 'vuex';
     import preEvent from "./preEvent.vue";
     import filterZone from './filterZone.vue'
     import filterString from './filterString.vue'
@@ -53,15 +53,16 @@
         components: {
           preEvent,  service, VueTabs, VTab, modal, filterZone,filterString,formEvent, filterCalendars},
         computed: {
+            ...mapState([
+                'eventSelected',
+                'eventIndexSelected'
+            ]),
             ...mapGetters([
                 'getPreEventsFiltered',
                 'getZones',
                 'getPreEventsByZone',
-                'getPreEvents',
                 'hasCalendars',
                 'getCalendars',
-                'getEventSelected',
-                'getEventIndexSelected',
                 'getServiceSelected'
             ]),
         },

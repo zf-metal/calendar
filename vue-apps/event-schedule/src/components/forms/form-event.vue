@@ -10,7 +10,7 @@
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <label class="control-label">Estado</label>
                 <select name="state" class=" form-control" v-model="value.state" @change="unsaved">
-                    <option v-for="state in getEventStates"
+                    <option v-for="state in eventStates"
                             v-bind:value="state.id" :key="state.id"
                             :selected="value.state == state.id">
                         {{state.name}}
@@ -49,19 +49,6 @@
 
 
         </div>
-
-        <!--<div class="form-group">-->
-        <!--<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 control-label">-->
-        <!--<label class="control-label">Ubicación</label>-->
-        <!--</div>-->
-
-
-        <!--<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">-->
-        <!--<input type="text" name="location" class=" form-control" v-model="value.location" ref="location"-->
-        <!--@keydown="unsaved">-->
-        <!--<fe :errors="errors.location"/>-->
-        <!--</div>-->
-        <!--</div>-->
 
         <div class="form-group">
 
@@ -133,7 +120,7 @@
 
 
 <script>
-    import {mapGetters, mapActions} from 'vuex';
+    import {mapGetters, mapActions, mapState} from 'vuex';
     import {HTTP} from './../../utils/http-client'
     import {calculateEnd} from './../../utils/helpers'
     import fe from '../helpers/form-errors.vue'
@@ -167,9 +154,10 @@
             }
         },
         computed: {
+            ...mapState([
+                'eventStates'
+                ]),
             ...mapGetters([
-                'getEventStates',
-                'getEventTypes',
                 'getCalendars',
                 'hasCalendars',
                 'getLoading',

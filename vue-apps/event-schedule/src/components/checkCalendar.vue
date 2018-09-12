@@ -39,9 +39,9 @@
       ]),
       toggleCalendar: function () {
         if (this.hidden) {
-          this.showCalendar(this.index);
+            this.$store.commit('SHOW_CALENDAR', this.index);
         } else {
-          this.hideCalendar(this.index);
+            this.$store.commit('HIDE_CALENDAR', this.index);
         }
       }
     }

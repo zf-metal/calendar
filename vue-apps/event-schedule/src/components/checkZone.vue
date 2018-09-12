@@ -29,9 +29,9 @@
             ]),
             toggleZone: function () {
                 if (this.active) {
-                    this.showZone(this.index);
+                    this.$store.commit('SHOW_ZONE', this.index);
                 } else {
-                    this.hideZone(this.index);
+                    this.$store.commit('HIDE_ZONE', this.index);
                 }
             }
         }
