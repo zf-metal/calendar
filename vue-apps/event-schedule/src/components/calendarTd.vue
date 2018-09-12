@@ -77,8 +77,8 @@
                 event.hour = this.hour;
 
                 if (data.op != undefined && data.op == 'push') {
-                    this.pushEvent(event);
                     this.$store.commit('REMOVE_PRE_EVENTS', this.getPreEventById(event.id));
+                    this.pushEvent(event);
                 }
                 if (data.op != undefined && data.op == 'update') {
                     this.updateEvent({index: this.getEventIndexById(event.id), event: event});

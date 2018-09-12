@@ -569,16 +569,19 @@ const actions = {
     getRandomColor: function () {
         return '#' + (Math.random() * 0xFFFFFF << 0).toString(16);
     },
-    pushEvent({state, commit}, event) {
+    pushEvent({state, getter,commit}, event) {
         event.hour = moment(event.start).tz('America/Argentina/Buenos_Aires').format("HH:mm");
         state.loading = state.loading + 1;
+        commit('ADD_EVENT', event);
 
         HTTP.put("events/" + event.id, event
         ).then((response) => {
             state.loading = state.loading - 1;
-            commit('ADD_EVENT', event);
+
         }).catch((error) => {
             state.loading = state.loading - 1;
+            commit('remove_EVENT',getter.getEventIndexById(event.id));
+            //TODO Informar error
         })
     },
     updateEvent({state, commit}, {index, event}) {
