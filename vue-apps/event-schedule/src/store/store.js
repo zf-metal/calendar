@@ -31,6 +31,7 @@ import {
     SET_CELL_HEIGHT,
     SET_FILTER_ZONE,
     SET_FILTER_STRING,
+    SET_FILTER_HOURS,
     LOADING_LESS,
     LOADING_PLUS,
     ADD_PRE_EVENT,
@@ -43,7 +44,8 @@ import {
     SET_CALENDAR_START,
     SET_CALENDAR_GROUPS,
     SET_CALENDAR_GROUP_SELECTED,
-    SET_FILTER_COOP
+    SET_FILTER_COOP,
+
 } from './mutation-types'
 
 Vue.use(Vuex)
@@ -56,6 +58,8 @@ Vue.use(Vuex)
 */
 
 const state = {
+    filterHourFrom: "",
+    filterHourTo: "",
     filterCoop: null,
     calendarStart: "00:00",
     eventIndexSelected: null,
@@ -175,6 +179,19 @@ const getters = {
                     return true
                 } else if (state.filterCoop && e.link != state.filterCoop) {
                     return false
+                }
+
+                console.log("filter Hour")
+                console.log(state.filterHourFrom)
+                console.log(e.availability.timeRange.from.slice(1,2))
+
+                if(state.filterHourFrom){
+                    if(e.availability && e.availability.timeRange && e.availability.timeRange.from){
+
+                        if(state.filterHourFrom > e.availability.timeRange.from.slice(1,2)){
+                            return false
+                        }
+                    }
                 }
 
                 if (
@@ -703,7 +720,11 @@ const mutations = {
     },
     [SET_FILTER_COOP](state, link) {
         state.filterCoop = link;
-    }
+    },
+    [SET_FILTER_HOURS](state, from,to) {
+        state.filterHourFrom = from;
+        state.filterHourTo = to;
+    },
 };
 
 

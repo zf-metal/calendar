@@ -6,6 +6,7 @@
             <v-tab title="P">
                 <filter-string></filter-string>
                 <filterZone></filterZone>
+                <filter-hour></filter-hour>
                 <div class="zfc-panel-preevents">
                     <preEvent v-if="getPreEventsFiltered" v-for="(preEvent,index) in getPreEventsFiltered" :preEvent="preEvent"
                               :key="preEvent.id" :index="index">
@@ -35,6 +36,8 @@
     import preEvent from "./preEvent.vue";
     import filterZone from './filterZone.vue'
     import filterString from './filterString.vue'
+    import filterHour from './filterHours.vue'
+
     import filterCalendars from "./filterCalendars.vue"
 
     import service from "./service.vue"
@@ -51,7 +54,7 @@
             }
         },
         components: {
-          preEvent,  service, VueTabs, VTab, modal, filterZone,filterString,formEvent, filterCalendars},
+          preEvent,  service, VueTabs, VTab, modal, filterZone,filterString, filterHour,formEvent, filterCalendars},
         computed: {
             ...mapState([
                 'eventSelected',
