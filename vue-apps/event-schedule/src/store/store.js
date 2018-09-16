@@ -508,45 +508,26 @@ const actions = {
             commit(SET_CALENDAR_GROUPS, response.data.calendarGroups);
             commit(SET_EVENT_STATES, response.data.eventStates);
             commit(SET_EVENT_TYPES, response.data.eventTypes);
-            var zones = {};
-            for (var i = 0; i < response.data.zones.length; i++) {
-                var zone = response.data.zones[i];
-                if (zone.bgColor == undefined) {
-                    zone.bgColor = getRandomColor();
-                }
-                zones[zone.id] = zone;
-            }
-            commit("SET_ZONES", zones);
+            dispatch('populateZones',response.data.zones);
 
             dispatch('eventList');
             dispatch('preEventList');
         })
 
     },
-    eventStateList({commit}) {
-        HTTP.get('event-states').then((response) => {
-            commit("SET_EVENT_STATES", response.data);
 
-        })
-    },
-    zoneList({commit}) {
-        HTTP.get('zones').then((response) => {
-            var zones = {};
-            for (var i = 0; i < response.data.length; i++) {
-                var zone = response.data[i];
-                if (zone.bgColor == undefined) {
-                    zone.bgColor = getRandomColor();
-                }
-                zones[zone.id] = zone;
+    populateZones: ({commit},data) => {
+        var zones = {};
+        for (var i = 0; i < data.length; i++) {
+            var zone = data[i];
+            if (zone.bgColor == undefined) {
+                zone.bgColor = getRandomColor();
             }
-            commit("SET_ZONES", zones);
-        })
+            zones[zone.id] = zone;
+        }
+        commit("SET_ZONES", zones);
     },
-    eventTypeList({commit}) {
-        HTTP.get('event-types').then((response) => {
-            commit("SET_EVENT_TYPES", response.data);
-        })
-    },
+
 
     calendarList({state, commit, dispatch}) {
         CalendarService.findAll().then((response) => {

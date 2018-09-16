@@ -50,11 +50,14 @@
     },
     computed: {
       ...mapGetters([
-        'getLoading',
         'getMonthName',
         'getDayName',
         'getNumberOfDayInMonthOrdinal'
       ]),
+        getLoading: function(){
+          //TODO
+          return false;
+        }
     },
     methods: {
       ...mapActions([

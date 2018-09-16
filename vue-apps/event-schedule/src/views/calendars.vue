@@ -12,7 +12,7 @@
 
             <table class="table-bordered table-striped table-responsive zfc-header-table" :style="getStyleHeaderFix">
                 <thead>
-                <tr v-if="hasCalendars">
+                <tr >
                     <th class="zfc-column-hours"></th>
                     <th class="zfc-column-calendar"
                         v-for="calendar in getVisibleCalendars"
@@ -31,7 +31,7 @@
                     <tbody>
 
                     <!--TODAY-->
-                    <tr v-if="hasCalendars" v-for="hour in getHours" v-bind:key="getDate + hour">
+                    <tr  v-for="hour in getHours" v-bind:key="getDate + hour">
                         <td class="zfc-column-hours">{{hour}}</td>
                         <calendarTd
                                 v-for="calendar in getVisibleCalendars"
@@ -44,7 +44,7 @@
                     </tr>
 
                     <tr style="height: 3px;">
-                        <th v-if="hasCalendars" class="zfc-column-hours" style="background-color: #0c0c0c ">
+                        <th  class="zfc-column-hours" style="background-color: #0c0c0c ">
                         </th>
 
                         <td v-for="calendar in getVisibleCalendars" :key=' + calendar.id+"_nd"'
@@ -53,7 +53,7 @@
                     </tr>
 
                     <!--NEXTDAY-->
-                    <tr v-if="hasCalendars" v-for="hour in getNextHours" v-bind:key="getNextDate + hour">
+                    <tr  v-for="hour in getNextHours" v-bind:key="getNextDate + hour">
                         <td class="zfc-column-hours">{{hour}}</td>
                         <calendarTd
                                 v-for="calendar in getVisibleCalendars"
@@ -87,19 +87,19 @@
 
 <script>
     import {mapState, mapGetters, mapActions} from 'vuex';
-    import {calculateEnd} from './../utils/helpers'
+
     import {Drag, Drop} from 'vue-drag-drop';
 
-    import modal from './helpers/modal.vue'
-    import loading from './helpers/loading.vue'
+    import modal from './../components/helpers/modal.vue'
+    import loading from './../components/helpers/loading.vue'
     import vueScrollingTable from 'vue-scrolling-table'
 
-    import navi from './navi.vue'
-    import panel from './panel.vue'
-    import calendarTd from './calendarTd.vue'
-    import preEvent from "./preEvent.vue";
-    import formEvent from './forms/form-event.vue'
-    import maps from './maps.vue'
+    import navi from './../components/TheNavi'
+    import panel from './../components/ThePanel.vue'
+    import calendarTd from './../components/calendarTd.vue'
+    import preEvent from "./../components/preEvent.vue";
+    import formEvent from './../components/forms/form-event.vue'
+    import maps from './../components/maps.vue'
 
 
     export default {
