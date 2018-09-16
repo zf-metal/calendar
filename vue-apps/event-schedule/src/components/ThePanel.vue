@@ -34,13 +34,11 @@
 <script>
     import {mapState, mapGetters, mapActions} from 'vuex';
     import preEvent from "./preEvent.vue";
-    import filterZone from './filterZone.vue'
-    import filterString from './filterString.vue'
-    import filterHour from './filterHours.vue'
+    import filterZone from './filters/filterZone.vue'
+    import filterString from './filters/filterString.vue'
+    import filterHour from './filters/filterHours.vue'
+    import filterCalendars from "./filters/filterCalendars.vue"
 
-    import filterCalendars from "./filterCalendars.vue"
-
-    import service from "./service.vue"
     import modal from './helpers/modal.vue'
     import {VueTabs, VTab} from 'vue-nav-tabs'
     import 'vue-nav-tabs/themes/vue-tabs.css'
@@ -54,7 +52,7 @@
             }
         },
         components: {
-          preEvent,  service, VueTabs, VTab, modal, filterZone,filterString, filterHour,formEvent, filterCalendars},
+          preEvent, VueTabs, VTab, modal, filterZone,filterString, filterHour,formEvent, filterCalendars},
         computed: {
             ...mapState([
                 'eventSelected',

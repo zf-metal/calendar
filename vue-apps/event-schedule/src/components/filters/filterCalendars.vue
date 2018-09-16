@@ -17,7 +17,7 @@
 
 <script>
   import {mapGetters} from 'vuex';
-  import checkCalendar from "./checkCalendar.vue"
+  import checkCalendar from "../checkCalendar.vue"
   import filterGroupCalendar from "./filterGroupCalendar.vue"
 
   export default {

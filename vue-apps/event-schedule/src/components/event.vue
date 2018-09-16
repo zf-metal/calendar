@@ -78,7 +78,6 @@
   import axios from "axios"
   import moment from 'moment'
   import 'moment/locale/es';
-  import service from './service.vue'
   import {Drag, Drop} from 'vue-drag-drop';
   import availabilityDay from './availabilityDay.vue';
   import availabilityTime from './availabilityTime.vue';
@@ -89,7 +88,7 @@
       'index',
       'event',
     ],
-    components: {Drag, service,availabilityDay,availabilityTime },
+    components: {Drag, availabilityDay,availabilityTime },
     data() {
       return {}
     },
@@ -211,9 +210,9 @@
     }
 
     .zfc-event-selected {
-        -webkit-box-shadow: 2px 2px 3px 0px rgba(20, 158, 36, 1);
-        -moz-box-shadow: 2px 2px 3px 0px rgba(20, 158, 36, 1);
-        box-shadow: 2px 2px 3px 0px rgba(20, 158, 36, 1);
+        -webkit-box-shadow: 3px 3px 4px 0px rgba(20, 158, 36, 1);
+        -moz-box-shadow: 3px 3px 4px 0px rgba(20, 158, 36, 1);
+        box-shadow: 3px 3px 4px 0px rgba(20, 158, 36, 1);
     }
 
     .cursorPointer {
