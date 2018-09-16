@@ -22,7 +22,7 @@
 
     export default {
         name: 'calnedarTd',
-        props: ['calendarId', 'ki', 'name', 'date', 'hour', 'parentTop', 'parentLeft',  'cellHeight', 'isNextDay', 'day'],
+        props: ['calendarId', 'ki', 'name', 'date', 'hour', 'cellHeight', 'isNextDay', 'day'],
         components: {Drag, Drop,event},
         data() {
             return {

@@ -2,7 +2,7 @@
     <div>
         <div class="col-xs-4">
             <select class="form-control" style="width: auto" id="hoursFrom" v-on:change="changeFilterHours" v-model="from">
-                <option value="">D</option>
+                <option value="" selected="selected">D</option>
                 <template v-for="hour in hours">
                     <option :value="hour" :key="hour">
                         {{hour}}
@@ -12,7 +12,7 @@
         </div>
         <div class="col-xs-4">
             <select class="form-control" style="width: auto" id="hoursTo" v-on:change="changeFilterHours" v-model="to">
-                <option value="">H</option>
+                <option value="" selected="selected">H</option>
                 <template v-for="hour in hours">
                     <option :value="hour" :key="hour">
                         {{hour}}
@@ -33,15 +33,15 @@
         data() {
             return {
                 hours: [ "00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23"],
-                from: null,
-                to: null
+                from: "",
+                to: ""
             }
         },
         created: function () {
         },
         methods: {
             changeFilterHours: function () {
-                this.$store.commit("SET_FILTER_HOURS", this.from, this.to);
+                this.$store.commit("SET_FILTER_HOURS", {from: this.from, to: this.to});
             }
         },
         computed: {

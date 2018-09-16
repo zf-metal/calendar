@@ -23,9 +23,7 @@ import {
     ADD_EVENT,
     UPDATE_EVENT,
     REMOVE_PRE_EVENTS,
-    SET_BODY_SCROLL,
     SET_CALENDAR_SCROLL,
-    SET_CALENDAR_POSITION,
     SET_EVENT_STATES,
     SET_EVENT_TYPES,
     SET_ZONES,
@@ -60,8 +58,7 @@ Vue.use(Vuex)
 */
 
 const state = {
-    filterHourFrom: "",
-    filterHourTo: "",
+    filterHour: {from: null, to: null},
     filterCoop: null,
     calendarStart: "00:00",
     eventIndexSelected: null,
@@ -73,7 +70,6 @@ const state = {
     cellHeight: 60,
     loading: 0,
     calendarPosition: {top: 0, left: 0},
-    bodyScroll: {top: 0, left: 0},
     calendarScroll: {top: 0, left: 0},
     date: moment().tz('America/Argentina/Buenos_Aires').locale('es'),
     nextDate: null,
@@ -170,7 +166,7 @@ const getters = {
 
 
         //FILTER
-        if (state.filterZone || state.filterString || state.filterCoop) {
+        if (state.filterZone || state.filterString || state.filterCoop || state.filterHour.from || state.filterHour.to) {
 
             pes = state.preEvents.filter(function (e) {
 
@@ -180,14 +176,21 @@ const getters = {
                     return false
                 }
 
-                console.log("filter Hour")
-                console.log(state.filterHourFrom)
-                console.log(e.availability.timeRange.from.slice(1,2))
-
-                if(state.filterHourFrom){
+                if(state.filterHour.from){
                     if(e.availability && e.availability.timeRange && e.availability.timeRange.from){
+                        if(state.filterHour.from > e.availability.timeRange.from){
+                            return false
+                        }
+                    }
+                }
 
-                        if(state.filterHourFrom > e.availability.timeRange.from.slice(1,2)){
+                if(state.filterHour.to){
+                    if(e.availability && e.availability.timeRange2 && e.availability.timeRange2.to){
+                        if(state.filterHour.to < e.availability.timeRange2.to){
+                            return false
+                        }
+                    }else if(e.availability && e.availability.timeRange && e.availability.timeRange.to){
+                        if(state.filterHour.to < e.availability.timeRange.to){
                             return false
                         }
                     }
@@ -639,14 +642,6 @@ const mutations = {
     [UPDATE_EVENT](state, {index, event}) {
         state.events[index] = event;
     },
-    [SET_CALENDAR_POSITION](state, {top, left}) {
-        state.calendarPosition.top = top;
-        state.calendarPosition.left = left;
-    },
-    [SET_BODY_SCROLL](state, {top, left}) {
-        state.bodyScroll.top = top;
-        state.bodyScroll.left = left;
-    },
     [SET_CALENDAR_SCROLL](state, {top, left}) {
         //console.log(top,left);
         state.calendarScroll.top = top;
@@ -679,9 +674,10 @@ const mutations = {
     [SET_FILTER_COOP](state, link) {
         state.filterCoop = link;
     },
-    [SET_FILTER_HOURS](state, from,to) {
-        state.filterHourFrom = from;
-        state.filterHourTo = to;
+    [SET_FILTER_HOURS](state, filterHour) {
+
+        state.filterHour.from = filterHour.from;
+        state.filterHour.to = filterHour.to;
     },
 };
 

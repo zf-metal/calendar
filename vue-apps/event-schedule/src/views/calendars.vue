@@ -4,7 +4,7 @@
         <loading></loading>
         <div class="clearfix"></div>
         <div class="col-lg-2 zfc-calendars-parent" style="margin: 0; padding:0;" >
-            <panel v-on:forceUpdate="onForceUpdate"></panel>
+            <panel></panel>
         </div>
 
         <div class="col-lg-10 zfc-calendars-parent">
@@ -20,11 +20,11 @@
                                 <span>{{calendar.name}}
                                     <i @click="showMap(calendar.id,calendar.name)"
                                        class="material-icons cursorPointer pull-right" style="vertical-align: bottom">map</i></span>
-
                     </th>
                 </tr>
                 </thead>
             </table>
+
             <div class="zfc-calendars" ref="zfcCalendars" v-on:scroll="handleCalendarScroll">
                 <table class="table-bordered table-striped table-responsive zfc-td" border="1">
 
@@ -38,7 +38,7 @@
                                 :key='getDate + calendar.id + hour' :ki="getDate + calendar.id + hour"
                                 :calendarId="calendar.id" :name="calendar.name"
                                 :date="getDate" :hour="hour"
-                                :parentTop="top" :parentLeft="left"  :isNextDay="false" :day="getDay"
+                                :isNextDay="false" :day="getDay"
                                 :cellHeight="cellHeight">
                         </calendarTd>
                     </tr>
@@ -61,7 +61,7 @@
                                 :ki="getNextDate + calendar.id + hour"
                                 :calendarId="calendar.id" :name="calendar.name"
                                 :date="getNextDate" :hour="hour"
-                                :parentTop="top" :parentLeft="left"  :isNextDay="true" :day="getNextDay"
+                                :isNextDay="true" :day="getNextDay"
                                 :cellHeight="cellHeight">
                         </calendarTd>
                     </tr>
@@ -117,17 +117,8 @@
             }
         },
         created: function () {
-            console.log("v1.5");
+            console.log("v2.0");
             this.startList();
-        },
-        mounted() {
-            this.$nextTick(function () {
-                window.addEventListener('scroll', this.handleWindowScroll);
-                window.addEventListener('resize', this.handleCalendarPosition);
-            });
-            this.handleCalendarPosition();
-        },
-        watch: {
         },
         computed: {
             ...mapState([
@@ -179,18 +170,9 @@
                 this.calendarName = name;
                 this.showModalMap = true;
             },
-            onForceUpdate() {
-                console.log("forceUpdate");
-                this.$forceUpdate();
-            },
             removeEvent: function () {
                 //TODO
                 console.log('todo');
-            },
-            handleCalendarPosition: function () {
-                this.top = this.$refs.zfcCalendars.getBoundingClientRect().top;
-                this.left = this.$refs.zfcCalendars.getBoundingClientRect().left;
-                this.$store.commit('SET_CALENDAR_POSITION', {top: this.top, left: this.left});
             },
             handleCalendarScroll: function (e) {
                 var target = null;
@@ -201,18 +183,7 @@
                 }
                 this.$store.commit('SET_CALENDAR_SCROLL', {top: target.scrollTop, left: target.scrollLeft});
             },
-            handleWindowScroll: function (e) {
-                var target = null;
-                if (e.target != undefined) {
-                    target = e.target;
-                } else {
-                    target = e.srcElement;
-                }
-                this.$store.commit('SET_BODY_SCROLL', {
-                    top: target.scrollTop || window.pageYOffset,
-                    left: target.scrollLeft || window.pageXOffset
-                });
-            },
+
         }
 
     }
