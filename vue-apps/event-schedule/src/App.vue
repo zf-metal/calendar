@@ -5,14 +5,14 @@
 </template>
 
 <script>
-  import calendars from './components/calendars.vue'
+    import calendars from './components/calendars.vue'
 
-  export default {
-    name: 'App',
-    components: {
-      calendars,
-    },
-    created: function () {
+    export default {
+        name: 'App',
+        components: {
+            calendars,
+        },
+        created: function () {
+        }
     }
-  }
 </script>

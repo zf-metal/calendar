@@ -7,10 +7,39 @@
 </template>
 
 <script>
-export default {
-  name: 'loading',
-  props: ['isLoading']
-}
+
+    import {ai} from './../../resource/HttpRequest'
+
+
+    export default {
+        name: 'loading',
+        props: [],
+        data: function () {
+            return {
+                load: 0
+            }
+        },
+        computed: {
+            isLoading: function () {
+                return this.load ? true : false
+            }
+        },
+        mounted: function () {
+            ai.interceptors.request.use(
+                (config) => {
+                    this.load++;
+                    return config;
+                },
+            );
+            ai.interceptors.response.use(
+                (response) => {
+                    this.load--
+                    return response;
+                },
+            );
+        }
+
+    }
 </script>
 
 
@@ -22,6 +51,7 @@ export default {
         height: 3px;
         background-color: #fdba2c;
     }
+
     .bar {
         content: "";
         display: inline;
@@ -31,18 +61,22 @@ export default {
         left: 50%;
         text-align: center;
     }
+
     .bar:nth-child(1) {
         background-color: #da4733;
         animation: loading 3s linear infinite;
     }
+
     .bar:nth-child(2) {
         background-color: #3b78e7;
         animation: loading 3s linear 1s infinite;
     }
+
     .bar:nth-child(3) {
         background-color: #fdba2c;
         animation: loading 3s linear 2s infinite;
     }
+
     @keyframes loading {
         from {
             left: 50%;

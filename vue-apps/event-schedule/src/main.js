@@ -3,9 +3,12 @@
 import Vue from 'vue'
 import store from './store/store';
 import App from './App'
+
+
 import Tippy from 'v-tippy'
 import 'v-tippy/dist/tippy.css'
 import 'v-tippy/'
+
 Vue.use(Tippy);
 
 import * as VueGoogleMaps from 'vue2-google-maps';
@@ -27,8 +30,8 @@ Vue.config.productionTip = false
 
 /* eslint-disable no-new */
 new Vue({
-  el: '#app',
-  store,
-  components: {App},
-  template: '<App/>'
+    el: '#app',
+    store,
+    components: {App},
+    template: '<App/>'
 })

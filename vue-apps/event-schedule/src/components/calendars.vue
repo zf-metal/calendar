@@ -1,9 +1,9 @@
 <template>
     <div class="zfc-main-container">
-        <navi></navi>
-        <loading :isLoading="getLoading"></loading>
+        <navi ></navi>
+        <loading></loading>
         <div class="clearfix"></div>
-        <div class="col-lg-2 zfc-calendars-parent" style="margin: 0; padding:0;">
+        <div class="col-lg-2 zfc-calendars-parent" style="margin: 0; padding:0;" >
             <panel v-on:forceUpdate="onForceUpdate"></panel>
         </div>
 
@@ -101,6 +101,7 @@
     import formEvent from './forms/form-event.vue'
     import maps from './maps.vue'
 
+
     export default {
         name: 'calendars',
         components: {calendarTd, preEvent, Drag, Drop, modal, loading, formEvent, navi, panel, maps, vueScrollingTable},
@@ -112,6 +113,7 @@
                 titleModal: '',
                 calendarId: null,
                 calendarName: null,
+
             }
         },
         created: function () {
@@ -125,7 +127,8 @@
             });
             this.handleCalendarPosition();
         },
-        watch: {},
+        watch: {
+        },
         computed: {
             ...mapState([
                 'showModalForm',
@@ -135,8 +138,6 @@
                 'cellHeight',
             ]),
             ...mapGetters([
-                'getLoading',
-                'getCoordinate',
                 'isVisibleCalendar',
                 'hasCalendars',
                 'getCalendars',
@@ -160,6 +161,7 @@
             }
         },
         methods: {
+
             ...mapActions([
                 'startList',
                 'zoneList',

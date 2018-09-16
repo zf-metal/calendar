@@ -8,6 +8,9 @@ import 'moment/locale/es';
 import {HTTP} from './../utils/http-client'
 import {calculateDistance, getRandomColor, extractPriorityIntByTime} from './../utils/helpers'
 
+
+import { EventService, StartService, CalendarService } from '../resource'
+
 import {
     SET_DATE,
     ADD_CALENDAR,
@@ -32,8 +35,6 @@ import {
     SET_FILTER_ZONE,
     SET_FILTER_STRING,
     SET_FILTER_HOURS,
-    LOADING_LESS,
-    LOADING_PLUS,
     ADD_PRE_EVENT,
     REMOVE_EVENT,
     SET_EVENT_FORM,
@@ -47,6 +48,7 @@ import {
     SET_FILTER_COOP,
 
 } from './mutation-types'
+
 
 Vue.use(Vuex)
 
@@ -110,9 +112,6 @@ const state = {
 */
 
 const getters = {
-    getLoading: state => {
-        return state.loading;
-    },
     getCalendars: state => {
         return state.calendars;
     },
@@ -169,7 +168,7 @@ const getters = {
     getPreEventsFiltered: (state, getters) => {
         var pes = state.preEvents;
 
-        store.commit(LOADING_PLUS);
+
         //FILTER
         if (state.filterZone || state.filterString || state.filterCoop) {
 
@@ -253,7 +252,7 @@ const getters = {
             return a.priority - b.priority;
         });
 
-        store.commit(LOADING_LESS);
+
         return pes;
     },
     getPreEventsByZone: (state) => (id) => {
@@ -418,8 +417,6 @@ const getters = {
         if (getters.hasCalendars) {
             var flag = true;
 
-            console.log(state.calendarStart)
-
             var t = moment(state.calendarStart, "HH:mm");
             if (!t.isValid()) {
                 console.log("GET HOURS - t - Fecha no valida")
@@ -485,10 +482,27 @@ const getters = {
 */
 
 const actions = {
-    startList({commit, dispatch}) {
-        commit(LOADING_PLUS);
+    changeDate({commit, dispatch}, date) {
+        var newDate = moment(date)
 
-        HTTP.get('start').then((response) => {
+        if (newDate.isValid()) {
+            commit(SET_DATE, newDate);
+            commit(CLEAR_EVENTS, newDate);
+            commit(SET_EVENT_SELECTED, null);
+            commit(SET_EVENT_INDEX_SELECTED, null);
+            commit(SET_EVENT_ID_SELECTED, null);
+            dispatch('eventList');
+            dispatch('preEventList');
+        }
+    },
+
+    getRandomColor: function () {
+        return '#' + (Math.random() * 0xFFFFFF << 0).toString(16);
+    },
+
+    startList({commit, dispatch}) {
+
+        StartService.start().then((response) => {
 
             commit(SET_CALENDARS, response.data.calendars);
             commit(SET_CALENDAR_GROUPS, response.data.calendarGroups);
@@ -506,18 +520,16 @@ const actions = {
 
             dispatch('eventList');
             dispatch('preEventList');
-            commit(LOADING_LESS);
         })
+
     },
     eventStateList({commit}) {
-        state.loading = state.loading + 1;
         HTTP.get('event-states').then((response) => {
             commit("SET_EVENT_STATES", response.data);
-            state.loading = state.loading - 1;
+
         })
     },
     zoneList({commit}) {
-        state.loading = state.loading + 1;
         HTTP.get('zones').then((response) => {
             var zones = {};
             for (var i = 0; i < response.data.length; i++) {
@@ -528,88 +540,59 @@ const actions = {
                 zones[zone.id] = zone;
             }
             commit("SET_ZONES", zones);
-            state.loading = state.loading - 1;
         })
     },
     eventTypeList({commit}) {
-        state.loading = state.loading + 1;
         HTTP.get('event-types').then((response) => {
             commit("SET_EVENT_TYPES", response.data);
-            state.loading = state.loading - 1;
         })
     },
+
     calendarList({state, commit, dispatch}) {
-        state.loading = state.loading + 1;
-        HTTP.get('calendars').then((response) => {
+        CalendarService.findAll().then((response) => {
             commit(SET_CALENDARS, response.data);
-            state.loading = state.loading - 1;
-            dispatch('eventList');
         })
     },
+
     preEventList({commit, getters, state}) {
-        state.loading = state.loading + 1;
-        HTTP.get('events?calendar=isNull&state=!=3&dateFrom=<=' + getters.getDate + '&orderby=zone').then((response) => {
+        EventService.getPreEvents(getters.getDate).then((response) => {
             commit("SET_PRE_EVENTS", response.data);
-            state.loading = state.loading - 1;
         });
     },
     eventList({state, getters, commit}) {
-        state.loading = state.loading + 1;
-        HTTP.get("events?calendar=isNotNull&start=" + getters.getDate + "<>" + getters.getNextDate + " " + getters.getNextEnd
-        ).then((response) => {
-            var events = [];
-            for (var i = 0; i < response.data.length; i++) {
-                var event = response.data[i];
-                if (event.calendar != null) {
-                    event.hour = moment(event.start).tz('America/Argentina/Buenos_Aires').format("HH:mm");
-                    events.push(event);
-                }
-            }
-            commit("SET_EVENTS", events);
-            state.loading = state.loading - 1;
-        })
-    },
-    changeDate({commit, dispatch}, date) {
-        console.log(date)
-        var newDate = moment(date)
 
-        if (newDate.isValid()) {
-            commit(SET_DATE, newDate);
-            commit(CLEAR_EVENTS, newDate);
-            commit(SET_EVENT_SELECTED, null);
-            commit(SET_EVENT_INDEX_SELECTED, null);
-            commit(SET_EVENT_ID_SELECTED, null);
-            dispatch('eventList');
-            dispatch('preEventList');
-        }
+        EventService.getActiveEvents(getters.getDate,getters.getNextDate,getters.getNextEnd).then(
+            (response) => {
+                var events = [];
+                for (let i = 0; i < response.data.length; i++) {
+                    let event = response.data[i];
+                    if (event.calendar != null) {
+                        event.hour = moment(event.start).tz('America/Argentina/Buenos_Aires').format("HH:mm");
+                        events.push(event);
+                    }
+                }
+                commit("SET_EVENTS", events);
+            }
+        )
     },
-    getRandomColor: function () {
-        return '#' + (Math.random() * 0xFFFFFF << 0).toString(16);
-    },
-    pushEvent({state, getter,commit}, event) {
+    pushEvent({state, getters,commit}, event) {
         event.hour = moment(event.start).tz('America/Argentina/Buenos_Aires').format("HH:mm");
-        state.loading = state.loading + 1;
         commit('ADD_EVENT', event);
 
-        HTTP.put("events/" + event.id, event
-        ).then((response) => {
-            state.loading = state.loading - 1;
+        EventService.updateEvent(event).catch(
+            (error) => {
+                commit('REMOVE_EVENT', getters.getEventIndexById(event.id))
+            }
+        );
 
-        }).catch((error) => {
-            state.loading = state.loading - 1;
-            commit('remove_EVENT',getter.getEventIndexById(event.id));
-            //TODO Informar error
-        })
     },
     updateEvent({state, commit}, {index, event}) {
-        state.loading = state.loading + 1;
-        HTTP.put("events/" + event.id, event
-        ).then((response) => {
-            state.loading = state.loading - 1;
-            commit(UPDATE_EVENT, {index: index, event: event})
-        }).catch((error) => {
-            state.loading = state.loading - 1;
-        })
+        EventService.updateEvent(event).then(
+            (response) => {
+                commit('UPDATE_EVENT', {index: index, event: event})
+            }
+        ).catch(
+        );
     },
 
 };
@@ -696,12 +679,6 @@ const mutations = {
     },
     [SET_FILTER_STRING](state, filterString) {
         state.filterString = filterString;
-    },
-    [LOADING_LESS](state) {
-        state.loading--;
-    },
-    [LOADING_PLUS](state) {
-        state.loading++;
     },
     [SET_EVENT_SELECTED](state, event) {
         state.eventSelected = event;
