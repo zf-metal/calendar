@@ -60,7 +60,7 @@ Vue.use(Vuex)
 const state = {
     filterHour: {from: null, to: null},
     filterCoop: null,
-    calendarStart: "00:00",
+    calendarStart: "06:00",
     eventIndexSelected: null,
     eventIdSelected: null,
     eventSelected: {},

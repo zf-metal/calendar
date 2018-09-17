@@ -21,10 +21,12 @@
             </a>
         </li>
         <li>
+            <v-toolbar-title>
+
             <span class="navbar-brand">{{getNumberOfDayInMonthOrdinal}}</span>
             <span class="navbar-brand">{{getDayName}}</span>
             <span class="navbar-brand">{{getMonthName}}</span>
-
+            </v-toolbar-title>
         </li>
     </ul>
 

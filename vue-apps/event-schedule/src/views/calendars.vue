@@ -11,68 +11,38 @@
                 fixed
                 app
         >
+
+
             <panel></panel>
+
         </v-navigation-drawer>
 
         <!--TOP Menu-->
-        <v-toolbar
-                app
-                :clipped-left="clipped"
-        >
+        <v-toolbar app :clipped-left="clipped" >
             <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
             <v-toolbar-title v-text="title"></v-toolbar-title>
-            <v-spacer></v-spacer>
+            <!--<v-spacer></v-spacer>-->
 
             <day v-model="getDate"></day>
+
             <div class="navbar-form navbar-left">
                 <div class="form-group">
-                    <select class="form-control" v-model="myCellHeight" v-on:change="applyCellHeight">
-                        <option value="30">Min</option>
-                        <option value="60">Mid</option>
-                        <option value="90">Max</option>
-                    </select>
+                    <select-size></select-size>
                 </div>
             </div>
 
             <div class="navbar-form navbar-left">
                 <div class="form-group">
-                    <select class="form-control" v-model="start" v-on:change="changeCalendarStart">
-                        <option value="00:00" selected="selected">00:00</option>
-                        <option value="01:00">01:00</option>
-                        <option value="02:00">02:00</option>
-                        <option value="03:00">03:00</option>
-                        <option value="04:00">04:00</option>
-                        <option value="05:00">05:00</option>
-                        <option value="06:00">06:00</option>
-                        <option value="07:00">07:00</option>
-                        <option value="08:00">08:00</option>
-                        <option value="09:00">09:00</option>
-                        <option value="10:00">10:00</option>
-                        <option value="11:00">11:00</option>
-                        <option value="12:00">12:00</option>
-                        <option value="13:00">13:00</option>
-                        <option value="14:00">14:00</option>
-                        <option value="15:00">15:00</option>
-                        <option value="16:00">16:00</option>
-                        <option value="17:00">17:00</option>
-                        <option value="18:00">18:00</option>
-                        <option value="19:00">19:00</option>
-                        <option value="20:00">20:00</option>
-                        <option value="21:00">21:00</option>
-                        <option value="22:00">22:00</option>
-                        <option value="23:00">23:00</option>
-                    </select>
+                    <select-start></select-start>
                 </div>
             </div>
 
             <v-btn icon href="/">
-                <v-icon >home</v-icon>
+                <v-icon>home</v-icon>
             </v-btn>
 
 
-
         </v-toolbar>
-
 
 
         <!--Contenido-->
@@ -81,64 +51,69 @@
 
             <div class="zfc-main-container">
 
-                    <table class="table-bordered table-striped table-responsive zfc-header-table" :style="getStyleHeaderFix">
-                        <thead>
-                        <tr >
-                            <th class="zfc-column-hours"></th>
-                            <th class="zfc-column-calendar"
-                                v-for="calendar in getVisibleCalendars"
-                                :key="calendar.id">
+                <!--HEADER-->
+
+                <table class="table-bordered table-striped table-responsive zfc-header-table"
+                       :style="getStyleHeaderFix"
+                      >
+                    <thead>
+                    <tr>
+                        <th class="zfc-column-hours"></th>
+                        <th class="zfc-column-calendar"
+                            v-for="calendar in getVisibleCalendars"
+                            :key="calendar.id">
                                 <span>{{calendar.name}}
                                     <i @click="showMap(calendar.id,calendar.name)"
                                        class="material-icons cursorPointer pull-right" style="vertical-align: bottom">map</i></span>
-                            </th>
+                        </th>
+                    </tr>
+                    </thead>
+                </table>
+
+
+                <div class="zfc-calendars" ref="zfcCalendars" v-on:scroll="handleCalendarScroll">
+                    <table class="table-bordered table-striped table-responsive zfc-td" border="1">
+
+                        <tbody>
+
+                        <!--TODAY-->
+                        <tr v-for="hour in getHours" v-bind:key="getDate + hour">
+                            <td class="zfc-column-hours">{{hour}}</td>
+                            <calendarTd
+                                    v-for="calendar in getVisibleCalendars"
+                                    :key='getDate + calendar.id + hour' :ki="getDate + calendar.id + hour"
+                                    :calendarId="calendar.id" :name="calendar.name"
+                                    :date="getDate" :hour="hour"
+                                    :isNextDay="false" :day="getDay"
+                                    :cellHeight="cellHeight">
+                            </calendarTd>
                         </tr>
-                        </thead>
+
+                        <tr style="height: 3px;">
+                            <th class="zfc-column-hours" style="background-color: #0c0c0c ">
+                            </th>
+
+                            <td v-for="calendar in getVisibleCalendars" :key=' + calendar.id+"_nd"'
+                                style="background-color: #0c0c0c ">
+                            </td>
+                        </tr>
+
+                        <!--NEXTDAY-->
+                        <tr v-for="hour in getNextHours" v-bind:key="getNextDate + hour">
+                            <td class="zfc-column-hours">{{hour}}</td>
+                            <calendarTd
+                                    v-for="calendar in getVisibleCalendars"
+                                    :key=' getNextDate + calendar.id + hour'
+                                    :ki="getNextDate + calendar.id + hour"
+                                    :calendarId="calendar.id" :name="calendar.name"
+                                    :date="getNextDate" :hour="hour"
+                                    :isNextDay="true" :day="getNextDay"
+                                    :cellHeight="cellHeight">
+                            </calendarTd>
+                        </tr>
+
+                        </tbody>
                     </table>
-
-                    <div class="zfc-calendars" ref="zfcCalendars" v-on:scroll="handleCalendarScroll">
-                        <table class="table-bordered table-striped table-responsive zfc-td" border="1">
-
-                            <tbody>
-
-                            <!--TODAY-->
-                            <tr  v-for="hour in getHours" v-bind:key="getDate + hour">
-                                <td class="zfc-column-hours">{{hour}}</td>
-                                <calendarTd
-                                        v-for="calendar in getVisibleCalendars"
-                                        :key='getDate + calendar.id + hour' :ki="getDate + calendar.id + hour"
-                                        :calendarId="calendar.id" :name="calendar.name"
-                                        :date="getDate" :hour="hour"
-                                        :isNextDay="false" :day="getDay"
-                                        :cellHeight="cellHeight">
-                                </calendarTd>
-                            </tr>
-
-                            <tr style="height: 3px;">
-                                <th  class="zfc-column-hours" style="background-color: #0c0c0c ">
-                                </th>
-
-                                <td v-for="calendar in getVisibleCalendars" :key=' + calendar.id+"_nd"'
-                                    style="background-color: #0c0c0c ">
-                                </td>
-                            </tr>
-
-                            <!--NEXTDAY-->
-                            <tr  v-for="hour in getNextHours" v-bind:key="getNextDate + hour">
-                                <td class="zfc-column-hours">{{hour}}</td>
-                                <calendarTd
-                                        v-for="calendar in getVisibleCalendars"
-                                        :key=' getNextDate + calendar.id + hour'
-                                        :ki="getNextDate + calendar.id + hour"
-                                        :calendarId="calendar.id" :name="calendar.name"
-                                        :date="getNextDate" :hour="hour"
-                                        :isNextDay="true" :day="getNextDay"
-                                        :cellHeight="cellHeight">
-                                </calendarTd>
-                            </tr>
-
-                            </tbody>
-                        </table>
 
                 </div>
 
@@ -178,9 +153,28 @@
     import maps from './../components/maps.vue'
     import day from './../components/day'
 
+    import SelectSize from './../components/input/SelectSize.vue'
+
+    import SelectStart from './../components/input/SelectStart.vue'
+
     export default {
         name: 'calendars',
-        components: {calendarTd, preEvent, Drag, Drop, modal, loading, formEvent, TheToolbar, panel, maps,day, vueScrollingTable},
+        components: {
+            SelectSize,
+            SelectStart,
+            calendarTd,
+            preEvent,
+            Drag,
+            Drop,
+            modal,
+            loading,
+            formEvent,
+            TheToolbar,
+            panel,
+            maps,
+            day,
+            vueScrollingTable
+        },
         data() {
             return {
                 //Vuetify
@@ -190,10 +184,8 @@
                 miniVariant: false,
                 right: true,
                 rightDrawer: false,
-                title: 'Agenda',
+                title: '',
                 //TOLBAR
-                myCellHeight: 60,
-                start: '00:00',
                 //Others
                 tds: {},
                 showModal: false,
@@ -230,7 +222,7 @@
                 'getNextHours'
             ]),
             getStyleHeaderFix: function () {
-                var left = this.left - this.calendarScroll.left;
+                var left = 0 - this.calendarScroll.left;
                 return 'left: ' + left + 'px';
             },
             getModalFormTitle: function () {
@@ -240,12 +232,6 @@
             }
         },
         methods: {
-            applyCellHeight: function () {
-                this.$store.commit('SET_CELL_HEIGHT', this.myCellHeight);
-            },
-            changeCalendarStart: function () {
-                this.$store.commit('SET_CALENDAR_START', this.start);
-            },
             ...mapActions([
                 'startList',
                 'zoneList',
@@ -287,11 +273,12 @@
     .zfc-main-container {
         height: 90vh;
         max-height: 90vh;
+        position: relative;
     }
 
-    .zfc-calendars-parent {
-        height: 88%;
-        padding: 0;
+    .zfc-header-table {
+        position: absolute;
+        z-index: 2;
     }
 
     .zfc-calendars {
@@ -314,12 +301,10 @@
         width: 50px !important;
         min-width: 50px;
         max-width: 50px;
+        text-align: center;
     }
 
-    .zfc-header-table {
-        position: fixed;
-        z-index: 11;
-    }
+
 
     .zfc-header-table th {
         background-color: #0e2c44 !important;

@@ -1,6 +1,6 @@
 <template>
 <div>
-    <v-tabs v-model="active">
+    <v-tabs v-model="active" color="grey lighten-4">
         <v-tab >P</v-tab>
         <v-tab >C</v-tab>
         <v-tab>F</v-tab>
@@ -62,8 +62,6 @@
     import filterCalendars from "./filters/filterCalendars.vue"
 
     import modal from './helpers/modal.vue'
-  //  import {VueTabs, VTab} from 'vue-nav-tabs'
-    import 'vue-nav-tabs/themes/vue-tabs.css'
     import formEvent from './forms/form-event.vue'
 
     export default {

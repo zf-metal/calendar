@@ -2,7 +2,7 @@
     <Drag :transfer-data="{event: event, index: index, op: 'update'}"
           :class="getMainClass" :style="getStyle">
 
-        <div class="cursorPointer" style="height: 100%;" @click="selectEvent">
+        <div class="cursorPointer" :style="getMainStyle" @click="selectEvent" v-on:mouseover="mouseOver">
 
             <div :style="getStateStyle" style="padding:1px">
                 <i class="material-icons btn btn-xs" style="font-size: 1em" @click="edit">edit</i>
@@ -74,102 +74,114 @@
 </template>
 
 <script>
-  import {mapState, mapGetters, mapActions} from 'vuex';
-  import axios from "axios"
-  import moment from 'moment'
-  import 'moment/locale/es';
-  import {Drag, Drop} from 'vue-drag-drop';
-  import availabilityDay from './availabilityDay.vue';
-  import availabilityTime from './availabilityTime.vue';
+    import {mapState, mapGetters, mapActions} from 'vuex';
+    import axios from "axios"
+    import moment from 'moment'
+    import 'moment/locale/es';
+    import {Drag, Drop} from 'vue-drag-drop';
+    import availabilityDay from './availabilityDay.vue';
+    import availabilityTime from './availabilityTime.vue';
 
-  export default {
-    name: 'event',
-    props: [
-      'index',
-      'event',
-    ],
-    components: {Drag, availabilityDay,availabilityTime },
-    data() {
-      return {}
-    },
-    methods: {
-      edit: function () {
-        this.selectEvent();
-        this.$store.commit('SET_SHOW_MODAL_FORM', true);
-      },
-      selectEvent: function () {
-        this.$store.commit('SET_EVENT_SELECTED', this.event);
-        this.$store.commit('SET_EVENT_ID_SELECTED', this.event.id);
-        this.$store.commit('SET_EVENT_INDEX_SELECTED', this.getEventIndexById(this.event.id));
-      }
-    },
-    computed: {
-        ...mapState([
-            'eventIdSelected',
-            'cellHeight'
-        ]),
-      ...mapGetters([
-        'getEventIndexById',
-        'getZoneBgColor',
-        'getEventStateBgColor',
-        'getEventStateColor',
-        'getEventTypeIcon',
-        'getDistanceFromEventSelected',
-        'getCoordinate'
-      ]),
-      getCliente: function () {
-        if (this.event.client != undefined) {
-          return this.event.client;
-        }
-        return "";
-      },
-      getLocation: function () {
-        if (this.event.location != undefined) {
-          return this.event.location;
-        }
-        return "";
-      },
-        getBranchOffice: function () {
-            if (this.event.branchOffice != undefined) {
-                return this.event.branchOffice;
+    export default {
+        name:
+            'event',
+        props: [
+            'index',
+            'event',
+        ],
+        components: {Drag, availabilityDay, availabilityTime},
+        data() {
+            return {
+                active: false,
             }
-            return "";
         },
-      getZone: function () {
-        if (this.event.zone != undefined) {
-          return this.event.zone.name;
-        }
-        return "";
-      },
-      getSucColor: function () {
-        if (this.event.zone != undefined && this.event.zone.id != undefined) {
-          return "background-color:" + this.getZoneBgColor(this.event.zone.id);
-        }
-        return "";
-      },
-      getMainClass: function () {
-        if (this.eventIdSelected == this.event.id) {
-          return 'zfc-event zfc-event-selected';
-        } else {
-          return 'zfc-event';
-        }
-      },
-      getStyle: function () {
-        return 'height:' + this.getHeight + "px;";
-      },
-      getStateStyle: function () {
-        return 'background-color:' + this.getEventStateBgColor(this.event.state) + "; color: "+this.getEventStateColor(this.event.state);
-      },
-      getHeight: function () {
-        var height = this.cellHeight;
-        if (this.event.duration > 30) {
-          height = Math.ceil(this.event.duration / 30) * this.cellHeight;
-        }
+        methods: {
+            mouseOver: function () {
+                this.active = !this.active;
+            },
+            edit: function () {
+                this.selectEvent();
+                this.$store.commit('SET_SHOW_MODAL_FORM', true);
+            },
+            selectEvent: function () {
+                this.$store.commit('SET_EVENT_SELECTED', this.event);
+                this.$store.commit('SET_EVENT_ID_SELECTED', this.event.id);
+                this.$store.commit('SET_EVENT_INDEX_SELECTED', this.getEventIndexById(this.event.id));
+            }
+        },
+        computed: {
+            ...mapState([
+                'eventIdSelected',
+                'cellHeight'
+            ]),
+            ...mapGetters([
+                'getEventIndexById',
+                'getZoneBgColor',
+                'getEventStateBgColor',
+                'getEventStateColor',
+                'getEventTypeIcon',
+                'getDistanceFromEventSelected',
+                'getCoordinate'
+            ]),
+            getMainStyle: function () {
+                if (this.active) {
+                    return "height:500px"
+                }
+                return "height:100%"
+            },
+            getCliente: function () {
+                if (this.event.client != undefined) {
+                    return this.event.client;
+                }
+                return "";
+            },
+            getLocation: function () {
+                if (this.event.location != undefined) {
+                    return this.event.location;
+                }
+                return "";
+            },
+            getBranchOffice: function () {
+                if (this.event.branchOffice != undefined) {
+                    return this.event.branchOffice;
+                }
+                return "";
+            },
+            getZone: function () {
+                if (this.event.zone != undefined) {
+                    return this.event.zone.name;
+                }
+                return "";
+            },
+            getSucColor: function () {
+                if (this.event.zone != undefined && this.event.zone.id != undefined) {
+                    return "background-color:" + this.getZoneBgColor(this.event.zone.id);
+                }
+                return "";
+            },
+            getMainClass: function () {
+                if (this.eventIdSelected == this.event.id) {
+                    return 'zfc-event zfc-event-selected';
+                } else {
+                    return 'zfc-event';
+                }
+            },
+            getStyle: function () {
+                return 'height:' + this.getHeight + "px;";
+            },
+            getStateStyle: function () {
+                return 'background-color:' + this.getEventStateBgColor(this.event.state) + "; color: " + this.getEventStateColor(this.event.state);
+            },
+            getHeight: function () {
+                var height = this.cellHeight;
+                if (this.event.duration > 30) {
+                    height = Math.ceil(this.event.duration / 30) * this.cellHeight;
+                }
 
-        return height
-      }
+                return height
+            }
+        }
     }
-  }
 </script>
 
 

@@ -1,10 +1,12 @@
 <template>
+
     <i v-if="enable" @click="goFilterCoop"
-       class="material-icons" :class="getSignalCoopClass"
+       class="material-icons pull-right" :class="getSignalCoopClass"
        data-toggle="tooltip"
        :title="getTitle">
         group
     </i>
+
 </template>
 
 <script>
