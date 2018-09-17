@@ -4,6 +4,12 @@ import Vue from 'vue'
 import store from './store/store';
 import App from './App'
 
+import Vuetify from 'vuetify'
+import directives from 'vuetify/es5/directives'
+Vue.use(Vuetify)
+
+import 'vuetify/dist/vuetify.min.css'
+import 'material-design-icons-iconfont/dist/material-design-icons.css'
 
 import Tippy from 'v-tippy'
 import 'v-tippy/dist/tippy.css'

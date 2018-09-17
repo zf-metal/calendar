@@ -1,6 +1,5 @@
 <template>
     <div>
-        <div class="col-xs-4">
             <select class="form-control" style="width: auto" id="hoursFrom" v-on:change="changeFilterHours" v-model="from">
                 <option value="" selected="selected">D</option>
                 <template v-for="hour in hours">
@@ -9,8 +8,7 @@
                     </option>
                 </template>
             </select>
-        </div>
-        <div class="col-xs-4">
+
             <select class="form-control" style="width: auto" id="hoursTo" v-on:change="changeFilterHours" v-model="to">
                 <option value="" selected="selected">H</option>
                 <template v-for="hour in hours">
@@ -19,7 +17,7 @@
                     </option>
                 </template>
             </select>
-        </div>
+
     </div>
 </template>
 
