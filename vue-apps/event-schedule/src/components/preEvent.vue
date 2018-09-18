@@ -48,14 +48,14 @@
                         <tr>
                             <td><i class="material-icons" style="vertical-align: bottom;">today</i></td>
                             <td class="caption">
-                                <availabilityDay :data="preEvent.availability"></availabilityDay>
+                                <availabilityDay :data="preEvent.config.availability"></availabilityDay>
                             </td>
                         </tr>
 
                         <tr>
                             <td><i class="material-icons" style="vertical-align: bottom;">hourglass_full</i></td>
                             <td class="caption">
-                                <availabilityTime :data="preEvent.availability"></availabilityTime>
+                                <availabilityTime :data="preEvent.config.availability"></availabilityTime>
                             </td>
                         </tr>
 

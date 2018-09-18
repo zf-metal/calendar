@@ -281,11 +281,11 @@ class Event
 
     /**
      * @Annotation\Exclude()
-     * @ORM\Column(type="string", length=500, unique=false, nullable=true,
-     * name="availability")
+     * @ORM\Column(type="string", length=1000, unique=false, nullable=true,
+     * name="config")
      * @Transformation\Policy\Custom(format="\ZfMetal\Restful\Transformation\Policy\Common\Json::format")
      */
-    public $availability = null;
+    public $config = null;
 
     /**
      * @return mixed
@@ -667,18 +667,19 @@ class Event
     /**
      * @return mixed
      */
-    public function getAvailability()
+    public function getConfig()
     {
-        return $this->availability;
+        return $this->config;
     }
 
     /**
-     * @param mixed $availability
+     * @param mixed $config
      */
-    public function setAvailability($availability)
+    public function setConfig($config)
     {
-        $this->availability = $availability;
+        $this->config = $config;
     }
+
 
     /**
      * @return mixed

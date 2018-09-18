@@ -54,14 +54,14 @@
                 <tr>
                     <td><i class="material-icons" style="vertical-align: bottom;">today</i></td>
                     <td>
-                        <availabilityDay :data="event.availability"></availabilityDay>
+                        <availabilityDay :data="event.config.availability"></availabilityDay>
                     </td>
                 </tr>
 
                 <tr>
                     <td><i class="material-icons" style="vertical-align: bottom;">hourglass_full</i></td>
                     <td>
-                        <availabilityTime :data="event.availability"></availabilityTime>
+                        <availabilityTime :data="event.config.availability"></availabilityTime>
                     </td>
                 </tr>
 
