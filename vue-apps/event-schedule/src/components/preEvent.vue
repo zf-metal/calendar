@@ -96,6 +96,7 @@
         computed: {
             ...mapGetters([
                 'getZoneBgColor',
+                'getZoneColor',
                 'getEventStateBgColor',
                 'getEventTypeIcon'
             ]),
@@ -143,7 +144,7 @@
             },
             getSucColor: function () {
                 if (this.preEvent.zone != undefined && this.preEvent.zone.id != undefined) {
-                    return "background-color:" + this.getZoneBgColor(this.preEvent.zone.id);
+                    return "background-color:" + this.getZoneBgColor(this.preEvent.zone.id) + "color: " + this.getZoneColor(this.preEvent.zone.id);
                 }
                 return "";
             }

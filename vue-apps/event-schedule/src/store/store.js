@@ -267,6 +267,12 @@ const getters = {
             }
         );
     },
+    getZoneColor: (state) => (id) => {
+        if (state.zones[id] != undefined && state.zones[id].color != undefined) {
+            return state.zones[id].color;
+        }
+        return "#000000";
+    },
     getZoneBgColor: (state) => (id) => {
         if (state.zones[id] != undefined && state.zones[id].bgColor != undefined) {
             return state.zones[id].bgColor;
