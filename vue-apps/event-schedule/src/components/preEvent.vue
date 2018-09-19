@@ -1,7 +1,7 @@
 <template>
     <drag :transfer-data="{event: preEvent, index:index, op: 'push'}">
 
-        <v-card class="mt-2" color="indigo">
+        <v-card class="mt-2" color="blue-grey darken-4">
 
             <!--Title-->
             <v-card-text class="pa-1 cursorPointer white--text">
@@ -144,7 +144,7 @@
             },
             getSucColor: function () {
                 if (this.preEvent.zone != undefined && this.preEvent.zone.id != undefined) {
-                    return "background-color:" + this.getZoneBgColor(this.preEvent.zone.id) + "color: " + this.getZoneColor(this.preEvent.zone.id);
+                    return "background-color:" + this.getZoneBgColor(this.preEvent.zone.id) + "; color: " + this.getZoneColor(this.preEvent.zone.id);
                 }
                 return "";
             }

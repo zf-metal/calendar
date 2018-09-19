@@ -491,6 +491,13 @@ const getters = {
 */
 
 const actions = {
+    checkCoop({state, commit}) {
+        if(state.filterCoop) {
+            if (!state.preEvents.find(e => e.link === state.filterCoop)) {
+                commit(SET_FILTER_COOP, null);
+            }
+        }
+    },
     changeDate({commit, dispatch}, date) {
         var newDate = moment(date)
 
@@ -565,11 +572,11 @@ const actions = {
             }
         )
     },
-    pushEvent({state, getters,commit}, event) {
+    pushEvent({state, getters,commit, dispatch}, event) {
         event.hour = moment(event.start).tz('America/Argentina/Buenos_Aires').format("HH:mm");
         commit('ADD_EVENT', event);
 
-        EventService.updateEvent(event).catch(
+        EventService.updateEvent(event).then((response) => {dispatch('checkCoop')}).catch(
             (error) => {
                 commit('REMOVE_EVENT', getters.getEventIndexById(event.id))
             }
