@@ -1,56 +1,59 @@
 <template>
-<div>
-    <v-tabs v-model="active" color="grey lighten-4">
-        <v-tab >P</v-tab>
-        <v-tab >C</v-tab>
-        <v-tab>F</v-tab>
+    <div>
+        <v-tabs v-model="active" color="grey lighten-4">
+            <v-tab>P</v-tab>
+            <v-tab>C</v-tab>
+            <v-tab>F</v-tab>
 
-        <v-tab-item>
-            <v-card flat>
-                <v-container fluid>
-                <v-layout row>
-                    <v-flex xs3>
-                        <filter-hour></filter-hour>
-                    </v-flex>
-                    <v-flex xs9>
-                        <filter-string></filter-string>
-                        <filterZone></filterZone>
-                    </v-flex>
-                </v-layout>
-                </v-container>
+            <v-tab-item>
+                <v-card flat>
+                    <v-container fluid>
+                        <v-layout row>
+                            <v-flex xs3>
+                                <filter-hour></filter-hour>
+                            </v-flex>
+                            <v-flex xs9>
+                                <filter-string></filter-string>
+                                <filterZone></filterZone>
+                            </v-flex>
+                        </v-layout>
+                    </v-container>
 
-            </v-card>
+                </v-card>
 
-            <v-card flat>
-                <div class="zfc-panel-preevents">
-                    <preEvent v-if="getPreEventsFiltered" v-for="(preEvent,index) in getPreEventsFiltered"
-                              :preEvent="preEvent"
-                              :key="preEvent.id" :index="index">
-                    </preEvent>
-                </div>
-            </v-card>
-        </v-tab-item>
+                <v-card flat>
+                    <drop @drop="handleDrop">
 
-        <v-tab-item >
-            <v-card flat>
-                <filter-calendars></filter-calendars>
-            </v-card>
-        </v-tab-item>
+                        <div class="zfc-panel-preevents pt-1" style="min-height:350px">
+                            <preEvent v-if="getPreEventsFiltered" v-for="(preEvent,index) in getPreEventsFiltered"
+                                      :preEvent="preEvent"
+                                      :key="preEvent.id" :index="index">
+                            </preEvent>
+                        </div>
+                    </drop>
+                </v-card>
+            </v-tab-item>
+
+            <v-tab-item>
+                <v-card flat>
+                    <filter-calendars></filter-calendars>
+                </v-card>
+            </v-tab-item>
 
 
-        <v-tab-item >
-            <v-card flat>
-                <form-event :calendars="getCalendars"
-                            v-model="eventSelected"
-                            v-if="eventIndexSelected !=  null"
-                            :index="eventIndexSelected"
-                />
-            </v-card>
-        </v-tab-item>
+            <v-tab-item>
+                <v-card flat>
+                    <form-event :calendars="getCalendars"
+                                v-model="eventSelected"
+                                v-if="eventIndexSelected !=  null"
+                                :index="eventIndexSelected"
+                    />
+                </v-card>
+            </v-tab-item>
 
-    </v-tabs>
+        </v-tabs>
 
-</div>
+    </div>
 </template>
 
 <script>
@@ -64,6 +67,8 @@
     import modal from './helpers/modal.vue'
     import formEvent from './forms/form-event.vue'
 
+    import {Drag, Drop} from 'vue-drag-drop';
+
     export default {
         name: 'panel',
         data() {
@@ -73,7 +78,7 @@
             }
         },
         components: {
-            preEvent, modal, filterZone, filterString, filterHour, formEvent, filterCalendars
+            preEvent, modal, filterZone, filterString, filterHour, formEvent, filterCalendars, Drag, Drop
         },
         computed: {
             ...mapState([
@@ -86,10 +91,15 @@
                 'getPreEventsByZone',
                 'hasCalendars',
                 'getCalendars',
-                'getServiceSelected'
+                'getServiceSelected',
+                'getEventIndexById'
             ]),
         },
         methods: {
+            handleDrop: function (data) {
+                this.$store.commit('REMOVE_EVENT', this.getEventIndexById(data.event.id));
+                this.$store.commit('ADD_PRE_EVENT', data.event);
+            },
             showModalZone: function () {
                 this.showModal = true
             },

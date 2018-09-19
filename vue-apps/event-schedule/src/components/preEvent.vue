@@ -1,7 +1,7 @@
 <template>
     <drag :transfer-data="{event: preEvent, index:index, op: 'push'}">
 
-        <v-card class="mt-2" color="blue-grey darken-4">
+        <v-card class="mt-4" color="blue-grey darken-4">
 
             <!--Title-->
             <v-card-text class="pa-1 cursorPointer white--text">
