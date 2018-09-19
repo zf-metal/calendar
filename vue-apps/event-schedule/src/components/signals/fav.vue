@@ -1,6 +1,6 @@
 <template>
-    <i v-if="enable" @click="goFav"
-       class="material-icons" :class="getSignalKeepClass"
+    <i v-if="hasFav" @click="goFav"
+       class="material-icons pull-right" :class="getSignalFavClass"
        data-toggle="tooltip"
        :title="getTitle">
         face
@@ -8,13 +8,11 @@
 </template>
 
 <script>
-    import {mapState} from 'vuex';
 
     export default {
         name: 'fav',
         props: {
-            enable: Boolean,
-            keep: Number,
+            preference: Object,
         },
         methods: {
             goFav: function () {
@@ -22,20 +20,37 @@
             }
         },
         computed: {
-            ...mapState([
-                'filterCoop',
-            ]),
-            getTitle: function () {
-                return "Tecnico Favorito";
+            hasFav: function () {
+                if (this.preference.pref1 || this.preference.pref2 || this.preference.pref3) {
+                    return true
+                }
+                return false
             },
-            getSignalKeepClass: function () {
-
-                if (this.keep) {
-                    return "signal-fav-keep"
-                } else {
-                    return "signal-fav"
+            getTitle: function () {
+                return "Tecnicos Preferidos: "+ this.getNamePref1 + " " + this.getNamePref2 + " " + this.getNamePref3;
+            },
+            getNamePref1: function(){
+                if (this.preference.pref1 && this.preference.pref1.name){
+                    return this.preference.pref1.name
                 }
 
+                return ""
+            },
+            getNamePref2: function(){
+                if (this.preference.pref2 && this.preference.pref2.name){
+                    return this.preference.pref2.name
+                }
+                return ""
+            },
+            getNamePref3: function(){
+                if (this.preference.pref3 && this.preference.pref3.name){
+                    return this.preference.pref3.name
+                }
+
+                return ""
+            },
+            getSignalFavClass: function () {
+                return "signal-fav"
             }
 
         },
@@ -43,11 +58,7 @@
 </script>
 
 <style scoped>
-    .signal-fav-keep {
-        color: red;
-    }
-
     .signal-fav {
-        color: yellow;
+        color: orange;
     }
 </style>

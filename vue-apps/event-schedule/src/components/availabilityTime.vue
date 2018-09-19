@@ -1,9 +1,6 @@
 <template>
-        <div>
-                <span class="timeSpan" v-if="getFrom && getTo">{{getFrom}} - {{getTo}}</span>
-                <span class="timeSpan" v-if="getFrom2">&</span>
-                <span class="timeSpan" v-if="getFrom2 && getTo2">{{getFrom2}} - {{getTo2}}</span>
-        </div>
+        <span>[<span class="timeSpan" v-if="getFrom && getTo">{{getFrom}} - {{getTo}}</span><span class="timeSpan" v-if="getFrom && getFrom2">&</span><span class="timeSpan" v-if="getFrom2 && getTo2">{{getFrom2}} - {{getTo2}}</span>]
+        </span>
 </template>
 
 <script>
@@ -47,11 +44,3 @@
     }
 </script>
 
-<style scoped>
-
-    .timeSpan{
-        font-size: 1.2em;
-        padding:1px;
-    }
-
-</style>

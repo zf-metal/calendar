@@ -1,42 +1,25 @@
 <template>
-    <i v-if="enable" @click="goFilterCoop"
-       class="material-icons" :class="getSignalKeepClass"
+    <i v-if="enable"
+       class="material-icons pull-right" :class="getSignalKeepClass"
        data-toggle="tooltip"
        :title="getTitle">
-        group
+        lock
     </i>
 </template>
 
 <script>
-    import {mapState} from 'vuex';
-
     export default {
-        name: 'coop',
+        name: 'keep',
         props: {
             enable: Boolean,
-            count: Number,
-            link: Number
-        },
-        methods: {
-            goFilterCoop: function () {
-                if (this.link == this.filterCoop) {
-                    this.$store.commit("SET_FILTER_COOP", null)
-                } else {
-                    this.$store.commit("SET_FILTER_COOP", this.link)
-                }
-
-            }
         },
         computed: {
-            ...mapState([
-                'filterCoop',
-            ]),
             getTitle: function () {
-                return "Visita Cooperativa - Link: " + this.link;
+                return "Mantener Técnico";
             },
             getSignalKeepClass: function () {
 
-                return "signal-signal-keep"
+                return "signal-keep"
 
             }
 
@@ -46,6 +29,6 @@
 
 <style scoped>
     .signal-keep {
-        color: red;
+        color: yellow;
     }
 </style>
