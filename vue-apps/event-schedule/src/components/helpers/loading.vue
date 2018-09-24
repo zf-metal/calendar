@@ -1,8 +1,11 @@
 <template>
+    <!--<div class="load-bar" v-if="isLoading">-->
+        <!--<div class="bar"></div>-->
+        <!--<div class="bar"></div>-->
+        <!--<div class="bar"></div>-->
+    <!--</div>-->
     <div class="load-bar" v-if="isLoading">
-        <div class="bar"></div>
-        <div class="bar"></div>
-        <div class="bar"></div>
+    <img src="/assets/bar-loading-1.gif"  />
     </div>
 </template>
 
@@ -49,7 +52,8 @@
         top: 0px;
         width: 100%;
         height: 3px;
-        background-color: #fdba2c;
+        /*background-color: #fdba2c;*/
+        z-index: 3;
     }
 
     .bar {

@@ -177,20 +177,20 @@ const getters = {
                 }
 
                 if(state.filterHour.from){
-                    if(e.availability && e.availability.timeRange && e.availability.timeRange.from){
-                        if(state.filterHour.from > e.availability.timeRange.from){
+                    if(e.config.availability && e.config.availability.timeRange && e.config.availability.timeRange.from){
+                        if(state.filterHour.from > e.config.availability.timeRange.from){
                             return false
                         }
                     }
                 }
 
                 if(state.filterHour.to){
-                    if(e.availability && e.availability.timeRange2 && e.availability.timeRange2.to){
+                    if(e.config.availability && e.config.availability.timeRange2 && e.config.availability.timeRange2.to){
                         if(state.filterHour.to < e.availability.timeRange2.to){
                             return false
                         }
-                    }else if(e.availability && e.availability.timeRange && e.availability.timeRange.to){
-                        if(state.filterHour.to < e.availability.timeRange.to){
+                    }else if(e.config.availability && e.config.availability.timeRange && e.config.availability.timeRange.to){
+                        if(state.filterHour.to < e.config.availability.timeRange.to){
                             return false
                         }
                     }
