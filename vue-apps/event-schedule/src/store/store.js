@@ -356,7 +356,7 @@ const getters = {
             //Prevent Infinity Loop
             calls += 1;
             if (calls > 10) {
-                debugger;
+                // debugger;
                 flag = false;
                 console.log("Loop: getNumberOfDayInMonth");
             }
@@ -449,7 +449,7 @@ const getters = {
                 //Prevent Infinity Loop
                 calls += 1;
                 if (calls > 100) {
-                    debugger;
+                    // debugger;
                     flag = false;
                     console.log("Loop: getHours");
                 }
@@ -473,7 +473,7 @@ const getters = {
                 //Prevent Infinity Loop
                 calls += 1;
                 if (calls > 100) {
-                    debugger;
+                    // debugger;
                     flag = false;
                     console.log("Loop: getNextHours");
                 }
@@ -656,7 +656,6 @@ const mutations = {
         state.events[index] = event;
     },
     [SET_CALENDAR_SCROLL](state, {top, left}) {
-        //console.log(top,left);
         state.calendarScroll.top = top;
         state.calendarScroll.left = left;
     },

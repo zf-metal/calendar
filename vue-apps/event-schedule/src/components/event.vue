@@ -1,6 +1,7 @@
 <template>
-    <Drag :transfer-data="{event: event, index: index, op: 'update'}"
+    <Drag :transfer-data="{event: event, index: index, op: 'update'}" class="drago"
           :class="getMainClass" :style="getDragStyle">
+
         <div @click="selectEvent" @mouseover="mouseOver" @mouseout="mouseOut">
             <v-card class="cursorPointer" :style="getMainStyle">
 
@@ -217,17 +218,29 @@
             },
             getDragStyle: function () {
                 if (this.active && this.getHeight < 250) {
-                    return "height:250px; z-index:15;"
+                    return "height:250px; z-index:15; top:"+this.getTop;
                 }
-                return 'height:' + this.getHeight + "px;";
+                return 'height:' + this.getHeight + "px; top:"+this.getTop+"px";
             },
             getStateStyle: function () {
                 return 'background-color:' + this.getEventStateBgColor(this.event.state) + "; color: " + this.getEventStateColor(this.event.state);
             },
+            getTop: function () {
+                let sh = this.event.hour.split(":");
+                let min = parseInt(sh[1])
+                if( sh[1] >= 30){
+                    min = parseInt(sh[1]) - 30
+                }
+                let top =  Math.ceil(min * this.cellHeight / 30)
+                console.log("ID:"+ this.event.id +" HOUR: "+ this.event.hour + "  MIN:"+ min + " TOP:"+ top)
+                return  Math.ceil(min * this.cellHeight / 30)
+            },
             getHeight: function () {
-                var height = this.cellHeight;
+                let height = this.cellHeight;
+                let resultado = Math.floor(this.event.duration / 30);
+                let resto = this.event.duration % 30;
                 if (this.event.duration > 30) {
-                    height = Math.ceil(this.event.duration / 30) * this.cellHeight;
+                    height = (resultado * this.cellHeight) + Math.ceil(resto * this.cellHeight / 30);
                 }
 
                 return height
