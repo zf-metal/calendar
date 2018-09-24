@@ -43,8 +43,7 @@ import {
     SET_CALENDAR_START,
     SET_CALENDAR_GROUPS,
     SET_CALENDAR_GROUP_SELECTED,
-    SET_FILTER_COOP,
-
+    SET_FILTER_COOP
 } from './mutation-types'
 
 

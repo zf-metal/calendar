@@ -2,18 +2,27 @@
     <td class="zfc-column-calendar" :class="getClassDependingHour" :id="ki" :style="getCalendarTdStyle">
         <drop @drop="handleDrop" class="zfc-dropcell">
             <event v-for="(event,index) in getEventByTd(calendarId,start,end)"  :key="index"
-                   :index="index" :event="event"
-                   v-on:editEvent="onEditEvent">
+                   :index="index" :event="event">
             </event>
         </drop>
+        <dialog-alert v-if="needConfirm"
+                 :dialog="needConfirm"
+                 :title="cTitle"
+                 :description="cDesc"
+                 v-on:ok="onOk"
+                 v-on:cancel="onCancel"
+
+        ></dialog-alert>
     </td>
 </template>
 
 <script>
+    import Vue from 'vue'
     import {mapGetters, mapActions} from 'vuex';
     import {Drag, Drop} from 'vue-drag-drop';
     import {calculateEnd} from './../utils/helpers'
     import event from './event.vue'
+    import dialogAlert from './helpers/dialogAlert.vue'
 
 
     import moment from 'moment'
@@ -23,7 +32,7 @@
     export default {
         name: 'calnedarTd',
         props: ['calendarId', 'ki', 'name', 'date', 'hour', 'cellHeight', 'isNextDay', 'day'],
-        components: {Drag, Drop,event},
+        components: {Drag, Drop,event,dialogAlert},
         data() {
             return {
                 top: 0,
@@ -31,6 +40,9 @@
                 upHere: false,
                 start: null,
                 end: null,
+                needConfirm: false,
+                cTitle: "",
+                cDesc: ""
             }
         },
       mounted: function(){
@@ -76,6 +88,10 @@
                 event.end = calculateEnd(event.start, event.duration);
                 event.hour = this.hour;
 
+                if(this.isOutOfRange(event)) {
+                    this.confirmHours()
+                }
+
                 if (data.op != undefined && data.op == 'push') {
                     this.$store.commit('REMOVE_PRE_EVENTS', this.getPreEventById(event.id));
                     this.pushEvent(event);
@@ -84,8 +100,24 @@
                     this.updateEvent({index: this.getEventIndexById(event.id), event: event});
                 }
             },
-            onEditEvent: function(){
-
+            isOutOfRange: function(event){
+                if(event.config && event.config.availability
+                    && (event.hour < event.config.availability.timeRange.from
+                    || event.hour > event.config.availability.timeRange.to)){
+                    return true
+                }
+                return false
+            },
+            confirmHours: function(){
+                this.cTitle = "Alerta de Horario"
+                this.cDesc = "La configuración horaria del servicio no concuerda con el horario destino"
+                this.needConfirm = true
+            },
+            onOk: function(){
+                this.needConfirm = false
+            },
+            onCancel: function(){
+                this.needConfirm = false
             }
 
 

@@ -232,7 +232,7 @@
                     min = parseInt(sh[1]) - 30
                 }
                 let top =  Math.ceil(min * this.cellHeight / 30)
-                console.log("ID:"+ this.event.id +" HOUR: "+ this.event.hour + "  MIN:"+ min + " TOP:"+ top)
+
                 return  Math.ceil(min * this.cellHeight / 30)
             },
             getHeight: function () {
