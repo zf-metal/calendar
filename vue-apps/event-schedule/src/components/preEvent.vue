@@ -8,7 +8,7 @@
                 <span class="text-xs-left">{{preEvent.id}}. {{preEvent.title}}
                 </span>
                 <keep :enable="getKeep"></keep>
-                <fav :preference="preEvent.config.preference?preEvent.config.preference:{}"></fav>
+                <fav :preference="getFav"></fav>
                 <coop :enable="coopEnable" :link="coopLink" :count="coopCount"></coop>
 
 
@@ -51,7 +51,7 @@
                     <tr>
                         <td><i class="material-icons" style="vertical-align: bottom;">today</i></td>
                         <td class="caption">
-                            <availabilityDay :data="preEvent.config.availability"></availabilityDay>
+                            <availabilityDay :data="getAvailability"></availabilityDay>
                         </td>
                     </tr>
 
@@ -59,10 +59,9 @@
                         <td><i class="material-icons" style="vertical-align: bottom;">hourglass_full</i></td>
                         <td class="caption">
                             <span>{{preEvent.duration}} Min - </span>
-                            <availabilityTime :data="preEvent.config.availability"></availabilityTime>
+                            <availabilityTime :data="getAvailability"></availabilityTime>
                         </td>
                     </tr>
-
 
                     <!--<tr>-->
                     <!--<td><i class="material-icons" style="vertical-align: bottom;">add</i>-->
@@ -100,9 +99,20 @@
                 'getEventStateBgColor',
                 'getEventTypeIcon'
             ]),
+            getAvailability: function(){
+              if(this.preEvent.config && this.preEvent.config.availability){
+                  return this.preEvent.config.availability
+              }
+              return null
+            },
             getKeep: function () {
                 if (this.preEvent.config && this.preEvent.config.preference && this.preEvent.config.preference.keep) {
                     return this.preEvent.config.preference.keep;
+                }
+            },
+            getFav: function () {
+                if (this.preEvent.config && this.preEvent.config.preference) {
+                    return this.preEvent.config.preference;
                 }
             },
             coopEnable: function () {

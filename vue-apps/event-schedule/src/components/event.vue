@@ -1,22 +1,32 @@
 <template>
     <Drag :transfer-data="{event: event, index: index, op: 'update'}"
-          :class="getMainClass" :style="getStyle">
+          :class="getMainClass" :style="getDragStyle">
+        <div @click="selectEvent" @mouseover="mouseOver" @mouseout="mouseOut">
+            <v-card class="cursorPointer" :style="getMainStyle">
 
-        <div class="cursorPointer" :style="getMainStyle" @click="selectEvent" v-on:mouseover="mouseOver">
+                <v-card-text :style="getStateStyle" class="pa-1">
+                    <!--EDIT-->
+                    <i class="material-icons btn btn-xs" style="font-size: 1em" @click="edit">edit</i>
+                    <!--Title-->
+                    <span class="text-xs-left">{{event.id}}. {{event.title}}
+                </span>
 
-            <div :style="getStateStyle" style="padding:1px">
-                <i class="material-icons btn btn-xs" style="font-size: 1em" @click="edit">edit</i>
-                <span>{{event.id}}. {{event.title}}</span>
-                <span class="pull-right"
-                      style="padding:1px">{{getDistanceFromEventSelected(event.lat, event.lng)}} Km</span>
-                <br>
-            </div>
+                    <!--Distance-->
+                    <span class="pull-right"
+                          style="padding:1px">{{getDistanceFromEventSelected(event.lat, event.lng)}} Km</span>
+                    <!--HELPs Icons-->
+                    <keep :enable="getKeep"></keep>
+                    <fav :preference="getFav"></fav>
+                    <coop :enable="coopEnable" :link="coopLink" :count="coopCount"></coop>
 
 
-            <table class="table eventTable">
-                <tbody>
-                <tr class="cursorHelp" :title="event.serviceDescription"
-                    v-tippy="{
+                </v-card-text>
+
+                <v-card-text class="pe-card-text pa-0">
+                    <table class="table eventTable">
+                        <tbody>
+                        <tr class="cursorHelp" :title="event.serviceDescription"
+                            v-tippy="{
              allowTitleHTML: true,
              dynamicTitle:true,
              arrow:true,
@@ -30,46 +40,55 @@
              maxWidth: '500px',
               theme: 'lulu'
              }">
-                    <td><i class="material-icons" style="vertical-align: text-bottom;">account_box</i></td>
-                    <td>{{getCliente}}</td>
-                </tr>
+                            <td><i class="material-icons" style="vertical-align: text-bottom;">account_box</i></td>
+                            <td>{{getCliente}}</td>
+                        </tr>
 
-                <tr>
-                    <td><i class="material-icons" style="vertical-align: bottom;">business</i>
-                    </td>
-                    <td>{{getBranchOffice}}</td>
-                </tr>
+                        <tr>
+                            <td><i class="material-icons" style="vertical-align: bottom;">business</i>
+                            </td>
+                            <td>{{getBranchOffice}}</td>
+                        </tr>
 
-                <tr>
-                    <td><i class="material-icons" style="vertical-align: text-bottom;">my_location</i>
-                    </td>
-                    <td>{{getLocation}}  </td>
-                </tr>
-                <tr>
-                    <td :style="getSucColor"><i class="material-icons" style="vertical-align: bottom;">center_focus_strong</i>
-                    </td>
-                    <td :style="getSucColor">{{getZone}}</td>
-                </tr>
+                        <tr>
+                            <td><i class="material-icons" style="vertical-align: text-bottom;">my_location</i>
+                            </td>
+                            <td>{{getLocation}}  </td>
+                        </tr>
+                        <tr>
+                            <td :style="getSucColor"><i class="material-icons" style="vertical-align: bottom;">center_focus_strong</i>
+                            </td>
+                            <td :style="getSucColor">{{getZone}}</td>
+                        </tr>
 
-                <tr>
-                    <td><i class="material-icons" style="vertical-align: bottom;">today</i></td>
-                    <td>
-                        <availabilityDay :data="event.config.availability"></availabilityDay>
-                    </td>
-                </tr>
+                        <tr>
+                            <td><i class="material-icons" style="vertical-align: bottom;">today</i></td>
+                            <td>
+                                <availabilityDay :data="getAvailability"></availabilityDay>
+                            </td>
+                        </tr>
 
-                <tr>
-                    <td><i class="material-icons" style="vertical-align: bottom;">hourglass_full</i></td>
-                    <td>
-                        <availabilityTime :data="event.config.availability"></availabilityTime>
-                    </td>
-                </tr>
+                        <!--<tr>-->
+                            <!--<td><i class="material-icons" style="vertical-align: bottom;">hourglass_full</i></td>-->
+                            <!--<td>-->
+                                <!--<availabilityTime :data="getAvailability"></availabilityTime>-->
+                            <!--</td>-->
+                        <!--</tr>-->
 
-                </tbody>
-            </table>
+                        <tr>
+                            <td><i class="material-icons" style="vertical-align: bottom;">hourglass_full</i></td>
+                            <td class="caption">
+                                <span>{{event.duration}} Min - </span>
+                                <availabilityTime :data="getAvailability"></availabilityTime>
+                            </td>
+                        </tr>
 
+                        </tbody>
+                    </table>
+                </v-card-text>
+
+            </v-card>
         </div>
-
     </Drag>
 </template>
 
@@ -81,6 +100,9 @@
     import {Drag, Drop} from 'vue-drag-drop';
     import availabilityDay from './availabilityDay.vue';
     import availabilityTime from './availabilityTime.vue';
+    import coop from './signals/coop.vue'
+    import keep from './signals/keep.vue'
+    import fav from './signals/fav.vue'
 
     export default {
         name:
@@ -89,7 +111,7 @@
             'index',
             'event',
         ],
-        components: {Drag, availabilityDay, availabilityTime},
+        components: {Drag, availabilityDay, availabilityTime, coop, keep, fav},
         data() {
             return {
                 active: false,
@@ -99,11 +121,15 @@
             mouseOver: function () {
                 this.active = !this.active;
             },
+            mouseOut: function () {
+                this.active = false;
+            },
             edit: function () {
                 this.selectEvent();
                 this.$store.commit('SET_SHOW_MODAL_FORM', true);
             },
             selectEvent: function () {
+                console.log("SelectEvent")
                 this.$store.commit('SET_EVENT_SELECTED', this.event);
                 this.$store.commit('SET_EVENT_ID_SELECTED', this.event.id);
                 this.$store.commit('SET_EVENT_INDEX_SELECTED', this.getEventIndexById(this.event.id));
@@ -123,10 +149,33 @@
                 'getDistanceFromEventSelected',
                 'getCoordinate'
             ]),
-            getMainStyle: function () {
-                if (this.active) {
-                    return "height:500px"
+            getAvailability: function () {
+                if (this.event.config && this.event.config.availability) {
+                    return this.event.config.availability
                 }
+                return null
+            },
+            getKeep: function () {
+                if (this.event.config && this.event.config.preference && this.event.config.preference.keep) {
+                    return this.event.config.preference.keep;
+                }
+            },
+            getFav: function () {
+                if (this.event.config && this.event.config.preference) {
+                    return this.event.config.preference;
+                }
+            },
+            coopEnable: function () {
+                return (this.event.link) ? true : false
+            },
+            coopLink: function () {
+                return (this.event.link) ? this.event.link : null
+            },
+            coopCount: function () {
+                //TODO
+                return null
+            },
+            getMainStyle: function () {
                 return "height:100%"
             },
             getCliente: function () {
@@ -166,7 +215,10 @@
                     return 'zfc-event';
                 }
             },
-            getStyle: function () {
+            getDragStyle: function () {
+                if (this.active && this.getHeight < 250) {
+                    return "height:250px; z-index:15;"
+                }
                 return 'height:' + this.getHeight + "px;";
             },
             getStateStyle: function () {
@@ -193,22 +245,15 @@
 
     .eventTable td {
         vertical-align: middle;
-        padding: 1px;
-        font-size: 0.95em;
-    }
+        padding: 2px;
 
-    .eventTable td i {
-        font-size: 1em;
     }
 
     .zfc-event {
         position: absolute;
         overflow: hidden;
-        /*display: block;*/
-        font-size: .90em;
         line-height: 1.3;
         border-radius: 3px;
-        /*border: 1px solid #5c6667;*/
         background-color: #ffffff;
         color: #0c0c0c;
         z-index: 12;

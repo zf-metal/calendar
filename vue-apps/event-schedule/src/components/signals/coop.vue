@@ -1,6 +1,6 @@
 <template>
 
-    <i v-if="enable" @click="goFilterCoop"
+    <i v-if="enable" @click="goFilterCoop" style="font-size: 20px"
        class="material-icons pull-right" :class="getSignalCoopClass"
        data-toggle="tooltip"
        :title="getTitle">

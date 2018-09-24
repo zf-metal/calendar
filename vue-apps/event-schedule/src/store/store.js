@@ -209,14 +209,14 @@ const getters = {
         for (var i = 0; i < pes.length; i++) {
             var priority = "5";
             var lengthPriority = "8";
-            if (pes[i].availability != undefined) {
+            if (pes[i].config && pes[i].config.availability) {
                 //Verifico Dias Especificos
-                if (pes[i].availability.especificDays != undefined) {
-                    for (var u = 0; u < pes[i].availability.especificDays.length; u++) {
-                        if (pes[i].availability.especificDays[u].day != undefined && pes[i].availability.especificDays[u].ordinal != undefined) {
+                if (pes[i].config.availability.especificDays != undefined) {
+                    for (var u = 0; u < pes[i].config.availability.especificDays.length; u++) {
+                        if (pes[i].config.availability.especificDays[u].day != undefined && pes[i].config.availability.especificDays[u].ordinal != undefined) {
                             //Exclusivo = 1
-                            if (pes[i].availability.especificDays[u].day == getters.getDay
-                                && pes[i].availability.especificDays[u].ordinal == getters.getNumberOfDayInMonth) {
+                            if (pes[i].config.availability.especificDays[u].day == getters.getDay
+                                && pes[i].config.availability.especificDays[u].ordinal == getters.getNumberOfDayInMonth) {
                                 priority = "1";
                                 break;
                             } else {
@@ -225,9 +225,9 @@ const getters = {
                         }
                     }
 
-                } else if (pes[i].availability.days != undefined) {
+                } else if (pes[i].config.availability.days != undefined) {
                     //Dia ok = 2
-                    if (pes[i].availability.days[getters.getDay] == true) {
+                    if (pes[i].config.availability.days[getters.getDay] == true) {
                         priority = "2";
                     } else {
                         //Dia No ok = 3
@@ -235,8 +235,8 @@ const getters = {
                     }
                     //Priorizo segun cantidad dias true
                     var size = 0;
-                    for (var key in pes[i].availability.days) {
-                        if (pes[i].availability.days[key] == true) size++;
+                    for (var key in pes[i].config.availability.days) {
+                        if (pes[i].config.availability.days[key] == true) size++;
                     }
                     lengthPriority = size.toString()
                 } else {
@@ -244,8 +244,8 @@ const getters = {
                 }
             }
 
-            if (pes[i].availability && pes[i].availability.timeRange && pes[i].availability.timeRange.from) {
-                pes[i].priority = parseInt(priority + "" + lengthPriority + "" + pes[i].availability.timeRange.from.replace(":", ""));
+            if (pes[i].config && pes[i].config.availability && pes[i].config.availability.timeRange && pes[i].config.availability.timeRange.from) {
+                pes[i].priority = parseInt(priority + "" + lengthPriority + "" + pes[i].config.availability.timeRange.from.replace(":", ""));
             } else {
                 pes[i].priority = priority + "" + lengthPriority + "0000";
             }

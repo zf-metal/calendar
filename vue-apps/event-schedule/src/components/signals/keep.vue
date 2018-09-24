@@ -1,6 +1,6 @@
 <template>
     <i v-if="enable"
-       class="material-icons pull-right" :class="getSignalKeepClass"
+       class="material-icons pull-right" :class="getSignalKeepClass"  style="font-size: 20px"
        data-toggle="tooltip"
        :title="getTitle">
         lock
