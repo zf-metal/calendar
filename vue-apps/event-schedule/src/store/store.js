@@ -9,7 +9,7 @@ import {HTTP} from './../utils/http-client'
 import {calculateDistance, getRandomColor, extractPriorityIntByTime} from './../utils/helpers'
 
 
-import { EventService, StartService, CalendarService } from '../resource'
+import {EventService, StartService, CalendarService} from '../resource'
 
 import {
     SET_DATE,
@@ -147,7 +147,10 @@ const getters = {
         return calendar.schedules.find(schedule => schedule.day === day);
     },
     getVisibleCalendars: state => {
-        return state.calendars.filter(calendar => calendar.hidden != true);
+        if(state.calendars) {
+            return state.calendars.filter(calendar => calendar.hidden != true)
+        }
+        return []
     },
     hasCalendars: (state) => {
         if (state.calendars != undefined && state.calendars.length > 0) {
@@ -175,21 +178,21 @@ const getters = {
                     return false
                 }
 
-                if(state.filterHour.from){
-                    if(e.config.availability && e.config.availability.timeRange && e.config.availability.timeRange.from){
-                        if(state.filterHour.from > e.config.availability.timeRange.from){
+                if (state.filterHour.from) {
+                    if (e.config.availability && e.config.availability.timeRange && e.config.availability.timeRange.from) {
+                        if (state.filterHour.from > e.config.availability.timeRange.from) {
                             return false
                         }
                     }
                 }
 
-                if(state.filterHour.to){
-                    if(e.config.availability && e.config.availability.timeRange2 && e.config.availability.timeRange2.to){
-                        if(state.filterHour.to < e.availability.timeRange2.to){
+                if (state.filterHour.to) {
+                    if (e.config.availability && e.config.availability.timeRange2 && e.config.availability.timeRange2.to) {
+                        if (state.filterHour.to < e.availability.timeRange2.to) {
                             return false
                         }
-                    }else if(e.config.availability && e.config.availability.timeRange && e.config.availability.timeRange.to){
-                        if(state.filterHour.to < e.config.availability.timeRange.to){
+                    } else if (e.config.availability && e.config.availability.timeRange && e.config.availability.timeRange.to) {
+                        if (state.filterHour.to < e.config.availability.timeRange.to) {
                             return false
                         }
                     }
@@ -491,7 +494,7 @@ const getters = {
 
 const actions = {
     checkCoop({state, commit}) {
-        if(state.filterCoop) {
+        if (state.filterCoop) {
             if (!state.preEvents.find(e => e.link === state.filterCoop)) {
                 commit(SET_FILTER_COOP, null);
             }
@@ -523,7 +526,9 @@ const actions = {
             commit(SET_CALENDAR_GROUPS, response.data.calendarGroups);
             commit(SET_EVENT_STATES, response.data.eventStates);
             commit(SET_EVENT_TYPES, response.data.eventTypes);
-            dispatch('populateZones',response.data.zones);
+            if (response.data.zones) {
+                dispatch('populateZones', response.data.zones);
+            }
 
             dispatch('eventList');
             dispatch('preEventList');
@@ -531,7 +536,7 @@ const actions = {
 
     },
 
-    populateZones: ({commit},data) => {
+    populateZones: ({commit}, data) => {
         var zones = {};
         for (var i = 0; i < data.length; i++) {
             var zone = data[i];
@@ -557,7 +562,7 @@ const actions = {
     },
     eventList({state, getters, commit}) {
 
-        EventService.getActiveEvents(getters.getDate,getters.getNextDate,getters.getNextEnd).then(
+        EventService.getActiveEvents(getters.getDate, getters.getNextDate, getters.getNextEnd).then(
             (response) => {
                 var events = [];
                 for (let i = 0; i < response.data.length; i++) {
@@ -571,11 +576,13 @@ const actions = {
             }
         )
     },
-    pushEvent({state, getters,commit, dispatch}, event) {
+    pushEvent({state, getters, commit, dispatch}, event) {
         event.hour = moment(event.start).tz('America/Argentina/Buenos_Aires').format("HH:mm");
         commit('ADD_EVENT', event);
 
-        EventService.updateEvent(event).then((response) => {dispatch('checkCoop')}).catch(
+        EventService.updateEvent(event).then((response) => {
+            dispatch('checkCoop')
+        }).catch(
             (error) => {
                 commit('REMOVE_EVENT', getters.getEventIndexById(event.id))
             }

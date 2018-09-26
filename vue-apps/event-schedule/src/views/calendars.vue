@@ -82,7 +82,7 @@
                             <calendarTd
                                     v-for="calendar in getVisibleCalendars"
                                     :key='getDate + calendar.id + hour' :ki="getDate + calendar.id + hour"
-                                    :calendarId="calendar.id" :name="calendar.name"
+                                    :calendarId="calendar.id" :name="calendar.name" :user="calendar.user"
                                     :date="getDate" :hour="hour"
                                     :isNextDay="false" :day="getDay"
                                     :cellHeight="cellHeight">
@@ -105,7 +105,7 @@
                                     v-for="calendar in getVisibleCalendars"
                                     :key=' getNextDate + calendar.id + hour'
                                     :ki="getNextDate + calendar.id + hour"
-                                    :calendarId="calendar.id" :name="calendar.name"
+                                    :calendarId="calendar.id" :name="calendar.name" :user="calendar.user"
                                     :date="getNextDate" :hour="hour"
                                     :isNextDay="true" :day="getNextDay"
                                     :cellHeight="cellHeight">

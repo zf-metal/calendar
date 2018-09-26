@@ -99,11 +99,18 @@ class Calendar
     public $description = null;
 
     /**
-     * Many Users have Many Groups.
+     * Many Calendars have Many Groups.
      * @ORM\ManyToMany(targetEntity="\ZfMetal\Calendar\Entity\CalendarGroup", mappedBy="calendars")
      * @Transformation\Policy\Custom(transform="\ZfMetal\Restful\Transformation\Policy\Common\IdName::transform")
      */
     private $groups;
+
+
+    /**
+     * @ORM\OneToMany(targetEntity="\ZfMetal\Calendar\Entity\OutOfService", mappedBy="calendar")
+     * @Transformation\Policy\Custom(transform="\ZfMetal\Restful\Transformation\Policy\Common\IdName::transform")
+     */
+    private $outOfServices;
 
     /**
      * Calendar constructor.
@@ -113,6 +120,7 @@ class Calendar
     {
         $this->schedules = new \Doctrine\Common\Collections\ArrayCollection();
         $this->groups = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->outOfServices = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
 
@@ -306,6 +314,58 @@ class Calendar
         }
         $group->removeCalendar($this);
         $this->groups->removeElement($group);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getOutOfServices()
+    {
+        return $this->outOfServices;
+    }
+
+    /**
+     * @param mixed $outOfServices
+     */
+    public function setOutOfServices($outOfServices)
+    {
+        $this->outOfServices = $outOfServices;
+    }
+
+
+
+
+    public function addOutOfServices(\Doctrine\Common\Collections\ArrayCollection $outOfServices)
+    {
+        foreach ($outOfServices as $outOfService) {
+            $this->addOutOfService($outOfService);
+        }
+    }
+
+    public function removeOutOfServices(\Doctrine\Common\Collections\ArrayCollection $outOfServices)
+    {
+        foreach ($outOfServices as $outOfService) {
+            $this->removeOutOfService($outOfService);
+        }
+    }
+
+    public function addOutOfService(OutOfService $outOfService)
+    {
+        if ($this->outOfServices->contains($outOfService)) {
+            return;
+        }
+        $this->outOfServices->add($outOfService);
+        $outOfService->setCalendar($this);
+
+    }
+
+    public function removeOutOfService(OutOfService $outOfService)
+    {
+        if (!$this->outOfServices->contains($outOfService)) {
+            return;
+        }
+        $outOfService->setCalendar(null);
+        $this->groups->removeElement($outOfService);
     }
 
 

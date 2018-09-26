@@ -7,6 +7,7 @@ use Zend\Form\Annotation as Annotation;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\UniqueConstraint as UniqueConstraint;
 use Gedmo\Mapping\Annotation as Gedmo;
+use ZfMetal\Restful\Transformation;
 
 /**
  * OutOfService
@@ -42,6 +43,7 @@ class OutOfService
     public $reason = null;
 
     /**
+     * @Transformation\Policy\FormatDateTime(format="Y-m-d")
      * @Annotation\Type("Zend\Form\Element\Date")
      * @Annotation\Attributes({"type":"date"})
      * @Annotation\Options({"label":"Desde", "description":"", "addon":""})
@@ -50,6 +52,7 @@ class OutOfService
     public $start = null;
 
     /**
+     * @Transformation\Policy\FormatDateTime(format="Y-m-d")
      * @Annotation\Type("Zend\Form\Element\Date")
      * @Annotation\Attributes({"type":"date"})
      * @Annotation\Options({"label":"Hasta", "description":"", "addon":""})
@@ -63,6 +66,7 @@ class OutOfService
      * "target_class":"\ZfMetal\Calendar\Entity\Calendar", "description":""})
      * @ORM\ManyToOne(targetEntity="\ZfMetal\Calendar\Entity\Calendar")
      * @ORM\JoinColumn(name="calendar_id", referencedColumnName="id", nullable=true)
+     * @Transformation\Policy\Custom(transform="ZfMetal\Restful\Transformation\Policy\Common\Id::transform")
      */
     public $calendar = null;
 

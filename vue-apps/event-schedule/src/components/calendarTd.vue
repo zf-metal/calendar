@@ -1,16 +1,16 @@
 <template>
     <td class="zfc-column-calendar" :class="getClassDependingHour" :id="ki" :style="getCalendarTdStyle">
         <drop @drop="handleDrop" class="zfc-dropcell">
-            <event v-for="(event,index) in getEventByTd(calendarId,start,end)"  :key="index"
+            <event v-for="(event,index) in getEventByTd(calendarId,start,end)" :key="index"
                    :index="index" :event="event">
             </event>
         </drop>
         <dialog-alert v-if="needConfirm"
-                 :dialog="needConfirm"
-                 :title="cTitle"
-                 :description="cDesc"
-                 v-on:ok="onOk"
-                 v-on:cancel="onCancel"
+                      :dialog="needConfirm"
+                      :title="cTitle"
+                      :description="cDesc"
+                      v-on:ok="onOk"
+                      v-on:cancel="onCancel"
 
         ></dialog-alert>
     </td>
@@ -31,8 +31,8 @@
 
     export default {
         name: 'calnedarTd',
-        props: ['calendarId', 'ki', 'name', 'date', 'hour', 'cellHeight', 'isNextDay', 'day'],
-        components: {Drag, Drop,event,dialogAlert},
+        props: ['calendarId', 'name', 'user', 'ki', 'date', 'hour', 'cellHeight', 'isNextDay', 'day'],
+        components: {Drag, Drop, event, dialogAlert},
         data() {
             return {
                 top: 0,
@@ -45,12 +45,12 @@
                 cDesc: ""
             }
         },
-      mounted: function(){
-        this.start = this.date+ " "+ this.hour;
-        var end = moment(this.start, "YYYY-MM-DD HH:mm");
-        end.add(30, "minutes");
-        this.end = end.format("YYYY-MM-DD HH:mm");
-      },
+        mounted: function () {
+            this.start = this.date + " " + this.hour;
+            var end = moment(this.start, "YYYY-MM-DD HH:mm");
+            end.add(30, "minutes");
+            this.end = end.format("YYYY-MM-DD HH:mm");
+        },
         computed: {
             ...mapGetters([
                 'getCalendarSchedule',
@@ -88,9 +88,15 @@
                 event.end = calculateEnd(event.start, event.duration);
                 event.hour = this.hour;
 
-                if(this.isOutOfRange(event)) {
-                    this.confirmHours()
+
+                if (this.isOutOfRange(event) && !this.isFav(event)) {
+                    this.alertFavAndHours()
+                } else if (this.isOutOfRange(event)) {
+                    this.alertHours()
+                } else if (!this.isFav(event)) {
+                    this.alertFav()
                 }
+
 
                 if (data.op != undefined && data.op == 'push') {
                     this.$store.commit('REMOVE_PRE_EVENTS', this.getPreEventById(event.id));
@@ -100,23 +106,65 @@
                     this.updateEvent({index: this.getEventIndexById(event.id), event: event});
                 }
             },
-            isOutOfRange: function(event){
-                if(event.config && event.config.availability
-                    && (event.hour < event.config.availability.timeRange.from
-                    || event.hour > event.config.availability.timeRange.to)){
+            hasFav: function (event) {
+                if (event.config && event.config.preference && (event.config.preference.pref1 || event.config.preference.pref2 || event.config.preference.pref3)) {
                     return true
                 }
                 return false
             },
-            confirmHours: function(){
-                this.cTitle = "Alerta de Horario"
-                this.cDesc = "La configuración horaria del servicio no concuerda con el horario destino"
+            isFav: function (event) {
+                //Si el evento tiene preferencias de favorito
+                if (this.hasFav(event)) {
+
+                    if (
+                        (event.config.preference.pref1 && event.config.preference.pref1.id == this.user)
+                        || (event.config.preference.pref2 && event.config.preference.pref2.id == this.user)
+                        || (event.config.preference.pref3 && event.config.preference.pref3.id == this.user)
+                    ) {
+                        //Si coincide con favortiso devuelvo true
+                        return true
+                    }
+                    //Si no coincide con ningun favorito devuelvo false
+                    return false
+                }
+                //Si no tiene favoritos devuelvo siempre true
+                return true
+            },
+            isOutOfRange: function (event) {
+                if (event.config && event.config.availability) {
+                    if (
+                        (event.config.availability.timeRange.from && event.hour < event.config.availability.timeRange.from)
+                        ||
+                        (
+                        (event.config.availability.timeRange && event.hour > event.config.availability.timeRange.to) ||
+                        (event.config.availability.timeRange2 && event.hour > event.config.availability.timeRange2.to)
+                        )
+                    )
+                    {
+                        return true
+                    }
+                }
+                return false
+            },
+            alertFavAndHours: function () {
+                this.cTitle = "Alerta Horario y Tecnico"
+                this.cDesc = "El horario y tecnico destino no concuerda con la configuración de servicio"
                 this.needConfirm = true
             },
-            onOk: function(){
+            alertFav: function () {
+                this.cTitle = "Alerta de Tecnico"
+                this.cDesc = "El tecnico destino no concuerda con la configuración de servicio"
+                this.needConfirm = true
+            },
+            alertHours: function () {
+                this.cTitle = "Alerta de Horario"
+                this.cDesc = "El horario destino no concuerda con la configuración de servicio"
+                this.needConfirm = true
+            },
+            onOk: function () {
                 this.needConfirm = false
             },
-            onCancel: function(){
+            onCancel: function () {
                 this.needConfirm = false
             }
 
