@@ -2,12 +2,12 @@
     <Drag :transfer-data="{event: event, index: index, op: 'update'}" class="drago"
           :class="getMainClass" :style="getDragStyle">
 
-        <div @click="selectEvent" @mouseover="mouseOver" @mouseout="mouseOut">
+        <div @click="selectEvent" >
             <v-card class="cursorPointer" :style="getMainStyle">
 
                 <v-card-text :style="getStateStyle" class="pa-1">
                     <!--EDIT-->
-                    <i class="material-icons btn btn-xs" style="font-size: 1em" @click="edit">edit</i>
+                    <i class="material-icons btn btn-xs" style="font-size: 1em" @click="edit" @mouseover="mouseOver" @mouseout="mouseOut">edit</i>
                     <!--Title-->
                     <span class="text-xs-left">{{event.id}}. {{event.title}}
                 </span>
