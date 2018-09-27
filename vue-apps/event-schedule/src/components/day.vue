@@ -23,9 +23,9 @@
         <li>
             <v-toolbar-title>
 
-            <span class="navbar-brand">{{getNumberOfDayInMonthOrdinal}}</span>
-            <span class="navbar-brand">{{getDayName}}</span>
-            <span class="navbar-brand">{{getMonthName}}</span>
+                <span class="navbar-brand">{{getNumberOfDayInMonthOrdinal}}</span>
+                <span class="navbar-brand">{{getDayName}}</span>
+                <span class="navbar-brand">{{getMonthName}}</span>
             </v-toolbar-title>
         </li>
     </ul>
@@ -33,63 +33,65 @@
 </template>
 
 <script>
-  import {mapGetters, mapActions} from 'vuex';
+    import {mapGetters, mapActions} from 'vuex';
 
-  import moment from 'moment'
-  import momenttz from 'moment-timezone'
-  import 'moment/locale/es';
+    import moment from 'moment'
+    import momenttz from 'moment-timezone'
+    import 'moment/locale/es';
 
-  export default {
-    name: 'day',
-    props: ['value'],
-    data() {
-      return {
-        date: ''
-      }
-    },
-    created: function () {
-      this.date = this.value;
-    },
-    computed: {
-      ...mapGetters([
-        'getMonthName',
-        'getDayName',
-        'getNumberOfDayInMonthOrdinal'
-      ]),
-        getLoading: function(){
-          //TODO
-          return false;
+    export default {
+        name: 'day',
+        props: ['value'],
+        data() {
+            return {
+                date: ''
+            }
+        },
+        created: function () {
+            this.date = this.value;
+        },
+        computed: {
+            ...mapGetters([
+                'getMonthName',
+                'getDayName',
+                'getNumberOfDayInMonthOrdinal'
+            ]),
+            getLoading: function () {
+                //TODO
+                return false;
+            }
+        },
+        methods: {
+            ...mapActions([
+                'changeDate',
+                'checkOutOfService'
+            ]),
+            before: function () {
+                if (this.getLoading == 0) {
+                    var d = moment(this.date)
+                    d.subtract(1, 'day')
+                    this.date = d.tz('America/Argentina/Buenos_Aires').format("YYYY-MM-DD")
+                    this.changeDate(this.date)
+                }
+            },
+            next: function () {
+                if (this.getLoading == 0) {
+                    var d = moment(this.date)
+                    d.add(1, 'day')
+                    this.date = d.tz('America/Argentina/Buenos_Aires').format("YYYY-MM-DD")
+                    console.log(this.date)
+                    this.changeDate(this.date)
+                }
+            },
+            onChange: function () {
+                var d = moment(this.date)
+                this.changeDate(d)
+
+            },
+            getDate: function () {
+                return this.date.tz('America/Argentina/Buenos_Aires').format("YYYY-MM-DD")
+            }
         }
-    },
-    methods: {
-      ...mapActions([
-        'changeDate'
-      ]),
-      before: function () {
-        if(this.getLoading == 0) {
-          var d = moment(this.date)
-          d.subtract(1, 'day')
-          this.date = d.tz('America/Argentina/Buenos_Aires').format("YYYY-MM-DD")
-          this.changeDate(this.date)
-        }
-      },
-      next: function () {
-        if(this.getLoading == 0) {
-          var d = moment(this.date)
-          d.add(1, 'day')
-          this.date = d.tz('America/Argentina/Buenos_Aires').format("YYYY-MM-DD")
-          console.log(this.date)
-          this.changeDate(this.date)
-        }
-      },
-      onChange: function () {
-        var d = moment(this.date)
-        this.changeDate(d)
-      },
-      getDate: function () {
-        return this.date.tz('America/Argentina/Buenos_Aires').format("YYYY-MM-DD")
-      }
     }
-  }
 </script>
 

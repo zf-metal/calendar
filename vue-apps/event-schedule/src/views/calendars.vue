@@ -62,6 +62,7 @@
                         <th class="zfc-column-calendar"
                             v-for="calendar in getVisibleCalendars"
                             :key="calendar.id">
+                            <span v-if="calendar.outOfService">Vacaciones</span>
                                 <span>{{calendar.name}}
                                     <i @click="showMap(calendar.id,calendar.name)"
                                        class="material-icons cursorPointer pull-right" style="vertical-align: bottom">map</i></span>

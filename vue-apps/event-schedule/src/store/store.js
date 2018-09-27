@@ -43,7 +43,8 @@ import {
     SET_CALENDAR_START,
     SET_CALENDAR_GROUPS,
     SET_CALENDAR_GROUP_SELECTED,
-    SET_FILTER_COOP
+    SET_FILTER_COOP,
+    SET_OUTOFSERVICE_CALENDAR
 } from './mutation-types'
 
 
@@ -493,6 +494,24 @@ const getters = {
 */
 
 const actions = {
+    checkOutOfService({state,getters,commit}){
+      let value = false;
+      //Recorro los calendarios
+        for(let i=0; i < state.calendars.length; i++){
+          let calendar= state.calendars[i]
+             value = false;
+          if(calendar.outOfServices && calendar.outOfServices.length > 0){
+              //Recorro los OutOfService del calendario
+              for(let u=0;  u < calendar.outOfServices.length;u++){
+                  let oof = calendar.outOfServices[u]
+                  if(getters.getDate >= oof.start && getters.getDate <= oof.end){
+                      value = true;
+                  }
+              }
+          }
+            commit(SET_OUTOFSERVICE_CALENDAR, {index:i,value: value});
+      }
+    },
     checkCoop({state, commit}) {
         if (state.filterCoop) {
             if (!state.preEvents.find(e => e.link === state.filterCoop)) {
@@ -511,6 +530,7 @@ const actions = {
             commit(SET_EVENT_ID_SELECTED, null);
             dispatch('eventList');
             dispatch('preEventList');
+            dispatch('checkOutOfService')
         }
     },
 
@@ -549,9 +569,10 @@ const actions = {
     },
 
 
-    calendarList({state, commit, dispatch}) {
+    calendarList({state, commit}) {
         CalendarService.findAll().then((response) => {
             commit(SET_CALENDARS, response.data);
+
         })
     },
 
@@ -606,6 +627,9 @@ const mutations = {
     },
     [ADD_CALENDAR](state, calendar) {
         state.calendars.push(calendar);
+    },
+    [SET_OUTOFSERVICE_CALENDAR](state, {index,value}) {
+        Vue.set(state.calendars[index], 'outOfService', value);
     },
     [SHOW_CALENDAR](state, index) {
         Vue.set(state.calendars[index], 'hidden', false);
