@@ -44,7 +44,8 @@ import {
     SET_CALENDAR_GROUPS,
     SET_CALENDAR_GROUP_SELECTED,
     SET_FILTER_COOP,
-    SET_OUTOFSERVICE_CALENDAR
+    SET_OUTOFSERVICE_CALENDAR,
+    SET_HOLIDAYS
 } from './mutation-types'
 
 
@@ -82,7 +83,7 @@ const state = {
     events: [],
     eventStates: [],
     zones: {},
-    hiddenZones: [],
+    holidays: [],
     eventTypes: [],
     weekDays: {1: "Lunes", 2: "Martes", 3: "Miercoles", 4: "Jueves", 5: "Viernes", 6: "Sabado", 7: "Domingo"},
     months: {
@@ -108,6 +109,12 @@ const state = {
 */
 
 const getters = {
+    isHoliday: (state, getters) => {
+      if(state.holidays.find(h => h.date == getters.getDate)){
+          return true
+      }
+      return false
+    },
     getCalendars: state => {
         return state.calendars;
     },
@@ -546,6 +553,7 @@ const actions = {
             commit(SET_CALENDAR_GROUPS, response.data.calendarGroups);
             commit(SET_EVENT_STATES, response.data.eventStates);
             commit(SET_EVENT_TYPES, response.data.eventTypes);
+            commit(SET_HOLIDAYS, response.data.holidays);
             if (response.data.zones) {
                 dispatch('populateZones', response.data.zones);
             }
@@ -630,6 +638,9 @@ const mutations = {
     },
     [SET_OUTOFSERVICE_CALENDAR](state, {index,value}) {
         Vue.set(state.calendars[index], 'outOfService', value);
+    },
+    [SET_HOLIDAYS](state, holidays) {
+        state.holidays = holidays;
     },
     [SHOW_CALENDAR](state, index) {
         Vue.set(state.calendars[index], 'hidden', false);
@@ -717,7 +728,6 @@ const mutations = {
         state.filterCoop = link;
     },
     [SET_FILTER_HOURS](state, filterHour) {
-
         state.filterHour.from = filterHour.from;
         state.filterHour.to = filterHour.to;
     },

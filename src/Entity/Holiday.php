@@ -7,7 +7,7 @@ use Zend\Form\Annotation as Annotation;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\UniqueConstraint as UniqueConstraint;
 use Gedmo\Mapping\Annotation as Gedmo;
-
+use ZfMetal\Restful\Transformation;
 /**
  * Holiday
  *
@@ -33,6 +33,7 @@ class Holiday
     public $id = null;
 
     /**
+     * @Transformation\Policy\FormatDateTime(format="Y-m-d")
      * @Annotation\Type("Zend\Form\Element\Date")
      * @Annotation\Attributes({"type":"date"})
      * @Annotation\Options({"label":"Fecha", "description":"", "addon":""})

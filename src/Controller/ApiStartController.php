@@ -9,6 +9,7 @@ use ZfMetal\Calendar\Entity\Calendar;
 use ZfMetal\Calendar\Entity\CalendarGroup;
 use ZfMetal\Calendar\Entity\EventState;
 use ZfMetal\Calendar\Entity\EventType;
+use ZfMetal\Calendar\Entity\Holiday;
 use ZfMetal\Calendar\Entity\Zone;
 use ZfMetal\Restful\Options\ModuleOptions;
 use ZfMetal\Restful\Transformation\Transform;
@@ -32,7 +33,7 @@ class ApiStartController extends AbstractRestfulController
     const ZONE = Zone::class;
     const EVENT_STATE = EventState::class;
     const EVENT_TYPE = EventType::class;
-
+    const HOLIDAY = Holiday::class;
     /**
      * @var \Doctrine\ORM\EntityManager
      */
@@ -69,6 +70,8 @@ class ApiStartController extends AbstractRestfulController
                 return $this::EVENT_TYPE;
             case "calendar-groups":
                 return $this::CALENDAR_GROUPS;
+            case "holidays":
+                return $this::HOLIDAY;
         }
     }
 
@@ -109,6 +112,11 @@ class ApiStartController extends AbstractRestfulController
         return $this->getEm()->getRepository($this->getEntityByAlias('calendar-groups'));
     }
 
+    public function getHolidayRepository()
+    {
+        return $this->getEm()->getRepository($this->getEntityByAlias('holidays'));
+    }
+
     public function __construct(\Doctrine\ORM\EntityManager $em)
     {
         $this->em = $em;
@@ -135,11 +143,16 @@ class ApiStartController extends AbstractRestfulController
             $eventTypes = $this->getEventTypeRepository()->findAll();
             $eventTypes = $transform->toArrays($eventTypes);
 
+
+            $holidays= $this->getHolidayRepository()->findAll();
+            $holidays = $transform->toArrays($holidays);
+
             $results['calendars'] = $calendars;
             $results['zones'] = $zones;
             $results['eventStates'] = $eventStates;
             $results['eventTypes'] = $eventTypes;
             $results['calendarGroups'] = $calendarGroups;
+            $results['holidays'] = $holidays;
 
             return new JsonModel($results);
 
