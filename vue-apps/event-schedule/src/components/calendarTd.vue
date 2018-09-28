@@ -1,5 +1,5 @@
 <template>
-    <td class="zfc-column-calendar" :class="getClassDependingHour" :id="ki" :style="getCalendarTdStyle">
+    <td class="zfc-column-calendar" :class="getTdClass" :id="ki" :style="getCalendarTdStyle">
         <drop @drop="handleDrop" class="zfc-dropcell">
             <event v-for="(event,index) in getEventByTd(calendarId,start,end)" :key="index"
                    :index="index" :event="event">
@@ -31,7 +31,7 @@
 
     export default {
         name: 'calnedarTd',
-        props: ['calendarId', 'name', 'user', 'ki', 'date', 'hour', 'cellHeight', 'isNextDay', 'day'],
+        props: ['calendarId', 'name', 'user', 'outOfService', 'ki', 'date', 'hour', 'cellHeight', 'isNextDay', 'day'],
         components: {Drag, Drop, event, dialogAlert},
         data() {
             return {
@@ -61,8 +61,12 @@
             getCalendarTdStyle: function () {
                 return "height:" + this.cellHeight + "px";
             },
-            getClassDependingHour: function () {
+            getTdClass: function () {
                 var schedule = this.getCalendarSchedule(this.calendarId, this.day);
+
+                if(this.outOfService){
+                    return 'tdOutOfService'
+                }
 
                 if (!schedule || (!schedule.start && !schedule.end)) {
                     return this.isNextDay == true ? 'zfc-hour-inactive-nd' : 'zfc-hour-inactive';
@@ -176,6 +180,10 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+
+    .tdOutOfService{
+        background-color: #ef9a9a;
+    }
 
     .zfc-column-calendar {
         width: 260px !important;

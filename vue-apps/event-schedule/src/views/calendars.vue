@@ -18,7 +18,7 @@
         </v-navigation-drawer>
 
         <!--TOP Menu-->
-        <v-toolbar app :clipped-left="clipped" >
+        <v-toolbar app :clipped-left="clipped">
             <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
             <v-toolbar-title v-text="title"></v-toolbar-title>
             <!--<v-spacer></v-spacer>-->
@@ -55,15 +55,18 @@
 
                 <table class="table-bordered table-striped table-responsive zfc-header-table"
                        :style="getStyleHeaderFix"
-                      >
+                >
                     <thead>
                     <tr>
                         <th class="zfc-column-hours"></th>
-                        <th class="zfc-column-calendar"
-                            v-for="calendar in getVisibleCalendars"
-                            :key="calendar.id">
-                            <span v-if="calendar.outOfService">Vacaciones</span>
-                                <span>{{calendar.name}}
+                        <th
+                                v-for="calendar in getVisibleCalendars"
+                                :key="calendar.id"
+                                class="zfc-column-calendar"
+                                :class="{'outOfService': calendar.outOfService}"
+                        >
+                            <oof :enable="calendar.outOfService"></oof>
+                            <span>{{calendar.name}}
                                     <i @click="showMap(calendar.id,calendar.name)"
                                        class="material-icons cursorPointer pull-right" style="vertical-align: bottom">map</i></span>
                         </th>
@@ -83,7 +86,10 @@
                             <calendarTd
                                     v-for="calendar in getVisibleCalendars"
                                     :key='getDate + calendar.id + hour' :ki="getDate + calendar.id + hour"
-                                    :calendarId="calendar.id" :name="calendar.name" :user="calendar.user"
+                                    :calendarId="calendar.id"
+                                    :name="calendar.name"
+                                    :user="calendar.user"
+                                    :outOfService="calendar.outOfService"
                                     :date="getDate" :hour="hour"
                                     :isNextDay="false" :day="getDay"
                                     :cellHeight="cellHeight">
@@ -106,7 +112,10 @@
                                     v-for="calendar in getVisibleCalendars"
                                     :key=' getNextDate + calendar.id + hour'
                                     :ki="getNextDate + calendar.id + hour"
-                                    :calendarId="calendar.id" :name="calendar.name" :user="calendar.user"
+                                    :calendarId="calendar.id"
+                                    :name="calendar.name"
+                                    :user="calendar.user"
+                                    :outOfService="calendar.outOfService"
                                     :date="getNextDate" :hour="hour"
                                     :isNextDay="true" :day="getNextDay"
                                     :cellHeight="cellHeight">
@@ -153,6 +162,7 @@
     import formEvent from './../components/forms/form-event.vue'
     import maps from './../components/maps.vue'
     import day from './../components/day'
+    import oof from './../components/signals/oof.vue'
 
     import SelectSize from './../components/input/SelectSize.vue'
 
@@ -174,7 +184,8 @@
             panel,
             maps,
             day,
-            vueScrollingTable
+            vueScrollingTable,
+            oof
         },
         data() {
             return {
@@ -200,6 +211,12 @@
         created: function () {
             console.log("v2.0");
             this.startList();
+        },
+        watch: {
+            getCalendars: function () {
+                //Verifico Vacaciones
+                this.checkOutOfService()
+            }
         },
         computed: {
             ...mapState([
@@ -240,7 +257,8 @@
                 'eventTypeList',
                 'calendarList',
                 'preEventList',
-                'pushEvent'
+                'pushEvent',
+                'checkOutOfService'
             ]),
             closeModalForm: function () {
                 this.$store.commit('SET_SHOW_MODAL_FORM', false);
@@ -271,9 +289,21 @@
 
 <style scoped>
 
+    .zfc-header-table th {
+        background-color: #0e2c44;
+        color: #ffffcc;
+        text-align: center;
+        padding: 5px;
+    }
+
+    .outOfService {
+        background-color: #8f2727 !important;
+        color: white !important;
+    }
+
     .zfc-main-container {
-        height: 90vh;
-        max-height: 90vh;
+        height: 89vh;
+        max-height: 89vh;
         position: relative;
     }
 
@@ -303,14 +333,6 @@
         min-width: 50px;
         max-width: 50px;
         text-align: center;
-    }
-
-
-
-    .zfc-header-table th {
-        background-color: #0e2c44 !important;
-        color: #ffffcc;
-
     }
 
     table.zfc-td td:first-child,
