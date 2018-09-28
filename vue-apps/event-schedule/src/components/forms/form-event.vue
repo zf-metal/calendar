@@ -1,120 +1,177 @@
 <template>
 
-<div >
 
-    <form  v-if="value" method="POST" class="eventForm" name="EventForm" v-on:submit.prevent="save">
-        <alert :show="h.alertShow" :msg="h.alertMsg" :type="h.alertType" v-on:close="h.alertShow = false"></alert>
-        <saveStatus :isSaved="h.isSaved"></saveStatus>
+    <form v-if="value" method="POST" class="eventForm" name="EventForm" v-on:submit.prevent="save">
 
-        <div class="form-group">
-            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                <label class="control-label">Estado</label>
-                <select name="state" class=" form-control" v-model="value.state" @change="unsaved">
-                    <option v-for="state in eventStates"
-                            v-bind:value="state.id" :key="state.id"
-                            :selected="value.state == state.id">
-                        {{state.name}}
-                    </option>
-                </select>
-                <fe :errors="errors.calendar"/>
-            </div>
-        </div>
+        <v-container grid-list-sm>
+            <v-layout row wrap>
+                <v-flex xs12>
+                    <alert :show="h.alertShow" :msg="h.alertMsg" :type="h.alertType"
+                           v-on:close="h.alertShow = false"></alert>
+                    <saveStatus :isSaved="h.isSaved"></saveStatus>
+                </v-flex>
 
-
-        <div class="form-group">
-
-            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                <label class="control-label">Calendario</label>
-                <select name="calendar" class=" form-control" v-model="value.calendar" @change="unsaved">
-                    <option value=""></option>
-                    <option v-if="hasCalendars" v-for="calendar in getCalendars"
-                            v-bind:value="calendar.id" :key="calendar.id"
-                            :selected="value.calendar == calendar.id">
-                        {{calendar.name}}
-                    </option>
-                </select>
-                <fe :errors="errors.calendar"/>
-            </div>
-        </div>
+                <v-flex xs6>
+                    <v-select
+                            label="Estado"
+                            :items="eventStates"
+                            item-text="name"
+                            item-value="id"
+                            :value="value.state"
+                            @change="unsaved"
+                    >
+                    </v-select>
+                </v-flex>
 
 
-        <div class="form-group">
+                <v-flex xs6>
+                    <v-select
+                            label="Calendario"
+                            :items="getCalendars"
+                            item-text="name"
+                            item-value="id"
+                            :value="value.calendar"
+                            @change="unsaved"
+                    >
+                    </v-select>
+                </v-flex>
 
-            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                <label class="control-label">Titulo</label>
-                <input type="text" name="title" class=" form-control" v-model="value.title" ref="title"
-                       @keydown="unsaved">
-                <fe :errors="errors.title"/>
-            </div>
+                <v-flex xs6>
 
+                    <v-text-field
+                            label="Titulo"
+                            :value="value.title"
+                            ref="title"
+                            @keydown="unsaved"
+                    :error-messages="errors.title"
+                    >
 
-        </div>
+                    </v-text-field>
 
-        <div class="form-group">
+                </v-flex>
 
-            <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 control-label">
-                <label class="control-label">Inicio</label>
-            </div>
+                <v-flex xs6></v-flex>
 
-            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                <input type="datetime" name="start" class=" form-control" ref="start"
-                       v-model="value.start" @keyup="refreshEnd" @change="refreshEnd">
-                <fe :errors="errors.start"/>
-            </div>
+                <v-flex xs6 >
 
-        </div>
+                    <v-menu
+                            ref="menuStartDate"
+                            :close-on-content-click="true"
+                            :nudge-right="40"
+                            lazy
+                            transition="scale-transition"
+                            offset-y
+                            full-width
+                            min-width="290px"
+                    >
+                        <v-text-field
+                                slot="activator"
+                                v-model="startDate"
+                                label="Fecha de Inicio"
+                                readonly
 
+                                :value="value.startDate"
+                                ref="start"
+                                :error-messages="errors.start"
+                                @keyup="refreshEnd"
+                                @change="refreshEnd"
 
-        <div class="form-group">
+                        ></v-text-field>
+                        <v-date-picker v-model="startDate" ></v-date-picker>
 
-            <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 control-label">
-                <label class="control-label">Duración</label>
-            </div>
-
-            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                <input type="number" name="duration" class=" form-control" ref="duration"
-                       v-model="value.duration" @keyup="refreshEnd" @change="refreshEnd">
-                <fe :errors="errors.duration"/>
-            </div>
-
-        </div>
-
-        <div class="form-group">
-            <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 control-label">
-                <label class="control-label">Fin</label>
-            </div>
-
-            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                <input disabled="disabled" type="datetime" name="end" class=" form-control" ref="end"
-                       v-model="value.end" @keydown="unsaved">
-                <fe :errors="errors.end"/>
-            </div>
-
-        </div>
-
-        <div class="form-group">
-
-            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                <label class="control-label">Comentarios</label>
-                <textarea name="comments" class=" form-control" v-model="value.comments" ref="comments"
-                          @keydown="unsaved"></textarea>
-                <fe :errors="errors.comments"/>
-            </div>
-
-        </div>
+                    </v-menu>
 
 
-        <div class="col-lg-12 col-xs-12">
-            <button name="submitbtn" class="btn " :class="h.submitClass" v-if="!h.isSaved"
-                    :disabled="h.submitInProgress">{{h.submitValue}}
-            </button>
-        </div>
+                </v-flex>
+
+                <v-flex xs6>
+                    <v-menu
+                            ref="menuStartTime"
+                            :close-on-content-click="false"
+                            :nudge-right="40"
+                            lazy
+                            transition="scale-transition"
+                            offset-y
+                            full-width
+                            max-width="290px"
+                            min-width="290px"
+                    >
+                        <v-text-field
+                                slot="activator"
+                                v-model="startTime"
+                                label="Hora de Inicio"
+                                readonly
+                        ></v-text-field>
+                        <v-time-picker
+                                v-model="startTime"
+                                format="24hr"
+                                full-width
+                        >
+                            <v-spacer></v-spacer>
+                            <v-btn flat color="primary" @click="$refs.menuStartTime.save(startTime)">OK</v-btn>
+
+                        </v-time-picker>
+                    </v-menu>
+                </v-flex>
+
+                <v-flex xs6>
+
+                    <v-text-field
+                            :value="value.duration"
+                            ref="title"
+                            @keyup="refreshEnd"
+                            @change="refreshEnd"
+                            :error-messages="errors.duration"
+                    >
+
+                    </v-text-field>
+
+                </v-flex>
+
+
+                <v-flex xs6>
+
+                    <v-text-field
+                            :value="value.end"
+                            ref="end"
+                            @keydown="unsaved"
+                            :error-messages="errors.end"
+                            :disabled="true"
+                    >
+
+                    </v-text-field>
+
+                </v-flex>
+
+
+
+                <v-flex x6>
+
+                    <v-textarea
+                            name="comments"
+                            label="Comentarios"
+                            ref="comments"
+                            :value="value.comments"
+                            @keydown="unsaved"
+                            :error-messages="errors.comments"
+
+                    ></v-textarea>
+
+               </v-flex>
+
+                <div class="col-lg-12 col-xs-12">
+                    <button name="submitbtn" class="btn " :class="h.submitClass" v-if="!h.isSaved"
+                            :disabled="h.submitInProgress">{{h.submitValue}}
+                    </button>
+                </div>
+
+            </v-layout>
+        </v-container>
     </form>
     <div v-else class="text-center">
         <span>Sin evento seleccionado</span>
     </div>
 
-</div>
 
 </template>
 
@@ -150,13 +207,27 @@
                     submitValue: 'Guardar',
                     submitClass: 'btn-primary'
                 },
+                startDate: '',
+                startTime: '00:00',
                 msjEventMove: ''
             }
+        },
+        mounted: function(){
+            this.startDate = this.value.start.substr(0,10)
+            this.startTime= this.value.start.substr(11,5)
+        },
+        watch: {
+          startDate: function(){
+              this.value.start = this.startDate+' '+this.startTime
+          },
+          startTime: function(){
+              this.value.start = this.startDate+' '+this.startTime
+          }
         },
         computed: {
             ...mapState([
                 'eventStates'
-                ]),
+            ]),
             ...mapGetters([
                 'getCalendars',
                 'hasCalendars',
@@ -204,16 +275,21 @@
             update: function () {
                 this.setHour();
                 this.iSave();
+
+                //TODO LOADING
                 this.$store.commit('LOADING_PLUS');
 
                 HTTP.put("events/" + this.value.id, this.value
                 ).then((response) => {
                     this.fSave();
-                  this.$store.commit('LOADING_LESS');
+                    this.$store.commit('LOADING_LESS');
 
                     if (this.value.calendar) {
-                      this.$store.commit('UPDATE_EVENT', {index: this.getEventIndexById(this.value.id), event: this.value});
-                    }else{
+                        this.$store.commit('UPDATE_EVENT', {
+                            index: this.getEventIndexById(this.value.id),
+                            event: this.value
+                        });
+                    } else {
                         this.$store.commit('REMOVE_EVENT', this.getEventIndexById(this.value.id));
                         this.$store.commit('ADD_PRE_EVENT', this.value);
                         this.$store.commit('SET_EVENT_ID_SELECTED', null);

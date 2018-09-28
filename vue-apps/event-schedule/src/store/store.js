@@ -45,7 +45,9 @@ import {
     SET_CALENDAR_GROUP_SELECTED,
     SET_FILTER_COOP,
     SET_OUTOFSERVICE_CALENDAR,
-    SET_HOLIDAYS
+    SET_HOLIDAYS,
+    LOADING_PLUS,
+    LOADING_LESS
 } from './mutation-types'
 
 
@@ -64,7 +66,7 @@ const state = {
     calendarStart: "06:00",
     eventIndexSelected: null,
     eventIdSelected: null,
-    eventSelected: {},
+    eventSelected: null,
     showModalForm: false,
     filterZone: null,
     filterString: null,
@@ -264,7 +266,6 @@ const getters = {
         pes.sort(function compareNumbers(a, b) {
             return a.priority - b.priority;
         });
-
 
         return pes;
     },
@@ -630,6 +631,12 @@ const actions = {
 };
 
 const mutations = {
+    [LOADING_PLUS](state) {
+        state.loading++
+    },
+    [LOADING_LESS](state) {
+        state.loading--
+    },
     [SET_DATE](state, newDate) {
         state.date = newDate;
     },

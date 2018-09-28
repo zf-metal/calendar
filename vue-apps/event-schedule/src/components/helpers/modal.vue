@@ -1,31 +1,31 @@
 <template>
-    <div v-if="showModal" v-on:keyup.esc="$emit('close')">
-        <transition name="modal">
-            <div class="modal-mask">
-                <div class="modal-wrapper">
-                    <div class="modal-dialog" :class="[ modalSize ? modalSize : '' ]" role="document"
-                         ref="modal">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <button type="button" @click="$emit('close')" class="close" data-dismiss="modal"
-                                        aria-label="Close"><span
-                                        aria-hidden="true">&times;</span></button>
-                                <h4 class="modal-title">{{ title }}
+<div v-on:keyup.esc="$emit('close')">
+        <v-dialog
+                v-model="showModal"
 
-                                </h4>
-                            </div>
+                max-width="800"
+                persistent
+        >
+            <v-card>
+                <v-card-title class="headline">{{title}}</v-card-title>
 
-                            <div class="modal-body">
-                                <div class="row">
-                                    <slot v-on:closeModal="closeModal"></slot>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </transition>
-    </div>
+                <v-card-text class="text-lg-center text-xs-center">
+                    <slot v-on:closeModal="closeModal"></slot>
+                </v-card-text>
+
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn
+                            color="primary"
+                            flat
+                            @click="$emit('close')"
+                    >
+                        Cerrar
+                    </v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
+</div>
 </template>
 
 <script>

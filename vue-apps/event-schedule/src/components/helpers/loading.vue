@@ -1,9 +1,4 @@
 <template>
-    <!--<div class="load-bar" v-if="isLoading">-->
-        <!--<div class="bar"></div>-->
-        <!--<div class="bar"></div>-->
-        <!--<div class="bar"></div>-->
-    <!--</div>-->
     <div class="load-bar" v-if="isLoading">
         <v-progress-linear :indeterminate="true" class="pa-0 ma-0"></v-progress-linear>
     </div>
@@ -12,31 +7,29 @@
 <script>
 
     import {ai} from './../../resource/HttpRequest'
-
+    import {mapState} from 'vuex';
 
     export default {
         name: 'loading',
         props: [],
-        data: function () {
-            return {
-                load: 0
-            }
-        },
         computed: {
+            ...mapState([
+                'loading',
+            ]),
             isLoading: function () {
-                return this.load ? true : false
+                return this.loading ? true : false
             }
         },
         mounted: function () {
             ai.interceptors.request.use(
                 (config) => {
-                    this.load++;
+                    this.$store.commit('LOADING_PLUS')
                     return config;
                 },
             );
             ai.interceptors.response.use(
                 (response) => {
-                    this.load--
+                    this.$store.commit('LOADING_LESS')
                     return response;
                 },
             );
