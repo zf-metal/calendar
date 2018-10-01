@@ -149,7 +149,7 @@
 
 
 
-                <v-flex xs8>
+                <v-flex x4>
 
                     <v-textarea
                             name="comments"
@@ -158,17 +158,16 @@
                             :value="value.comments"
                             @keydown="unsaved"
                             :error-messages="errors.comments"
-                            rows="3"
+                            rows="2"
                     ></v-textarea>
 
                </v-flex>
 
-                <v-flex xs4>
-                    <button name="submitbtn" class="btn " :class="h.submitClass"
+                <div class="col-lg-12 col-xs-12">
+                    <button name="submitbtn" class="btn " :class="h.submitClass" v-if="!h.isSaved"
                             :disabled="h.submitInProgress">{{h.submitValue}}
                     </button>
-
-                </v-flex>
+                </div>
 
             </v-layout>
         </v-container>

@@ -2,7 +2,6 @@
 <div v-on:keyup.esc="$emit('close')">
         <v-dialog
                 v-model="showModal"
-
                 max-width="800"
                 persistent
         >
@@ -13,7 +12,7 @@
                     <slot v-on:closeModal="closeModal"></slot>
                 </v-card-text>
 
-                <v-card-actions>
+                <v-card-actions v-if="btnClose">
                     <v-spacer></v-spacer>
                     <v-btn
                             color="primary"
@@ -31,7 +30,14 @@
 <script>
     export default {
         name: 'modal',
-        props: ['showModal', 'modalId', 'modalClass', 'modalSize', 'title'],
+        props: {
+            showModal: Boolean,
+            modalId: String,
+            modalClass: String,
+            modalSize: String,
+            title: String,
+            btnClose: Boolean
+        },
         data: function () {
             return {}
         },

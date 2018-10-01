@@ -128,7 +128,7 @@
                 </div>
 
 
-                <modal :title="getModalFormTitle" :showModal="showModalForm" @close="closeModalForm">
+                <modal :title="getModalFormTitle" :showModal="showModalForm" @close="closeModalForm" :btn-close="false">
                     <form-event v-if="eventSelected" :calendars="getCalendars" v-model="eventSelected"
                                 :index="eventIndexSelected" v-on:remove="removeEvent"/>
                 </modal>
