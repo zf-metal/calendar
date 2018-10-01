@@ -15,7 +15,7 @@
 
                     <v-text-field
                             label="Titulo"
-                            :value="value.title"
+                            v-model="value.title"
                             ref="title"
                             @keydown="unsaved"
                             :error-messages="errors.title"
@@ -31,7 +31,7 @@
                             :items="eventStates"
                             item-text="name"
                             item-value="id"
-                            :value="value.state"
+                            v-model="value.state"
                             @change="unsaved"
                     >
                     </v-select>
@@ -44,7 +44,7 @@
                             :items="getCalendars"
                             item-text="name"
                             item-value="id"
-                            :value="value.calendar"
+                            v-model="value.calendar"
                             @change="unsaved"
                     >
                     </v-select>
@@ -119,7 +119,7 @@
                 <v-flex xs4>
 
                     <v-text-field
-                            :value="value.duration"
+                            v-model="value.duration"
                             ref="duration"
                             @keyup="refreshEnd"
                             @change="refreshEnd"
@@ -135,7 +135,7 @@
                 <v-flex xs4>
 
                     <v-text-field
-                            :value="value.end"
+                            v-model="value.end"
                             ref="end"
                             @keydown="unsaved"
                             :error-messages="errors.end"
@@ -155,7 +155,7 @@
                             name="comments"
                             label="Comentarios"
                             ref="comments"
-                            :value="value.comments"
+                            v-model="value.comments"
                             @keydown="unsaved"
                             :error-messages="errors.comments"
                             rows="3"
