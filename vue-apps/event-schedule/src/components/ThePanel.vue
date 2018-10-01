@@ -3,7 +3,7 @@
         <v-tabs v-model="active" color="grey lighten-4">
             <v-tab>P</v-tab>
             <v-tab>C</v-tab>
-            <v-tab>F</v-tab>
+            <!--<v-tab>F</v-tab>-->
 
             <v-tab-item>
                 <v-card flat>
@@ -41,15 +41,15 @@
             </v-tab-item>
 
 
-            <v-tab-item>
-                <v-card flat>
-                    <form-event :calendars="getCalendars"
-                                v-model="eventSelected"
-                                v-if="eventIndexSelected !=  null"
-                                :index="eventIndexSelected"
-                    />
-                </v-card>
-            </v-tab-item>
+            <!--<v-tab-item>-->
+                <!--<v-card flat>-->
+                    <!--<form-event :calendars="getCalendars"-->
+                                <!--v-model="eventSelected"-->
+                                <!--v-if="eventIndexSelected !=  null"-->
+                                <!--:index="eventIndexSelected"-->
+                    <!--/>-->
+                <!--</v-card>-->
+            <!--</v-tab-item>-->
 
         </v-tabs>
 

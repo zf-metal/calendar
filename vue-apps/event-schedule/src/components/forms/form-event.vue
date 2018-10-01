@@ -1,6 +1,7 @@
 <template>
 
 
+
     <form v-if="value" method="POST" class="eventForm" name="EventForm" v-on:submit.prevent="save">
 
         <v-container grid-list-md>
@@ -10,10 +11,38 @@
                            v-on:close="h.alertShow = false"></alert>
                     <saveStatus :isSaved="h.isSaved"></saveStatus>
                 </v-flex>
+            </v-layout>
 
+            <v-layout row wrap>
+
+                <v-flex xs4>
+                    <h5 class="caption font-weight-bold">Cliente</h5>
+                    <h6 class="caption">{{value.client}}</h6>
+
+                </v-flex>
+
+                <v-flex xs4>
+                    <h5 class="caption font-weight-bold">Sucursal</h5>
+                    <h6 class="caption">{{value.branchOffice}}</h6>
+
+                </v-flex>
+
+
+                <v-flex xs4>
+                    <h5 class="caption font-weight-bold">Dirección</h5>
+                    <h6 class="caption">{{value.location}}</h6>
+
+                </v-flex>
+
+                <v-flex xs12> <v-divider class="ma-0"></v-divider></v-flex>
+
+            </v-layout>
+
+            <v-layout row wrap>
                 <v-flex xs4>
 
                     <v-text-field
+
                             label="Titulo"
                             v-model="value.title"
                             ref="title"
@@ -162,15 +191,19 @@
                     ></v-textarea>
 
                </v-flex>
-
-                <v-flex xs4>
-                    <button name="submitbtn" class="btn " :class="h.submitClass"
-                            :disabled="h.submitInProgress">{{h.submitValue}}
-                    </button>
+            </v-layout>
+            <v-layout row wrap justify-end>
+                <v-flex xs3 class="text-xs-right pa-0">
+                    <v-btn class="text-xs-right"
+                            :disabled="h.submitInProgress"
+                            @click="save"
+                    >
+                        {{h.submitValue}}
+                    </v-btn>
 
                 </v-flex>
-
             </v-layout>
+
         </v-container>
     </form>
     <div v-else class="text-center">

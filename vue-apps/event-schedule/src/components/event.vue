@@ -2,23 +2,42 @@
     <Drag :transfer-data="{event: event, index: index, op: 'update'}" class="drago"
           :class="getMainClass" :style="getDragStyle">
 
-        <div @click="selectEvent" >
+        <div @click="selectEvent">
             <v-card class="cursorPointer" :style="getMainStyle">
 
                 <v-card-text :style="getStateStyle" class="pa-1">
-                    <!--EDIT-->
-                    <i class="material-icons btn btn-xs" style="font-size: 1em" @click="edit" @mouseover="mouseOver" @mouseout="mouseOut">edit</i>
-                    <!--Title-->
-                    <span class="text-xs-left">{{event.id}}. {{event.title}}
-                </span>
 
-                    <!--Distance-->
-                    <span class="pull-right"
-                          style="padding:1px">{{getDistanceFromEventSelected(event.lat, event.lng)}} Km</span>
-                    <!--HELPs Icons-->
-                    <keep :enable="getKeep"></keep>
-                    <fav :preference="getFav"></fav>
-                    <coop :enable="coopEnable" :link="coopLink" :count="coopCount"></coop>
+                    <v-layout>
+                        <v-flex xs1 class="pa-0 ma-0">
+                            <i class="material-icons btn btn-xs"
+                               style="font-size: 1em"
+                               @click="edit"
+                               @mouseover="mouseOver"
+                               @mouseout="mouseOut">edit</i>
+                        </v-flex>
+
+                        <v-flex xs8>
+                            <span class="text-xs-left ml-1">{{event.id}}. {{event.title}}</span>
+                        </v-flex>
+                        <v-flex xs3>
+                              <!--HELPs Icons-->
+                            <keep :enable="getKeep"></keep>
+                            <fav :preference="getFav"></fav>
+                            <coop :enable="coopEnable" :link="coopLink" :count="coopCount"></coop>
+
+                            <!--Distance-->
+                            <span class="pull-right"
+                                  style="padding:1px">{{getDistanceFromEventSelected(event.lat, event.lng)}} Km</span>
+
+                        </v-flex>
+                    </v-layout>
+
+                    <!--EDIT-->
+
+                    <!--Title-->
+
+
+
 
 
                 </v-card-text>
@@ -70,10 +89,10 @@
                         </tr>
 
                         <!--<tr>-->
-                            <!--<td><i class="material-icons" style="vertical-align: bottom;">hourglass_full</i></td>-->
-                            <!--<td>-->
-                                <!--<availabilityTime :data="getAvailability"></availabilityTime>-->
-                            <!--</td>-->
+                        <!--<td><i class="material-icons" style="vertical-align: bottom;">hourglass_full</i></td>-->
+                        <!--<td>-->
+                        <!--<availabilityTime :data="getAvailability"></availabilityTime>-->
+                        <!--</td>-->
                         <!--</tr>-->
 
                         <tr>
@@ -218,9 +237,9 @@
             },
             getDragStyle: function () {
                 if (this.active && this.getHeight < 250) {
-                    return "height:250px; z-index:15; top:"+this.getTop;
+                    return "height:250px; z-index:15; top:" + this.getTop;
                 }
-                return 'height:' + this.getHeight + "px; top:"+this.getTop+"px";
+                return 'height:' + this.getHeight + "px; top:" + this.getTop + "px";
             },
             getStateStyle: function () {
                 return 'background-color:' + this.getEventStateBgColor(this.event.state) + "; color: " + this.getEventStateColor(this.event.state);
@@ -228,12 +247,12 @@
             getTop: function () {
                 let sh = this.event.hour.split(":");
                 let min = parseInt(sh[1])
-                if( sh[1] >= 30){
+                if (sh[1] >= 30) {
                     min = parseInt(sh[1]) - 30
                 }
-                let top =  Math.ceil(min * this.cellHeight / 30)
+                let top = Math.ceil(min * this.cellHeight / 30)
 
-                return  Math.ceil(min * this.cellHeight / 30)
+                return Math.ceil(min * this.cellHeight / 30)
             },
             getHeight: function () {
                 let height = this.cellHeight;
