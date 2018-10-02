@@ -133,6 +133,15 @@
                                 :index="eventIndexSelected" v-on:remove="removeEvent"/>
                 </modal>
 
+
+                <modal title="Eventos del Servicio"
+                       :showModal="showModalServiceEvents"
+                       :btn-close="true"
+                       @close="closeModalServiceEvents"
+                >
+
+                </modal>
+
                 <modal :title="'Mapa: '+calendarName" :showModal="showModalMap" @close="showModalMap = false">
                     <maps :calendarId="calendarId" :calendarName="calendarName"></maps>
                 </modal>
@@ -221,6 +230,7 @@
         computed: {
             ...mapState([
                 'showModalForm',
+                'showModalServiceEvents',
                 'eventSelected',
                 'eventIndexSelected',
                 'calendarScroll',
@@ -262,6 +272,9 @@
             ]),
             closeModalForm: function () {
                 this.$store.commit('SET_SHOW_MODAL_FORM', false);
+            },
+            closeModalServiceEvents: function(){
+                this.$store.commit('SET_SHOW_MODAL_SERVICE', false);
             },
             showMap: function (id, name) {
                 this.calendarId = id;

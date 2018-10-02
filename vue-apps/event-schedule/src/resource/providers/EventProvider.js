@@ -19,6 +19,11 @@ class EventProvider extends HttpRequest {
         let filters = '?calendar=isNull&state=!=3&dateFrom=<=' + date + '&orderby=zone';
         return this.fetchFilters(filters)
     }
+
+    getServiceEvents(service,dateFrom, dateTo){
+        let filters = '?service='+service+'&dateFrom=' + dateFrom + "<>" + dateTo;
+        return this.fetchFilters(filters)
+    }
 }
 
 export default EventProvider

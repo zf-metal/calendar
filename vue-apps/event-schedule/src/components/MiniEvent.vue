@@ -14,16 +14,13 @@
                                @click="edit"
                                @mouseover="mouseOver"
                                @mouseout="mouseOut">edit</i>
-                            <i class="material-icons btn btn-xs"
-                               style="font-size: 1em"
-                               @click="showServiceEvents">search</i>
                         </v-flex>
 
                         <v-flex xs8>
                             <span class="text-xs-left ml-1">{{event.id}}. {{event.title}}</span>
                         </v-flex>
                         <v-flex xs3>
-                              <!--HELPs Icons-->
+                            <!--HELPs Icons-->
                             <keep :enable="getKeep"></keep>
                             <fav :preference="getFav"></fav>
                             <coop :enable="coopEnable" :link="coopLink" :count="coopCount"></coop>
@@ -38,9 +35,6 @@
                     <!--EDIT-->
 
                     <!--Title-->
-
-
-
 
 
                 </v-card-text>
@@ -129,7 +123,7 @@
 
     export default {
         name:
-            'event',
+            'MiniEvent',
         props: [
             'index',
             'event',
@@ -156,10 +150,6 @@
                 this.$store.commit('SET_EVENT_SELECTED', this.event);
                 this.$store.commit('SET_EVENT_ID_SELECTED', this.event.id);
                 this.$store.commit('SET_EVENT_INDEX_SELECTED', this.getEventIndexById(this.event.id));
-            },
-            showServiceEvents: function(){
-                this.selectEvent();
-                this.$store.commit('SET_SHOW_MODAL_SERVICE', true);
             }
         },
         computed: {

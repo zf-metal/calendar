@@ -47,7 +47,8 @@ import {
     SET_OUTOFSERVICE_CALENDAR,
     SET_HOLIDAYS,
     LOADING_PLUS,
-    LOADING_LESS
+    LOADING_LESS,
+    SET_SHOW_MODAL_SERVICE
 } from './mutation-types'
 
 
@@ -68,6 +69,7 @@ const state = {
     eventIdSelected: null,
     eventSelected: null,
     showModalForm: false,
+    showModalServiceEvents: false,
     filterZone: null,
     filterString: null,
     cellHeight: 60,
@@ -721,6 +723,9 @@ const mutations = {
     },
     [SET_SHOW_MODAL_FORM](state, value) {
         state.showModalForm = value;
+    },
+    [SET_SHOW_MODAL_SERVICE](state, value) {
+        state.showModalServiceEvents = value;
     },
     [SET_CALENDAR_START](state, value) {
         state.calendarStart = value;

@@ -45,7 +45,6 @@
         },
         methods: {
             closeModal: function () {
-                console.log("Close Modal");
                 this.$emit('close');
             },
             onEscapeClose: function (key) {
