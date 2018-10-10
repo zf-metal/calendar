@@ -139,7 +139,7 @@
                        :btn-close="true"
                        @close="closeModalServiceEvents"
                 >
-
+                    <service-events v-if="showModalServiceEvents"></service-events>
                 </modal>
 
                 <modal :title="'Mapa: '+calendarName" :showModal="showModalMap" @close="showModalMap = false">
@@ -172,14 +172,15 @@
     import maps from './../components/maps.vue'
     import day from './../components/day'
     import oof from './../components/signals/oof.vue'
+    import ServiceEvents from './../components/ServiceEvents.vue'
 
     import SelectSize from './../components/input/SelectSize.vue'
-
     import SelectStart from './../components/input/SelectStart.vue'
 
     export default {
         name: 'calendars',
         components: {
+            ServiceEvents,
             SelectSize,
             SelectStart,
             calendarTd,
@@ -273,7 +274,7 @@
             closeModalForm: function () {
                 this.$store.commit('SET_SHOW_MODAL_FORM', false);
             },
-            closeModalServiceEvents: function(){
+            closeModalServiceEvents: function () {
                 this.$store.commit('SET_SHOW_MODAL_SERVICE', false);
             },
             showMap: function (id, name) {

@@ -287,6 +287,33 @@ class Event
      */
     public $config = null;
 
+
+    /**
+     * @Annotation\Exclude()
+     * @ORM\ManyToOne(targetEntity="\ZfMetal\Security\Entity\User")
+     * @ORM\JoinColumn(name="updated_by", referencedColumnName="id", nullable=true)
+     */
+    public $updatedBy = null;
+
+    /**
+     * @Annotation\Exclude()
+     * @Gedmo\Timestampable(on="update")
+     * @ORM\Column(type="datetime", unique=false, nullable=true,
+     * name="updated_at")
+     */
+    public $updatedAt = null;
+
+
+    /**
+     * @Annotation\Type("Zend\Form\Element\Text")
+     * @Annotation\Attributes({"type":"text"})
+     * @Annotation\Options({"label":"Remito", "description":"", "addon":""})
+     * @ORM\Column(type="string", length=20, unique=false, nullable=true,
+     * name="delivery_note")
+     */
+    public $deliveryNote = null;
+
+
     /**
      * @return mixed
      */
@@ -712,6 +739,55 @@ class Event
     {
         $this->branchOffice = $branchOffice;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getUpdatedBy()
+    {
+        return $this->updatedBy;
+    }
+
+    /**
+     * @param mixed $updatedBy
+     */
+    public function setUpdatedBy($updatedBy)
+    {
+        $this->updatedBy = $updatedBy;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUpdatedAt()
+    {
+        return $this->updatedAt;
+    }
+
+    /**
+     * @param mixed $updatedAt
+     */
+    public function setUpdatedAt($updatedAt)
+    {
+        $this->updatedAt = $updatedAt;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDeliveryNote()
+    {
+        return $this->deliveryNote;
+    }
+
+    /**
+     * @param mixed $deliveryNote
+     */
+    public function setDeliveryNote($deliveryNote)
+    {
+        $this->deliveryNote = $deliveryNote;
+    }
+
 
 
 

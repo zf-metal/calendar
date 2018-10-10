@@ -352,6 +352,12 @@ const getters = {
         ntd.add(2, 'day');
         return ntd.format("YYYY-MM-DD");
     },
+    getYear: state => {
+        return state.date.format('YYYY');
+    },
+    getMonth: state => {
+        return state.date.format('MM');
+    },
     getMonthName: state => {
         return state.date.format('MMMM').replace(/\w/, c => c.toUpperCase());
     },
@@ -359,7 +365,7 @@ const getters = {
         return state.date.format('dddd').replace(/\w/, c => c.toUpperCase());
     },
     getNumberOfDayInMonth: state => {
-        var cloneDate = state.date.clone();
+        var cloneDate = state.date.clone().clone();
         var count = 0;
         var calls = 0;
         var flag = true;

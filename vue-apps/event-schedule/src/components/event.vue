@@ -244,7 +244,7 @@
             },
             getDragStyle: function () {
                 if (this.active && this.getHeight < 250) {
-                    return "height:250px; z-index:15; top:" + this.getTop;
+                    return "height:260px; z-index:15; top:" + this.getTop;
                 }
                 return 'height:' + this.getHeight + "px; top:" + this.getTop + "px";
             },
