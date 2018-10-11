@@ -300,7 +300,8 @@ const getters = {
         if (state != undefined && state.bgColor != undefined && state.bgColor != "") {
             return state.bgColor;
         }
-        return '#1c5c87';
+        //indigo lighten-2 - #7986CB
+        return '#7986CB';
     },
     getEventStateColor: (state, getters) => (stateId) => {
         var state = getters.getEventStateById(stateId);

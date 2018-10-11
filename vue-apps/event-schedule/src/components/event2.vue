@@ -3,50 +3,51 @@
           :class="getMainClass" :style="getDragStyle">
 
         <div @click="selectEvent">
-            <v-card class="cursorPointer">
+            <v-card class="cursorPointer" >
 
-                <v-card-title :style="getStateStyle" class="pa-0">
+                <v-card-text relative :style="getStateStyle" class="pa-1">
 
-                    <span class="text-xs-left ml-1">{{event.id}}</span>
-
-
-                    <!--HELPs Icons-->
-
-
-
-
-                    <!--Distance-->
+                    <v-layout row wrap>
+                        <v-flex xs1 class="pa-0 ma-0">
+                            <i class="material-icons btn btn-xs"
+                               style="font-size: 1em"
+                               @click="edit"
+                               @mouseover="mouseOver"
+                               @mouseout="mouseOut">edit</i>
 
 
-                    <v-spacer></v-spacer>
-                    <keep :enable="getKeep"></keep>
+                            <i class="material-icons btn btn-xs"
+                               style="font-size: 1em"
+                               @click="showServiceEvents">search</i>
+                        </v-flex>
 
-                    <coop :enable="coopEnable" :link="coopLink" :count="coopCount"></coop>
+                        <v-flex xs8>
+                            <span class="text-xs-left ml-1">{{event.id}}. {{event.title}}</span>
+                        </v-flex>
+                        <v-flex xs3>
+                            <!--HELPs Icons-->
+                            <keep :enable="getKeep"></keep>
+                            <fav :preference="getFav"></fav>
+                            <coop :enable="coopEnable" :link="coopLink" :count="coopCount"></coop>
 
-                    <fav :preference="getFav"></fav>
+                            <!--Distance-->
+                            <span class="pull-right"
+                                  style="padding:1px">{{getDistanceFromEventSelected(event.lat, event.lng)}} Km</span>
 
-                    <v-btn small dark icon
-                           class="ma-1"
-                           @click="showServiceEvents"
-                           @mouseover="mouseOver"
-                           @mouseout="mouseOut"
-                    >
-                        <v-icon>more_vert</v-icon>
-                    </v-btn>
+                        </v-flex>
 
 
-                </v-card-title>
+                    </v-layout>
 
-                <v-card-title :style="getStateStyle" class="pa-0">
-                    <v-spacer></v-spacer>
-                    <span style="padding:1px">{{getDistanceFromEventSelected(event.lat, event.lng)}} Km</span>
+                    <!--EDIT-->
+
                     <v-btn
                             absolute
                             dark
                             fab
                             bottom
                             left
-                            :style="getStateStyle"
+                            color="indigo"
                             @click="edit"
                             @mouseover="mouseOver"
                             @mouseout="mouseOut"
@@ -55,8 +56,22 @@
                         <v-icon>edit</v-icon>
                     </v-btn>
 
-                </v-card-title>
+                    <v-btn
+                            absolute
+                            dark
+                            fab
+                            bottom
+                            right
+                            color="indigo"
+                            @click="showServiceEvents"
+                            @mouseover="mouseOver"
+                            @mouseout="mouseOut"
+                            small
+                    >
+                        <v-icon>search</v-icon>
+                    </v-btn>
 
+                </v-card-text>
             </v-card>
 
             <v-card class="cursorPointer">
@@ -73,7 +88,7 @@
              hideOnClick: true,
              trigger: 'click',
         }">
-                        <v-list-tile>
+                        <v-list-tile >
                             <v-list-tile-action>
                                 <v-icon>account_box</v-icon>
                             </v-list-tile-action>
@@ -103,13 +118,11 @@
                             </v-list-tile-action>
 
                             <v-list-tile-content>
-                                <v-list-tile-title>
-                                    <availabilityDay :data="getAvailability"></availabilityDay>
-
+                                <v-list-tile-title><span>{{event.duration}} Min - </span>
+                                    <availabilityTime :data="getAvailability"></availabilityTime>
                                 </v-list-tile-title>
                                 <v-list-tile-sub-title>
-                                    <span>{{event.duration}} Min - </span>
-                                    <availabilityTime :data="getAvailability"></availabilityTime>
+                                    <availabilityDay :data="getAvailability"></availabilityDay>
                                 </v-list-tile-sub-title>
                             </v-list-tile-content>
 
@@ -179,7 +192,6 @@
             ...mapGetters([
                 'getEventIndexById',
                 'getZoneBgColor',
-                'getZoneColor',
                 'getEventStateBgColor',
                 'getEventStateColor',
                 'getEventTypeIcon',
@@ -238,7 +250,7 @@
             },
             getSucColor: function () {
                 if (this.event.zone != undefined && this.event.zone.id != undefined) {
-                    return "background-color:" + this.getZoneBgColor(this.event.zone.id) + "; color: " + this.getZoneColor(this.event.zone.id);
+                    return "background-color:" + this.getZoneBgColor(this.event.zone.id);
                 }
                 return "";
             },
@@ -251,7 +263,7 @@
             },
             getDragStyle: function () {
                 if (this.active && this.getHeight < 250) {
-                    return "height:232px; z-index:15; top:" + this.getTop;
+                    return "height:260px; z-index:15; top:" + this.getTop;
                 }
                 return 'height:' + this.getHeight + "px; top:" + this.getTop + "px";
             },
@@ -310,9 +322,9 @@
         border-radius: 3px;
         background-color: #ffffff;
         color: #0c0c0c;
-        z-index: 1;
-        min-width: 296px;
-        width: 296px;
+        z-index: 12;
+        min-width: 300px;
+        width: 300px;
         min-height: 30px;
         padding: 0;
         -webkit-box-shadow: 2px 2px 3px 0px rgba(0, 0, 0, 0.75);

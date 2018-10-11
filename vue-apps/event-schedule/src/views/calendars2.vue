@@ -245,7 +245,7 @@
     }
 
     table.zfc-td {
-        margin-top: 28px;
+        margin-top: 48px;
     }
 
     table.zfc-td > tbody > tr > td, table.zfc-td > tbody > tr > th {

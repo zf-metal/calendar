@@ -63,8 +63,8 @@
     }
 
     .daysTable td {
-        border: 1px solid #5c6667;
-        font-size: 1em;
+        border-right: #e0e0e0 1px solid;
+        font-size: 0.8em;
         padding: 1px;
 
     }
@@ -82,7 +82,8 @@
     }
 
     .dayNo {
-        background-color: #cccccc;
+        background-color:rgba(0,0,0,0.04);
+        border-right: #e0e0e0 1px solid;
     }
 
 </style>

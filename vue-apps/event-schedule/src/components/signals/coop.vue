@@ -1,11 +1,13 @@
 <template>
 
-    <i v-if="enable" @click="goFilterCoop" style="font-size: 20px"
-       class="material-icons pull-right" :class="getSignalCoopClass"
-       data-toggle="tooltip"
-       :title="getTitle">
-        group
-    </i>
+    <v-btn small dark icon class="ma-1"  v-if="enable" @click="goFilterCoop">
+        <v-icon
+                v-tippy="{   dynamicTitle:true, arrow:true, performance:true, placement:'top', flip:true, interactive: true,
+         animation: 'scale'}"
+                :title="getTitle" :color="getColor">
+            group
+        </v-icon>
+    </v-btn>
 
 </template>
 
@@ -36,24 +38,13 @@
             getTitle: function () {
                 return "Visita Cooperativa link: " + this.link;
             },
-            getSignalCoopClass: function () {
+            getColor: function () {
                 if (this.link == this.filterCoop) {
-                    return "signal-coop-enable"
-                } else {
-                    return "signal-coop"
+                    return "yellow"
                 }
+                return "white"
             }
 
         },
     }
 </script>
-
-<style scoped>
-    .signal-coop {
-        color: red;
-    }
-
-    .signal-coop-enable {
-        color: green;
-    }
-</style>

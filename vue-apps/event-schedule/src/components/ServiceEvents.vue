@@ -1,11 +1,11 @@
 <template>
     <div class="ServiceView">
         <h4> {{getMonthName}} {{getYear}}</h4>
-        <v-container>
+        <v-container fluid>
             <v-layout row wrap>
                 <v-flex xs4>
-                    <h5>Pendientes</h5>
-                    <v-layout row wrap>
+                    <h5>Pendientess</h5>
+                    <v-layout column>
                         <v-flex v-for="(colPreEvents, i) in preEvents" :key="i" xs12>
                             <h6>{{i}}</h6>
                             <mini-event v-for="(event, u) in colPreEvents" :key="u" :index="u" :event="event"></mini-event>
@@ -52,18 +52,19 @@
                     (response) => {
                         for (let i = 0; i < response.data.length; i++) {
                             let event = response.data[i];
-
+                            var preEvents = {}
                             if (event.calendar != null) {
                                 event.hour = moment(event.start).tz('America/Argentina/Buenos_Aires').format("HH:mm");
                                 this.events.push(event);
                             } else {
-                                let key = event.dateFrom + " " + event.dateTo;
+                                let key = event.dateFrom + " <> " + event.dateTo;
                                 if(!this.preEvents[key]){
-                                    this.preEvents[key] = [];
+                                    preEvents[key] = [];
                                 }
-                                this.preEvents[key].push(event);
+                                preEvents[key].push(event);
                             }
                         }
+                        this.preEvents = preEvents;
                     }
                 )
             },

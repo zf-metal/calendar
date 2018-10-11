@@ -1,12 +1,14 @@
 
 <template>
 
-    <i v-if="enable"  style="font-size: 20px"
-       class="material-icons pull-left" :class="getSignalCoopClass"
-       data-toggle="tooltip"
-       title='Fuera de Servicio'>
-        airplanemode_active
-    </i>
+    <v-btn small dark icon class="ma-1"  v-if="enable">
+        <v-icon
+                v-tippy="{   dynamicTitle:true, arrow:true, performance:true, placement:'top', flip:true, interactive: true,
+         animation: 'scale'}"
+                :title='getTitle' color="amber">
+            airplanemode_active
+        </v-icon>
+    </v-btn>
 
 </template>
 
@@ -22,18 +24,9 @@
             getTitle: function () {
                 return "Fuera de Servicio";
             },
-            getSignalCoopClass: function () {
-                return "signal-oof"
-            }
+
 
         },
     }
 </script>
 
-<style scoped>
-    .signal-oof {
-        color: yellow;
-        cursor: help;
-    }
-
-</style>

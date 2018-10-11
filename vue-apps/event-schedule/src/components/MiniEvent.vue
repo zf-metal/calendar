@@ -1,9 +1,9 @@
 <template>
     <Drag :transfer-data="{event: event, index: index, op: 'update'}" class="drago"
-           :style="getDragStyle">
+           >
 
-        <div @click="selectEvent">
-            <v-card class="cursorPointer" :style="getMainStyle">
+        <div >
+            <v-card class="cursorPointer">
 
                 <v-card-text class="indigo dark pa-1" >
                     {{event.id}}. {{event.title}}

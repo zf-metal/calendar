@@ -65,10 +65,22 @@
                                 class="zfc-column-calendar"
                                 :class="{'outOfService': calendar.outOfService}"
                         >
-                            <oof :enable="calendar.outOfService"></oof>
-                            <span>{{calendar.name}}
-                                    <i @click="showMap(calendar.id,calendar.name)"
-                                       class="material-icons cursorPointer pull-right" style="vertical-align: bottom">map</i></span>
+                            <v-flex>
+
+                                <v-toolbar dense color="blue-grey" dark class="pa-0 ma-0">
+
+                                    <v-toolbar-title>{{calendar.name}}</v-toolbar-title>
+                                    <v-spacer></v-spacer>
+                                    <oof :enable="calendar.outOfService"></oof>
+                                    <v-btn small dark icon
+                                           class="ma-0 pa-0"
+                                           @click="showMap(calendar.id,calendar.name)"
+                                    >
+                                        <v-icon>map</v-icon>
+                                    </v-btn>
+                                </v-toolbar>
+
+                            </v-flex>
                         </th>
                     </tr>
                     </thead>
@@ -142,7 +154,8 @@
                     <service-events v-if="showModalServiceEvents"></service-events>
                 </modal>
 
-                <modal :title="'Mapa: '+calendarName" :showModal="showModalMap" @close="showModalMap = false">
+                <modal :title="'Mapa: '+calendarName" :showModal="showModalMap" @close="showModalMap = false"
+                       :btn-close="true">
                     <maps :calendarId="calendarId" :calendarName="calendarName"></maps>
                 </modal>
 
@@ -303,12 +316,6 @@
 
 <style scoped>
 
-    .zfc-header-table th {
-        background-color: #0e2c44;
-        color: #ffffcc;
-        text-align: center;
-        padding: 5px;
-    }
 
     .outOfService {
         background-color: #8f2727 !important;
@@ -336,9 +343,9 @@
     }
 
     .zfc-column-calendar {
-        width: 260px !important;
-        min-width: 260px !important;
-        max-width: 260px !important;
+        width: 300px !important;
+        min-width: 300px !important;
+        max-width: 300px !important;
         position: relative;
     }
 
@@ -346,6 +353,7 @@
         width: 50px !important;
         min-width: 50px;
         max-width: 50px;
+        height: 48px;
         text-align: center;
     }
 
@@ -360,7 +368,7 @@
     }
 
     table.zfc-td {
-        margin-top: 28px;
+        margin-top: 48px;
     }
 
     table.zfc-td > tbody > tr > td, table.zfc-td > tbody > tr > th {

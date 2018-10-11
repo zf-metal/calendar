@@ -182,13 +182,13 @@
 <style scoped>
 
     .tdOutOfService{
-        background-color: #ef9a9a;
+        background-color: #FFAB91;
     }
 
     .zfc-column-calendar {
-        width: 260px !important;
-        min-width: 260px !important;
-        max-width: 260px !important;
+        width: 300px !important;
+        min-width: 300px !important;
+        max-width: 300px !important;
         position: relative;
     }
 
@@ -197,11 +197,12 @@
     }
 
     .zfc-hour-active {
-        background-color: #fcfaee;
+        background-color: #ffffff;
     }
 
     .zfc-hour-inactive {
-        background-color: #a5a0a0;
+        background-color:rgba(0,0,0,0.04);
+        border-right: #e0e0e0 1px solid;
     }
 
     .zfc-hour-active-nd {
@@ -209,6 +210,7 @@
     }
 
     .zfc-hour-inactive-nd {
-        background-color: #7c7878;
+        background-color:rgba(0,0,0,0.04);
+        border-right: #e0e0e0 1px solid;
     }
 </style>

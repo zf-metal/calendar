@@ -1,10 +1,14 @@
 <template>
-    <i v-if="enable"
-       class="material-icons pull-right" :class="getSignalKeepClass"  style="font-size: 20px"
-       data-toggle="tooltip"
-       :title="getTitle">
-        lock
-    </i>
+
+    <v-btn small dark icon class="ma-1"  v-if="enable">
+        <v-icon
+                v-tippy="{   dynamicTitle:true, arrow:true, performance:true, placement:'top', flip:true, interactive: true,
+         animation: 'scale'}"
+                :title="getTitle">
+            lock
+        </v-icon>
+    </v-btn>
+
 </template>
 
 <script>
@@ -17,18 +21,8 @@
             getTitle: function () {
                 return "Mantener Técnico";
             },
-            getSignalKeepClass: function () {
 
-                return "signal-keep"
-
-            }
 
         },
     }
 </script>
-
-<style scoped>
-    .signal-keep {
-        color: yellow;
-    }
-</style>
