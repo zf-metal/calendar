@@ -1,5 +1,13 @@
 <template>
     <div class="MiniCalendar">
+        <v-container>
+            <v-layout>
+                <v-flex>
+
+                </v-flex>
+
+            </v-layout>
+        </v-container>
     </div>
 </template>
 

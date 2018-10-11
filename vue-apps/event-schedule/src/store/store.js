@@ -11,6 +11,8 @@ import {calculateDistance, getRandomColor, extractPriorityIntByTime} from './../
 
 import {EventService, StartService, CalendarService} from '../resource'
 
+import datesModule from './modules/dates'
+
 import {
     SET_DATE,
     ADD_CALENDAR,
@@ -64,14 +66,14 @@ Vue.use(Vuex)
 const state = {
     filterHour: {from: null, to: null},
     filterCoop: null,
+    filterZone: null,
+    filterString: null,
     calendarStart: "06:00",
     eventIndexSelected: null,
     eventIdSelected: null,
     eventSelected: null,
     showModalForm: false,
     showModalServiceEvents: false,
-    filterZone: null,
-    filterString: null,
     cellHeight: 60,
     loading: 0,
     calendarPosition: {top: 0, left: 0},
@@ -330,75 +332,7 @@ const getters = {
             }
             return false;
         });
-    },
-    getDate: state => {
-        return state.date.format("YYYY-MM-DD");
-    },
-    getDay: state => {
-        return state.date.isoWeekday();
-    },
-    getNextDateObj: (state, getters) => {
-        var nextDate = tz(getters.getDate);
-        nextDate.add(1, 'day');
-        return nextDate;
-    },
-    getNextDate: (state, getters) => {
-        return getters.getNextDateObj.format("YYYY-MM-DD");
-    },
-    getNextDay: (state, getters) => {
-        return getters.getNextDateObj.isoWeekday();
-    },
-    getNextTwoDate: (state, getters) => {
-        var ntd = tz(getters.getDate);
-        ntd.add(2, 'day');
-        return ntd.format("YYYY-MM-DD");
-    },
-    getYear: state => {
-        return state.date.format('YYYY');
-    },
-    getMonth: state => {
-        return state.date.format('MM');
-    },
-    getMonthName: state => {
-        return state.date.format('MMMM').replace(/\w/, c => c.toUpperCase());
-    },
-    getDayName: state => {
-        return state.date.format('dddd').replace(/\w/, c => c.toUpperCase());
-    },
-    getNumberOfDayInMonth: state => {
-        var cloneDate = state.date.clone().clone();
-        var count = 0;
-        var calls = 0;
-        var flag = true;
-        do {
-            count++;
-            cloneDate.subtract(1, 'week');
-            //Prevent Infinity Loop
-            calls += 1;
-            if (calls > 10) {
-                // debugger;
-                flag = false;
-                console.log("Loop: getNumberOfDayInMonth");
-            }
-        } while (state.date.month() == cloneDate.month() || flag == false)
-        return count;
-    },
-    getNumberOfDayInMonthOrdinal: (state, getters) => {
-        switch (getters.getNumberOfDayInMonth) {
-            case 1:
-                return "1er";
-            case 2:
-                return "2do";
-            case 3:
-                return "3er";
-            case 4:
-                return "4to";
-            case 5:
-                return "5to";
-        }
-        return "";
-    },
-    getStart: (state) => {
+    },     getStart: (state) => {
         return state.calendarStart;
     },
     getEnd: (state, getters) => {
@@ -476,31 +410,7 @@ const getters = {
             }
         }
         return hours;
-    },
-    getNextHours: (state, getters) => {
-        var hours = [];
-        if (getters.hasCalendars) {
-            var flag = true;
-            var t = moment("00:00", "HH:mm");
-            var e = moment(getters.getNextEnd, "HH:mm");
-            var calls = 0;
-            while (flag) {
-                hours.push(t.format("HH:mm"));
-                t.add(30, "minutes");
-                if (t >= e) {
-                    flag = false;
-                }
-                //Prevent Infinity Loop
-                calls += 1;
-                if (calls > 100) {
-                    // debugger;
-                    flag = false;
-                    console.log("Loop: getNextHours");
-                }
-            }
-        }
-        return hours;
-    },
+    }
 
 };
 
@@ -646,9 +556,6 @@ const mutations = {
     [LOADING_LESS](state) {
         state.loading--
     },
-    [SET_DATE](state, newDate) {
-        state.date = newDate;
-    },
     [ADD_CALENDAR](state, calendar) {
         state.calendars.push(calendar);
     },
@@ -757,7 +664,10 @@ const store = new Vuex.Store({
     state,
     getters,
     actions,
-    mutations
+    mutations,
+    modules: {
+        dates: datesModule
+    }
 });
 
 
