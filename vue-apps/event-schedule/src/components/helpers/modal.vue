@@ -5,12 +5,12 @@
                 max-width="800"
                 persistent
         >
-            <v-card>
+            <v-card >
                 <v-card-title class="headline grey lighten-2"
                               primary-title
                 >{{title}}</v-card-title>
 
-                <v-card-text class="text-lg-center text-xs-center">
+                <v-card-text class="text-lg-center text-xs-center pa-1">
                     <slot v-on:closeModal="closeModal"></slot>
                 </v-card-text>
 

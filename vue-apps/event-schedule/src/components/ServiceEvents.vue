@@ -16,6 +16,7 @@
                 </v-flex>
                 <v-flex xs8 >
                     <span>Calendario</span>
+                    "En Desarrollo..."
                 </v-flex>
             </v-layout>
         </v-container>

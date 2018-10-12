@@ -1,10 +1,8 @@
 <template>
 
-
-
     <form v-if="value" method="POST" class="eventForm" name="EventForm" v-on:submit.prevent="save">
 
-        <v-container grid-list-md>
+        <v-container grid-list-md class="pt-0">
             <v-layout row wrap>
                 <v-flex xs12>
                     <alert :show="h.alertShow" :msg="h.alertMsg" :type="h.alertType"
@@ -177,8 +175,24 @@
                 </v-flex>
 
 
+                <v-flex xs4>
 
-                <v-flex xs8>
+                    <v-text-field
+                            v-model="value.deliveryNote"
+                            ref="deliveryNote"
+                            @keydown="unsaved"
+                            :error-messages="errors.deliveryNote"
+                            label="Remito"
+                    >
+
+                    </v-text-field>
+
+                </v-flex>
+
+                <v-flex xs4>
+                </v-flex>
+
+                <v-flex xs12>
 
                     <v-textarea
                             name="comments"
@@ -187,7 +201,7 @@
                             v-model="value.comments"
                             @keydown="unsaved"
                             :error-messages="errors.comments"
-                            rows="3"
+                            rows="2"
                     ></v-textarea>
 
                </v-flex>
