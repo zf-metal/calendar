@@ -100,6 +100,7 @@
             handleDrop: function (data) {
 
                 let event = data.event
+                event.calendar = null
                 EventService.updateEvent(event).then(
                     (response) => {
                         this.$store.commit('REMOVE_EVENT', this.getEventIndexById(data.event.id));
