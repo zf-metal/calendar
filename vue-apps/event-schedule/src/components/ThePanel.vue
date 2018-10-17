@@ -68,6 +68,7 @@
     import formEvent from './forms/form-event.vue'
 
     import {Drag, Drop} from 'vue-drag-drop';
+    import {EventService} from '../resource'
 
     export default {
         name: 'panel',
@@ -97,8 +98,18 @@
         },
         methods: {
             handleDrop: function (data) {
-                this.$store.commit('REMOVE_EVENT', this.getEventIndexById(data.event.id));
-                this.$store.commit('ADD_PRE_EVENT', data.event);
+
+                let event = data.event
+                EventService.updateEvent(event).then(
+                    (response) => {
+                        this.$store.commit('REMOVE_EVENT', this.getEventIndexById(data.event.id));
+                        this.$store.commit('ADD_PRE_EVENT', data.event);
+                    }
+                ).catch(
+                    (error) => {
+                        console.log("Error On Update Event");
+                    }
+                );
             },
             showModalZone: function () {
                 this.showModal = true
