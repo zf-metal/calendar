@@ -77,10 +77,7 @@
                     </v-select>
                 </v-flex>
 
-
-
-
-
+                <!--StartDate-->
                 <v-flex xs4 >
 
                     <v-menu
@@ -113,6 +110,7 @@
 
                 </v-flex>
 
+                <!--StartTime-->
                 <v-flex xs4>
                     <v-menu
                             ref="menuStartTime"
@@ -127,7 +125,7 @@
                     >
                         <v-text-field
                                 slot="activator"
-                                v-model="startTime"
+                                v-model="value.hour"
                                 label="Hora de Inicio"
                                 readonly
                         ></v-text-field>
@@ -266,14 +264,18 @@
         },
         mounted: function(){
             this.startDate = this.value.start.substr(0,10)
-            this.startTime= this.value.start.substr(11,5)
+            // this.startTime= this.value.start.substr(11,5)
+            this.startTime= this.value.hour
         },
         watch: {
           startDate: function(){
               this.value.start = this.startDate+' '+this.startTime
+              this.refreshEnd()
           },
           startTime: function(){
+              this.value.hour = this.startTime
               this.value.start = this.startDate+' '+this.startTime
+              this.refreshEnd()
           }
         },
         computed: {
