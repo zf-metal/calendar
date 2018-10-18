@@ -6,61 +6,88 @@
             <v-card class="cursorPointer">
 
                 <v-card-title :style="getStateStyle" class="pa-0">
-
-                    <span class="text-xs-left ml-1">{{event.id}}</span>
-
-
-                    <!--HELPs Icons-->
+                    <v-layout fluid wrap>
 
 
+                        <v-flex xs8>
+                            <v-card-title class="pa-0 ma-0">
+                                <span>{{getCliente}}</span>
+                                <br>
+                                <span class="caption font-weight-thin font-italic text-truncate">{{getBranchOffice}}</span>
+                            </v-card-title>
+                        </v-flex>
 
+                        <!--HELPs Icons-->
+                        <v-flex>
+                            <v-btn small dark icon
+                                   class="ma-0"
+                                   @click="edit"
+                                   @mouseover="mouseOver"
+                                   @mouseout="mouseOut">
+                                <v-icon
+                                        v-tippy="{dynamicTitle:true, arrow:true, performance:true,
+                                 placement:'top', flip:true, interactive: true, animation: 'scale'}"
+                                        title="Editar">
+                                    edit
+                                </v-icon>
+                            </v-btn>
+                            <keep :enable="getKeep"></keep>
+                            <coop :enable="coopEnable" :link="coopLink" :count="coopCount"></coop>
+                            <fav :preference="getFav"></fav>
 
-                    <!--Distance-->
-
-
-                    <v-spacer></v-spacer>
-                    <keep :enable="getKeep"></keep>
-
-                    <coop :enable="coopEnable" :link="coopLink" :count="coopCount"></coop>
-
-                    <fav :preference="getFav"></fav>
-
-                    <v-btn small dark icon
-                           class="ma-1"
-                           @click="showServiceEvents"
-                           @mouseover="mouseOver"
-                           @mouseout="mouseOut"
-                    >
-                        <v-icon>more_vert</v-icon>
-                    </v-btn>
-
-
+                            <v-btn small dark icon
+                                   class="ma-1"
+                                   @click="showServiceEvents"
+                                   @mouseover="mouseOver"
+                                   @mouseout="mouseOut"
+                            >
+                                <v-icon>more_vert</v-icon>
+                            </v-btn>
+                        </v-flex>
+                    </v-layout>
                 </v-card-title>
 
                 <v-card-title :style="getStateStyle" class="pa-0">
-                    <v-spacer></v-spacer>
-                    <span style="padding:1px">{{getDistanceFromEventSelected(event.lat, event.lng)}} Km</span>
-                    <v-btn
-                            absolute
-                            dark
-                            fab
-                            bottom
-                            left
-                            :style="getStateStyle"
-                            @click="edit"
-                            @mouseover="mouseOver"
-                            @mouseout="mouseOut"
-                            small
+                    <!--                    <span class="text-xs-left ml-1">{{event.id}}</span>-->
+
+                    <v-btn small dark icon
+                           class="ma-0"
+                           @click="edit"
+                           @mouseover="mouseOver"
+                           @mouseout="mouseOut"
+                           v-tippy="{dynamicTitle:true, arrow:true, performance:true,
+                                 placement:'top', flip:true, interactive: true, animation: 'scale'}"
+                           title="ID"
                     >
-                        <v-icon>edit</v-icon>
+                        {{event.id}}
                     </v-btn>
+
+
+                    <v-card-title class="pa-0 ma-0 text-truncate caption font-weight-thin font-italic">{{getBranchOffice}}</v-card-title>
+                    <v-spacer></v-spacer>
+                    <!--Distance-->
+                    <span style="padding:1px">{{getDistanceFromEventSelected(event.lat, event.lng)}} Km</span>
+                    <!--    <v-btn
+                                absolute
+                                dark
+                                fab
+                                bottom
+                                left
+                                :style="getStateStyle"
+                                @click="edit"
+                                @mouseover="mouseOver"
+                                @mouseout="mouseOut"
+                                small
+                        >
+                            <v-icon>edit</v-icon>
+                        </v-btn>-->
 
                 </v-card-title>
 
             </v-card>
 
             <v-card class="cursorPointer">
-                <v-card-text class="pe-card-text pa-0 pt-3">
+                <v-card-text class="pe-card-text pa-0 pt-1">
 
                     <v-list :title="event.serviceDescription" v-tippy="{
              allowTitleHTML: true,
