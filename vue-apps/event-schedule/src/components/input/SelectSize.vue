@@ -1,5 +1,14 @@
 <template>
-    <v-select style="width:60px" class="pl-1" v-model="size" v-on:change="applySize" :items="items">
+    <v-select
+            style="width:100px"
+            class="pl-1"
+            v-model="size"
+            v-on:change="applySize"
+            :items="items"
+            prepend-icon="photo_size_select_large"
+            label="Tamaño"
+
+    >
     </v-select>
 </template>
 

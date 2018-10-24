@@ -1,5 +1,13 @@
 <template>
-    <v-select style="width:70px" class="pl-1" v-model="start" v-on:change="changeCalendarStart" :items="items">
+    <v-select
+            style="width:110px"
+            class="pl-1"
+            v-model="start"
+            v-on:change="changeCalendarStart"
+            :items="items"
+            prepend-icon="alarm"
+            label="Horario"
+    >
     </v-select>
 
 </template>
