@@ -2,8 +2,8 @@
     <div>
 
         <h4>Filtro por Calendarios</h4>
-        <button class="btn btn-sm" @click="all">Todos</button>
-        <button class="btn btn-sm" @click="neither">Ninguno</button>
+        <v-btn class="btn btn-sm" @click="all">Todos</v-btn>
+        <v-btn class="btn btn-sm" @click="neither">Ninguno</v-btn>
         <filterGroupCalendar></filterGroupCalendar>
         <check-calendar
                 v-if="hasCalendars"

@@ -21,7 +21,7 @@
     import {mapGetters, mapActions} from 'vuex';
     import {Drag, Drop} from 'vue-drag-drop';
     import {calculateEnd} from './../utils/helpers'
-    import event from './event.vue'
+    import event from './Event.vue'
     import dialogAlert from './helpers/dialogAlert.vue'
 
 

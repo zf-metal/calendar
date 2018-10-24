@@ -1,35 +1,38 @@
 <template>
 
-    <ul class="nav navbar-nav">
+    <v-toolbar-items class="hidden-sm-and-down">
+        <v-btn icon @click="before">
+            <v-icon>navigate_before</v-icon>
+        </v-btn>
 
-        <li>
-            <a @click="before">
-                <i class="btn btn-xs material-icons" style="font-size:18px">navigate_before</i>
-            </a>
-        </li>
-        <li>
-            <form class="navbar-form navbar-left">
-                <div class="form-group">
-                    <input type="date" class="form-control" v-model="date" v-on:change="onChange"><br>
+        <v-menu
+                ref="menuDate"
+                v-model="menu"
+                :nudge-right="40"
+                lazy
+                transition="scale-transition"
+                offset-y
+                full-width
+                min-width="290px"
+        >
 
-                </div>
-            </form>
-        </li>
-        <li>
-            <a @click="next">
-                <i class="btn btn-xs material-icons" style="font-size:18px">navigate_next</i>
-            </a>
-        </li>
-        <li>
-            <v-toolbar-title>
 
-                <span class="navbar-brand" :class="{holiday: isHoliday}">{{getNumberOfDayInMonthOrdinal}}</span>
-                <span class="navbar-brand" :class="{holiday: isHoliday}">{{getDayName}}</span>
-                <span class="navbar-brand" :class="{holiday: isHoliday}">{{getMonthName}}</span>
-                <span class="navbar-brand"><holiday :enable="isHoliday"></holiday></span>
-            </v-toolbar-title>
-        </li>
-    </ul>
+            <v-btn   slot="activator">
+                {{date}}
+            </v-btn>
+
+            <v-date-picker v-model="date" >
+
+            </v-date-picker>
+
+        </v-menu>
+
+        <v-btn icon @click="next">
+            <v-icon>navigate_next</v-icon>
+        </v-btn>
+
+
+    </v-toolbar-items>
 
 </template>
 
@@ -41,16 +44,24 @@
     import 'moment/locale/es';
 
     export default {
-        name: 'day',
+        name: 'DaySelect',
         props: ['value'],
         components: {holiday},
         data() {
             return {
-                date: ''
+                menu: false,
+                date: '',
+                wdate: ''
             }
         },
         created: function () {
             this.date = this.value;
+            this.wdate = this.date
+        },
+        watch: {
+          date: function(){
+              this.onChange()
+          }
         },
         computed: {
             ...mapGetters([
@@ -74,7 +85,7 @@
                     var d = moment(this.date)
                     d.subtract(1, 'day')
                     this.date = d.tz('America/Argentina/Buenos_Aires').format("YYYY-MM-DD")
-                    this.changeDate(this.date)
+                    // this.changeDate(this.date)
                 }
             },
             next: function () {
@@ -83,7 +94,7 @@
                     d.add(1, 'day')
                     this.date = d.tz('America/Argentina/Buenos_Aires').format("YYYY-MM-DD")
                     console.log(this.date)
-                    this.changeDate(this.date)
+                    // this.changeDate(this.date)
                 }
             },
             onChange: function () {

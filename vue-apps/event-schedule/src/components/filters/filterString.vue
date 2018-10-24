@@ -1,15 +1,21 @@
 <template>
-    <div>
-        <input type="text" placeholder="Filtrar por cliente/dirección" class="form-control" id="filterString"  @keyup="changeFilterString" v-model="filterString" />
-    </div>
+
+    <v-text-field
+            class="pa-0"
+            @keyup="changeFilterString"
+            placeholder="Filtrar por cliente/dirección"
+            v-model="filterString"
+            clearable
+            hide-details
+            prepend-icon="search"
+    >
+    </v-text-field>
 </template>
 
 <script>
 
     export default {
         name: 'filterString',
-        props:[],
-        components: {},
         data() {
             return {
                 filterString: ""

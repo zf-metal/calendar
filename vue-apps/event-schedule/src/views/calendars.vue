@@ -21,21 +21,19 @@
         <v-toolbar app :clipped-left="clipped">
             <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
             <v-toolbar-title v-text="title"></v-toolbar-title>
-            <!--<v-spacer></v-spacer>-->
 
-            <day v-model="getDate"></day>
 
-            <div class="navbar-form navbar-left">
-                <div class="form-group">
-                    <select-size></select-size>
-                </div>
-            </div>
 
-            <div class="navbar-form navbar-left">
-                <div class="form-group">
-                    <select-start></select-start>
-                </div>
-            </div>
+            <day-select v-model="getDate"></day-select>
+            <day-show v-model="getDate"></day-show>
+
+
+            <v-spacer></v-spacer>
+            <v-toolbar-items class="hidden-sm-and-down">
+                <select-size></select-size>
+
+                <select-start></select-start>
+            </v-toolbar-items>
 
             <v-btn icon href="/">
                 <v-icon>home</v-icon>
@@ -88,7 +86,7 @@
 
 
                 <div class="zfc-calendars" ref="zfcCalendars" v-on:scroll="handleCalendarScroll">
-                    <table class="table-bordered table-striped table-responsive zfc-td" border="1">
+                    <table class="table-bordered table-striped table-responsive zfc-td">
 
                         <tbody>
 
@@ -180,10 +178,11 @@
     import TheToolbar from './../components/TheToolbar'
     import panel from './../components/ThePanel.vue'
     import calendarTd from './../components/calendarTd.vue'
-    import preEvent from "./../components/preEvent.vue";
+    import preEvent from "../components/PreEvent.vue";
     import formEvent from './../components/forms/form-event.vue'
     import maps from './../components/maps.vue'
-    import day from './../components/day'
+    import DaySelect from '../components/DaySelect'
+    import DayShow from '../components/DayShow'
     import oof from './../components/signals/oof.vue'
     import ServiceEvents from './../components/ServiceEvents.vue'
 
@@ -206,7 +205,8 @@
             TheToolbar,
             panel,
             maps,
-            day,
+            DaySelect,
+            DayShow,
             vueScrollingTable,
             oof
         },
@@ -353,8 +353,11 @@
         width: 50px !important;
         min-width: 50px;
         max-width: 50px;
-        height: 48px;
         text-align: center;
+        border-top:0;
+        border-left:0;
+        border-bottom: 1px solid #d9d9d9;
+        border-right: 1px solid #d9d9d9;
     }
 
     table.zfc-td td:first-child,
@@ -364,7 +367,10 @@
         left: 0;
         z-index: 30;
         background-color: #FAFAFA;
-        border: 1px solid #d9d9d9;
+        border-top:0;
+        border-left:0;
+        border-bottom: 1px solid #d9d9d9;
+        border-right: 1px solid #d9d9d9;
     }
 
     table.zfc-td {
@@ -375,12 +381,19 @@
         font-size: 14px;
         padding: 0;
         margin: 0;
-        border: 1px solid #d9d9d9;
-        border-width: 1px !important;
+        border-top:0;
+        border-left:0;
+        border-bottom: 1px solid #d9d9d9;
+        border-right: 1px solid #d9d9d9;
     }
 
     .cursorPointer {
         cursor: pointer;
+    }
+
+    table{
+        border-spacing: 0;
+
     }
 
 

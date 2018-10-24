@@ -285,7 +285,6 @@
             ...mapGetters([
                 'getCalendars',
                 'hasCalendars',
-                'getLoading',
                 'getEventIndexById'
             ]),
             getEvent: function () {

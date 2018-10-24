@@ -116,10 +116,10 @@ const state = {
 
 const getters = {
     isHoliday: (state, getters) => {
-      if(state.holidays.find(h => h.date == getters.getDate)){
-          return true
-      }
-      return false
+        if (state.holidays.find(h => h.date == getters.getDate)) {
+            return true
+        }
+        return false
     },
     getCalendars: state => {
         return state.calendars;
@@ -136,7 +136,7 @@ const getters = {
             return parseFloat(Math.round(distance * 100) / 100).toFixed(2);
 
         }
-        return '-';
+        return null;
     },
     getEventsByCalendar: (state) => (index) => {
         return state.events.filter(e => e.calendar == index);
@@ -161,7 +161,7 @@ const getters = {
         return calendar.schedules.find(schedule => schedule.day === day);
     },
     getVisibleCalendars: state => {
-        if(state.calendars) {
+        if (state.calendars) {
             return state.calendars.filter(calendar => calendar.hidden != true)
         }
         return []
@@ -332,7 +332,7 @@ const getters = {
             }
             return false;
         });
-    },     getStart: (state) => {
+    }, getStart: (state) => {
         return state.calendarStart;
     },
     getEnd: (state, getters) => {
@@ -421,23 +421,23 @@ const getters = {
 */
 
 const actions = {
-    checkOutOfService({state,getters,commit}){
-      let value = false;
-      //Recorro los calendarios
-        for(let i=0; i < state.calendars.length; i++){
-          let calendar= state.calendars[i]
-             value = false;
-          if(calendar.outOfServices && calendar.outOfServices.length > 0){
-              //Recorro los OutOfService del calendario
-              for(let u=0;  u < calendar.outOfServices.length;u++){
-                  let oof = calendar.outOfServices[u]
-                  if(getters.getDate >= oof.start && getters.getDate <= oof.end){
-                      value = true;
-                  }
-              }
-          }
-            commit(SET_OUTOFSERVICE_CALENDAR, {index:i,value: value});
-      }
+    checkOutOfService({state, getters, commit}) {
+        let value = false;
+        //Recorro los calendarios
+        for (let i = 0; i < state.calendars.length; i++) {
+            let calendar = state.calendars[i]
+            value = false;
+            if (calendar.outOfServices && calendar.outOfServices.length > 0) {
+                //Recorro los OutOfService del calendario
+                for (let u = 0; u < calendar.outOfServices.length; u++) {
+                    let oof = calendar.outOfServices[u]
+                    if (getters.getDate >= oof.start && getters.getDate <= oof.end) {
+                        value = true;
+                    }
+                }
+            }
+            commit(SET_OUTOFSERVICE_CALENDAR, {index: i, value: value});
+        }
     },
     checkCoop({state, commit}) {
         if (state.filterCoop) {
@@ -448,16 +448,26 @@ const actions = {
     },
     changeDate({commit, dispatch}, date) {
         var newDate = moment(date)
-
         if (newDate.isValid()) {
-            commit(SET_DATE, newDate);
-            commit(CLEAR_EVENTS, newDate);
-            commit(SET_EVENT_SELECTED, null);
-            commit(SET_EVENT_INDEX_SELECTED, null);
-            commit(SET_EVENT_ID_SELECTED, null);
-            dispatch('eventList');
-            dispatch('preEventList');
-            dispatch('checkOutOfService')
+
+            let promise = new Promise((f) => {
+                f()
+            })
+
+            promise.then(function () {
+                commit(SET_DATE, newDate);
+                commit(CLEAR_EVENTS, newDate);
+                commit(SET_EVENT_SELECTED, null);
+                commit(SET_EVENT_INDEX_SELECTED, null);
+                commit(SET_EVENT_ID_SELECTED, null);
+            }).then(
+                function () {
+                    dispatch('eventList');
+                    dispatch('preEventList');
+                    dispatch('checkOutOfService')
+                }
+            );
+
         }
     },
 
@@ -483,7 +493,6 @@ const actions = {
         })
 
     },
-
     populateZones: ({commit}, data) => {
         var zones = {};
         for (var i = 0; i < data.length; i++) {
@@ -559,7 +568,7 @@ const mutations = {
     [ADD_CALENDAR](state, calendar) {
         state.calendars.push(calendar);
     },
-    [SET_OUTOFSERVICE_CALENDAR](state, {index,value}) {
+    [SET_OUTOFSERVICE_CALENDAR](state, {index, value}) {
         Vue.set(state.calendars[index], 'outOfService', value);
     },
     [SET_HOLIDAYS](state, holidays) {

@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div style="margin:0 auto;display: inline-block">
         <div v-if="getEspecificDays" >
                 <span class="especificDays" v-for="(item,index) in getEspecificDays" :key="index">
                     {{item.description}}

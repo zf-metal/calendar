@@ -1,14 +1,9 @@
 <template>
-    <div>
-        <select class="form-control" id="filterCalendarGroup" v-on:change="changeFilterGroup" v-model="groupId">
-            <option value="">Filtrar por Grupo</option>
-            <template v-for="group in calendarGroups">
-                <option :value="group.id" :key="group.id">
-                    {{group.name}}
-                </option>
-            </template>
-        </select>
-    </div>
+
+    <v-select class="pa-0" v-model="groupId" v-on:change="changeFilterGroup" :items="getItems"
+              prepend-icon="filter_list">
+    </v-select>
+
 </template>
 
 <script>
@@ -46,6 +41,15 @@
             }
         },
         computed: {
+            getItems: function () {
+                var items = []
+                if(this.calendarGroups.length) {
+                    this.calendarGroups.forEach(function (group) {
+                        items.push({value: group.id, text: group.name})
+                    })
+                }
+                return items
+            },
             ...mapState([
                 'calendarGroupSelected',
                 'calendarGroups',

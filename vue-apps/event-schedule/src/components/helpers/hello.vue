@@ -20,7 +20,6 @@
         methods: {},
         computed: {
             ...mapGetters([
-                'getLoading'
             ]),
         },
     }

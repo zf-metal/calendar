@@ -17,7 +17,7 @@
 
 <script>
     import {mapState, mapGetters, mapActions} from 'vuex';
-    import day from './day.vue'
+    import day from './DaySelect.vue'
     import loading from './helpers/loading.vue'
 
     export default {

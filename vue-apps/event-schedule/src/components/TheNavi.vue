@@ -3,6 +3,7 @@
     <nav class="navbar navbar-default" style="margin: 0;">
         <div class="container-fluid">
             <div class="navbar-header">
+
                 <a class="navbar-brand" href="/"><i class="material-icons">home</i>
                 </a>
             </div>
@@ -16,6 +17,9 @@
 
             <form class="navbar-form navbar-left">
                 <div class="form-group">
+                    <v-btn>
+                        <v-icon>refresh</v-icon>
+                    </v-btn>
                     <button class="btn btn-default btn-sm material-icons">refresh</button>
                 </div>
             </form>
@@ -68,7 +72,7 @@
 
 <script>
     import {mapState, mapGetters, mapActions} from 'vuex';
-    import day from './day.vue'
+    import day from './DaySelect.vue'
     import loading from './helpers/loading.vue'
 
     export default {

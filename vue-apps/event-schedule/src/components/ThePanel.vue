@@ -1,19 +1,25 @@
 <template>
     <div>
         <v-tabs v-model="active" color="grey lighten-4">
-            <v-tab>P</v-tab>
-            <v-tab>C</v-tab>
+            <v-tab>
+                <v-icon>event</v-icon>
+            </v-tab>
+            <v-tab>
+                <v-icon>assignment_ind</v-icon>
+            </v-tab>
             <!--<v-tab>F</v-tab>-->
 
             <v-tab-item>
                 <v-card flat>
-                    <v-container fluid>
-                        <v-layout row>
-                            <v-flex xs3>
+                    <v-container fluid class="pa-1">
+                        <v-layout row wrap>
+                            <v-flex xs12>
                                 <filter-hour></filter-hour>
                             </v-flex>
-                            <v-flex xs9>
+                            <v-flex xs12>
                                 <filter-string></filter-string>
+                            </v-flex>
+                            <v-flex xs12>
                                 <filterZone></filterZone>
                             </v-flex>
                         </v-layout>
@@ -58,7 +64,7 @@
 
 <script>
     import {mapState, mapGetters, mapActions} from 'vuex';
-    import preEvent from "./preEvent.vue";
+    import preEvent from "./PreEvent.vue";
     import filterZone from './filters/filterZone.vue'
     import filterString from './filters/filterString.vue'
     import filterHour from './filters/filterHours.vue'

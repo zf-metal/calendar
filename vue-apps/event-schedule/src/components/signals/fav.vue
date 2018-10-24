@@ -1,11 +1,22 @@
 <template>
-    <v-btn small dark icon class="ma-1" v-if="hasFav">
-        <v-icon  @click="goFav"
-                v-tippy="{   dynamicTitle:true, arrow:true, performance:true, placement:'top', flip:true, interactive: true,
-         animation: 'scale'}"
-                :title="getTitle">
+    <v-btn small icon class="ma-0" :class="textColor" v-if="hasFav" >
+
+        <v-icon
+                @click="goFav"
+                v-tippy="{
+                            dynamicTitle:true,
+                            arrow:true,
+                            performance:true,
+                            placement:'top',
+                            flip:true,
+                            interactive: true,
+                            animation: 'scale'
+                        }"
+                :title="getTitle"
+        >
             face
         </v-icon>
+
     </v-btn>
 </template>
 
@@ -15,6 +26,7 @@
         name: 'fav',
         props: {
             preference: Object,
+            textColor: {type: String, default: "white--text"}
         },
         methods: {
             goFav: function () {
@@ -55,6 +67,3 @@
     }
 </script>
 
-<style scoped>
-
-</style>

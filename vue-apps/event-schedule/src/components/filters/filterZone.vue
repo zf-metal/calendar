@@ -1,17 +1,9 @@
 <template>
-    <div>
-        <select class="form-control" id="filterZone"   v-on:change="changeFilterZone" v-model="zoneId">
-            <option value="">Filtrar por Zona</option>
-            <template v-for="zone in getZones">
-                <option v-if="getPreEventsByZone(zone.id).length" :value="zone.id"  :key="zone.id">
-                    {{zone.name}} ({{getPreEventsByZone(zone.id).length}})
-                </option>
-            </template>
 
+    <v-select class="pa-0" v-model="zoneId" v-on:change="changeFilterZone" :items="getItemZones"   hide-details
+    prepend-icon="filter_list">
+    </v-select>
 
-        </select>
-
-    </div>
 </template>
 
 <script>
@@ -19,18 +11,18 @@
 
     export default {
         name: 'filterZone',
-        props:[],
+        props: [],
         components: {},
         data() {
             return {
-                zoneId: ""
+                zoneId: null
             }
         },
         created: function () {
         },
         methods: {
-            changeFilterZone: function(){
-                this.$store.commit("SET_FILTER_ZONE",this.zoneId);
+            changeFilterZone: function () {
+                this.$store.commit("SET_FILTER_ZONE", this.zoneId);
             }
         },
         computed: {
@@ -38,6 +30,14 @@
                 'getZones',
                 'getPreEventsByZone'
             ]),
+            getItemZones: function () {
+                let items = [{value:null,text:"Filtro por zona"}]
+                for (var key in this.getZones) {
+                    var zone = this.getZones[key];
+                    items.push({value: zone.id, text: zone.name + " (" + this.getPreEventsByZone(zone.id).length + ")"})
+                }
+                return items
+            }
         },
     }
 </script>

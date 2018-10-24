@@ -14,7 +14,7 @@
 
 <script>
     import {mapGetters, mapActions} from 'vuex';
-    import preEvent from "./preEvent.vue";
+    import preEvent from "./PreEvent.vue";
 
     export default {
         name: 'zone',

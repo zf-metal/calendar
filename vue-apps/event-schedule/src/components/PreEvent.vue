@@ -44,9 +44,10 @@
                         <td class="caption">{{getLocation}}</td>
                     </tr>
                     <tr>
-                        <td :style="getSucColor"><i class="material-icons" style="vertical-align: bottom;">center_focus_strong</i>
+                        <td  :style="getSucColor" class="pa-1 pr-0">
+                            <v-icon small :style="getSucColor">location_on</v-icon>
                         </td>
-                        <td :style="getSucColor" class="caption">{{getZone}}</td>
+                        <td class="pa-1">{{getZone}}</td>
                     </tr>
                     <tr>
                         <td><i class="material-icons" style="vertical-align: bottom;">today</i></td>
@@ -63,11 +64,11 @@
                         </td>
                     </tr>
 
-                    <!--<tr>-->
-                    <!--<td><i class="material-icons" style="vertical-align: bottom;">add</i>-->
-                    <!--</td>-->
-                    <!--<td>{{getPriority}}</td>-->
-                    <!--</tr>-->
+                    <tr>
+                    <td><i class="material-icons" style="vertical-align: bottom;">add</i>
+                    </td>
+                    <td>{{getPriority}}</td>
+                    </tr>
 
                     </tbody>
                 </table>
@@ -88,7 +89,7 @@
     import fav from './signals/fav.vue'
 
     export default {
-        name: 'preEvent',
+        name: 'PreEvent',
         props: ['preEvent', 'index'],
         components: {Drag, Drop, availabilityDay, availabilityTime, coop, keep, fav},
         methods: {},
@@ -165,11 +166,17 @@
 <style scoped>
     .table {
         margin: 0;
+        border-spacing: 0;
+        width: 100%;
     }
 
     .table td {
         vertical-align: middle;
         padding: 3px;
+        border-top:0;
+        border-left:0;
+        border-bottom: 1px solid #d9d9d9;
+        border-right:0;
     }
 
     .card-title {

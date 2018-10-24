@@ -3,148 +3,106 @@
           :class="getMainClass" :style="getDragStyle">
 
         <div @click="selectEvent">
-            <v-card class="cursorPointer">
+            <v-card :style="getDragStyle">
 
                 <v-card-title :style="getStateStyle" class="pa-0">
                     <v-layout fluid wrap>
-
-
-                        <v-flex xs8>
-                            <v-card-title class="pa-0 ma-0">
-                                <span>{{getCliente}}</span>
-                                <br>
-                                <span class="caption font-weight-thin font-italic text-truncate">{{getBranchOffice}}</span>
-                            </v-card-title>
-                        </v-flex>
-
-                        <!--HELPs Icons-->
-                        <v-flex>
-                            <v-btn small dark icon
-                                   class="ma-0"
-                                   @click="edit"
-                                   @mouseover="mouseOver"
-                                   @mouseout="mouseOut">
-                                <v-icon
-                                        v-tippy="{dynamicTitle:true, arrow:true, performance:true,
+                        <v-btn small dark icon
+                               class="ma-0 pl-1"
+                               @click="edit"
+                               @mouseover="mouseOver"
+                               @mouseout="mouseOut"
+                               v-tippy="{dynamicTitle:true, arrow:true, performance:true,
                                  placement:'top', flip:true, interactive: true, animation: 'scale'}"
-                                        title="Editar">
-                                    edit
-                                </v-icon>
-                            </v-btn>
-                            <keep :enable="getKeep"></keep>
-                            <coop :enable="coopEnable" :link="coopLink" :count="coopCount"></coop>
-                            <fav :preference="getFav"></fav>
+                               title="ID"
+                        >
+                            {{event.id}}
+                        </v-btn>
 
-                            <v-btn small dark icon
-                                   class="ma-1"
-                                   @click="showServiceEvents"
-                                   @mouseover="mouseOver"
-                                   @mouseout="mouseOut"
-                            >
-                                <v-icon>more_vert</v-icon>
-                            </v-btn>
-                        </v-flex>
+                        <v-spacer></v-spacer>
+                        <!--Distance-->
+                        <span
+                                class="pt-1"
+                                style="padding:1px"
+                        >
+                            {{getDistance}}
+                        </span>
+
+                        <v-spacer></v-spacer>
+                        <!--Signals-->
+                        <keep :enable="getKeep"></keep>
+                        <coop :enable="coopEnable" :link="coopLink" :count="coopCount"></coop>
+                        <fav :preference="getFav"></fav>
+                        <!--Menu-->
+                        <event-menu @edit="edit" @showServiceEvents="showServiceEvents"></event-menu>
+
                     </v-layout>
                 </v-card-title>
 
-                <v-card-title :style="getStateStyle" class="pa-0">
-                    <!--                    <span class="text-xs-left ml-1">{{event.id}}</span>-->
+                <v-card-title :style="getStateStyle" class="pa-0 ma-0">
+                    <span class="pl-2">{{getCliente}}</span>
+                </v-card-title>
+                <v-card-title :style="getStateStyle" class="pa-0 ma-0">
 
-                    <v-btn small dark icon
-                           class="ma-0"
-                           @click="edit"
-                           @mouseover="mouseOver"
-                           @mouseout="mouseOut"
-                           v-tippy="{dynamicTitle:true, arrow:true, performance:true,
-                                 placement:'top', flip:true, interactive: true, animation: 'scale'}"
-                           title="ID"
-                    >
-                        {{event.id}}
-                    </v-btn>
-
-
-                    <v-card-title class="pa-0 ma-0 text-truncate caption font-weight-thin font-italic">{{getBranchOffice}}</v-card-title>
-                    <v-spacer></v-spacer>
-                    <!--Distance-->
-                    <span style="padding:1px">{{getDistanceFromEventSelected(event.lat, event.lng)}} Km</span>
-                    <!--    <v-btn
-                                absolute
-                                dark
-                                fab
-                                bottom
-                                left
-                                :style="getStateStyle"
-                                @click="edit"
-                                @mouseover="mouseOver"
-                                @mouseout="mouseOut"
-                                small
-                        >
-                            <v-icon>edit</v-icon>
-                        </v-btn>-->
-
+                    <span class="pl-2  font-weight-thin ">{{getBranchOffice}}</span>
                 </v-card-title>
 
-            </v-card>
 
-            <v-card class="cursorPointer">
-                <v-card-text class="pe-card-text pa-0 pt-1">
+                <v-card-text class="pa-0">
+                    <table class="table table-hover white">
+                        <tbody
+                                :title="event.serviceDescription"
+                                v-tippy="{
+                                             allowTitleHTML: true,
+                                             dynamicTitle:true,
+                                             arrow:true,
+                                             placement:'right',
+                                             performance:true,
+                                             flip:false,
+                                             followCursor: false,
+                                             hideOnClick: true,
+                                             trigger: 'click',
+                                             popperOptions: { modifiers: { hide: { enabled: false }, preventOverflow: { enabled: false}}}
+                                        }"
+                        >
 
-                    <v-list :title="event.serviceDescription" v-tippy="{
-             allowTitleHTML: true,
-             dynamicTitle:true,
-             arrow:true,
-             placement:'right',
-             performance:true,
-             flip:true,
-             followCursor: false,
-             hideOnClick: true,
-             trigger: 'click',
-        }">
-                        <v-list-tile>
-                            <v-list-tile-action>
-                                <v-icon>account_box</v-icon>
-                            </v-list-tile-action>
 
-                            <v-list-tile-content>
-                                <v-list-tile-title>{{getCliente}}</v-list-tile-title>
-                                <v-list-tile-sub-title>{{getBranchOffice}}</v-list-tile-sub-title>
-                            </v-list-tile-content>
+                        <tr>
+                            <td class="pa-1">
+                                <v-icon small>my_location</v-icon>
+                            </td>
+                            <td class="caption pa-1">{{getLocation}}</td>
+                        </tr>
+                        <tr>
+                            <td :style="getSucColor" class="pa-1 pr-0">
+                                <v-icon small :style="getSucColor">location_on</v-icon>
+                            </td>
+                            <td class="pa-1">{{getZone}}</td>
+                        </tr>
+                        <tr>
+                            <td class="pa-1">
+                                <v-icon small>today</v-icon>
+                            </td>
+                            <td class="caption pa-1">
+                                <availabilityDay :data="getAvailability"></availabilityDay>
+                            </td>
+                        </tr>
 
-                        </v-list-tile>
+                        <tr>
+                            <td class="pa-1">
+                                <v-icon small>hourglass_full</v-icon>
+                            </td>
+                            <td class="caption pa-1">
+                                <span>{{event.duration}} Min - </span>
+                                <availabilityTime :data="getAvailability"></availabilityTime>
+                            </td>
+                        </tr>
 
-                        <v-list-tile>
-                            <v-list-tile-action>
-                                <v-icon>location_on</v-icon>
-                            </v-list-tile-action>
-
-                            <v-list-tile-content>
-                                <v-list-tile-title :style="getSucColor">{{getZone}}</v-list-tile-title>
-                                <v-list-tile-sub-title>{{getLocation}}</v-list-tile-sub-title>
-                            </v-list-tile-content>
-
-                        </v-list-tile>
-
-                        <v-list-tile>
-                            <v-list-tile-action>
-                                <v-icon>today</v-icon>
-                            </v-list-tile-action>
-
-                            <v-list-tile-content>
-                                <v-list-tile-title>
-                                    <availabilityDay :data="getAvailability"></availabilityDay>
-
-                                </v-list-tile-title>
-                                <v-list-tile-sub-title>
-                                    <span>{{event.duration}} Min - </span>
-                                    <availabilityTime :data="getAvailability"></availabilityTime>
-                                </v-list-tile-sub-title>
-                            </v-list-tile-content>
-
-                        </v-list-tile>
-
-                    </v-list>
+                        </tbody>
+                    </table>
 
                 </v-card-text>
+
 
             </v-card>
         </div>
@@ -162,6 +120,7 @@
     import coop from './signals/coop.vue'
     import keep from './signals/keep.vue'
     import fav from './signals/fav.vue'
+    import EventMenu from './EventMenu'
 
     export default {
         name:
@@ -170,7 +129,7 @@
             'index',
             'event',
         ],
-        components: {Drag, availabilityDay, availabilityTime, coop, keep, fav},
+        components: {Drag, availabilityDay, availabilityTime, coop, keep, fav, EventMenu},
         data() {
             return {
                 active: false,
@@ -188,7 +147,6 @@
                 this.$store.commit('SET_SHOW_MODAL_FORM', true);
             },
             selectEvent: function () {
-                console.log("SelectEvent")
                 this.$store.commit('SET_EVENT_SELECTED', this.event);
                 this.$store.commit('SET_EVENT_ID_SELECTED', this.event.id);
                 this.$store.commit('SET_EVENT_INDEX_SELECTED', this.getEventIndexById(this.event.id));
@@ -213,6 +171,16 @@
                 'getDistanceFromEventSelected',
                 'getCoordinate'
             ]),
+            getDistance: function () {
+                let d = this.getDistanceFromEventSelected(this.event.lat, this.event.lng)
+                if (d && this.eventIdSelected != this.event.id) {
+                    return d + "Km"
+                }
+                return ""
+            },
+            getFrecuencia: function () {
+                return "Mensual"
+            },
             getAvailability: function () {
                 if (this.event.config && this.event.config.availability) {
                     return this.event.config.availability
@@ -271,14 +239,14 @@
             },
             getMainClass: function () {
                 if (this.eventIdSelected == this.event.id) {
-                    return 'zfc-event zfc-event-selected';
+                    return 'zfc-event zfc-event-selected elevation-12';
                 } else {
                     return 'zfc-event';
                 }
             },
             getDragStyle: function () {
-                if (this.active && this.getHeight < 250) {
-                    return "height:232px; z-index:15; top:" + this.getTop;
+                if (this.active && this.getHeight < 185) {
+                    return "height:185px; z-index:15; top:" + this.getTop;
                 }
                 return 'height:' + this.getHeight + "px; top:" + this.getTop + "px";
             },
@@ -312,22 +280,18 @@
 
 <style scoped>
 
-    .v-list__tile__action {
-        min-width: 35px;
-    }
-
-    .v-list__tile {
-        padding: 0 5px !important;
-    }
-
-    .eventTable {
+    .table {
         margin: 0;
+        border-spacing: 0;
+        width: 100%;
     }
 
-    .eventTable td {
+    .table td {
         vertical-align: middle;
-        padding: 2px;
-
+        border-top: 0;
+        border-left: 0;
+        border-bottom: 1px solid #d9d9d9;
+        border-right: 0;
     }
 
     .zfc-event {
@@ -348,9 +312,7 @@
     }
 
     .zfc-event-selected {
-        -webkit-box-shadow: 3px 3px 4px 0px rgba(20, 158, 36, 1);
-        -moz-box-shadow: 3px 3px 4px 0px rgba(20, 158, 36, 1);
-        box-shadow: 3px 3px 4px 0px rgba(20, 158, 36, 1);
+        border: 1px solid blueviolet;
     }
 
     .cursorPointer {
