@@ -462,9 +462,13 @@ const actions = {
                 commit(SET_EVENT_ID_SELECTED, null);
             }).then(
                 function () {
-                    dispatch('eventList');
-                    dispatch('preEventList');
-                    dispatch('checkOutOfService')
+                    dispatch('eventList').then(
+                        dispatch('preEventList').then(
+                            dispatch('checkOutOfService')
+                        )
+                    )
+
+
                 }
             );
 
@@ -514,13 +518,13 @@ const actions = {
     },
 
     preEventList({commit, getters, state}) {
-        EventService.getPreEvents(getters.getDate).then((response) => {
+        return EventService.getPreEvents(getters.getDate).then((response) => {
             commit("SET_PRE_EVENTS", response.data);
         });
     },
     eventList({state, getters, commit}) {
 
-        EventService.getActiveEvents(getters.getDate, getters.getNextDate, getters.getNextEnd).then(
+        return EventService.getActiveEvents(getters.getDate, getters.getNextDate, getters.getNextEnd).then(
             (response) => {
                 var events = [];
                 for (let i = 0; i < response.data.length; i++) {
