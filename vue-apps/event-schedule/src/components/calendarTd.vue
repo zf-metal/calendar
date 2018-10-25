@@ -64,7 +64,7 @@
             getTdClass: function () {
                 var schedule = this.getCalendarSchedule(this.calendarId, this.day);
 
-                if(this.outOfService){
+                if (this.outOfService) {
                     return 'tdOutOfService'
                 }
 
@@ -93,9 +93,9 @@
                 event.hour = this.hour;
 
 
-                if (this.isOutOfRange(event) && !this.isFav(event)) {
+                if (!this.inTime(event) && !this.isFav(event)) {
                     this.alertFavAndHours()
-                } else if (this.isOutOfRange(event)) {
+                } else if (!this.inTime(event)) {
                     this.alertHours()
                 } else if (!this.isFav(event)) {
                     this.alertFav()
@@ -134,21 +134,52 @@
                 //Si no tiene favoritos devuelvo siempre true
                 return true
             },
-            isOutOfRange: function (event) {
+            inTime: function (event) {
+                //TRUE == En Horario
+                //FALSE == Fuera de Rango
+                let result = false
                 if (event.config && event.config.availability) {
-                    if (
-                        (event.config.availability.timeRange.from && event.hour < event.config.availability.timeRange.from)
-                        ||
-                        (
-                        (event.config.availability.timeRange && event.hour > event.config.availability.timeRange.to) ||
-                        (event.config.availability.timeRange2 && event.hour > event.config.availability.timeRange2.to)
-                        )
-                    )
-                    {
-                        return true
+
+                    //TIME RANGE 1
+                    if (event.config.availability.timeRange) {
+
+
+                        if (event.config.availability.timeRange.from && event.config.availability.timeRange.to) {
+
+                            //Si "from" y "to" estan definidos TimeRange, reviso si el horaio esta entre ese rango
+                            if (event.hour >= event.config.availability.timeRange.from &&
+                                event.hour <= event.config.availability.timeRange.to
+                            ) {
+                                result = true;
+                            }
+
+                            //Compruebo de otra manera Si el "from" es mayor al "to". Ex: From: 23:30 To: 00:30. {Errores #57}
+                            if (event.config.availability.timeRange.from > event.config.availability.timeRange.to
+                                &&
+                                event.hour >= event.config.availability.timeRange.from
+                            ) {
+                                result = true;
+                            }
+
+                        }
+
                     }
+
+                    //TIME RANGE 2
+                    if (event.config.availability.timeRange2) {
+                        //Si "from" y "to" estan definidos en TimeRange2, reviso si el horaio esta entre ese rango
+                        if (event.config.availability.timeRange2.from && event.config.availability.timeRange2.to
+                            &&
+                            event.hour >= event.config.availability.timeRange2.from && event.hour <= event.config.availability.timeRange2.to
+                        ) {
+                            result = true;
+                        }
+
+                    }
+
+
                 }
-                return false
+                return result
             },
             alertFavAndHours: function () {
                 this.cTitle = "Alerta Horario y Tecnico"
@@ -181,7 +212,7 @@
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 
-    .tdOutOfService{
+    .tdOutOfService {
         background-color: #FFAB91;
     }
 
@@ -201,7 +232,7 @@
     }
 
     .zfc-hour-inactive {
-        background-color:rgba(0,0,0,0.04);
+        background-color: rgba(0, 0, 0, 0.04);
         border-right: #e0e0e0 1px solid;
     }
 
@@ -210,7 +241,7 @@
     }
 
     .zfc-hour-inactive-nd {
-        background-color:rgba(0,0,0,0.04);
+        background-color: rgba(0, 0, 0, 0.04);
         border-right: #e0e0e0 1px solid;
     }
 </style>
