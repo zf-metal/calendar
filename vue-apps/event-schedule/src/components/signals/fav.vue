@@ -1,9 +1,6 @@
 <template>
-    <v-btn small icon class="ma-0" :class="textColor" v-if="hasFav" >
-
-        <v-icon
-                @click="goFav"
-                v-tippy="{
+    <v-btn small icon class="ma-0" :class="textColor" v-if="hasFav"
+           v-tippy="{
                             dynamicTitle:true,
                             arrow:true,
                             performance:true,
@@ -12,7 +9,12 @@
                             interactive: true,
                             animation: 'scale'
                         }"
-                :title="getTitle"
+           :title="getTitle"
+    >
+
+        <v-icon
+                @click="goFav"
+
         >
             face
         </v-icon>

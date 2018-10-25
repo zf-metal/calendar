@@ -1,10 +1,24 @@
 <template>
 
-    <v-btn small dark icon class="ma-0"  v-if="enable" @click="goFilterCoop">
+    <v-btn small
+           dark
+           icon
+           class="ma-0"
+           v-if="enable"
+           @click="goFilterCoop"
+           v-tippy="{
+                            dynamicTitle:true,
+                            arrow:true,
+                            performance:true,
+                            placement:'top',
+                            flip:true,
+                            interactive: true,
+                             animation: 'scale'
+                        }"
+           :title="getTitle"
+    >
         <v-icon
-                v-tippy="{   dynamicTitle:true, arrow:true, performance:true, placement:'top', flip:true, interactive: true,
-         animation: 'scale'}"
-                :title="getTitle" :color="getColor">
+                :color="getColor">
             group
         </v-icon>
     </v-btn>

@@ -1,10 +1,22 @@
 <template>
 
-    <v-btn small dark icon class="ma-0"  v-if="enable">
-        <v-icon
-                v-tippy="{   dynamicTitle:true, arrow:true, performance:true, placement:'top', flip:true, interactive: true,
-         animation: 'scale'}"
-                :title="getTitle">
+    <v-btn small
+           dark
+           icon
+           class="ma-0"
+           v-if="enable"
+           v-tippy="{
+                            dynamicTitle:true,
+                            arrow:true,
+                            performance:true,
+                            placement:'top',
+                            flip:true,
+                            interactive: true,
+                             animation: 'scale'
+                        }"
+           :title="getTitle"
+    >
+        <v-icon>
             lock
         </v-icon>
     </v-btn>

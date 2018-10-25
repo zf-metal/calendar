@@ -1,11 +1,24 @@
 
 <template>
 
-    <v-btn small dark icon class="ma-1"  v-if="enable">
+    <v-btn
+           v-if="enable"
+           small
+           dark icon
+           class="ma-1"
+           v-tippy="{
+                            dynamicTitle:true,
+                            arrow:true,
+                            performance:true,
+                            placement:'top',
+                            flip:true,
+                            interactive: true,
+                            animation: 'scale'
+                        }"
+           :title='getTitle'
+    >
         <v-icon
-                v-tippy="{   dynamicTitle:true, arrow:true, performance:true, placement:'top', flip:true, interactive: true,
-         animation: 'scale'}"
-                :title='getTitle' color="amber">
+                color="amber">
             airplanemode_active
         </v-icon>
     </v-btn>
