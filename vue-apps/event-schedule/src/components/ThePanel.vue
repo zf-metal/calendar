@@ -31,12 +31,17 @@
                     <drop @drop="handleDrop">
 
                         <div class="zfc-panel-preevents pt-1" style="min-height:350px">
-                            <preEvent v-if="getPreEventsFiltered" v-for="(preEvent,index) in getPreEventsFiltered"
+                            <preEvent v-for="(preEvent,index) in getPreEventsFiltered"
                                       :preEvent="preEvent"
                                       :key="preEvent.id" :index="index">
                             </preEvent>
+
                         </div>
                     </drop>
+                    <v-flex v-if="hasMorePreEvents" class="text-xs-center">
+                        <v-btn @click="incrementSize">Mostrar 10 mas</v-btn>
+                    </v-flex>
+
                 </v-card>
             </v-tab-item>
 
@@ -89,10 +94,12 @@
         },
         computed: {
             ...mapState([
+                'preEventSize',
                 'eventSelected',
                 'eventIndexSelected'
             ]),
             ...mapGetters([
+                'hasMorePreEvents',
                 'getPreEventsFiltered',
                 'getZones',
                 'getPreEventsByZone',
@@ -103,6 +110,9 @@
             ]),
         },
         methods: {
+            incrementSize: function(data){
+                this.$store.commit('SET_PRE_EVENT_SIZE', this.preEventSize + 10);
+            },
             handleDrop: function (data) {
 
                 let event = data.event

@@ -50,7 +50,9 @@ import {
     SET_HOLIDAYS,
     LOADING_PLUS,
     LOADING_LESS,
-    SET_SHOW_MODAL_SERVICE
+    SET_SHOW_MODAL_SERVICE,
+    SET_PRE_EVENT_SIZE,
+    SET_PRE_EVENT_FILTERED_SIZE
 } from './mutation-types'
 
 
@@ -85,6 +87,8 @@ const state = {
     calendarGroupSelected: null,
     vcalendars: [],
     preEvents: [],
+    preEventSize: 10,
+    preEventFilteredSize: 0,
     preEventsByZone: {},
     events: [],
     eventStates: [],
@@ -115,6 +119,12 @@ const state = {
 */
 
 const getters = {
+    hasMorePreEvents:  state => {
+      if( state.preEventFilteredSize > state.preEventSize){
+          return true
+      }
+      return false
+    },
     isHoliday: (state, getters) => {
         if (state.holidays.find(h => h.date == getters.getDate)) {
             return true
@@ -273,7 +283,10 @@ const getters = {
             return a.priority - b.priority;
         });
 
-        return pes;
+        //TODO Mutation on Getter (Bad practice)
+        state.preEventFilteredSize = pes.length;
+
+        return pes.slice(0,state.preEventSize);
     },
     getPreEventsByZone: (state) => (id) => {
         return state.preEvents.filter(function (el) {
@@ -672,6 +685,12 @@ const mutations = {
         state.filterHour.from = filterHour.from;
         state.filterHour.to = filterHour.to;
     },
+    [SET_PRE_EVENT_SIZE](state, size) {
+        state.preEventSize = size;
+    },
+    [SET_PRE_EVENT_FILTERED_SIZE](state, size) {
+        state.preEventFilteredSize = size;
+    }
 };
 
 
