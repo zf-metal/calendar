@@ -13,6 +13,7 @@
 </template>
 
 <script>
+import delay from './../../functions/delay'
 
     export default {
         name: 'filterString',
@@ -25,7 +26,12 @@
         },
         methods: {
             changeFilterString: function(){
-                this.$store.commit("SET_FILTER_STRING",this.filterString.toLowerCase());
+
+                delay(() => {
+                    this.$store.commit("SET_FILTER_STRING",this.filterString.toLowerCase());
+                }, 1200 );
+
+
             }
         },
         computed: {
