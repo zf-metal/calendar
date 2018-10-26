@@ -22,14 +22,21 @@ import delay from './../../functions/delay'
                 filterString: ""
             }
         },
-        created: function () {
+        watch: {
+            filterString: function(fs){
+                if(!fs){
+                    this.$store.commit("SET_FILTER_STRING",this.filterString);
+                }
+            }
         },
         methods: {
             changeFilterString: function(){
 
                 delay(() => {
-                    this.$store.commit("SET_FILTER_STRING",this.filterString.toLowerCase());
-                }, 1200 );
+                    if (typeof this.filterString === 'string' || this.filterString instanceof String) {
+                        this.$store.commit("SET_FILTER_STRING", this.filterString.toLowerCase())
+                    }
+                }, 1000 );
 
 
             }

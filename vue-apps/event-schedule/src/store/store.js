@@ -13,6 +13,8 @@ import {EventService, StartService, CalendarService} from '../resource'
 
 import datesModule from './modules/dates'
 
+import {CONF_PRE_EVENT_SIZE} from './../config/config'
+
 import {
     SET_DATE,
     ADD_CALENDAR,
@@ -87,7 +89,7 @@ const state = {
     calendarGroupSelected: null,
     vcalendars: [],
     preEvents: [],
-    preEventSize: 10,
+    preEventSize: CONF_PRE_EVENT_SIZE,
     preEventFilteredSize: 0,
     preEventsByZone: {},
     events: [],
@@ -190,6 +192,9 @@ const getters = {
     getPreEventsFiltered: (state, getters) => {
         var pes = state.preEvents;
 
+        if(!pes){
+            pes = []
+        }
 
         //FILTER
         if (state.filterZone || state.filterString || state.filterCoop || state.filterHour.from || state.filterHour.to) {
@@ -475,6 +480,7 @@ const actions = {
                 commit(SET_EVENT_SELECTED, null);
                 commit(SET_EVENT_INDEX_SELECTED, null);
                 commit(SET_EVENT_ID_SELECTED, null);
+                commit(SET_PRE_EVENT_SIZE, CONF_PRE_EVENT_SIZE);
             }).then(
                 function () {
                     dispatch('eventList').then(

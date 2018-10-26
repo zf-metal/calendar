@@ -51,17 +51,6 @@
                 </v-card>
             </v-tab-item>
 
-
-            <!--<v-tab-item>-->
-                <!--<v-card flat>-->
-                    <!--<form-event :calendars="getCalendars"-->
-                                <!--v-model="eventSelected"-->
-                                <!--v-if="eventIndexSelected !=  null"-->
-                                <!--:index="eventIndexSelected"-->
-                    <!--/>-->
-                <!--</v-card>-->
-            <!--</v-tab-item>-->
-
         </v-tabs>
 
     </div>

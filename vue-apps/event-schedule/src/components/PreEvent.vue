@@ -64,11 +64,11 @@
                         </td>
                     </tr>
 
-                    <tr>
+             <!--       <tr>
                     <td><i class="material-icons" style="vertical-align: bottom;">add</i>
                     </td>
                     <td>{{getPriority}}</td>
-                    </tr>
+                    </tr>-->
 
                     </tbody>
                 </table>

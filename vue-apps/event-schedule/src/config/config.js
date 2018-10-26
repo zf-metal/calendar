@@ -1,0 +1,1 @@
+export const CONF_PRE_EVENT_SIZE = 10;
