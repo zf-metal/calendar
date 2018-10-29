@@ -15,6 +15,7 @@
     "axios": "latest",
     "material-design-icons-iconfont": "^3.0.3",
     "moment": "^2.22.2",
+    "moment-range": "^4.0.1",
     "moment-timezone": "^0.5.17",
     "v-tippy": "^2.0.0",
     "vue": "^2.5.17",

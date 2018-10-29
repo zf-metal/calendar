@@ -8,15 +8,16 @@
                     <v-layout column>
                         <v-flex v-for="(colPreEvents, i) in preEvents" :key="i" xs12>
                             <h6>{{i}}</h6>
-                            <mini-event v-for="(event, u) in colPreEvents" :key="u" :index="u" :event="event"></mini-event>
+                            <mini-event v-for="(event, u) in colPreEvents" :key="u" :index="u"
+                                        :event="event"></mini-event>
 
                         </v-flex>
 
                     </v-layout>
                 </v-flex>
-                <v-flex xs8 >
+                <v-flex xs8>
                     <span>Calendario</span>
-                    "En Desarrollo..."
+                   <mini-calendar></mini-calendar>
                 </v-flex>
             </v-layout>
         </v-container>
@@ -31,12 +32,14 @@
     import 'moment/locale/es';
 
     import MiniEvent from "./MiniEvent.vue";
+    import MiniCalendar from './MiniCalendar.vue'
 
     export default {
         name: 'ServiceEvents',
-        props: {
-        },
-        components: {MiniEvent},
+        props: {},
+        components: {
+            MiniCalendar,
+            MiniEvent},
         data() {
             return {
                 preEvents: {},
@@ -59,7 +62,7 @@
                                 this.events.push(event);
                             } else {
                                 let key = event.dateFrom + " <> " + event.dateTo;
-                                if(!this.preEvents[key]){
+                                if (!this.preEvents[key]) {
                                     preEvents[key] = [];
                                 }
                                 preEvents[key].push(event);

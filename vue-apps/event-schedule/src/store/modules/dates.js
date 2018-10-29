@@ -1,6 +1,7 @@
 import moment from 'moment'
 import tz from 'moment-timezone'
 import 'moment/locale/es';
+import range from 'moment-range'
 
 import {
     SET_DATE
@@ -62,6 +63,45 @@ export default {
         },
         getMonth: state => {
             return state.date.format('MM');
+        },
+        getFirstDate: (state) => {
+            return state.date.startOf('month');
+        },
+        getEndDate: (state) => {
+            return state.date.endOf('month');
+        },
+        getWeeks: (state, getters) => {
+            let weeks = []
+            if (state.date) {
+                let monthRange = state.date.range(getters.getFirstDate, getters.getEndDate);
+
+                for (let mday of monthRange.by('days')) {
+                    if (weeks.indexOf(mday.week()) === -1) {
+                        weeks.push(mday.week());
+                    }
+                }
+            }
+            return weeks
+        },
+        getNumberOfWeeks: (state, getters) => {
+            return getters.getWeeks.length
+        },
+        getCalendar: (state, getters) => {
+            let calendar = []
+            for (let index = 0; index < getters.getWeeks.length; index++) {
+                var weeknumber = getters.getWeeks[index];
+                firstWeekDay = moment(firstDay).week(weeknumber).day(0);
+                if (firstWeekDay.isBefore(firstDay)) {
+                    firstWeekDay = firstDay;
+                }
+                lastWeekDay = moment(endDay).week(weeknumber).day(6);
+                if (lastWeekDay.isAfter(endDay)) {
+                    lastWeekDay = endDay;
+                }
+                weekRange = moment.range(firstWeekDay, lastWeekDay)
+                calendar.push(weekRange)
+            }
+            return calendar
         },
         getMonthName: state => {
             return state.date.format('MMMM').replace(/\w/, c => c.toUpperCase());
