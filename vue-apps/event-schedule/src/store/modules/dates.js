@@ -1,7 +1,9 @@
-import moment from 'moment'
+import Moment from 'moment';
 import tz from 'moment-timezone'
 import 'moment/locale/es';
-import range from 'moment-range'
+import { extendMoment } from 'moment-range';
+
+const moment = extendMoment(Moment);
 
 import {
     SET_DATE
