@@ -1,7 +1,7 @@
 import Moment from 'moment';
 import tz from 'moment-timezone'
 import 'moment/locale/es';
-import { extendMoment } from 'moment-range';
+import {extendMoment} from 'moment-range';
 
 const moment = extendMoment(Moment);
 
@@ -66,18 +66,21 @@ export default {
         getMonth: state => {
             return state.date.format('MM');
         },
-        getFirstDate: (state) => {
-            return state.date.startOf('month');
+        getFirstDateOfMonth: (state) => {
+            return moment(state.date).startOf('month');
         },
-        getEndDate: (state) => {
-            return state.date.endOf('month');
+        getEndDateOfMonth: (state) => {
+            return moment(state.date).endOf('month');
+        },
+        getMonthRange: (state, getters) => {
+            console.log(" FirstDateOfMonth",getters.getFirstDateOfMonth.format("YYYY-MM-DD")," EndDateOfMonth" ,getters.getEndDateOfMonth.format("YYYY-MM-DD"))
+            return state.date.range(getters.getFirstDateOfMonth, getters.getEndDateOfMonth);
         },
         getWeeks: (state, getters) => {
             let weeks = []
             if (state.date) {
-                let monthRange = state.date.range(getters.getFirstDate, getters.getEndDate);
 
-                for (let mday of monthRange.by('days')) {
+                for (let mday of getters.getMonthRange.by('days')) {
                     if (weeks.indexOf(mday.week()) === -1) {
                         weeks.push(mday.week());
                     }
@@ -90,15 +93,29 @@ export default {
         },
         getCalendar: (state, getters) => {
             let calendar = []
-            for (let index = 0; index < getters.getWeeks.length; index++) {
-                var weeknumber = getters.getWeeks[index];
-                firstWeekDay = moment(firstDay).week(weeknumber).day(0);
-                if (firstWeekDay.isBefore(firstDay)) {
-                    firstWeekDay = firstDay;
+            let weeks = getters.getWeeks
+            let weekRange = []
+            for (let index = 0; index < weeks.length; index++) {
+                var weeknumber = weeks[index] -1;
+
+               let firstWeekDay = moment().year(getters.getYear).month(getters.getMonth).week(weeknumber).day(1);
+               let lastWeekDay = moment().year(getters.getYear).month(getters.getMonth).week(weeknumber).day(7);
+
+                if (getters.getMonth == 12 && (weeks.length - 1) == index) {
+                    firstWeekDay = moment().year(getters.getYear).month(getters.getMonth).week(weeks[index - 1]).day(0);
+                    firstWeekDay.add(7, "day");
+                    lastWeekDay = moment().year(getters.getYear).month(getters.getMonth).week(weeks[index - 1]).day(6);
+                    lastWeekDay.add(6, "day");
                 }
-                lastWeekDay = moment(endDay).week(weeknumber).day(6);
-                if (lastWeekDay.isAfter(endDay)) {
-                    lastWeekDay = endDay;
+
+                console.log("From", firstWeekDay.format("YYYY-MM-DD"), weeknumber, "To", lastWeekDay.format("YYYY-MM-DD"), weeknumber);
+
+                if (firstWeekDay.isBefore(getters.getFirstDateOfMonth)) {
+                    firstWeekDay = getters.getFirstDateOfMonth;
+                }
+
+                if (lastWeekDay.isAfter(getters.getEndDateOfMonth)) {
+                    lastWeekDay = getters.getEndDateOfMonth;
                 }
                 weekRange = moment.range(firstWeekDay, lastWeekDay)
                 calendar.push(weekRange)

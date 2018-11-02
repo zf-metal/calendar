@@ -2,30 +2,25 @@
     <div class="MiniCalendar">
         <v-container>
             <v-layout fluid>
+
                 <v-flex xs-12>
                     <table class="table-calendar">
                         <thead>
                         <tr>
-                            <th>Lun</th>
-                            <th>Mar</th>
-                            <th>Mie</th>
-                            <th>Jue</th>
-                            <th>Vie</th>
-                            <th>Sab</th>
-                            <th>Dom</th>
+                            <th v-for="day in days" :key="'d'+day">{{day}}</th>
+
                         </tr>
                         </thead>
 
                         <tbody>
 
                         <tr v-for="(range,index) in getCalendar" :key="index">
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
+
+                            <td v-for="day in getRangeDays(range)" :key="index+'_'+day">
+
+                                {{day.format("DD")}}
+
+                            </td>
                         </tr>
 
                         </tbody>
@@ -40,7 +35,7 @@
 </template>
 
 <script>
-    import {mapGetters, maState} from 'vuex';
+    import {mapGetters, mapState} from 'vuex';
 
     export default {
         name: 'MiniCalendar',
@@ -48,18 +43,59 @@
         components: {},
         data() {
             return {
-                asd: {}
+                today: null,
+                dateContext: null,
+                days: ['Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab', 'Dom']
             }
         },
         created: function () {
+            this.today = this.date
+            this.dateContext = this.date
         },
-        methods: {},
+        methods: {
+            increaseMonth: function () {
+                this.dateContext = moment(this.dateContext).add(1, 'month');
+            },
+            decreaseMonth: function () {
+                this.dateContext = moment(this.dateContext).subtract(1, 'month');
+            },
+
+            getRangeDays: function (range) {
+                let days = []
+                for (let mday of range.by('days')) {
+                    days.push(mday);
+                }
+                return days
+            }
+        },
         computed: {
+            year: function () {
+
+                return this.dateContext.format('Y');
+            },
+            month: function () {
+
+                return this.dateContext.format('MMMM');
+            },
+            daysInMonth: function () {
+                return this.dateContext.daysInMonth();
+            },
+            currentDate: function () {
+                return this.dateContext.get('date');
+            },
+            ...mapState([
+                'date',
+            ]),
             ...mapGetters([
+                'getFirstDateOfMonth',
+                'getEndDateOfMonth',
+                'getMonthRange',
+                'getDate',
                 'getYear',
                 'getMonth',
                 'getCalendar',
-                'getWeeks'
+                'getWeeks',
+                'getNumberOfWeeks'
             ]),
         },
     }
