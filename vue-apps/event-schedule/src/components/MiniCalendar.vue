@@ -1,7 +1,11 @@
 <template>
     <div class="MiniCalendar">
         <v-container>
-            <v-layout fluid>
+            <v-layout fluid wrap row>
+
+                <v-flex xs-12>
+                    <h4>{{year}} - {{month}}</h4>
+                </v-flex>
 
                 <v-flex xs-12>
                     <table class="table-calendar">
@@ -16,7 +20,11 @@
 
                         <tr v-for="(range,index) in getCalendar" :key="index">
 
-                            <td v-for="day in getRangeDays(range)" :key="index+'_'+day">
+                            <td
+                                    v-for="day in getRangeDays(range)"
+                                :key="index+'_'+day"
+                                    :class="{'not-current-month':!isCurrentMonth(day)}"
+                            >
 
                                 {{day.format("DD")}}
 
@@ -59,14 +67,20 @@
             decreaseMonth: function () {
                 this.dateContext = moment(this.dateContext).subtract(1, 'month');
             },
-
             getRangeDays: function (range) {
                 let days = []
                 for (let mday of range.by('days')) {
                     days.push(mday);
                 }
                 return days
+            },
+            isCurrentMonth: function(date){
+                if(date.format("MM") != this.dateContext.format("MM")){
+                   return false
+                }
+                return true
             }
+
         },
         computed: {
             year: function () {
@@ -102,6 +116,11 @@
 </script>
 
 <style scoped>
+
+    .not-current-month{
+        background-color: #8B8986;
+    }
+
     .table-calendar {
         border: 1px solid #8B8986;
         border-spacing: 1px;

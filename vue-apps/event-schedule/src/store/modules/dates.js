@@ -110,13 +110,14 @@ export default {
 
                 console.log("From", firstWeekDay.format("YYYY-MM-DD"), weeknumber, "To", lastWeekDay.format("YYYY-MM-DD"), weeknumber);
 
-                if (firstWeekDay.isBefore(getters.getFirstDateOfMonth)) {
-                    firstWeekDay = getters.getFirstDateOfMonth;
-                }
+                // if (firstWeekDay.isBefore(getters.getFirstDateOfMonth)) {
+                //     firstWeekDay = getters.getFirstDateOfMonth;
+                // }
 
-                if (lastWeekDay.isAfter(getters.getEndDateOfMonth)) {
-                    lastWeekDay = getters.getEndDateOfMonth;
-                }
+                // if (lastWeekDay.isAfter(getters.getEndDateOfMonth)) {
+                //     lastWeekDay = getters.getEndDateOfMonth;
+                // }
+
                 weekRange = moment.range(firstWeekDay, lastWeekDay)
                 calendar.push(weekRange)
             }
