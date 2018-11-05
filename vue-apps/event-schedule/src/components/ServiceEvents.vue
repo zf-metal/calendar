@@ -3,7 +3,7 @@
         <h4> {{getMonthName}} {{getYear}}</h4>
         <v-container fluid>
             <v-layout row wrap>
-                <v-flex xs4>
+                <v-flex xs3>
                     <h5>Pendientess</h5>
                     <v-layout column>
                         <v-flex v-for="(colPreEvents, i) in preEvents" :key="i" xs12>
@@ -15,8 +15,7 @@
 
                     </v-layout>
                 </v-flex>
-                <v-flex xs8>
-                    <span>Calendario</span>
+                <v-flex xs9>
                    <mini-calendar></mini-calendar>
                 </v-flex>
             </v-layout>

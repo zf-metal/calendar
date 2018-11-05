@@ -3,11 +3,11 @@
         <v-container>
             <v-layout fluid wrap row>
 
-                <v-flex xs-12>
+                <v-flex xs12>
                     <h4>{{year}} - {{month}}</h4>
                 </v-flex>
 
-                <v-flex xs-12>
+                <v-flex xs12>
                     <table class="table-calendar">
                         <thead>
                         <tr>
@@ -22,11 +22,13 @@
 
                             <td
                                     v-for="day in getRangeDays(range)"
-                                :key="index+'_'+day"
+                                    :key="index+'_'+day"
                                     :class="{'not-current-month':!isCurrentMonth(day)}"
                             >
+                                <v-flex fill-height class="text-xs-right">
+                                    {{day.format("DD")}}
+                                </v-flex>
 
-                                {{day.format("DD")}}
 
                             </td>
                         </tr>
@@ -74,9 +76,9 @@
                 }
                 return days
             },
-            isCurrentMonth: function(date){
-                if(date.format("MM") != this.dateContext.format("MM")){
-                   return false
+            isCurrentMonth: function (date) {
+                if (date.format("MM") != this.dateContext.format("MM")) {
+                    return false
                 }
                 return true
             }
@@ -117,7 +119,7 @@
 
 <style scoped>
 
-    .not-current-month{
+    .not-current-month {
         background-color: #8B8986;
     }
 
@@ -131,4 +133,10 @@
         padding: 3px;
         border: 1px solid #8B8986;
     }
+
+    .table-calendar td {
+        height: 75px;
+        border: 1px solid #8B8986;
+    }
+
 </style>

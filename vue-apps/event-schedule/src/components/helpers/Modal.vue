@@ -4,26 +4,22 @@
                 v-model="showModal"
                 max-width="800"
                 persistent
+                :fullscreen="fullscreen"
         >
-            <v-card >
-                <v-card-title class="headline grey lighten-2"
-                              primary-title
-                >{{title}}</v-card-title>
+            <v-card   >
+
+                <v-toolbar dark color="primary">
+                    <v-btn v-if="btnClose" icon dark @click.native="$emit('close')">
+                        <v-icon>close</v-icon>
+                    </v-btn>
+                    <v-toolbar-title>{{title}}</v-toolbar-title>
+                </v-toolbar>
+
 
                 <v-card-text class="text-lg-center text-xs-center pa-1">
                     <slot v-on:closeModal="closeModal"></slot>
                 </v-card-text>
 
-                <v-card-actions v-if="btnClose">
-                    <v-spacer></v-spacer>
-                    <v-btn
-                            color="primary"
-                            flat
-                            @click="$emit('close')"
-                    >
-                        Cerrar
-                    </v-btn>
-                </v-card-actions>
             </v-card>
         </v-dialog>
 </div>
@@ -38,7 +34,8 @@
             modalClass: String,
             modalSize: String,
             title: String,
-            btnClose: Boolean
+            btnClose: Boolean,
+            fullscreen: {type:Boolean,default:false}
         },
         data: function () {
             return {}

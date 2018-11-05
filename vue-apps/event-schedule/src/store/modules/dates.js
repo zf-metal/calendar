@@ -96,7 +96,7 @@ export default {
             let weeks = getters.getWeeks
             let weekRange = []
             for (let index = 0; index < weeks.length; index++) {
-                var weeknumber = weeks[index] -1;
+                var weeknumber = weeks[index];
 
                let firstWeekDay = moment().year(getters.getYear).month(getters.getMonth).week(weeknumber).day(1);
                let lastWeekDay = moment().year(getters.getYear).month(getters.getMonth).week(weeknumber).day(7);

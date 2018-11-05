@@ -148,6 +148,7 @@
                        :showModal="showModalServiceEvents"
                        :btn-close="true"
                        @close="closeModalServiceEvents"
+                       fullscreen="true"
                 >
                     <service-events v-if="showModalServiceEvents"></service-events>
                 </modal>
@@ -171,7 +172,7 @@
 
     import {Drag, Drop} from 'vue-drag-drop';
 
-    import modal from './../components/helpers/modal.vue'
+    import modal from '../components/helpers/Modal.vue'
     import loading from './../components/helpers/loading.vue'
     import vueScrollingTable from 'vue-scrolling-table'
 
@@ -180,7 +181,7 @@
     import calendarTd from './../components/calendarTd.vue'
     import preEvent from "../components/PreEvent.vue";
     import formEvent from './../components/forms/form-event.vue'
-    import maps from './../components/maps.vue'
+    import maps from '../components/Maps.vue'
     import DaySelect from '../components/DaySelect'
     import DayShow from '../components/DayShow'
     import oof from './../components/signals/oof.vue'

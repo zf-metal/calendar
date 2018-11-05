@@ -64,7 +64,7 @@
     import filterHour from './filters/filterHours.vue'
     import filterCalendars from "./filters/filterCalendars.vue"
 
-    import modal from './helpers/modal.vue'
+    import modal from './helpers/Modal.vue'
     import formEvent from './forms/form-event.vue'
 
     import {Drag, Drop} from 'vue-drag-drop';
