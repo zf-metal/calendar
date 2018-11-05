@@ -148,7 +148,7 @@
                        :showModal="showModalServiceEvents"
                        :btn-close="true"
                        @close="closeModalServiceEvents"
-                       fullscreen="true"
+                       :fullscreen="true"
                 >
                     <service-events v-if="showModalServiceEvents"></service-events>
                 </modal>

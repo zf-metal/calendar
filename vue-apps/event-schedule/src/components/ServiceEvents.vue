@@ -1,6 +1,7 @@
 <template>
     <div class="ServiceView">
-        <h4> {{getMonthName}} {{getYear}}</h4>
+
+        <service-detail></service-detail>
         <v-container fluid>
             <v-layout row wrap>
                 <v-flex xs3>
@@ -16,7 +17,7 @@
                     </v-layout>
                 </v-flex>
                 <v-flex xs9>
-                   <mini-calendar></mini-calendar>
+                    <mini-calendar></mini-calendar>
                 </v-flex>
             </v-layout>
         </v-container>
@@ -32,13 +33,16 @@
 
     import MiniEvent from "./MiniEvent.vue";
     import MiniCalendar from './MiniCalendar.vue'
+    import ServiceDetail from './ServiceDetail.vue'
 
     export default {
         name: 'ServiceEvents',
         props: {},
         components: {
             MiniCalendar,
-            MiniEvent},
+            MiniEvent,
+            ServiceDetail
+        },
         data() {
             return {
                 preEvents: {},
