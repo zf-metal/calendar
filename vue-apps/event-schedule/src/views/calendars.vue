@@ -178,7 +178,7 @@
 
     import TheToolbar from './../components/TheToolbar'
     import panel from './../components/ThePanel.vue'
-    import calendarTd from './../components/calendarTd.vue'
+    import calendarTd from '../components/CalendarTd.vue'
     import preEvent from "../components/PreEvent.vue";
     import formEvent from './../components/forms/form-event.vue'
     import maps from '../components/Maps.vue'

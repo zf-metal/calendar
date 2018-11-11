@@ -1,7 +1,5 @@
 <template>
-        <span>[<span v-if="getFrom && getTo">{{getFrom}} - {{getTo}}</span><span v-else-if="getFrom">{{getFrom}}</span>
-            <span v-if="getFrom && getFrom2"> & </span>
-            <span v-if="getFrom2 && getTo2">{{getFrom2}} - {{getTo2}}</span><span v-else-if="getFrom2">{{getFrom2}}</span>]
+        <span><span v-if="getFrom && getTo">{{getFrom}} - {{getTo}}</span><span v-else-if="getFrom">{{getFrom}}</span><span v-if="getFrom && getFrom2"> & </span><span v-if="getFrom2 && getTo2">{{getFrom2}} - {{getTo2}}</span><span v-else-if="getFrom2">{{getFrom2}}</span>
         </span>
 </template>
 

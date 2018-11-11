@@ -3,23 +3,50 @@
 
         <service-detail></service-detail>
 
-            <v-layout row wrap>
-                <v-flex xs3>
-                    <h5>Pendientess</h5>
-                    <v-layout column>
-                        <v-flex v-for="(colPreEvents, i) in preEvents" :key="i" xs12>
-                            <h6>{{i}}</h6>
-                            <mini-event v-for="(event, u) in colPreEvents" :key="u" :index="u"
-                                        :event="event"></mini-event>
+        <v-layout row wrap>
+            <v-flex xs3>
+                <h5>Pendientess</h5>
+                <v-divider></v-divider>
+                <v-layout column>
+                    <v-flex v-for="(colPreEvents, i) in preEvents" :key="i" xs12>
+                        <v-layout>
+                            <v-flex lg5>
+                                <v-list subheader>
+                                    <v-list-tile>
+                                        <v-list-tile-content>
+                                            <v-list-tile-sub-title>Desde</v-list-tile-sub-title>
+                                            <v-list-tile-title>{{ colPreEvents.from }}</v-list-tile-title>
+                                        </v-list-tile-content>
+                                    </v-list-tile>
+                                    <v-list-tile>
+                                        <v-list-tile-content>
+                                            <v-list-tile-sub-title>Hasta</v-list-tile-sub-title>
+                                            <v-list-tile-title>{{ colPreEvents.to }}</v-list-tile-title>
+                                        </v-list-tile-content>
+                                    </v-list-tile>
+                                </v-list>
 
-                        </v-flex>
+                            </v-flex>
 
-                    </v-layout>
-                </v-flex>
-                <v-flex xs9>
-                    <mini-calendar :events="events"></mini-calendar>
-                </v-flex>
-            </v-layout>
+                            <v-flex lg7 class="pt-1">
+                                <mini-event v-for="(event, u) in colPreEvents.events" :key="u" :index="u"
+                                            :event="event"></mini-event>
+                            </v-flex>
+                        </v-layout>
+                        <v-divider></v-divider>
+
+
+                    </v-flex>
+
+                </v-layout>
+            </v-flex>
+            <v-flex xs9>
+                <mini-calendar :events="events" ></mini-calendar>
+            </v-flex>
+        </v-layout>
+
+
+
     </div>
 </template>
 
@@ -33,7 +60,6 @@
     import MiniEvent from "./MiniEvent.vue";
     import MiniCalendar from './MiniCalendar.vue'
     import ServiceDetail from './ServiceDetail.vue'
-
     export default {
         name: 'ServiceEvents',
         props: {},
@@ -66,10 +92,12 @@
                                 events.push(event);
                             } else {
                                 let key = event.dateFrom + " <> " + event.dateTo;
+                                let from = event.dateFrom;
+                                let to = event.dateTo;
                                 if (!this.preEvents[key]) {
-                                    preEvents[key] = [];
+                                    preEvents[key] = {from: from, to: to, events: []};
                                 }
-                                preEvents[key].push(event);
+                                preEvents[key].events.push(event);
                             }
                         }
                         this.events = events;
@@ -93,7 +121,8 @@
             ...mapGetters([
                 'getYear',
                 'getMonth',
-                'getMonthName'
+                'getMonthName',
+                'getCalendars'
             ]),
         },
     }

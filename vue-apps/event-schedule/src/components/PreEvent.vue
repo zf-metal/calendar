@@ -60,7 +60,8 @@
                         <td><i class="material-icons" style="vertical-align: bottom;">hourglass_full</i></td>
                         <td class="caption">
                             <span>{{preEvent.duration}} Min - </span>
-                            <availabilityTime :data="getAvailability"></availabilityTime>
+
+                            [<availabilityTime :data="getAvailability"></availabilityTime>]
                         </td>
                     </tr>
 

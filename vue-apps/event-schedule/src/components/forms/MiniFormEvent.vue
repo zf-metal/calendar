@@ -1,21 +1,48 @@
 <template>
 
-
     <form v-if="value" method="POST" class="eventForm" name="EventForm" v-on:submit.prevent="save">
 
-        <v-container grid-list-md>
+        <v-container grid-list-md class="pt-0">
             <v-layout row wrap>
                 <v-flex xs12>
                     <alert :show="h.alertShow" :msg="h.alertMsg" :type="h.alertType"
                            v-on:close="h.alertShow = false"></alert>
                     <saveStatus :isSaved="h.isSaved"></saveStatus>
                 </v-flex>
+            </v-layout>
 
+            <v-layout row wrap>
+
+                <v-flex xs4>
+                    <h5 class="caption font-weight-bold">Cliente</h5>
+                    <h6 class="caption">{{value.client}}</h6>
+
+                </v-flex>
+
+                <v-flex xs4>
+                    <h5 class="caption font-weight-bold">Sucursal</h5>
+                    <h6 class="caption">{{value.branchOffice}}</h6>
+
+                </v-flex>
+
+
+                <v-flex xs4>
+                    <h5 class="caption font-weight-bold">Dirección</h5>
+                    <h6 class="caption">{{value.location}}</h6>
+
+                </v-flex>
+
+                <v-flex xs12> <v-divider class="ma-0"></v-divider></v-flex>
+
+            </v-layout>
+
+            <v-layout row wrap>
                 <v-flex xs4>
 
                     <v-text-field
+
                             label="Titulo"
-                            :value="value.title"
+                            v-model="value.title"
                             ref="title"
                             @keydown="unsaved"
                             :error-messages="errors.title"
@@ -31,7 +58,7 @@
                             :items="eventStates"
                             item-text="name"
                             item-value="id"
-                            :value="value.state"
+                            v-model="value.state"
                             @change="unsaved"
                     >
                     </v-select>
@@ -44,16 +71,13 @@
                             :items="getCalendars"
                             item-text="name"
                             item-value="id"
-                            :value="value.calendar"
+                            v-model="value.calendar"
                             @change="unsaved"
                     >
                     </v-select>
                 </v-flex>
 
-
-
-
-
+                <!--StartDate-->
                 <v-flex xs4 >
 
                     <v-menu
@@ -86,6 +110,7 @@
 
                 </v-flex>
 
+                <!--StartTime-->
                 <v-flex xs4>
                     <v-menu
                             ref="menuStartTime"
@@ -100,7 +125,7 @@
                     >
                         <v-text-field
                                 slot="activator"
-                                v-model="startTime"
+                                v-model="value.hour"
                                 label="Hora de Inicio"
                                 readonly
                         ></v-text-field>
@@ -119,7 +144,7 @@
                 <v-flex xs4>
 
                     <v-text-field
-                            :value="value.duration"
+                            v-model="value.duration"
                             ref="duration"
                             @keyup="refreshEnd"
                             @change="refreshEnd"
@@ -135,7 +160,7 @@
                 <v-flex xs4>
 
                     <v-text-field
-                            :value="value.end"
+                            v-model="value.end"
                             ref="end"
                             @keydown="unsaved"
                             :error-messages="errors.end"
@@ -148,28 +173,49 @@
                 </v-flex>
 
 
+                <v-flex xs4>
 
-                <v-flex x4>
+                    <v-text-field
+                            v-model="value.deliveryNote"
+                            ref="deliveryNote"
+                            @keydown="unsaved"
+                            :error-messages="errors.deliveryNote"
+                            label="Remito"
+                    >
+
+                    </v-text-field>
+
+                </v-flex>
+
+                <v-flex xs4>
+                </v-flex>
+
+                <v-flex xs12>
 
                     <v-textarea
                             name="comments"
                             label="Comentarios"
                             ref="comments"
-                            :value="value.comments"
+                            v-model="value.comments"
                             @keydown="unsaved"
                             :error-messages="errors.comments"
                             rows="2"
                     ></v-textarea>
 
                </v-flex>
-
-                <div class="col-lg-12 col-xs-12">
-                    <button name="submitbtn" class="btn " :class="h.submitClass" v-if="!h.isSaved"
-                            :disabled="h.submitInProgress">{{h.submitValue}}
-                    </button>
-                </div>
-
             </v-layout>
+            <v-layout row wrap justify-end>
+                <v-flex xs3 class="text-xs-right pa-0">
+                    <v-btn class="text-xs-right"
+                            :disabled="h.submitInProgress"
+                            @click="save"
+                    >
+                        {{h.submitValue}}
+                    </v-btn>
+
+                </v-flex>
+            </v-layout>
+
         </v-container>
     </form>
     <div v-else class="text-center">
@@ -195,7 +241,7 @@
 
 
     export default {
-        name: 'form-event',
+        name: 'MiniFormEvent',
         props: ['index', 'value', 'isSaved', 'calendars'],
         components: {fe, saveStatus, alert},
         data() {
@@ -218,14 +264,18 @@
         },
         mounted: function(){
             this.startDate = this.value.start.substr(0,10)
-            this.startTime= this.value.start.substr(11,5)
+            // this.startTime= this.value.start.substr(11,5)
+            this.startTime= this.value.hour
         },
         watch: {
           startDate: function(){
               this.value.start = this.startDate+' '+this.startTime
+              this.refreshEnd()
           },
           startTime: function(){
+              this.value.hour = this.startTime
               this.value.start = this.startDate+' '+this.startTime
+              this.refreshEnd()
           }
         },
         computed: {
@@ -235,7 +285,6 @@
             ...mapGetters([
                 'getCalendars',
                 'hasCalendars',
-                'getLoading',
                 'getEventIndexById'
             ]),
             getEvent: function () {

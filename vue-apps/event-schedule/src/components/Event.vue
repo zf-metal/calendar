@@ -94,7 +94,7 @@
                             </td>
                             <td class="caption pa-1">
                                 <span>{{event.duration}} Min - </span>
-                                <availabilityTime :data="getAvailability"></availabilityTime>
+                                [<availabilityTime :data="getAvailability"></availabilityTime>]
                             </td>
                         </tr>
 

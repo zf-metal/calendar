@@ -32,7 +32,9 @@
 
                 </v-flex>
 
-                <v-flex xs12> <v-divider class="ma-0"></v-divider></v-flex>
+                <v-flex xs12>
+                    <v-divider class="ma-0"></v-divider>
+                </v-flex>
 
             </v-layout>
 
@@ -78,7 +80,7 @@
                 </v-flex>
 
                 <!--StartDate-->
-                <v-flex xs4 >
+                <v-flex xs4>
 
                     <v-menu
                             ref="menuStartDate"
@@ -103,7 +105,7 @@
                                 @change="refreshEnd"
 
                         ></v-text-field>
-                        <v-date-picker v-model="startDate" ></v-date-picker>
+                        <v-date-picker v-model="startDate"></v-date-picker>
 
                     </v-menu>
 
@@ -202,13 +204,13 @@
                             rows="2"
                     ></v-textarea>
 
-               </v-flex>
+                </v-flex>
             </v-layout>
             <v-layout row wrap justify-end>
                 <v-flex xs3 class="text-xs-right pa-0">
                     <v-btn class="text-xs-right"
-                            :disabled="h.submitInProgress"
-                            @click="save"
+                           :disabled="h.submitInProgress"
+                           @click="save"
                     >
                         {{h.submitValue}}
                     </v-btn>
@@ -262,21 +264,25 @@
                 msjEventMove: ''
             }
         },
-        mounted: function(){
-            this.startDate = this.value.start.substr(0,10)
-            // this.startTime= this.value.start.substr(11,5)
-            this.startTime= this.value.hour
+        mounted: function () {
+            if (this.value.start) {
+                this.startDate = this.value.start.substr(0, 10)
+            }
+            if (this.value.hour) {
+                this.startTime = this.value.hour
+            }
+
         },
         watch: {
-          startDate: function(){
-              this.value.start = this.startDate+' '+this.startTime
-              this.refreshEnd()
-          },
-          startTime: function(){
-              this.value.hour = this.startTime
-              this.value.start = this.startDate+' '+this.startTime
-              this.refreshEnd()
-          }
+            startDate: function () {
+                this.value.start = this.startDate + ' ' + this.startTime
+                this.refreshEnd()
+            },
+            startTime: function () {
+                this.value.hour = this.startTime
+                this.value.start = this.startDate + ' ' + this.startTime
+                this.refreshEnd()
+            }
         },
         computed: {
             ...mapState([

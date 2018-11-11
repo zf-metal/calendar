@@ -17,7 +17,6 @@
 </template>
 
 <script>
-    import Vue from 'vue'
     import {mapGetters, mapActions} from 'vuex';
     import {Drag, Drop} from 'vue-drag-drop';
     import {calculateEnd} from './../utils/helpers'
@@ -26,7 +25,6 @@
 
 
     import moment from 'moment'
-    import tz from 'moment-timezone'
     import 'moment/locale/es';
 
     export default {

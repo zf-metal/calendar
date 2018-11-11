@@ -3,7 +3,7 @@
     >
 
         <div>
-            <v-card class="cursorPointer indigo dark pa-1 white--text pa-0">
+            <v-card class="cursorPointer pa-1 white--text pa-0" :style="getStateStyle">
 
                 <v-card-text v-if="hasCalendar" class="pa-0">
                     <v-layout justify-space-around class="caption">
@@ -13,8 +13,8 @@
 
                 </v-card-text>
 
-                <v-card-text v-else class="">
-                    {{event.id}}. {{event.title}}
+                <v-card-text v-else class="pa-0">
+                    {{event.id}}.    {{event.duration}} Min - <availability-time :data="getAvailability"></availability-time>
                 </v-card-text>
 
             </v-card>
@@ -51,12 +51,15 @@
         methods: {},
         computed: {
             ...mapGetters([
-                'getCalendarById'
+                'getCalendarById',
+                'getEventStateBgColor',
+                'getEventStateColor'
             ]),
+            getStateStyle: function () {
+                return 'background-color:' + this.getEventStateBgColor(this.event.state) + "; color: " + this.getEventStateColor(this.event.state);
+            },
             calendarName: function () {
-                console.log(this.event)
                 let calendar = this.getCalendarById(this.event.calendar)
-                console.log(calendar)
                 return calendar.name
             },
             since: function () {
@@ -70,7 +73,13 @@
                     return true
                 }
                 return false
-            }
+            },
+            getAvailability: function () {
+                if (this.event.config && this.event.config.availability) {
+                    return this.event.config.availability
+                }
+                return null
+            },
         }
     }
 </script>

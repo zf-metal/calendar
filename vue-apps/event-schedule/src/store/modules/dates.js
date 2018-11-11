@@ -91,7 +91,7 @@ export default {
         getNumberOfWeeks: (state, getters) => {
             return getters.getWeeks.length
         },
-        getCalendar: (state, getters) => {
+        getMonthCalendar: (state, getters) => {
             let calendar = []
             let weeks = getters.getWeeks
             let weekRange = []
