@@ -2,7 +2,7 @@
     <div class="ServiceView">
 
         <service-detail></service-detail>
-        <v-container fluid>
+
             <v-layout row wrap>
                 <v-flex xs3>
                     <h5>Pendientess</h5>
@@ -17,10 +17,9 @@
                     </v-layout>
                 </v-flex>
                 <v-flex xs9>
-                    <mini-calendar></mini-calendar>
+                    <mini-calendar :events="events"></mini-calendar>
                 </v-flex>
             </v-layout>
-        </v-container>
     </div>
 </template>
 
@@ -57,12 +56,14 @@
 
                 EventService.getServiceEvents(this.eventSelected.service, this.getFrom.format("YYYY-MM-DD"), this.getTo.format("YYYY-MM-DD")).then(
                     (response) => {
+                        let events = []
+                        let preEvents = {}
                         for (let i = 0; i < response.data.length; i++) {
                             let event = response.data[i];
-                            var preEvents = {}
+
                             if (event.calendar != null) {
                                 event.hour = moment(event.start).tz('America/Argentina/Buenos_Aires').format("HH:mm");
-                                this.events.push(event);
+                                events.push(event);
                             } else {
                                 let key = event.dateFrom + " <> " + event.dateTo;
                                 if (!this.preEvents[key]) {
@@ -71,6 +72,7 @@
                                 preEvents[key].push(event);
                             }
                         }
+                        this.events = events;
                         this.preEvents = preEvents;
                     }
                 )

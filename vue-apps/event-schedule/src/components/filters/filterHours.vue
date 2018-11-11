@@ -10,6 +10,7 @@
                   placeholder="Desde"
                   prepend-icon="watch"
                   clearable
+                  @click:clear="updateFilterOnClear"
         >
         </v-select>
         </v-flex>
@@ -23,6 +24,7 @@
                   placeholder="Hasta"
                   prepend-icon="watch"
                   clearable
+                  @click:clear="updateFilterOnClear"
         >
         </v-select>
         </v-flex>
@@ -71,8 +73,10 @@
         created: function () {
         },
         methods: {
+            updateFilterOnClear: function(){
+                this.$store.commit("SET_FILTER_HOURS", {from: null, to: null});
+            },
             changeFilterHours: function () {
-                console.log("changeFilterHours")
                 this.$store.commit("SET_FILTER_HOURS", {from: this.from, to: this.to});
             }
         },

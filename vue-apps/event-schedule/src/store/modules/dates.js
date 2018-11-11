@@ -73,7 +73,7 @@ export default {
             return moment(state.date).endOf('month');
         },
         getMonthRange: (state, getters) => {
-            console.log(" FirstDateOfMonth",getters.getFirstDateOfMonth.format("YYYY-MM-DD")," EndDateOfMonth" ,getters.getEndDateOfMonth.format("YYYY-MM-DD"))
+            // console.log(" FirstDateOfMonth",getters.getFirstDateOfMonth.format("YYYY-MM-DD")," EndDateOfMonth" ,getters.getEndDateOfMonth.format("YYYY-MM-DD"))
             return state.date.range(getters.getFirstDateOfMonth, getters.getEndDateOfMonth);
         },
         getWeeks: (state, getters) => {
@@ -98,8 +98,8 @@ export default {
             for (let index = 0; index < weeks.length; index++) {
                 var weeknumber = weeks[index];
 
-               let firstWeekDay = moment().year(getters.getYear).month(getters.getMonth).week(weeknumber).day(1);
-               let lastWeekDay = moment().year(getters.getYear).month(getters.getMonth).week(weeknumber).day(7);
+                let firstWeekDay = moment().year(getters.getYear).month(getters.getMonth).week(weeknumber).day(1);
+                let lastWeekDay = moment().year(getters.getYear).month(getters.getMonth).week(weeknumber).day(7);
 
                 if (getters.getMonth == 12 && (weeks.length - 1) == index) {
                     firstWeekDay = moment().year(getters.getYear).month(getters.getMonth).week(weeks[index - 1]).day(0);
@@ -107,17 +107,7 @@ export default {
                     lastWeekDay = moment().year(getters.getYear).month(getters.getMonth).week(weeks[index - 1]).day(6);
                     lastWeekDay.add(6, "day");
                 }
-
-                console.log("From", firstWeekDay.format("YYYY-MM-DD"), weeknumber, "To", lastWeekDay.format("YYYY-MM-DD"), weeknumber);
-
-                // if (firstWeekDay.isBefore(getters.getFirstDateOfMonth)) {
-                //     firstWeekDay = getters.getFirstDateOfMonth;
-                // }
-
-                // if (lastWeekDay.isAfter(getters.getEndDateOfMonth)) {
-                //     lastWeekDay = getters.getEndDateOfMonth;
-                // }
-
+                //console.log("From", firstWeekDay.format("YYYY-MM-DD"), weeknumber, "To", lastWeekDay.format("YYYY-MM-DD"), weeknumber);
                 weekRange = moment.range(firstWeekDay, lastWeekDay)
                 calendar.push(weekRange)
             }

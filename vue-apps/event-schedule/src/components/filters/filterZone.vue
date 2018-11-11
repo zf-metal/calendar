@@ -1,7 +1,15 @@
 <template>
 
-    <v-select class="pa-0" v-model="zoneId" v-on:change="changeFilterZone" :items="getItemZones"   hide-details
-    prepend-icon="filter_list">
+    <v-select class="pa-0"
+              v-model="zoneId"
+              v-on:change="changeFilterZone"
+              :items="getItemZones"
+              hide-details
+              clearable
+              placeholder="Filtro por zona"
+              @click:clear="updateFilterOnClear"
+    prepend-icon="filter_list"
+    >
     </v-select>
 
 </template>
@@ -21,6 +29,9 @@
         created: function () {
         },
         methods: {
+            updateFilterOnClear: function(){
+                this.$store.commit("SET_FILTER_ZONE",null);
+            },
             changeFilterZone: function () {
                 this.$store.commit("SET_FILTER_ZONE", this.zoneId);
             }
@@ -31,7 +42,7 @@
                 'getPreEventsByZone'
             ]),
             getItemZones: function () {
-                let items = [{value:null,text:"Filtro por zona"}]
+                let items = []
                 for (var key in this.getZones) {
                     var zone = this.getZones[key];
                     items.push({value: zone.id, text: zone.name + " (" + this.getPreEventsByZone(zone.id).length + ")"})

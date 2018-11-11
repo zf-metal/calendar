@@ -136,6 +136,9 @@ const getters = {
     getCalendars: state => {
         return state.calendars;
     },
+    getCalendarById: state => (id) => {
+        return state.calendars.find(e => e.id == id);
+    },
     getZones: state => {
         return state.zones;
     },
@@ -217,7 +220,7 @@ const getters = {
 
                 if (state.filterHour.to) {
                     if (e.config.availability && e.config.availability.timeRange2 && e.config.availability.timeRange2.to) {
-                        if (state.filterHour.to < e.availability.timeRange2.to) {
+                        if (state.filterHour.to < e.config.availability.timeRange2.to) {
                             return false
                         }
                     } else if (e.config.availability && e.config.availability.timeRange && e.config.availability.timeRange.to) {

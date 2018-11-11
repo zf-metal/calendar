@@ -8,12 +8,13 @@
             clearable
             hide-details
             prepend-icon="search"
+            @click:clear="updateFilterOnClear"
     >
     </v-text-field>
 </template>
 
 <script>
-import delay from './../../functions/delay'
+import delay from '../../helpers/delay'
 
     export default {
         name: 'filterString',
@@ -22,16 +23,12 @@ import delay from './../../functions/delay'
                 filterString: ""
             }
         },
-        watch: {
-            filterString: function(fs){
-                if(!fs){
-                    this.$store.commit("SET_FILTER_STRING",this.filterString);
-                }
-            }
-        },
         methods: {
+            updateFilterOnClear: function(){
+                console.log("update",this.filterString)
+                this.$store.commit("SET_FILTER_STRING","");
+            },
             changeFilterString: function(){
-
                 delay(() => {
                     if (typeof this.filterString === 'string' || this.filterString instanceof String) {
                         this.$store.commit("SET_FILTER_STRING", this.filterString.toLowerCase())
