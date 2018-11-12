@@ -39,6 +39,7 @@
                     </v-layout>
                 </v-card-title>
                 <div
+                        class="cursorPointer"
                         :title="event.serviceDescription"
                         v-tippy="{
                                      allowTitleHTML: true,
@@ -285,6 +286,7 @@
 
 <style scoped>
 
+
     .table {
         margin: 0;
         border-spacing: 0;
@@ -329,4 +331,27 @@
     }
 
 
+</style>
+
+<style>
+    .tooltipTable{
+        background-color: #f8ffba;
+        color: #0c0c0c;
+    }
+
+    .tooltipTable th{
+        vertical-align: middle;
+        border-top: 0;
+        border-left: 0;
+        border-bottom: 1px solid #d9d9d9;
+        border-right: 0;
+    }
+
+    .tooltipTable td{
+        vertical-align: middle;
+        border-top: 0;
+        border-left: 0;
+        border-bottom: 1px solid #d9d9d9;
+        border-right: 0;
+    }
 </style>
