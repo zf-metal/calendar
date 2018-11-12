@@ -38,32 +38,36 @@
 
                     </v-layout>
                 </v-card-title>
-
-                <v-card-title :style="getStateStyle" class="pa-0 ma-0">
-                    <span class="pl-2">{{getCliente}}</span>
-                </v-card-title>
-                <v-card-title :style="getStateStyle" class="pa-0 ma-0">
-
-                    <span class="pl-2  font-weight-thin ">{{getBranchOffice}}</span>
-                </v-card-title>
-
+                <div
+                        :title="event.serviceDescription"
+                        v-tippy="{
+                                     allowTitleHTML: true,
+                                     dynamicTitle:true,
+                                     arrow:true,
+                                     placement:'right',
+                                     performance:true,
+                                     flip:false,
+                                     followCursor: false,
+                                     hideOnClick: true,
+                                     trigger: 'click',
+                                     animateFill: false,
+                                     theme : 'gradient',
+                                     popperOptions: { modifiers: { hide: { enabled: false }, preventOverflow: { enabled: false}}}
+                                   }"
+                >
+                    <v-card-title :style="getStateStyle" class="pa-0 ma-0">
+                        <span class="pl-2">{{getCliente}}</span>
+                    </v-card-title>
+                    <v-card-title :style="getStateStyle" class="pa-0 ma-0">
+                        <span class="pl-2  font-weight-thin ">{{getBranchOffice}}</span>
+                    </v-card-title>
+                </div>
 
                 <v-card-text class="pa-0">
                     <table class="table table-hover white">
                         <tbody
-                                :title="event.serviceDescription"
-                                v-tippy="{
-                                             allowTitleHTML: true,
-                                             dynamicTitle:true,
-                                             arrow:true,
-                                             placement:'right',
-                                             performance:true,
-                                             flip:false,
-                                             followCursor: false,
-                                             hideOnClick: true,
-                                             trigger: 'click',
-                                             popperOptions: { modifiers: { hide: { enabled: false }, preventOverflow: { enabled: false}}}
-                                        }"
+
+
                         >
 
 
@@ -94,7 +98,9 @@
                             </td>
                             <td class="caption pa-1">
                                 <span>{{event.duration}} Min - </span>
-                                [<availabilityTime :data="getAvailability"></availabilityTime>]
+                                [
+                                <availabilityTime :data="getAvailability"></availabilityTime>
+                                ]
                             </td>
                         </tr>
 
@@ -111,8 +117,7 @@
 
 <script>
     import {mapState, mapGetters, mapActions} from 'vuex';
-    import axios from "axios"
-    import moment from 'moment'
+
     import 'moment/locale/es';
     import {Drag, Drop} from 'vue-drag-drop';
     import availabilityDay from './availabilityDay.vue';
