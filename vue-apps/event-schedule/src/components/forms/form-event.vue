@@ -190,7 +190,7 @@
                 </v-flex>
 
                 <v-flex xs4>
-                    <v-text-field v-if="rescheduledVisit"
+                    <v-text-field v-if="value.rescheduledVisit"
                                   v-model="value.rescheduledVisit"
                                   ref="rescheduledVisit"
                                   disabled
