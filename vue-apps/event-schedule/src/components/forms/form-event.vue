@@ -353,7 +353,7 @@
                     this.$store.commit('LOADING_LESS');
 
                     //Piso el evento por posible actualizacion de Reprogramar
-                    this.value = response.item;
+                    this.value.rescheduledVisit = response.item.rescheduledVisit;
 
                     if (this.value.calendar) {
                         this.$store.commit('UPDATE_EVENT', {
