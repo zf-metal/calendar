@@ -190,6 +190,15 @@
                 </v-flex>
 
                 <v-flex xs4>
+                    <v-text-field v-if="rescheduledVisit"
+                                  v-model="value.rescheduledVisit"
+                                  ref="rescheduledVisit"
+                                  disabled
+                                  readonly
+                                  label="Visita Reprogramada"
+                    >
+
+                    </v-text-field>
                 </v-flex>
 
                 <v-flex xs12>
@@ -342,6 +351,9 @@
                 ).then((response) => {
                     this.fSave();
                     this.$store.commit('LOADING_LESS');
+
+                    //Piso el evento por posible actualizacion de Reprogramar
+                    this.value = response.item;
 
                     if (this.value.calendar) {
                         this.$store.commit('UPDATE_EVENT', {

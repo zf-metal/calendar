@@ -36,6 +36,15 @@ class Event
     /**
      * @Annotation\Type("Zend\Form\Element\Text")
      * @Annotation\Attributes({"type":"text"})
+     * @Annotation\Options({"label":"Visita Reprogramada", "description":"", "addon":""})
+     * @ORM\OneToOne(targetEntity="\ZfMetal\Calendar\Entity\Event")
+     * @ORM\JoinColumn(name="reschedule_visit_id", referencedColumnName="id", unique=false, nullable=true)
+     */
+    public $rescheduledVisit = null;
+
+    /**
+     * @Annotation\Type("Zend\Form\Element\Text")
+     * @Annotation\Attributes({"type":"text"})
      * @Annotation\Options({"label":"title", "description":"", "addon":""})
      * @ORM\Column(type="string", length=100, unique=false, nullable=true,
      * name="title")
@@ -347,7 +356,7 @@ class Event
     }
 
     /**
-     * @return mixed
+     * @return \ZfMetal\Calendar\Entity\EventState
      */
     public function getState()
     {
@@ -788,8 +797,26 @@ class Event
         $this->deliveryNote = $deliveryNote;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getRescheduledVisit()
+    {
+        return $this->rescheduledVisit;
+    }
+
+    /**
+     * @param mixed $rescheduledVisit
+     */
+    public function setRescheduledVisit($rescheduledVisit)
+    {
+        $this->rescheduledVisit = $rescheduledVisit;
+    }
 
 
+    public function __clone() {
+        $this->id = null;
+    }
 
 
 
