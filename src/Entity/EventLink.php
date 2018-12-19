@@ -7,6 +7,7 @@ use Zend\Form\Annotation as Annotation;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\UniqueConstraint as UniqueConstraint;
 use Gedmo\Mapping\Annotation as Gedmo;
+use ZfMetal\Restful\Transformation;
 
 /**
  * EventLink
@@ -32,6 +33,25 @@ class EventLink
      */
     public $id = null;
 
+
+    /**
+     * @Transformation\Policy\Skip()
+     * @Annotation\Exclude()
+     * @ORM\OneToMany(targetEntity="\ZfMetal\Calendar\Entity\Event",
+     *     mappedBy="link",
+     *     fetch="LAZY",
+     *     cascade={"remove"},
+     *     orphanRemoval=true)
+     */
+    public $events = null;
+
+
+    public function __construct()
+    {
+        $this->events = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+
     public function getId()
     {
         return $this->id;
@@ -46,6 +66,23 @@ class EventLink
     {
         return (string) $this->id ;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getEvents()
+    {
+        return $this->events;
+    }
+
+    /**
+     * @param mixed $events
+     */
+    public function setEvents($events)
+    {
+        $this->events = $events;
+    }
+
 
 
 }
