@@ -7,6 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\UniqueConstraint as UniqueConstraint;
 use Gedmo\Mapping\Annotation as Gedmo;
 use ZfMetal\Restful\Transformation;
+use ZfMetal\Security\Entity\User;
 
 /**
  * Calendar
@@ -250,7 +251,7 @@ class Calendar
     }
 
     /**
-     * @return mixed
+     * @return User
      */
     public function getUser()
     {
@@ -258,7 +259,7 @@ class Calendar
     }
 
     /**
-     * @param mixed $user
+     * @param User $user
      */
     public function setUser($user)
     {
