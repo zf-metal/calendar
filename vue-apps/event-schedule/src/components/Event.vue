@@ -67,26 +67,68 @@
                 <v-card-text class="pa-0">
                     <table class="table table-hover white">
                         <tbody
-
-
                         >
 
 
                         <tr>
                             <td class="pa-1">
-                                <v-icon small>my_location</v-icon>
+                                <v-icon small
+                                        v-tippy="{
+                                                dynamicTitle:true,
+                                                arrow:true,
+                                                performance:true,
+                                                placement:'top'
+                                              }"
+                                        title="Dirección"
+                                >my_location</v-icon>
                             </td>
                             <td class="caption pa-1">{{getLocation}}</td>
                         </tr>
                         <tr>
                             <td :style="getSucColor" class="pa-1 pr-0">
-                                <v-icon small :style="getSucColor">location_on</v-icon>
+                                <v-icon small :style="getSucColor"
+                                        v-tippy="{
+                                                dynamicTitle:true,
+                                                arrow:true,
+                                                performance:true,
+                                                placement:'top'
+                                              }"
+                                        title="Zona"
+                                >location_on</v-icon>
                             </td>
                             <td class="pa-1">{{getZone}}</td>
                         </tr>
+
+
                         <tr>
                             <td class="pa-1">
-                                <v-icon small>today</v-icon>
+                                <v-icon
+                                        small
+                                        v-tippy="{
+                                                dynamicTitle:true,
+                                                arrow:true,
+                                                performance:true,
+                                                placement:'top'
+                                              }"
+                                        title="Rango de fechas para asignación"
+                                >date_range</v-icon>
+                            </td>
+                            <td class="caption pa-1">
+                                {{event.dateFrom}} <> {{event.dateTo}}
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="pa-1">
+                                <v-icon small
+                                        v-tippy="{
+                                                dynamicTitle:true,
+                                                arrow:true,
+                                                performance:true,
+                                                placement:'top'
+                                              }"
+                                        title="Días habilitados de asignación"
+                                >today</v-icon>
                             </td>
                             <td class="caption pa-1">
                                 <availabilityDay :data="getAvailability"></availabilityDay>
@@ -95,7 +137,15 @@
 
                         <tr>
                             <td class="pa-1">
-                                <v-icon small>hourglass_full</v-icon>
+                                <v-icon small
+                                        v-tippy="{
+                                                dynamicTitle:true,
+                                                arrow:true,
+                                                performance:true,
+                                                placement:'top'
+                                              }"
+                                        title="Duración y horarios habilitados de asignación"
+                                >hourglass_full</v-icon>
                             </td>
                             <td class="caption pa-1">
                                 <span>{{event.duration}} Min - </span>

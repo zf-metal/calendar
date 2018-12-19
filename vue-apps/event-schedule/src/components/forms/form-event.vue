@@ -214,6 +214,16 @@
                     ></v-textarea>
 
                 </v-flex>
+
+                <v-flex xs12 v-if="value.finalComment">
+
+                    <h5 class="caption font-weight-bold text-xs-left">Comentario Final Técnico</h5>
+                    <h6 class="caption text-xs-left pl-2">{{value.finalComment}}</h6>
+                    <v-divider class="ma-0"></v-divider>
+
+                </v-flex>
+
+
             </v-layout>
             <v-layout row wrap justify-end>
                 <v-flex xs3 class="text-xs-right pa-0">

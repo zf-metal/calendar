@@ -205,11 +205,20 @@ class Event
     /**
      * @Annotation\Type("Zend\Form\Element\Textarea")
      * @Annotation\Attributes({"type":"textarea"})
-     * @Annotation\Options({"label":"description", "description":""})
+     * @Annotation\Options({"label":"Comentario", "description":""})
      * @ORM\Column(type="string", length=500, unique=false, nullable=true,
      * name="comments")
      */
     public $comments = null;
+
+    /**
+     * @Annotation\Type("Zend\Form\Element\Textarea")
+     * @Annotation\Attributes({"type":"textarea"})
+     * @Annotation\Options({"label":"Comentario Final", "description":""})
+     * @ORM\Column(type="string", length=500, unique=false, nullable=true,
+     * name="final_comment")
+     */
+    public $finalComment = null;
 
     /**
      * @Annotation\Type("Zend\Form\Element\Text")
@@ -817,6 +826,23 @@ class Event
     public function __clone() {
         $this->id = null;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getFinalComment()
+    {
+        return $this->finalComment;
+    }
+
+    /**
+     * @param mixed $finalComment
+     */
+    public function setFinalComment($finalComment)
+    {
+        $this->finalComment = $finalComment;
+    }
+
 
 
 

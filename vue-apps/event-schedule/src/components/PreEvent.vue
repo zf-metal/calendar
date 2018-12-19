@@ -30,46 +30,117 @@
              trigger: 'click',
              popperOptions: { modifiers: { hide: { enabled: false }, preventOverflow: { enabled: false}}}
         }">
-                        <td><i class="material-icons" style="vertical-align: bottom;">account_box</i></td>
+                        <td><i class="material-icons" style="vertical-align: bottom;"
+                               v-tippy="{
+                                                dynamicTitle:true,
+                                                arrow:true,
+                                                performance:true,
+                                                placement:'top'
+                                              }"
+                               title="Cliente"
+                        >account_box</i></td>
                         <td class="caption">{{getCliente}}</td>
                     </tr>
                     <tr>
-                        <td><i class="material-icons" style="vertical-align: bottom;">business</i>
+                        <td><i class="material-icons" style="vertical-align: bottom;"
+                               v-tippy="{
+                                                dynamicTitle:true,
+                                                arrow:true,
+                                                performance:true,
+                                                placement:'top'
+                                              }"
+                               title="Sucursal"
+                        >business</i>
                         </td>
                         <td class="caption">{{getBranchOffice}}</td>
                     </tr>
                     <tr>
-                        <td><i class="material-icons" style="vertical-align: bottom;">my_location</i>
+                        <td><i class="material-icons" style="vertical-align: bottom;"
+                               v-tippy="{
+                                                dynamicTitle:true,
+                                                arrow:true,
+                                                performance:true,
+                                                placement:'top'
+                                              }"
+                               title="Dirección"
+                        >my_location</i>
                         </td>
                         <td class="caption">{{getLocation}}</td>
                     </tr>
                     <tr>
-                        <td  :style="getSucColor" class="pa-1 pr-0">
-                            <v-icon small :style="getSucColor">location_on</v-icon>
+                        <td :style="getSucColor" class="pa-1 pr-0">
+                            <v-icon small :style="getSucColor"
+                                    v-tippy="{
+                                                dynamicTitle:true,
+                                                arrow:true,
+                                                performance:true,
+                                                placement:'top'
+                                              }"
+                                    title="Zona"
+                            >location_on</v-icon>
                         </td>
                         <td class="pa-1">{{getZone}}</td>
                     </tr>
+
                     <tr>
-                        <td><i class="material-icons" style="vertical-align: bottom;">today</i></td>
+                        <td>
+                            <i
+                                    class="material-icons"
+                                    style="vertical-align: bottom;"
+                                    v-tippy="{
+                                                dynamicTitle:true,
+                                                arrow:true,
+                                                performance:true,
+                                                placement:'top'
+                                              }"
+                                    title="Rango de fechas para asignación"
+                            >date_range</i>
+                        </td>
+                        <td class="caption">
+                            {{preEvent.dateFrom}} <> {{preEvent.dateTo}}
+                        </td>
+                    </tr>
+
+
+                    <tr>
+                        <td><i class="material-icons" style="vertical-align: bottom;"
+                               v-tippy="{
+                                                dynamicTitle:true,
+                                                arrow:true,
+                                                performance:true,
+                                                placement:'top'
+                                              }"
+                               title="Días habilitados de asignación"
+                        >today</i></td>
                         <td class="caption">
                             <availabilityDay :data="getAvailability"></availabilityDay>
                         </td>
                     </tr>
 
                     <tr>
-                        <td><i class="material-icons" style="vertical-align: bottom;">hourglass_full</i></td>
+                        <td><i class="material-icons" style="vertical-align: bottom;"
+                               v-tippy="{
+                                                dynamicTitle:true,
+                                                arrow:true,
+                                                performance:true,
+                                                placement:'top'
+                                              }"
+                               title="Duración y horarios habilitados de asignación"
+                        >hourglass_full</i></td>
                         <td class="caption">
                             <span>{{preEvent.duration}} Min - </span>
 
-                            [<availabilityTime :data="getAvailability"></availabilityTime>]
+                            [
+                            <availabilityTime :data="getAvailability"></availabilityTime>
+                            ]
                         </td>
                     </tr>
 
-             <!--       <tr>
-                    <td><i class="material-icons" style="vertical-align: bottom;">add</i>
-                    </td>
-                    <td>{{getPriority}}</td>
-                    </tr>-->
+                    <!--       <tr>
+                           <td><i class="material-icons" style="vertical-align: bottom;">add</i>
+                           </td>
+                           <td>{{getPriority}}</td>
+                           </tr>-->
 
                     </tbody>
                 </table>
@@ -101,11 +172,11 @@
                 'getEventStateBgColor',
                 'getEventTypeIcon'
             ]),
-            getAvailability: function(){
-              if(this.preEvent.config && this.preEvent.config.availability){
-                  return this.preEvent.config.availability
-              }
-              return null
+            getAvailability: function () {
+                if (this.preEvent.config && this.preEvent.config.availability) {
+                    return this.preEvent.config.availability
+                }
+                return null
             },
             getKeep: function () {
                 if (this.preEvent.config && this.preEvent.config.preference && this.preEvent.config.preference.keep) {
@@ -174,10 +245,10 @@
     .table td {
         vertical-align: middle;
         padding: 3px;
-        border-top:0;
-        border-left:0;
+        border-top: 0;
+        border-left: 0;
         border-bottom: 1px solid #d9d9d9;
-        border-right:0;
+        border-right: 0;
     }
 
     .card-title {
