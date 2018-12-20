@@ -97,7 +97,7 @@
                             >date_range</i>
                         </td>
                         <td class="caption">
-                            {{preEvent.dateFrom}} <> {{preEvent.dateTo}}
+                            {{preEvent.dateFrom}} - {{preEvent.dateTo}}
                         </td>
                     </tr>
 

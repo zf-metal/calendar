@@ -114,7 +114,7 @@
                                 >date_range</v-icon>
                             </td>
                             <td class="caption pa-1">
-                                {{event.dateFrom}} <> {{event.dateTo}}
+                                {{event.dateFrom}} - {{event.dateTo}}
                             </td>
                         </tr>
 

@@ -7,6 +7,9 @@
             <v-tab>
                 <v-icon>assignment_ind</v-icon>
             </v-tab>
+            <v-tab>
+                <v-icon>search</v-icon>
+            </v-tab>
             <!--<v-tab>F</v-tab>-->
 
             <v-tab-item>
@@ -51,6 +54,12 @@
                 </v-card>
             </v-tab-item>
 
+            <v-tab-item>
+                <v-card flat>
+<filter-service></filter-service>
+                </v-card>
+            </v-tab-item>
+
         </v-tabs>
 
     </div>
@@ -63,6 +72,7 @@
     import filterString from './filters/filterString.vue'
     import filterHour from './filters/filterHours.vue'
     import filterCalendars from "./filters/filterCalendars.vue"
+    import filterService from "./filters/filterService.vue"
 
     import modal from './helpers/Modal.vue'
     import formEvent from './forms/form-event.vue'
@@ -79,7 +89,7 @@
             }
         },
         components: {
-            preEvent, modal, filterZone, filterString, filterHour, formEvent, filterCalendars, Drag, Drop
+            preEvent, modal, filterZone, filterString, filterHour, formEvent, filterCalendars, filterService, Drag, Drop
         },
         computed: {
             ...mapState([
