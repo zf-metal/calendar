@@ -83,7 +83,7 @@ class Account
 
     public function __toString()
     {
-        return (string);
+        return (string) $this->name;
     }
 
 
