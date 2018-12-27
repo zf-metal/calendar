@@ -47,5 +47,10 @@
     "psr-4": {
       "ZfMetal\\Calendar\\": "src/"
     }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Test\\": "test/"
+    }
   }
 }
