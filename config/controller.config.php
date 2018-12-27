@@ -19,6 +19,8 @@ return array(
             \ZfMetal\Calendar\Controller\CalendarGroupController::class => \ZfMetal\Calendar\Factory\Controller\CalendarGroupControllerFactory::class,
             \ZfMetal\Calendar\Controller\ApiStartController::class => \ZfMetal\Calendar\Factory\Controller\ApiStartControllerFactory::class,
             \ZfMetal\Calendar\Controller\ExportController::class => \ZfMetal\Calendar\Factory\Controller\ExportControllerFactory::class,
+            \ZfMetal\Calendar\Controller\AccountController::class => \ZfMetal\Calendar\Factory\Controller\AccountControllerFactory::class,
+            \ZfMetal\Calendar\Controller\BranchOfficeController::class => \ZfMetal\Calendar\Factory\Controller\BranchOfficeControllerFactory::class,
         ),
     ),
 );
