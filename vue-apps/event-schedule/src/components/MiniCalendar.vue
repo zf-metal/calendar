@@ -96,8 +96,8 @@
       }
     },
     mounted: function () {
-    //  this.dyear = this.calendarDate.format("YYYY")
-   //   this.dmonth = this.calendarDate.format("MM")
+      this.dyear = this.getRealCalendarDate.format("YYYY")
+      this.dmonth = this.getRealCalendarDate.format("MM")
     },
     methods: {
       onEventDrop: function (event) {
@@ -122,11 +122,7 @@
         return days
       },
       isCurrentMonth: function (day) {
-        console.log(day)
-        console.log(this.getCalendarDate)
-        console.log(this.date)
-        console.log(this.calendarDate)
-        if (day.format("MM") != this.calendarDate.format("MM")) {
+        if (day.format("MM") != this.getRealCalendarDate.format("MM")) {
           return false
         }
         return true
@@ -147,14 +143,14 @@
       currentDate: function () {
         return this.date.get('date');
       },
-      ...mapState([
-        'date',
-        'calendarDate',
-        'months',
-      ]),
+      ...mapState({
+          calendarDate: state => state.calendar.calendarDate,
+          months: state => state.calendar.months,
+          date: state => state.dates.date
+      }),
       ...mapGetters([
-        'getDate',
-        'getCalendarDate',
+        'getRealDate',
+        'getRealCalendarDate',
         'getCalendarYear',
         'getCalendarMonth',
         'getCalendars',
