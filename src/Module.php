@@ -32,7 +32,7 @@ class Module  implements
             'DoctrineORMModule',
             'ZfMetal\Commons',
             'ZfMetal\Security',
-            'ZfcRbac',
+          //  'ZfcRbac',
             'ZfMetal\Datagrid',
             'ZfMetal\Restful'
         );

@@ -10,6 +10,17 @@ return [
                 ],
                 'type' => 'Literal',
                 'child_routes' => [
+                    'ServiceSearch' => [
+                        'type' => 'Literal',
+                        'mayTerminate' => true,
+                        'options' => [
+                            'defaults' => [
+                                'controller' => \ZfMetal\Calendar\Controller\ServiceSearchController::CLASS,
+                                'action' => 'search',
+                            ],
+                            'route' => '/serviceSearch',
+                        ],
+                        ],
                     'Calendar' => [
                         'mayTerminate' => false,
                         'options' => [

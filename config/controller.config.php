@@ -21,6 +21,8 @@ return array(
             \ZfMetal\Calendar\Controller\ExportController::class => \ZfMetal\Calendar\Factory\Controller\ExportControllerFactory::class,
             \ZfMetal\Calendar\Controller\AccountController::class => \ZfMetal\Calendar\Factory\Controller\AccountControllerFactory::class,
             \ZfMetal\Calendar\Controller\BranchOfficeController::class => \ZfMetal\Calendar\Factory\Controller\BranchOfficeControllerFactory::class,
+            \ZfMetal\Calendar\Controller\ServiceSearchController::class => \ZfMetal\Calendar\Factory\Controller\ServiceSearchControllerFactory::class,
+
         ),
     ),
 );

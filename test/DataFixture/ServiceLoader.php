@@ -67,8 +67,8 @@ class ServiceLoader extends AbstractFixture implements FixtureInterface
 
         $this->em = $manager;
 
-        $this->createService(1, "general", "MANOLO CHAPS", "Casa Central");
-
+        $this->createService(1, "General", "MANOLO CHAPS", "Casa Central");
+        $this->createService(2, "Secondary", "MANOLO CHAPS", "Casa Central");
         $manager->flush();
 
 
