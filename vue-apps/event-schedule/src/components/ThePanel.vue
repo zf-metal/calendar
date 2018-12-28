@@ -56,7 +56,7 @@
 
             <v-tab-item>
                 <v-card flat>
-<filter-service></filter-service>
+                    <service-search></service-search>
                 </v-card>
             </v-tab-item>
 
@@ -72,7 +72,7 @@
     import filterString from './filters/filterString.vue'
     import filterHour from './filters/filterHours.vue'
     import filterCalendars from "./filters/filterCalendars.vue"
-    import filterService from "./filters/filterService.vue"
+    import serviceSearch from "./ServiceSearch.vue"
 
     import modal from './helpers/Modal.vue'
     import formEvent from './forms/form-event.vue'
@@ -89,7 +89,7 @@
             }
         },
         components: {
-            preEvent, modal, filterZone, filterString, filterHour, formEvent, filterCalendars, filterService, Drag, Drop
+            preEvent, modal, filterZone, filterString, filterHour, formEvent, filterCalendars, serviceSearch, Drag, Drop
         },
         computed: {
             ...mapState([
@@ -109,7 +109,7 @@
             ]),
         },
         methods: {
-            incrementSize: function(data){
+            incrementSize: function (data) {
                 this.$store.commit('SET_PRE_EVENT_SIZE', this.preEventSize + 10);
             },
             handleDrop: function (data) {

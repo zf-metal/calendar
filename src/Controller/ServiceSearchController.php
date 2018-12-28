@@ -65,10 +65,14 @@ class ServiceSearchController extends AbstractActionController
     {
         $result = [];
         if($this->getRequest()->isPost()){
+
+            //Recibir en JSON Ver Restful Controller
             $id = $this->getRequest()->getPost("id");
             $account = $this->getRequest()->getPost("account");
             $branchOffice = $this->getRequest()->getPost("branchOffice");
             $address =  $this->getRequest()->getPost("address");
+
+
             $result =  $this->getServiceRepository()->search($id,$account,$branchOffice,$address);
         }
 

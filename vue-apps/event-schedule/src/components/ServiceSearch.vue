@@ -57,22 +57,29 @@
         <v-flex xs12 class="text-xs-center">
             <v-btn color="primary" @click="serviceSearch">Buscar Servicios</v-btn>
         </v-flex>
+
+        <v-flex xs12>
+            <service-items :items="serviceItems"></service-items>
+        </v-flex>
     </v-layout>
 
 </template>
 
 <script>
-    import delay from '../../helpers/delay'
-    import {ServiceService} from '../../resource'
+    import delay from '../helpers/delay'
+    import {ServiceService} from '../resource/index'
+    import ServiceItems from './ServiceItems.vue'
 
     export default {
-        name: 'filterService',
+        name: 'ServiceSearch',
+        components: {ServiceItems},
         data() {
             return {
                 serviceId: "",
                 account: "",
                 branchOffice: "",
-                location: ""
+                location: "",
+                serviceItems: []
             }
         },
         methods: {
@@ -91,10 +98,10 @@
             ServiceService.serviceSearch(this.serviceId,this.account,this.branchOffice,this.location).then(
               (response) => {
                console.log(response.data)
-                for (let i = 0; i < response.data.length; i++) {
-                  let service = response.data[i];
-
-                }
+                  this.serviceItems =  response.data;
+                // for (let i = 0; i < response.data.length; i++) {
+                //   let service = response.data[i];
+                // }
 
               }
             )

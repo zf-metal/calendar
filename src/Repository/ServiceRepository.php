@@ -33,8 +33,10 @@ class ServiceRepository extends EntityRepository
     public function search($id= null, $account= null, $branchOffice = null, $address= null)
     {
         $query = $this->getEntityManager()->createQueryBuilder('u')
-            ->select('u')
-            ->from(Service::class, 'u');
+            ->select('u.id, u.name,a.name as account, bo.name as branchOffice, bo.address ')
+            ->from(Service::class, 'u')
+            ->leftJoin('u.account', 'a')
+            ->leftJoin('u.branchOffice', 'bo');
 
         if ($id) {
             $query->andWhere('u.id = :id')
@@ -43,24 +45,20 @@ class ServiceRepository extends EntityRepository
 
         if ($account) {
 
-            $query->leftJoin('u.account', 'a')
-                ->andWhere('a.name = :account')
+            $query->andWhere('a.name = :account')
                 ->setParameter("account", $account);
         }
 
         if ($branchOffice) {
 
-            $query
-                ->leftJoin('u.branchOffice', 'bo')
-                ->andWhere('bo.name = :branchOffice')
+            $query->andWhere('bo.name = :branchOffice')
                 ->setParameter("branchOffice", $branchOffice);
         }
 
 
         if ($address) {
 
-            $query->leftJoin('u.branchOffice', 'bo')
-                ->andWhere('bo.address = :address')
+            $query->andWhere('bo.address = :address')
                 ->setParameter("address", $address);
         }
 

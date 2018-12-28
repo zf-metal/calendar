@@ -62,7 +62,10 @@ class ServiceSearchControllerTest extends AbstractConsoleControllerTestCase
         $responseToCompare = [
             [
                 'id' => 1,
-                'name' => "General"
+                'name' => "General",
+                'account' => "MANOLO CHAPS",
+                'branchOffice' => "Casa Central",
+                'address' => 'Directorio'
             ]
         ];
 
@@ -98,7 +101,10 @@ class ServiceSearchControllerTest extends AbstractConsoleControllerTestCase
         $responseToCompare = [
             [
                 'id' => 1,
-                'name' => "General"
+                'name' => "General",
+                'account' => "MANOLO CHAPS",
+                'branchOffice' => "Casa Central",
+                'address' => 'Directorio'
             ]
         ];
 
@@ -135,10 +141,12 @@ class ServiceSearchControllerTest extends AbstractConsoleControllerTestCase
         $responseToCompare = [
             [
                 'id' => 1,
-                'name' => "General"
+                'name' => "General",
+                'account' => "MANOLO CHAPS",
+                'branchOffice' => "Casa Central",
+                'address' => 'Directorio'
             ]
         ];
-
 
         $this->assertResponseStatusCode(200);
         $this->assertJsonStringEqualsJsonString($this->getResponse()->getContent(), json_encode($responseToCompare));
@@ -171,10 +179,12 @@ class ServiceSearchControllerTest extends AbstractConsoleControllerTestCase
         $responseToCompare = [
             [
                 'id' => 1,
-                'name' => "General"
+                'name' => "General",
+                'account' => "MANOLO CHAPS",
+                'branchOffice' => "Casa Central",
+                'address' => 'Directorio'
             ]
         ];
-
 
         $this->assertResponseStatusCode(200);
         $this->assertJsonStringEqualsJsonString($this->getResponse()->getContent(), json_encode($responseToCompare));
@@ -184,4 +194,34 @@ class ServiceSearchControllerTest extends AbstractConsoleControllerTestCase
         $this->assertEquals($response[0]->name, "General");
 
     }
+
+    /**
+     * METHOD GET
+     * ACTION get
+     * DESC Obtener un registro especifico (administrator)
+     */
+    public function testSearchByIdDoesNotExist()
+    {
+        $this->setUseConsoleRequest(false);
+
+        $params = [
+            'id' => 66
+        ];
+
+        $this->dispatch("/zfmc/serviceSearch", "POST", $params);
+
+
+        $response = json_decode($this->getResponse()->getContent());
+
+
+        $responseToCompare = [];
+
+        echo $this->getResponse()->getContent();
+
+        $this->assertResponseStatusCode(200);
+        $this->assertJsonStringEqualsJsonString($this->getResponse()->getContent(), json_encode($responseToCompare));
+
+
+    }
+
 }
