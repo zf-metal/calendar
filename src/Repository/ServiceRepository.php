@@ -48,6 +48,23 @@ class ServiceRepository extends EntityRepository
                 ->setParameter("account", $account);
         }
 
+        if ($branchOffice) {
+
+            $query
+                ->leftJoin('u.branchOffice', 'bo')
+                ->andWhere('bo.name = :branchOffice')
+                ->setParameter("branchOffice", $branchOffice);
+        }
+
+
+        if ($address) {
+
+            $query->leftJoin('u.branchOffice', 'bo')
+                ->andWhere('bo.address = :address')
+                ->setParameter("address", $address);
+        }
+
+
 
         return $query->getQuery()->getArrayResult();
 

@@ -67,14 +67,14 @@ class BranchOfficeLoader extends AbstractFixture implements FixtureInterface
 
         $this->em = $manager;
 
-        $this->createBranchOffice(1, "Casa Central");
+        $this->createBranchOffice(1, "Casa Central","MANOLO CHAPS","Directorio");
         $manager->flush();
 
 
     }
 
 
-    public function createBranchOffice($id, $name)
+    public function createBranchOffice($id, $name,$accountName,$address)
     {
 
         $branchOffice = $this->findByName($name);
@@ -82,8 +82,8 @@ class BranchOfficeLoader extends AbstractFixture implements FixtureInterface
             $branchOffice = new BranchOffice();
             $branchOffice->setId($id);
             $branchOffice->setName($name);
-            $branchOffice->setAccount($this->getReference("MANOLO CHAPS"));
-            $branchOffice->setAddress("Directorio");
+            $branchOffice->setAccount($this->getReference($accountName));
+            $branchOffice->setAddress($address);
         }
 
 

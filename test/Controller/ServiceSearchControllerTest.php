@@ -113,4 +113,75 @@ class ServiceSearchControllerTest extends AbstractConsoleControllerTestCase
     }
 
 
+    /**
+     * METHOD GET
+     * ACTION get
+     * DESC Obtener un registro especifico (administrator)
+     */
+    public function testSearchByBranchOfficeName()
+    {
+        $this->setUseConsoleRequest(false);
+
+        $params = [
+            'branchOffice' => "Casa Central"
+        ];
+
+        $this->dispatch("/zfmc/serviceSearch", "POST", $params);
+
+
+        $response = json_decode($this->getResponse()->getContent());
+
+
+        $responseToCompare = [
+            [
+                'id' => 1,
+                'name' => "General"
+            ]
+        ];
+
+
+        $this->assertResponseStatusCode(200);
+        $this->assertJsonStringEqualsJsonString($this->getResponse()->getContent(), json_encode($responseToCompare));
+
+
+        $this->assertEquals($response[0]->id, 1);
+        $this->assertEquals($response[0]->name, "General");
+
+    }
+
+    /**
+     * METHOD GET
+     * ACTION get
+     * DESC Obtener un registro especifico (administrator)
+     */
+    public function testSearchByAddress()
+    {
+        $this->setUseConsoleRequest(false);
+
+        $params = [
+            'address' => "Directorio"
+        ];
+
+        $this->dispatch("/zfmc/serviceSearch", "POST", $params);
+
+
+        $response = json_decode($this->getResponse()->getContent());
+
+
+        $responseToCompare = [
+            [
+                'id' => 1,
+                'name' => "General"
+            ]
+        ];
+
+
+        $this->assertResponseStatusCode(200);
+        $this->assertJsonStringEqualsJsonString($this->getResponse()->getContent(), json_encode($responseToCompare));
+
+
+        $this->assertEquals($response[0]->id, 1);
+        $this->assertEquals($response[0]->name, "General");
+
+    }
 }
