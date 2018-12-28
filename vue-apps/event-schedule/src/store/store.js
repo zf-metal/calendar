@@ -112,7 +112,7 @@ const getters = {
     return false
   },
   isHoliday: (state, getters) => {
-    if (state.holidays.find(h => h.date == getters.getDate)) {
+    if (state.holidays && state.holidays.find(h => h.date == getters.getDate)) {
       return true
     }
     return false

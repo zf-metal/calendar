@@ -19,7 +19,7 @@
                     class="pa-0"
                     @keyup="keyUp"
                     placeholder="Filtrar por Cliente"
-                    v-model="client"
+                    v-model="account"
                     clearable
                     hide-details
                     prepend-icon="account_box"
@@ -55,7 +55,7 @@
             </v-text-field>
         </v-flex>
         <v-flex xs12 class="text-xs-center">
-            <v-btn color="primary">Buscar Servicios</v-btn>
+            <v-btn color="primary" @click="serviceSearch">Buscar Servicios</v-btn>
         </v-flex>
     </v-layout>
 
@@ -63,13 +63,14 @@
 
 <script>
     import delay from '../../helpers/delay'
+    import {ServiceService} from '../../resource'
 
     export default {
         name: 'filterService',
         data() {
             return {
                 serviceId: "",
-                client: "",
+                account: "",
                 branchOffice: "",
                 location: ""
             }
@@ -84,9 +85,20 @@
                         //TODO search
                     }
                 }, 1000);
+            },
+          serviceSearch: function () {
 
+            ServiceService.serviceSearch(this.serviceId,this.account,this.branchOffice,this.location).then(
+              (response) => {
+               console.log(response.data)
+                for (let i = 0; i < response.data.length; i++) {
+                  let service = response.data[i];
 
-            }
+                }
+
+              }
+            )
+          },
         },
         computed: {},
     }
