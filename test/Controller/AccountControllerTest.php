@@ -52,7 +52,7 @@ class AccountControllerTest extends AbstractConsoleControllerTestCase
     }
 
     /**
-     * @depends testGenerateStructure
+     *
      * Se popula las tablas con datos necesarios (Permisos, Roles, Usuarios y sus relaciones)
      */
     public function testCreateData()
@@ -74,10 +74,10 @@ class AccountControllerTest extends AbstractConsoleControllerTestCase
      * ACTION get
      * DESC Obtener un registro especifico (administrator)
      */
-    public function testGetAdministrator()
+    public function testGet()
     {
         $this->setUseConsoleRequest(false);
-        $this->dispatch("/security/api/users/1", "GET");
+        $this->dispatch("/zfmc/api/accounts/1", "GET");
 
 
         $response = json_decode($this->getResponse()->getContent());
@@ -85,34 +85,10 @@ class AccountControllerTest extends AbstractConsoleControllerTestCase
         $this->assertResponseStatusCode(200);
 
         $this->assertEquals($response->id, 1);
-        $this->assertEquals($response->username, "administrator");
-        $this->assertEquals($response->active, true);
+        $this->assertEquals($response->name, "MANOLO CHAPS");
 
     }
 
-    /**
-     * METHOD GET
-     * ACTION get
-     * DESC Obtener un registro especifico (JhonDoe)
-     */
-
-    public function testGetJhonDoe()
-    {
-        $this->setUseConsoleRequest(false);
-        $this->dispatch("/security/api/users/2", "GET");
-
-
-        $response = json_decode($this->getResponse()->getContent());
-
-        $this->assertResponseStatusCode(200);
-
-        $this->assertEquals($response->id, 2);
-        $this->assertEquals($response->username, "JhonDoe");
-        $this->assertEquals($response->active, true);
-
-       // $this->assertJsonStringEqualsJsonString($this->getResponse()->getContent(), "{}");
-
-    }
 
     /**
      * METHOD GET
@@ -122,7 +98,7 @@ class AccountControllerTest extends AbstractConsoleControllerTestCase
     public function testGetList()
     {
         $this->setUseConsoleRequest(false);
-        $this->dispatch("/security/api/users", "GET");
+        $this->dispatch("/zfmc/api/accounts", "GET");
 
         $response = json_decode($this->getResponse()->getContent());
         //var_dump($response);
@@ -130,12 +106,7 @@ class AccountControllerTest extends AbstractConsoleControllerTestCase
         $this->assertResponseStatusCode(200);
 
         $this->assertEquals($response[0]->id, 1);
-        $this->assertEquals($response[0]->username, "administrator");
-        $this->assertEquals($response[0]->active, true);
-
-        $this->assertEquals($response[1]->id, 2);
-        $this->assertEquals($response[1]->username, "JhonDoe");
-        $this->assertEquals($response[1]->active, true);
+        $this->assertEquals($response[0]->name, "MANOLO CHAPS");
 
     }
 
@@ -155,65 +126,16 @@ class AccountControllerTest extends AbstractConsoleControllerTestCase
         //Create Firt User
 
         $params = [
-            "username" => "userCreate",
-            "email" => "userCreate@zfmetal.com",
-            "name" => "userCreate",
-            "active" => true,
-            "password" => "123"
+            "name" => "ACCOUNT TEST CREATE",
+
         ];
 
-        $this->dispatch("/security/api/users", "POST",
+        $this->dispatch("/zfmr/api/accounts", "POST",
             $params);
 
         $jsonToCompare = [
             "status" => true,
-            'id' => 4,
-            "message" => "The item was created successfully"
-        ];
-
-        $this->assertJsonStringEqualsJsonString($this->getResponse()->getContent(), json_encode($jsonToCompare));
-        $this->assertResponseStatusCode(201);
-
-
-        $this->reset();
-
-        //Create Second User (to be update)
-        $params = [
-            "username" => "userToUpdate",
-            "email" => "userToUpdate@zfmetal.com",
-            "name" => "userToUpdate",
-            "active" => true,
-            "password" => "789"
-        ];
-
-        $this->dispatch("/security/api/users", "POST",
-            $params);
-
-        $jsonToCompare = [
-            "status" => true,
-            'id' => 5,
-            "message" => "The item was created successfully"
-        ];
-
-        $this->assertJsonStringEqualsJsonString($this->getResponse()->getContent(), json_encode($jsonToCompare));
-        $this->assertResponseStatusCode(201);
-
-        $this->reset();
-        //Create Third User (to be delete)
-        $params = [
-            "username" => "userToDelete",
-            "email" => "userToDelete@zfmetal.com",
-            "name" => "userToDelete",
-            "active" => true,
-            "password" => "789"
-        ];
-
-        $this->dispatch("/security/api/users", "POST",
-            $params);
-
-        $jsonToCompare = [
-            "status" => true,
-            'id' => 6,
+            'id' => 2,
             "message" => "The item was created successfully"
         ];
 
@@ -236,20 +158,17 @@ class AccountControllerTest extends AbstractConsoleControllerTestCase
         $this->setUseConsoleRequest(false);
 
         $params = [
-            "username" => "userUpdated",
-            "email" => "userUpdated@zfmetal.com",
-            "name" => "userUpdated",
-            "active" => true,
-            "password" => "456"
+            "name" => "ACCOUNT TEST UPDATE",
+
         ];
 
-        $this->dispatch("/security/api/users/5", "PUT",
+        $this->dispatch("/zfmr/api/accounts/2", "PUT",
             $params);
 
 
         $jsonToCompare = [
             "status" => true,
-            'id' => 5,
+            'id' => 2,
             "message" => "The item was updated successfully"
         ];
 
@@ -270,7 +189,7 @@ class AccountControllerTest extends AbstractConsoleControllerTestCase
         $this->setUseConsoleRequest(false);
 
 
-        $this->dispatch("/security/api/users/6", "DELETE");
+        $this->dispatch("/zfmr/api/accounts/2", "DELETE");
 
 
         $jsonToCompare = [
@@ -281,34 +200,5 @@ class AccountControllerTest extends AbstractConsoleControllerTestCase
         $this->assertResponseStatusCode(200);
     }
 
-
-
-
-
-
-
-
-    /**
-     * METHOD GET
-     * ACTION get
-     * DESC Obtener un registro especifico (administrator)
-     */
-    public function testGetInvalidId()
-    {
-        $this->setUseConsoleRequest(false);
-        $this->dispatch("/security/api/users/23", "GET");
-
-
-        $response = json_decode($this->getResponse()->getContent());
-
-        $this->assertResponseStatusCode(404);
-
-        $jsonToCompare = [
-            "message" => "The item does not exist"
-        ];
-
-        $this->assertJsonStringEqualsJsonString($this->getResponse()->getContent(), json_encode($jsonToCompare));
-
-    }
 
 }

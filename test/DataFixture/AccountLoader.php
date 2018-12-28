@@ -68,7 +68,7 @@ class AccountLoader  extends AbstractFixture implements FixtureInterface
 
         $this->em = $manager;
 
-        $this->createAccount(1, "MANOLO CHAPS");
+        $this->createAccount(1, "MANOLO CHAPS", "MANO");
 
         $manager->flush();
 
@@ -79,6 +79,7 @@ class AccountLoader  extends AbstractFixture implements FixtureInterface
     /**
      * @param $id
      * @param $name
+     * @param $tradename
      */
     public function createAccount($id, $name,$tradename)
     {
