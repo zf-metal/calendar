@@ -125,6 +125,8 @@ class ServiceControllerTest extends AbstractConsoleControllerTestCase
         //Create Firt User
 
         $params = [
+            "account" => 1,
+            "branchOffice" => 1,
             "name" => "SERVICE TEST CREATE",
 
         ];
@@ -134,7 +136,7 @@ class ServiceControllerTest extends AbstractConsoleControllerTestCase
 
         $jsonToCompare = [
             "status" => true,
-            'id' => 2,
+            'id' => 4,
             "message" => "The item was created successfully"
         ];
 
@@ -188,7 +190,7 @@ class ServiceControllerTest extends AbstractConsoleControllerTestCase
         $this->setUseConsoleRequest(false);
 
 
-        $this->dispatch("/zfmr/api/services/2", "DELETE");
+        $this->dispatch("/zfmr/api/services/3", "DELETE");
 
 
         $jsonToCompare = [

@@ -68,6 +68,7 @@ class BranchOfficeLoader extends AbstractFixture implements FixtureInterface
         $this->em = $manager;
 
         $this->createBranchOffice(1, "Casa Central","MANOLO CHAPS","Directorio");
+        $this->createBranchOffice(2, "Sur","MANOLO CHAPS","Rojas");
         $manager->flush();
 
 

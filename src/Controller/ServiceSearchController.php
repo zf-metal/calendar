@@ -2,7 +2,7 @@
 
 namespace ZfMetal\Calendar\Controller;
 
-use Zend\Mvc\Controller\AbstractActionController;
+use Zend\Mvc\Controller\AbstractRestfulController;
 use Zend\View\Model\JsonModel;
 use ZfMetal\Calendar\Repository\ServiceRepository;
 
@@ -15,7 +15,7 @@ use ZfMetal\Calendar\Repository\ServiceRepository;
  * @license
  * @link
  */
-class ServiceSearchController extends AbstractActionController
+class ServiceSearchController extends AbstractRestfulController
 {
 
     const ENTITY = \ZfMetal\Calendar\Entity\Service::class;

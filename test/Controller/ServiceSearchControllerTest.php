@@ -105,6 +105,20 @@ class ServiceSearchControllerTest extends AbstractConsoleControllerTestCase
                 'account' => "MANOLO CHAPS",
                 'branchOffice' => "Casa Central",
                 'address' => 'Directorio'
+            ],
+            [
+                'id' => 2,
+                'name' => "SERVICE TEST UPDATE",
+                'account' => "MANOLO CHAPS",
+                'branchOffice' => "Casa Central",
+                'address' => 'Directorio'
+            ],
+            [
+                'id' => 4,
+                'name' => "SERVICE TEST CREATE",
+                'account' => "MANOLO CHAPS",
+                'branchOffice' => "Casa Central",
+                'address' => 'Directorio'
             ]
         ];
 
@@ -145,6 +159,13 @@ class ServiceSearchControllerTest extends AbstractConsoleControllerTestCase
                 'account' => "MANOLO CHAPS",
                 'branchOffice' => "Casa Central",
                 'address' => 'Directorio'
+            ],
+            [
+                'id' => 4,
+                'name' => "SERVICE TEST CREATE",
+                'account' => "MANOLO CHAPS",
+                'branchOffice' => "Casa Central",
+                'address' => 'Directorio'
             ]
         ];
 
@@ -180,6 +201,13 @@ class ServiceSearchControllerTest extends AbstractConsoleControllerTestCase
             [
                 'id' => 1,
                 'name' => "General",
+                'account' => "MANOLO CHAPS",
+                'branchOffice' => "Casa Central",
+                'address' => 'Directorio'
+            ],
+            [
+                'id' => 4,
+                'name' => "SERVICE TEST CREATE",
                 'account' => "MANOLO CHAPS",
                 'branchOffice' => "Casa Central",
                 'address' => 'Directorio'
