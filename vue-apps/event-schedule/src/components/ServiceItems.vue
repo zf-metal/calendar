@@ -19,7 +19,7 @@
                     <v-list dense>
                         <v-list-tile>
                             <v-list-tile-content>Cliente:</v-list-tile-content>
-                            <v-list-tile-content class="align-end">{{ props.item.account }}</v-list-tile-content>
+                            <v-list-tile-content class="align-end">{{ props.item.client }}</v-list-tile-content>
                         </v-list-tile>
                         <v-list-tile>
                             <v-list-tile-content>Sucursal:</v-list-tile-content>
@@ -28,17 +28,23 @@
 
                         <v-list-tile>
                             <v-list-tile-content>Direccion:</v-list-tile-content>
-                            <v-list-tile-content class="align-end">{{ props.item.address }}</v-list-tile-content>
+                            <v-list-tile-content class="align-end">{{ props.item.location }}</v-list-tile-content>
                         </v-list-tile>
+                        <v-divider></v-divider>
+                        <v-card-text class="text-xs-center pa-0">
+                            <v-btn small color="info" @click="showServiceEvents(props.item.id)" >Programación</v-btn>
+                        </v-card-text>
                     </v-list>
                 </v-card>
             </v-flex>
+
+
         </v-data-iterator>
     </v-container>
 </template>
 
 <script>
-    import {mapGetters, mapActions} from 'vuex';
+    import {mapGetters,mapActions} from 'vuex';
 
     export default {
         name: 'ServiceItems',
@@ -53,7 +59,15 @@
             }
         },
         components: {},
-        methods: {},
+        methods: {
+            showServiceEvents: function (id) {
+                this.selectService(id);
+                this.$store.commit('SET_SHOW_MODAL_SERVICE', true);
+            },
+            ...mapActions([
+                'selectService'
+            ])
+        },
         computed: {
             ...mapGetters([]),
         },

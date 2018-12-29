@@ -83,8 +83,8 @@ class BranchOfficeLoader extends AbstractFixture implements FixtureInterface
             $branchOffice = new BranchOffice();
             $branchOffice->setId($id);
             $branchOffice->setName($name);
-            $branchOffice->setAccount($this->getReference($accountName));
-            $branchOffice->setAddress($address);
+            $branchOffice->setClient($this->getReference($accountName));
+            $branchOffice->setLocation($address);
         }
 
 

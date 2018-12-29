@@ -208,9 +208,12 @@
                 this.$store.commit('SET_EVENT_INDEX_SELECTED', this.getEventIndexById(this.event.id));
             },
             showServiceEvents: function () {
-                this.selectEvent();
+                this.selectService(this.event.service);
                 this.$store.commit('SET_SHOW_MODAL_SERVICE', true);
-            }
+            },
+            ...mapActions([
+                'selectService'
+            ])
         },
         computed: {
             ...mapState([

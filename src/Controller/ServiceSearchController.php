@@ -2,6 +2,7 @@
 
 namespace ZfMetal\Calendar\Controller;
 
+use Zend\Http\Request;
 use Zend\Mvc\Controller\AbstractRestfulController;
 use Zend\View\Model\JsonModel;
 use ZfMetal\Calendar\Repository\ServiceRepository;
@@ -66,18 +67,29 @@ class ServiceSearchController extends AbstractRestfulController
         $result = [];
         if($this->getRequest()->isPost()){
 
-            //Recibir en JSON Ver Restful Controller
-            $id = $this->getRequest()->getPost("id");
-            $account = $this->getRequest()->getPost("account");
-            $branchOffice = $this->getRequest()->getPost("branchOffice");
-            $address =  $this->getRequest()->getPost("address");
+            $data = $this->getData($this->getRequest());
+
+            //Data
+            $id = array_key_exists("id",$data)?$data["id"]:null;
+            $client = array_key_exists("client",$data)?$data["client"]:null;
+            $branchOffice = array_key_exists("branchOffice",$data)?$data["branchOffice"]:null;;
+            $location =  array_key_exists("location",$data)?$data["location"]:null;;
 
 
-            $result =  $this->getServiceRepository()->search($id,$account,$branchOffice,$address);
+            $result =  $this->getServiceRepository()->search($id,$client,$branchOffice,$location);
         }
 
-
        return new JsonModel($result);
+    }
+
+
+    protected function getData(Request $request)
+    {
+        if ($this->requestHasContentType($request, self::CONTENT_TYPE_JSON)) {
+            return $this->jsonDecode($request->getContent());
+        }
+
+        return $request->getPost()->toArray();
     }
 
 

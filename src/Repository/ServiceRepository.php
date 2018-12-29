@@ -7,9 +7,9 @@ use ZfMetal\Calendar\Entity\Service;
 
 /**
  * ServiceRepository
- *
- *
- *
+ * 
+ * 
+ * 
  * @author
  * @license
  * @link
@@ -29,13 +29,12 @@ class ServiceRepository extends EntityRepository
         $this->getEntityManager()->flush();
     }
 
-
-    public function search($id= null, $account= null, $branchOffice = null, $address= null)
+    public function search($id = null, $client = null, $branchOffice = null, $location = null)
     {
         $query = $this->getEntityManager()->createQueryBuilder('u')
-            ->select('u.id, u.name,a.name as account, bo.name as branchOffice, bo.address ')
+            ->select('u.id, u.name,c.name as client, bo.name as branchOffice, bo.location as location ')
             ->from(Service::class, 'u')
-            ->leftJoin('u.account', 'a')
+            ->leftJoin('u.client', 'c')
             ->leftJoin('u.branchOffice', 'bo');
 
         if ($id) {
@@ -43,30 +42,30 @@ class ServiceRepository extends EntityRepository
                 ->setParameter("id", $id);
         }
 
-        if ($account) {
+        if ($client) {
 
-            $query->andWhere('a.name = :account')
-                ->setParameter("account", $account);
+            $query->andWhere('c.name like :client or c.tradename like :client')
+                ->setParameter("client", '%'.$client.'%');
         }
 
         if ($branchOffice) {
 
-            $query->andWhere('bo.name = :branchOffice')
-                ->setParameter("branchOffice", $branchOffice);
+            $query->andWhere('bo.name like :branchOffice')
+                ->setParameter("branchOffice",  '%'.$branchOffice.'%');
         }
 
 
-        if ($address) {
+        if ($location) {
 
-            $query->andWhere('bo.address = :address')
-                ->setParameter("address", $address);
+            $query->andWhere('bo.location like :location')
+                ->setParameter("location",  '%'.$location.'%');
         }
 
 
 
         return $query->getQuery()->getArrayResult();
-
     }
+
 
 }
 

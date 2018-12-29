@@ -88,7 +88,7 @@
             eventList: function () {
 
                 EventService.getServiceEvents(
-                    this.eventSelected.service,
+                    this.getServiceIdSelected,
                     this.getFrom.format("YYYY-MM-DD"),
                     this.getTo.format("YYYY-MM-DD")
                 ).then(
@@ -130,6 +130,7 @@
                 'eventSelected'
             ]),
             ...mapGetters([
+                'getServiceIdSelected',
                 'getCalendarYear',
                 'getCalendarMonth',
                 'getMonthName',

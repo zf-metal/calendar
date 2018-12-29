@@ -2,12 +2,12 @@
 
 return [
     'zf-metal-datagrid.custom' => [
-        'zfmetal-calendar-entity-branchoffice' => [
-            'gridId' => 'zfmdg_BranchOffice',
+        'zfmetal-calendar-entity-client' => [
+            'gridId' => 'zfmdg_Client',
             'sourceConfig' => [
                 'type' => 'doctrine',
                 'doctrineOptions' => [
-                    'entityName' => \ZfMetal\Calendar\Entity\BranchOffice::class,
+                    'entityName' => \ZfMetal\Calendar\Entity\Client::class,
                     'entityManager' => 'doctrine.entitymanager.orm_default',
                 ],
             ],
@@ -24,8 +24,8 @@ return [
                 ],
             ],
             'formConfig' => [
-                'columns' => 'one',
-                'style' => 'vertical',
+                'columns' => \ZfMetal\Commons\Consts::COLUMNS_ONE,
+                'style' => \ZfMetal\Commons\Consts::STYLE_VERTICAL,
                 'groups' => [
                     
                 ],
@@ -33,19 +33,6 @@ return [
             'columnsConfig' => [
                 'id' => [
                     'displayName' => 'ID',
-                ],
-                'account' => [
-                    'displayName' => 'Cuenta',
-                    'type' => 'relational',
-                ],
-                'name' => [
-                    'displayName' => 'Nombre',
-                ],
-                'location' => [
-                    'displayName' => 'Dirección',
-                ],
-                'address' => [
-                    'displayName' => 'Dirección',
                 ],
             ],
             'crudConfig' => [

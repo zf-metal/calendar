@@ -7,6 +7,7 @@ use Zend\Form\Annotation as Annotation;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\UniqueConstraint as UniqueConstraint;
 use Gedmo\Mapping\Annotation as Gedmo;
+use ZfMetal\Restful\Transformation;
 
 /**
  * Service
@@ -33,32 +34,31 @@ class Service
     public $id = null;
 
     /**
-     * @Annotation\Type("Zend\Form\Element\Text")
-     * @Annotation\Attributes({"type":"text"})
-     * @Annotation\Options({"label":"Nombre de Servicio", "description":"",
-     * "addon":""})
-     * @ORM\Column(type="string", length=100, unique=false, nullable=true, name="name")
+     * @Annotation\Type("DoctrineModule\Form\Element\ObjectSelect")
+     * @Annotation\Options({"label":"Cliente","empty_option": "",
+     * "target_class":"\ZfMetal\Calendar\Entity\Client", "description":""})
+     * @ORM\ManyToOne(targetEntity="\ZfMetal\Calendar\Entity\Client")
+     * @ORM\JoinColumn(name="client_id", referencedColumnName="id", nullable=true)
      */
-    public $name = null;
+    public $client = null;
 
     /**
      * @Annotation\Type("DoctrineModule\Form\Element\ObjectSelect")
-     * @Annotation\Options({"label":"Cuenta","empty_option": "",
-     * "target_class":"\ZfMetal\Calendar\Entity\Account", "description":""})
-     * @ORM\ManyToOne(targetEntity="\ZfMetal\Calendar\Entity\Account")
-     * @ORM\JoinColumn(name="account_id", referencedColumnName="id", nullable=true)
-     */
-    public $account = null;
-
-    /**
-     * @Annotation\Type("DoctrineModule\Form\Element\ObjectSelect")
-     * @Annotation\Options({"label":"Sucursal","empty_option": "",
+     * @Annotation\Options({"label":"branchOffice","empty_option": "",
      * "target_class":"\ZfMetal\Calendar\Entity\BranchOffice", "description":""})
      * @ORM\ManyToOne(targetEntity="\ZfMetal\Calendar\Entity\BranchOffice")
      * @ORM\JoinColumn(name="branch_office_id", referencedColumnName="id",
      * nullable=true)
      */
     public $branchOffice = null;
+
+    /**
+     * @Annotation\Type("Zend\Form\Element\Text")
+     * @Annotation\Attributes({"type":"text"})
+     * @Annotation\Options({"label":"Nombre", "description":"", "addon":""})
+     * @ORM\Column(type="string", length=100, unique=false, nullable=true, name="name")
+     */
+    public $name = null;
 
     public function getId()
     {
@@ -70,24 +70,14 @@ class Service
         $this->id = $id;
     }
 
-    public function getName()
+    public function getClient()
     {
-        return $this->name;
+        return $this->client;
     }
 
-    public function setName($name)
+    public function setClient($client)
     {
-        $this->name = $name;
-    }
-
-    public function getAccount()
-    {
-        return $this->account;
-    }
-
-    public function setAccount($account)
-    {
-        $this->account = $account;
+        $this->client = $client;
     }
 
     public function getBranchOffice()
@@ -98,6 +88,16 @@ class Service
     public function setBranchOffice($branchOffice)
     {
         $this->branchOffice = $branchOffice;
+    }
+
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    public function setName($name)
+    {
+        $this->name = $name;
     }
 
     public function __toString()

@@ -7,7 +7,7 @@ use Doctrine\Common\DataFixtures\Executor\ORMExecutor;
 use Doctrine\Common\DataFixtures\Loader;
 use Doctrine\Common\DataFixtures\Purger\ORMPurger;
 use Doctrine\ORM\EntityManager;
-use Test\DataFixture\AccountLoader;
+use Test\DataFixture\ClientLoader;
 use Test\DataFixture\BranchOfficeLoader;
 use Test\DataFixture\ServiceLoader;
 use Zend\Test\PHPUnit\Controller\AbstractConsoleControllerTestCase;
@@ -32,6 +32,8 @@ class ServiceSearchControllerTest extends AbstractConsoleControllerTestCase
             include __DIR__ . '/../config/application.config.php'
         );
         parent::setUp();
+
+        ini_set('display_errors', 'on');
     }
 
     public function getEm()
@@ -56,6 +58,9 @@ class ServiceSearchControllerTest extends AbstractConsoleControllerTestCase
         $this->dispatch("/zfmc/serviceSearch", "POST", $params);
 
 
+
+        echo $this->getResponse()->getContent();
+
         $response = json_decode($this->getResponse()->getContent());
 
 
@@ -63,9 +68,9 @@ class ServiceSearchControllerTest extends AbstractConsoleControllerTestCase
             [
                 'id' => 1,
                 'name' => "General",
-                'account' => "MANOLO CHAPS",
+                'client' => "MANOLO CHAPS",
                 'branchOffice' => "Casa Central",
-                'address' => 'Directorio'
+                'location' => 'Directorio'
             ]
         ];
 
@@ -89,7 +94,7 @@ class ServiceSearchControllerTest extends AbstractConsoleControllerTestCase
         $this->setUseConsoleRequest(false);
 
         $params = [
-            'account' => "MANOLO CHAPS"
+            'client' => "MANOLO CHAPS"
         ];
 
         $this->dispatch("/zfmc/serviceSearch", "POST", $params);
@@ -102,23 +107,23 @@ class ServiceSearchControllerTest extends AbstractConsoleControllerTestCase
             [
                 'id' => 1,
                 'name' => "General",
-                'account' => "MANOLO CHAPS",
+                'client' => "MANOLO CHAPS",
                 'branchOffice' => "Casa Central",
-                'address' => 'Directorio'
+                'location' => 'Directorio'
             ],
             [
                 'id' => 2,
                 'name' => "SERVICE TEST UPDATE",
-                'account' => "MANOLO CHAPS",
-                'branchOffice' => "Casa Central",
-                'address' => 'Directorio'
+                'client' => "MANOLO CHAPS",
+                'branchOffice' => "Sur",
+                'location' => 'Rojas'
             ],
             [
                 'id' => 4,
                 'name' => "SERVICE TEST CREATE",
-                'account' => "MANOLO CHAPS",
+                'client' => "MANOLO CHAPS",
                 'branchOffice' => "Casa Central",
-                'address' => 'Directorio'
+                'location' => 'Directorio'
             ]
         ];
 
@@ -156,16 +161,16 @@ class ServiceSearchControllerTest extends AbstractConsoleControllerTestCase
             [
                 'id' => 1,
                 'name' => "General",
-                'account' => "MANOLO CHAPS",
+                'client' => "MANOLO CHAPS",
                 'branchOffice' => "Casa Central",
-                'address' => 'Directorio'
+                'location' => 'Directorio'
             ],
             [
                 'id' => 4,
                 'name' => "SERVICE TEST CREATE",
-                'account' => "MANOLO CHAPS",
+                'client' => "MANOLO CHAPS",
                 'branchOffice' => "Casa Central",
-                'address' => 'Directorio'
+                'location' => 'Directorio'
             ]
         ];
 
@@ -188,7 +193,7 @@ class ServiceSearchControllerTest extends AbstractConsoleControllerTestCase
         $this->setUseConsoleRequest(false);
 
         $params = [
-            'address' => "Directorio"
+            'location' => "Directorio"
         ];
 
         $this->dispatch("/zfmc/serviceSearch", "POST", $params);
@@ -201,16 +206,16 @@ class ServiceSearchControllerTest extends AbstractConsoleControllerTestCase
             [
                 'id' => 1,
                 'name' => "General",
-                'account' => "MANOLO CHAPS",
+                'client' => "MANOLO CHAPS",
                 'branchOffice' => "Casa Central",
-                'address' => 'Directorio'
+                'location' => 'Directorio'
             ],
             [
                 'id' => 4,
                 'name' => "SERVICE TEST CREATE",
-                'account' => "MANOLO CHAPS",
+                'client' => "MANOLO CHAPS",
                 'branchOffice' => "Casa Central",
-                'address' => 'Directorio'
+                'location' => 'Directorio'
             ]
         ];
 
@@ -218,8 +223,6 @@ class ServiceSearchControllerTest extends AbstractConsoleControllerTestCase
         $this->assertJsonStringEqualsJsonString($this->getResponse()->getContent(), json_encode($responseToCompare));
 
 
-        $this->assertEquals($response[0]->id, 1);
-        $this->assertEquals($response[0]->name, "General");
 
     }
 

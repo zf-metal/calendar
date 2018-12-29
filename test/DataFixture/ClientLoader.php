@@ -13,12 +13,12 @@ use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\ORM\EntityManager;
-use ZfMetal\Calendar\Entity\Account;
+use ZfMetal\Calendar\Entity\Client;
 
-class AccountLoader  extends AbstractFixture implements FixtureInterface
+class ClientLoader  extends AbstractFixture implements FixtureInterface
 {
 
-    const ENTITY = Account::class;
+    const ENTITY = Client::class;
 
 
 
@@ -30,7 +30,7 @@ class AccountLoader  extends AbstractFixture implements FixtureInterface
     /**
      * @var ArrayCollection
      */
-    protected $accounts;
+    protected $clients;
 
     /**
      * @return mixed
@@ -43,12 +43,12 @@ class AccountLoader  extends AbstractFixture implements FixtureInterface
     /**
      * @return ArrayCollection
      */
-    public function getAccounts()
+    public function getClients()
     {
-        if (!$this->accounts) {
-            $this->accounts = new ArrayCollection();
+        if (!$this->clients) {
+            $this->clients = new ArrayCollection();
         }
-        return $this->accounts;
+        return $this->clients;
     }
 
 
@@ -68,7 +68,7 @@ class AccountLoader  extends AbstractFixture implements FixtureInterface
 
         $this->em = $manager;
 
-        $this->createAccount(1, "MANOLO CHAPS", "MANO");
+        $this->createClient(1, "MANOLO CHAPS", "MANO");
 
         $manager->flush();
 
@@ -81,24 +81,24 @@ class AccountLoader  extends AbstractFixture implements FixtureInterface
      * @param $name
      * @param $tradename
      */
-    public function createAccount($id, $name,$tradename)
+    public function createClient($id, $name,$tradename)
     {
 
-        $account = $this->findByName($name);
-        if (!$account) {
-            $account = new Account();
-            $account->setId($id);
-            $account->setName($name);
-            $account->setTradename($tradename);
+        $client = $this->findByName($name);
+        if (!$client) {
+            $client = new Client();
+            $client->setId($id);
+            $client->setName($name);
+            $client->setTradename($tradename);
         }
 
 
-        $this->getEm()->persist($account);
+        $this->getEm()->persist($client);
 
         //Add reference for relations
-        $this->addReference($name, $account);
+        $this->addReference($name, $client);
 
-        $this->getAccounts()->add($account);
+        $this->getClients()->add($client);
     }
 
 }

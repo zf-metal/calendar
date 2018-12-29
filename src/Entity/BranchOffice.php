@@ -10,9 +10,9 @@ use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * BranchOffice
- *
- *
- *
+ * 
+ * 
+ * 
  * @author
  * @license
  * @link
@@ -21,6 +21,8 @@ use Gedmo\Mapping\Annotation as Gedmo;
  */
 class BranchOffice
 {
+
+
 
     /**
      * @Annotation\Type("Zend\Form\Element\Text")
@@ -34,18 +36,17 @@ class BranchOffice
 
     /**
      * @Annotation\Type("DoctrineModule\Form\Element\ObjectSelect")
-     * @Annotation\Options({"label":"Cuenta","empty_option": "",
-     * "target_class":"\ZfMetal\Calendar\Entity\Account", "description":""})
-     * @ORM\ManyToOne(targetEntity="\ZfMetal\Calendar\Entity\Account")
-     * @ORM\JoinColumn(name="account_id", referencedColumnName="id", nullable=true)
+     * @Annotation\Options({"label":"Cliente","empty_option": "",
+     * "target_class":"\ZfMetal\Calendar\Entity\Client", "description":""})
+     * @ORM\ManyToOne(targetEntity="\ZfMetal\Calendar\Entity\Client")
+     * @ORM\JoinColumn(name="client_id", referencedColumnName="id", nullable=true)
      */
-    public $account = null;
+    public $client = null;
 
     /**
      * @Annotation\Type("Zend\Form\Element\Text")
      * @Annotation\Attributes({"type":"text"})
-     * @Annotation\Options({"label":"Nombre", "description":"Nombre de la sucursal",
-     * "addon":""})
+     * @Annotation\Options({"label":"Nombre", "description":"", "addon":""})
      * @ORM\Column(type="string", length=100, unique=false, nullable=true, name="name")
      */
     public $name = null;
@@ -55,9 +56,9 @@ class BranchOffice
      * @Annotation\Attributes({"type":"text"})
      * @Annotation\Options({"label":"Dirección", "description":"", "addon":""})
      * @ORM\Column(type="string", length=100, unique=false, nullable=true,
-     * name="address")
+     * name="location")
      */
-    public $address = null;
+    public $location = null;
 
     public function getId()
     {
@@ -69,15 +70,6 @@ class BranchOffice
         $this->id = $id;
     }
 
-    public function getAccount()
-    {
-        return $this->account;
-    }
-
-    public function setAccount($account)
-    {
-        $this->account = $account;
-    }
 
     public function getName()
     {
@@ -89,14 +81,25 @@ class BranchOffice
         $this->name = $name;
     }
 
-    public function getAddress()
+
+    public function getLocation()
     {
-        return $this->address;
+        return $this->location;
     }
 
-    public function setAddress($address)
+    public function setLocation($location)
     {
-        $this->address = $address;
+        $this->location = $location;
+    }
+
+    public function getClient()
+    {
+        return $this->client;
+    }
+
+    public function setClient($client)
+    {
+        $this->client = $client;
     }
 
     public function __toString()

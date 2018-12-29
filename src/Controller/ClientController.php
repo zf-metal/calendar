@@ -5,7 +5,7 @@ namespace ZfMetal\Calendar\Controller;
 use Zend\Mvc\Controller\AbstractActionController;
 
 /**
- * AccountController
+ * ClientController
  *
  *
  *
@@ -13,10 +13,10 @@ use Zend\Mvc\Controller\AbstractActionController;
  * @license
  * @link
  */
-class AccountController extends AbstractActionController
+class ClientController extends AbstractActionController
 {
 
-    const ENTITY = \ZfMetal\Calendar\Entity\Account::class;
+    const ENTITY = \ZfMetal\Calendar\Entity\Client::class;
 
     /**
      * @var \Doctrine\ORM\EntityManager
@@ -43,7 +43,7 @@ class AccountController extends AbstractActionController
         return $this->getEm()->getRepository(self::ENTITY);
     }
 
-    public function getAccountRepository()
+    public function getClientRepository()
     {
         return $this->getEm()->getRepository(self::ENTITY);
     }

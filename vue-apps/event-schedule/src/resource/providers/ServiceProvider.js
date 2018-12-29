@@ -10,8 +10,8 @@ class ServiceProvider extends HttpRequest {
     }
 
 
-    serviceSearch(id, account, branchOffice, address) {
-        let params = {id: id, account: account, branchOffice: branchOffice, address: address}
+    serviceSearch(id, client, branchOffice, location) {
+        let params = {id: id, client: client, branchOffice: branchOffice, location: location}
         return this.axios.post(
             '/zfmc/serviceSearch',
             params,

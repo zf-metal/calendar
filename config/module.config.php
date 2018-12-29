@@ -15,11 +15,13 @@ include "zfm-datagrid.account.config.php",
 include "zfm-datagrid.branch-office.config.php",
 include "zfm-datagrid.calendar-group.config.php",
 include "zfm-datagrid.calendar.config.php",
+include "zfm-datagrid.client.config.php",
 include "zfm-datagrid.event-state.config.php",
 include "zfm-datagrid.event-type.config.php",
 include "zfm-datagrid.event.config.php",
 include "zfm-datagrid.holiday.config.php",
 include "zfm-datagrid.out-of-service.config.php",
+include "zfm-datagrid.service.config.php",
 include "zfm-restful.config.php"
 );
 

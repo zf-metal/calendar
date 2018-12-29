@@ -7,7 +7,7 @@ use Doctrine\Common\DataFixtures\Executor\ORMExecutor;
 use Doctrine\Common\DataFixtures\Loader;
 use Doctrine\Common\DataFixtures\Purger\ORMPurger;
 use Doctrine\ORM\EntityManager;
-use Test\DataFixture\AccountLoader;
+use Test\DataFixture\ClientLoader;
 use Test\DataFixture\BranchOfficeLoader;
 use Test\DataFixture\ServiceLoader;
 use Zend\Test\PHPUnit\Controller\AbstractConsoleControllerTestCase;
@@ -18,7 +18,7 @@ use Zend\Test\PHPUnit\Controller\AbstractConsoleControllerTestCase;
  * @method Request getRequest()
  * @package Test\Controller
  */
-class AccountControllerTest extends AbstractConsoleControllerTestCase
+class ClientControllerTest extends AbstractConsoleControllerTestCase
 {
 
     protected $traceError = true;
@@ -58,7 +58,7 @@ class AccountControllerTest extends AbstractConsoleControllerTestCase
     public function testCreateData()
     {
         $loader = new Loader();
-        $loader->addFixture(new AccountLoader());
+        $loader->addFixture(new ClientLoader());
         $loader->addFixture(new BranchOfficeLoader());
         $loader->addFixture(new ServiceLoader());
 
@@ -77,7 +77,7 @@ class AccountControllerTest extends AbstractConsoleControllerTestCase
     public function testGet()
     {
         $this->setUseConsoleRequest(false);
-        $this->dispatch("/zfmc/api/accounts/1", "GET");
+        $this->dispatch("/zfmc/api/clients/1", "GET");
 
 
         $response = json_decode($this->getResponse()->getContent());
@@ -98,7 +98,7 @@ class AccountControllerTest extends AbstractConsoleControllerTestCase
     public function testGetList()
     {
         $this->setUseConsoleRequest(false);
-        $this->dispatch("/zfmc/api/accounts", "GET");
+        $this->dispatch("/zfmc/api/clients", "GET");
 
         $response = json_decode($this->getResponse()->getContent());
         //var_dump($response);
@@ -130,7 +130,7 @@ class AccountControllerTest extends AbstractConsoleControllerTestCase
 
         ];
 
-        $this->dispatch("/zfmr/api/accounts", "POST",
+        $this->dispatch("/zfmr/api/clients", "POST",
             $params);
 
         $jsonToCompare = [
@@ -162,7 +162,7 @@ class AccountControllerTest extends AbstractConsoleControllerTestCase
 
         ];
 
-        $this->dispatch("/zfmr/api/accounts/2", "PUT",
+        $this->dispatch("/zfmr/api/clients/2", "PUT",
             $params);
 
 
@@ -189,7 +189,7 @@ class AccountControllerTest extends AbstractConsoleControllerTestCase
         $this->setUseConsoleRequest(false);
 
 
-        $this->dispatch("/zfmr/api/accounts/2", "DELETE");
+        $this->dispatch("/zfmr/api/clients/2", "DELETE");
 
 
         $jsonToCompare = [

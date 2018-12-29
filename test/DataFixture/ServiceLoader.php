@@ -84,7 +84,7 @@ class ServiceLoader extends AbstractFixture implements FixtureInterface
             $service = new Service();
             $service->setId($id);
             $service->setName($name);
-            $service->setAccount($this->getReference($account));
+            $service->setClient($this->getReference($account));
             $service->setBranchOffice($this->getReference($branchOffice));
 
         }

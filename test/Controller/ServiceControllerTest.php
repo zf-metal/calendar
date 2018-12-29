@@ -7,7 +7,7 @@ use Doctrine\Common\DataFixtures\Executor\ORMExecutor;
 use Doctrine\Common\DataFixtures\Loader;
 use Doctrine\Common\DataFixtures\Purger\ORMPurger;
 use Doctrine\ORM\EntityManager;
-use Test\DataFixture\AccountLoader;
+use Test\DataFixture\ClientLoader;
 use Test\DataFixture\BranchOfficeLoader;
 use Test\DataFixture\ServiceLoader;
 use Zend\Test\PHPUnit\Controller\AbstractConsoleControllerTestCase;
@@ -58,7 +58,7 @@ class ServiceControllerTest extends AbstractConsoleControllerTestCase
     public function testCreateData()
     {
         $loader = new Loader();
-        $loader->addFixture(new AccountLoader());
+        $loader->addFixture(new ClientLoader());
         $loader->addFixture(new BranchOfficeLoader());
         $loader->addFixture(new ServiceLoader());
 
@@ -125,7 +125,7 @@ class ServiceControllerTest extends AbstractConsoleControllerTestCase
         //Create Firt User
 
         $params = [
-            "account" => 1,
+            "client" => 1,
             "branchOffice" => 1,
             "name" => "SERVICE TEST CREATE",
 

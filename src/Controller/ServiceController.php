@@ -5,18 +5,18 @@ namespace ZfMetal\Calendar\Controller;
 use Zend\Mvc\Controller\AbstractActionController;
 
 /**
- * BranchOfficeController
- * 
- * 
- * 
+ * ServiceController
+ *
+ *
+ *
  * @author
  * @license
  * @link
  */
-class BranchOfficeController extends AbstractActionController
+class ServiceController extends AbstractActionController
 {
 
-    const ENTITY = 'ZfMetal\\Calendar\\Entity\\BranchOffice';
+    const ENTITY = \ZfMetal\Calendar\Entity\Service::class;
 
     /**
      * @var \Doctrine\ORM\EntityManager
@@ -43,7 +43,7 @@ class BranchOfficeController extends AbstractActionController
         return $this->getEm()->getRepository(self::ENTITY);
     }
 
-    public function getBranchOfficeRepository()
+    public function getServiceRepository()
     {
         return $this->getEm()->getRepository(self::ENTITY);
     }
