@@ -9,6 +9,10 @@ return  [
             'event-states' => \ZfMetal\Calendar\Entity\EventState::class,
             'event-types' => \ZfMetal\Calendar\Entity\EventType::class,
             'zones' => \ZfMetal\Calendar\Entity\Zone::class,
+
+            'clients' => \ZfMetal\Calendar\Entity\Client::class,
+            'branch-offices' => \ZfMetal\Calendar\Entity\BranchOffice::class,
+            'services' => \ZfMetal\Calendar\Entity\Service::class,
         ],
     ],
 ];

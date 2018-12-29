@@ -24,6 +24,20 @@ class Module  implements
         return include __DIR__ . '/../config/module.config.php';
     }
 
+    public function getModuleDependencies()
+    {
+        return array(
+            'Zend\Router',
+            'Zend\Validator',
+            'DoctrineORMModule',
+            'ZfMetal\Commons',
+            'ZfMetal\Security',
+          //  'ZfcRbac',
+            'ZfMetal\Datagrid',
+            'ZfMetal\Restful'
+        );
+    }
+
     public function getConsoleBanner(Console $console)
     {
         return "ZfMetal Calendar Module";

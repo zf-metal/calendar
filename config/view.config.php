@@ -8,5 +8,7 @@ return [
         'strategies' => array(
             'ViewJsonStrategy',
         ),
+        'display_exceptions' => false,
+        'display_not_found_reason' => false,
     ],
 ];

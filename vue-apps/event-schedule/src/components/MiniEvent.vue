@@ -23,7 +23,7 @@
 </template>
 
 <script>
-    import {mapState, mapGetters, mapActions} from 'vuex';
+    import { mapGetters} from 'vuex';
 
     import 'moment/locale/es';
     import {Drag, Drop} from 'vue-drag-drop';

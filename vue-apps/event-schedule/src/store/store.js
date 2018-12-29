@@ -9,13 +9,16 @@ import {HTTP} from './../utils/http-client'
 import {calculateDistance, getRandomColor, extractPriorityIntByTime} from './../utils/helpers'
 
 
-import {EventService, StartService, CalendarService} from '../resource'
+import {EventService, StartService, CalendarService, ServiceService} from '../resource'
 
 import datesModule from './modules/dates'
+import calendarModule from './modules/calendar'
 
 import {CONF_PRE_EVENT_SIZE} from './../config/config'
 
 import {
+    SET_SERVICE_ID_SELECTED,
+    SET_SERVICE_SELECTED,
     SET_DATE,
     ADD_CALENDAR,
     SET_CALENDARS,
@@ -76,14 +79,14 @@ const state = {
     eventIndexSelected: null,
     eventIdSelected: null,
     eventSelected: null,
+    serviceSelected: null,
+    serviceIdSelected: null,
     showModalForm: false,
     showModalServiceEvents: false,
     cellHeight: 60,
     loading: 0,
     calendarPosition: {top: 0, left: 0},
     calendarScroll: {top: 0, left: 0},
-    date: moment().tz('America/Argentina/Buenos_Aires').locale('es'),
-    nextDate: null,
     calendars: [],
     calendarGroups: [],
     calendarGroupSelected: null,
@@ -96,22 +99,7 @@ const state = {
     eventStates: [],
     zones: {},
     holidays: [],
-    eventTypes: [],
-    weekDays: {1: "Lunes", 2: "Martes", 3: "Miercoles", 4: "Jueves", 5: "Viernes", 6: "Sabado", 7: "Domingo"},
-    months: {
-        1: "Enero",
-        2: "Febrero",
-        3: "Marzo",
-        4: "Abril",
-        5: "Mayo",
-        6: "Junio",
-        7: "Julio",
-        8: "Agosto",
-        9: "Septiembre",
-        10: "Octubre",
-        11: "Noviembre",
-        12: "Diciembre"
-    }
+    eventTypes: []
 };
 
 /*
@@ -121,14 +109,20 @@ const state = {
 */
 
 const getters = {
-    hasMorePreEvents:  state => {
-      if( state.preEventFilteredSize > state.preEventSize){
-          return true
-      }
-      return false
+    getServiceIdSelected: state => {
+        return state.serviceIdSelected;
+    },
+    getServiceSelected: state => {
+
+    },
+    hasMorePreEvents: state => {
+        if (state.preEventFilteredSize > state.preEventSize) {
+            return true
+        }
+        return false
     },
     isHoliday: (state, getters) => {
-        if (state.holidays.find(h => h.date == getters.getDate)) {
+        if (state.holidays && state.holidays.find(h => h.date == getters.getDate)) {
             return true
         }
         return false
@@ -195,7 +189,7 @@ const getters = {
     getPreEventsFiltered: (state, getters) => {
         var pes = state.preEvents;
 
-        if(!pes){
+        if (!pes) {
             pes = []
         }
 
@@ -294,7 +288,7 @@ const getters = {
         //TODO Mutation on Getter (Bad practice)
         state.preEventFilteredSize = pes.length;
 
-        return pes.slice(0,state.preEventSize);
+        return pes.slice(0, state.preEventSize);
     },
     getPreEventsByZone: (state) => (id) => {
         return state.preEvents.filter(function (el) {
@@ -444,6 +438,15 @@ const getters = {
 */
 
 const actions = {
+    selectService({commit},id){
+        commit('SET_SERVICE_ID_SELECTED', id);
+        ServiceService.fetch(id).then(
+            (response) => {
+                let service = response.data;
+                commit('SET_SERVICE_SELECTED', service);
+            }
+        )
+    },
     checkOutOfService({state, getters, commit}) {
         let value = false;
         //Recorro los calendarios
@@ -521,6 +524,7 @@ const actions = {
         })
 
     },
+
     populateZones: ({commit}, data) => {
         var zones = {};
         for (var i = 0; i < data.length; i++) {
@@ -546,6 +550,7 @@ const actions = {
             commit("SET_PRE_EVENTS", response.data);
         });
     },
+
     eventList({state, getters, commit}) {
 
         return EventService.getActiveEvents(getters.getDate, getters.getNextDate, getters.getNextEnd).then(
@@ -587,6 +592,12 @@ const actions = {
 };
 
 const mutations = {
+    [SET_SERVICE_ID_SELECTED](state, id) {
+        state.serviceIdSelected = id;
+    },
+    [SET_SERVICE_SELECTED](state, service) {
+        state.serviceSelected = service;
+    },
     [LOADING_PLUS](state) {
         state.loading++
     },
@@ -709,7 +720,8 @@ const store = new Vuex.Store({
     actions,
     mutations,
     modules: {
-        dates: datesModule
+        dates: datesModule,
+        calendar: calendarModule
     }
 });
 

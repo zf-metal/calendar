@@ -1,5 +1,5 @@
 <template>
-    <v-layout row wrap v-if="eventSelected">
+    <v-layout row wrap v-if="serviceSelected">
         <v-flex lg3 md3 sm6 xs12>
             <v-list subheader>
                 <v-list-tile>
@@ -9,7 +9,7 @@
                     </v-list-tile-avatar>
                     <v-list-tile-content>
                         <v-list-tile-sub-title>Cliente </v-list-tile-sub-title>
-                        <v-list-tile-title>{{ eventSelected.client }}</v-list-tile-title>
+                        <v-list-tile-title  v-if="serviceSelected && serviceSelected.client" >{{ serviceSelected.client.name }}</v-list-tile-title>
 
                     </v-list-tile-content>
                 </v-list-tile>
@@ -25,7 +25,7 @@
                     </v-list-tile-avatar>
                     <v-list-tile-content>
                         <v-list-tile-sub-title>Titulo </v-list-tile-sub-title>
-                        <v-list-tile-title>{{ eventSelected.title }}</v-list-tile-title>
+                        <v-list-tile-title  v-if="serviceSelected && serviceSelected.name" >{{ serviceSelected.name }}</v-list-tile-title>
 
                     </v-list-tile-content>
                 </v-list-tile>
@@ -40,7 +40,7 @@
                     </v-list-tile-avatar>
                     <v-list-tile-content>
                         <v-list-tile-sub-title>Sucursal</v-list-tile-sub-title>
-                        <v-list-tile-title> {{ eventSelected.branchOffice }}</v-list-tile-title>
+                        <v-list-tile-title  v-if="serviceSelected && serviceSelected.branchOffice"> {{ serviceSelected.branchOffice.name }}</v-list-tile-title>
                     </v-list-tile-content>
                 </v-list-tile>
             </v-list>
@@ -55,10 +55,13 @@
 
                     <v-list-tile-content>
                         <v-list-tile-sub-title> Dirección</v-list-tile-sub-title>
-                        <v-list-tile-title>{{ eventSelected.location }}</v-list-tile-title>
+                        <v-list-tile-title v-if="serviceSelected && serviceSelected.branchOffice.location">{{ serviceSelected.branchOffice.location }}</v-list-tile-title>
                     </v-list-tile-content>
                 </v-list-tile>
             </v-list>
+        </v-flex>
+        <v-flex  xs12>
+            <v-divider></v-divider>
         </v-flex>
     </v-layout>
 
@@ -66,15 +69,21 @@
 
 <script>
     import {mapGetters, mapState} from 'vuex';
+    import {ServiceService} from '../resource/index'
 
     export default {
         name: 'ServiceDetail',
-        props:[],
+        data() {
+            return {
+                service: null,
+            }
+        },
         components: {},
         methods: {},
         computed: {
             ...mapState([
-                'eventSelected',
+                'serviceIdSelected',
+                'serviceSelected',
             ]),
         },
     }

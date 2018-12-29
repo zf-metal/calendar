@@ -5,7 +5,7 @@
 
         <v-layout row wrap>
             <v-flex xs3>
-                <h5>Pendientess</h5>
+                <h5>Pendientes</h5>
                 <v-divider></v-divider>
                 <v-layout column>
                     <v-flex v-for="(colPreEvents, i) in preEvents" :key="i" xs12>
@@ -41,10 +41,9 @@
                 </v-layout>
             </v-flex>
             <v-flex xs9>
-                <mini-calendar :events="events" ></mini-calendar>
+                <mini-calendar :events="events"></mini-calendar>
             </v-flex>
         </v-layout>
-
 
 
     </div>
@@ -60,6 +59,7 @@
     import MiniEvent from "./MiniEvent.vue";
     import MiniCalendar from './MiniCalendar.vue'
     import ServiceDetail from './ServiceDetail.vue'
+
     export default {
         name: 'ServiceEvents',
         props: {},
@@ -71,16 +71,27 @@
         data() {
             return {
                 preEvents: {},
-                events: []
+                events: [],
+                dateContext: null
             }
         },
         mounted: function () {
             this.eventList();
         },
+        watch: {
+            getFrom: function(){
+                this.eventList()
+            }
+
+        },
         methods: {
             eventList: function () {
 
-                EventService.getServiceEvents(this.eventSelected.service, this.getFrom.format("YYYY-MM-DD"), this.getTo.format("YYYY-MM-DD")).then(
+                EventService.getServiceEvents(
+                    this.getServiceIdSelected,
+                    this.getFrom.format("YYYY-MM-DD"),
+                    this.getTo.format("YYYY-MM-DD")
+                ).then(
                     (response) => {
                         let events = []
                         let preEvents = {}
@@ -108,19 +119,20 @@
         },
         computed: {
             getFrom: function () {
-                let from = moment(this.getYear + '-' + this.getMonth + '-01', "YYYY-MM-DD");
+                let from = moment(this.getCalendarYear + '-' + this.getCalendarMonth + '-01', "YYYY-MM-DD");
                 return from.startOf('month');
             },
             getTo: function () {
-                var to = this.getFrom.clone();
+                let to = this.getFrom.clone();
                 return to.endOf('month')
             },
             ...mapState([
-                'eventSelected',
+                'eventSelected'
             ]),
             ...mapGetters([
-                'getYear',
-                'getMonth',
+                'getServiceIdSelected',
+                'getCalendarYear',
+                'getCalendarMonth',
                 'getMonthName',
                 'getCalendars'
             ]),
