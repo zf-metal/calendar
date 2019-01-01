@@ -5,7 +5,7 @@
         <div>
             <v-card class="cursorPointer pa-1 white--text pa-0" :style="getStateStyle">
 
-                <v-card-text v-if="hasCalendar" class="pa-0">
+                <v-card-text class="pa-0">
                     <v-layout justify-space-around wrap class="caption">
                         <v-flex class="text-xs-left" @click="editCalendarEvent">{{event.id}}</v-flex>
                         <v-flex  class="text-xs-right"> {{calendarName}}</v-flex>
@@ -14,9 +14,6 @@
 
                 </v-card-text>
 
-                <v-card-text v-else class="pa-0">
-                    {{event.id}}.    {{event.duration}} Min - <availability-time :data="getAvailability"></availability-time>
-                </v-card-text>
 
             </v-card>
         </div>
@@ -69,8 +66,11 @@
                 return 'background-color:' + this.getEventStateBgColor(this.event.state) + "; color: " + this.getEventStateColor(this.event.state);
             },
             calendarName: function () {
-                let calendar = this.getCalendarById(this.event.calendar)
-                return calendar.name
+                if(this.event.calendar) {
+                    let calendar = this.getCalendarById(this.event.calendar)
+                    return calendar.name
+                }
+                return "-";
             },
             since: function () {
                 return formatStringDate(this.event.start, "HH:mm")
