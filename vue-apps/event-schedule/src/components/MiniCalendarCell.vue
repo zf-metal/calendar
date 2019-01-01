@@ -1,6 +1,5 @@
 <template>
     <td
-
             :class="{'not-current-month':!currentMonth}"
             class="pa-0"
     >
@@ -21,6 +20,7 @@
     import {mapState} from 'vuex';
     import MiniEvent from './MiniEvent'
     import {Drag, Drop} from 'vue-drag-drop';
+    import {calculateEnd} from './../utils/helpers'
 
     export default {
         name: 'MiniCalendarCell',
@@ -33,10 +33,20 @@
         methods: {
             handleDrop: function (data) {
                 var event = data.event;
-                event.calendar = this.eventSelected.calendar
-                // console.log("Fecha: ", this.day.format("Y-MM-DD"), " Hora:", moment(this.eventSelected.start).format("HH:mm"))
-                event.start = this.day.format("Y-MM-DD") + " " + this.eventSelected.hour
-                event.hour =  this.eventSelected.hour
+
+                if (this.eventSelected) {
+                    event.calendar = this.eventSelected.calendar;
+                    event.start = this.day.format("Y-MM-DD") + " " + this.eventSelected.hour;
+                    event.hour = this.eventSelected.hour;
+
+                    let a =  calculateEnd(event.start, event.duration);
+
+                    event.end = a;
+                } else {
+                    event.start = this.day.format("Y-MM-DD") + " 00:00";
+                    event.hour = "00:00";
+                    event.end = calculateEnd(event.start, event.duration);
+                }
 
                 this.$emit("eventDrop", event)
 

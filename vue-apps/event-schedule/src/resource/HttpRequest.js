@@ -26,7 +26,8 @@ axiosInstance.interceptors.response.use(function (response) {
 class HttpRequest {
     constructor (entity) {
         this.entity = entity;
-        this.axios = axios
+        this.axios = axios;
+        this.axiosInstance = axiosInstance;
     }
 
     setHeader (header) {

@@ -438,6 +438,16 @@ const getters = {
 */
 
 const actions = {
+    selectEvent({commit,getters},event){
+        commit('SET_EVENT_SELECTED', event);
+        commit('SET_EVENT_ID_SELECTED', event.id);
+        commit('SET_EVENT_INDEX_SELECTED', getters.getEventIndexById(event.id));
+    },
+    clearSelectEvent({commit,getters}){
+        commit('SET_EVENT_SELECTED', null);
+        commit('SET_EVENT_ID_SELECTED', null);
+        commit('SET_EVENT_INDEX_SELECTED', null);
+    },
     selectService({commit},id){
         commit('SET_SERVICE_ID_SELECTED', id);
         ServiceService.fetch(id).then(

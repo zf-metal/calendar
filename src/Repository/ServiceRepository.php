@@ -44,7 +44,7 @@ class ServiceRepository extends EntityRepository
 
         if ($client) {
 
-            $query->andWhere('c.name like :client or c.tradename like :client')
+            $query->andWhere('c.name like :client')
                 ->setParameter("client", '%'.$client.'%');
         }
 
