@@ -6,9 +6,10 @@
             <v-card class="cursorPointer pa-1 white--text pa-0" :style="getStateStyle">
 
                 <v-card-text v-if="hasCalendar" class="pa-0">
-                    <v-layout justify-space-around class="caption">
-                        <v-flex class="text-xs-left">{{since}}-{{until}}</v-flex>
-                        <v-flex class="text-xs-right"> {{calendarName}}</v-flex>
+                    <v-layout justify-space-around wrap class="caption">
+                        <v-flex class="text-xs-left" @click="editCalendarEvent">{{event.id}}</v-flex>
+                        <v-flex  class="text-xs-right"> {{calendarName}}</v-flex>
+                        <v-flex xs12 class="text-xs-left">{{since}}-{{until}}</v-flex>
                     </v-layout>
 
                 </v-card-text>
@@ -23,7 +24,7 @@
 </template>
 
 <script>
-    import { mapGetters} from 'vuex';
+    import { mapGetters,mapActions} from 'vuex';
 
     import 'moment/locale/es';
     import {Drag, Drop} from 'vue-drag-drop';
@@ -48,7 +49,16 @@
                 active: false,
             }
         },
-        methods: {},
+        methods: {
+            ...mapActions([
+                'setCalendarEventSelected',
+                'setShowCalendarEventModal'
+            ]),
+            editCalendarEvent: function(){
+                this.setCalendarEventSelected(this.event)
+                this.setShowCalendarEventModal(true)
+            }
+        },
         computed: {
             ...mapGetters([
                 'getCalendarById',

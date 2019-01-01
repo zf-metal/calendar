@@ -24,6 +24,13 @@ class EventProvider extends HttpRequest {
         let filters = '?service='+service+'&dateFrom=' + dateFrom + "<>" + dateTo;
         return this.fetchFilters(filters)
     }
+
+    getEventsByServiceYearMonth(service,year, month){
+        return this.axiosInstance.get(
+            '/events/search/byServiceYearMonth/'+service+'/'+year+'/'+month
+        )
+    }
+
 }
 
 export default EventProvider

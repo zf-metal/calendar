@@ -20,7 +20,20 @@ return [
                             ],
                             'route' => '/serviceSearch',
                         ],
+                    ],
+                    'EventsByServiceYearMonth' => [
+                        'type' => \Zend\Router\Http\Segment::class,
+                        'mayTerminate' => true,
+                        'options' => [
+                            'route' => '/api/events/search/byServiceYearMonth/:service/:year/:month',
+                           // 'route' => '/eventSearch',
+                            'defaults' => [
+                                'controller' => \ZfMetal\Calendar\Controller\EventSearchController::CLASS,
+                                'action' => 'searchByServiceYearMonth',
+                            ],
+
                         ],
+                    ],
                     'Calendar' => [
                         'mayTerminate' => false,
                         'options' => [

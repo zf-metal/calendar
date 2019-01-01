@@ -2,7 +2,7 @@
     <Drag :transfer-data="{event: event, index: index, op: 'update'}" class="drago elevation-2"
           :class="getMainClass" :style="getDragStyle">
 
-        <div @click="selectEvent">
+        <div @click="selectEvent(event)">
             <v-card :style="getDragStyle">
 
                 <v-card-title :style="getStateStyle" class="pa-0">
@@ -202,17 +202,13 @@
                 this.selectEvent();
                 this.$store.commit('SET_SHOW_MODAL_FORM', true);
             },
-            selectEvent: function () {
-                this.$store.commit('SET_EVENT_SELECTED', this.event);
-                this.$store.commit('SET_EVENT_ID_SELECTED', this.event.id);
-                this.$store.commit('SET_EVENT_INDEX_SELECTED', this.getEventIndexById(this.event.id));
-            },
             showServiceEvents: function () {
                 this.selectService(this.event.service);
                 this.$store.commit('SET_SHOW_MODAL_SERVICE', true);
             },
             ...mapActions([
-                'selectService'
+                'selectService',
+                'selectEvent'
             ])
         },
         computed: {

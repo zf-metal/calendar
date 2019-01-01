@@ -5,43 +5,32 @@
 
         <v-layout row wrap>
             <v-flex xs3>
-                <h5>Pendientes</h5>
-                <v-divider></v-divider>
-                <v-layout column>
-                    <v-flex v-for="(colPreEvents, i) in preEvents" :key="i" xs12>
-                        <v-layout>
-                            <v-flex lg5>
-                                <v-list subheader>
-                                    <v-list-tile>
-                                        <v-list-tile-content>
-                                            <v-list-tile-sub-title>Desde</v-list-tile-sub-title>
-                                            <v-list-tile-title>{{ colPreEvents.from }}</v-list-tile-title>
-                                        </v-list-tile-content>
-                                    </v-list-tile>
-                                    <v-list-tile>
-                                        <v-list-tile-content>
-                                            <v-list-tile-sub-title>Hasta</v-list-tile-sub-title>
-                                            <v-list-tile-title>{{ colPreEvents.to }}</v-list-tile-title>
-                                        </v-list-tile-content>
-                                    </v-list-tile>
-                                </v-list>
+                <h4>Pendientes {{getPendingCalendarEvents.length}}</h4>
 
-                            </v-flex>
+                <v-navigation-drawer
+                        permanent
+                        enable-resize-watcher
+                            height="620"
+                        class="ma-0"
+                >
 
-                            <v-flex lg7 class="pt-1">
-                                <mini-event v-for="(event, u) in colPreEvents.events" :key="u" :index="u"
-                                            :event="event"></mini-event>
-                            </v-flex>
+
+                    <div class=" pa-1" style="min-height:350px">
+                        <v-layout column>
+                            <preEvent v-for="(preEvent,index) in getPendingCalendarEvents"
+                                      :preEvent="preEvent"
+                                      :key="'pre'+preEvent.id" :index="index">
+                            </preEvent>
+
                         </v-layout>
-                        <v-divider></v-divider>
+                    </div>
+
+                </v-navigation-drawer>
 
 
-                    </v-flex>
-
-                </v-layout>
             </v-flex>
             <v-flex xs9>
-                <mini-calendar :events="events"></mini-calendar>
+                <mini-calendar :events="getCalendarEvents"></mini-calendar>
             </v-flex>
         </v-layout>
 
@@ -50,7 +39,7 @@
 </template>
 
 <script>
-    import {mapGetters, mapState} from 'vuex';
+    import {mapGetters, mapState, mapActions} from 'vuex';
     import {EventService} from '../resource'
     import moment from 'moment'
     import tz from 'moment-timezone'
@@ -60,13 +49,16 @@
     import MiniCalendar from './MiniCalendar.vue'
     import ServiceDetail from './ServiceDetail.vue'
 
+    import PreEvent from './PreEvent'
+
     export default {
         name: 'ServiceEvents',
         props: {},
         components: {
             MiniCalendar,
             MiniEvent,
-            ServiceDetail
+            ServiceDetail,
+            PreEvent
         },
         data() {
             return {
@@ -79,7 +71,7 @@
             this.eventList();
         },
         watch: {
-            getFrom: function(){
+            getFrom: function () {
                 this.eventList()
             }
 
@@ -87,35 +79,31 @@
         methods: {
             eventList: function () {
 
-                EventService.getServiceEvents(
+                EventService.getEventsByServiceYearMonth(
                     this.getServiceIdSelected,
-                    this.getFrom.format("YYYY-MM-DD"),
-                    this.getTo.format("YYYY-MM-DD")
+                    this.getCalendarYear,
+                    this.getCalendarMonth
                 ).then(
                     (response) => {
                         let events = []
-                        let preEvents = {}
+
                         for (let i = 0; i < response.data.length; i++) {
                             let event = response.data[i];
 
                             if (event.calendar != null) {
                                 event.hour = moment(event.start).tz('America/Argentina/Buenos_Aires').format("HH:mm");
-                                events.push(event);
-                            } else {
-                                let key = event.dateFrom + " <> " + event.dateTo;
-                                let from = event.dateFrom;
-                                let to = event.dateTo;
-                                if (!this.preEvents[key]) {
-                                    preEvents[key] = {from: from, to: to, events: []};
-                                }
-                                preEvents[key].events.push(event);
                             }
+                            events.push(event);
                         }
-                        this.events = events;
-                        this.preEvents = preEvents;
+                        this.setCalendarEvents(events);
                     }
                 )
             },
+            ...mapActions([
+                'setCalendarEvents',
+                'fetchEventsByServiceYearMonth',
+
+            ])
         },
         computed: {
             getFrom: function () {
@@ -130,6 +118,8 @@
                 'eventSelected'
             ]),
             ...mapGetters([
+                'getCalendarEvents',
+                'getPendingCalendarEvents',
                 'getServiceIdSelected',
                 'getCalendarYear',
                 'getCalendarMonth',

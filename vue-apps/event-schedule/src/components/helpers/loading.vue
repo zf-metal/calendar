@@ -25,13 +25,17 @@
                 (config) => {
                     this.$store.commit('LOADING_PLUS')
                     return config;
-                },
+                }
             );
             ai.interceptors.response.use(
                 (response) => {
                     this.$store.commit('LOADING_LESS')
                     return response;
                 },
+                (error) => {
+                    this.$store.commit('LOADING_LESS')
+                    return Promise.reject(error)
+                }
             );
         }
 

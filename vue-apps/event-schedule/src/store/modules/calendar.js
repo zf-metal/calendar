@@ -5,22 +5,67 @@ import {extendMoment} from 'moment-range';
 
 const moment = extendMoment(Moment);
 
+
 import {
-    SET_CALENDAR_DATE
+    SET_CALENDAR_DATE,
+    SET_CALENDAR_EVENTS,
+    SET_CALENDAR_EVENT_SELECTED,
+    SET_SHOW_CALENDAR_EVENT_MODAL
 } from './../mutation-types'
+
 
 export default {
     namespaced: false,
     state: {
         calendarDate: moment().tz('America/Argentina/Buenos_Aires').locale('es'),
-        calendarMonths: ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12']
+        calendarMonths: ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'],
+        calendarEvents: [],
+        calendarEventSelected: null,
+        showCalendarEventModal: false
+    },
+    actions: {
+        setCalendarEvents: ({commit}, events) => {
+            commit(SET_CALENDAR_EVENTS, events)
+        },
+        setCalendarEventSelected: ({commit}, eventSelected) => {
+            commit(SET_CALENDAR_EVENT_SELECTED, eventSelected)
+        },
+        setShowCalendarEventModal: ({commit}, value) => {
+            commit(SET_SHOW_CALENDAR_EVENT_MODAL, value)
+        },
     },
     mutations: {
         [SET_CALENDAR_DATE](state, newDate) {
             state.calendarDate = newDate;
         },
+        [SET_CALENDAR_EVENTS](state, preEvents) {
+            state.calendarEvents = preEvents;
+        },
+        [SET_CALENDAR_EVENT_SELECTED](state, eventSelected) {
+            state.calendarEventSelected = eventSelected;
+        },
+        [SET_SHOW_CALENDAR_EVENT_MODAL](state, value) {
+            state.showCalendarEventModal = value;
+        },
     },
     getters: {
+        getShowCalendarEventModal: state => {
+            return state.showCalendarEventModal;
+        },
+        getPendingCalendarEvents: state => {
+            return state.calendarEvents.filter(function (e) {
+                if (e.calendar == null) {
+                    return true;
+                }
+                return false;
+            });
+        },
+        getCalendarEventSelected: state => {
+            return state.calendarEventSelected;
+        },
+        getCalendarEvents: state => {
+            return state.calendarEvents;
+        },
         getRealCalendarDate: state => {
             return state.calendarDate;
         },
