@@ -16,6 +16,9 @@ import calendarModule from './modules/calendar'
 
 import {CONF_PRE_EVENT_SIZE} from './../config/config'
 
+
+import has from 'lodash.has'
+
 import {
     SET_SERVICE_ID_SELECTED,
     SET_SERVICE_SELECTED,
@@ -204,20 +207,73 @@ const getters = {
                     return false
                 }
 
-                if (state.filterHour.from) {
-                    if (e.config.availability && e.config.availability.timeRange && e.config.availability.timeRange.from) {
+
+                if (state.filterHour.from && state.filterHour.to) {
+
+                    //Two Range
+                    if (
+                        has(e, 'config.availability.timeRange.from') &&
+                        has(e, 'config.availability.timeRange.to') &&
+                        has(e, 'config.availability.timeRange2.from') &&
+                        has(e, 'config.availability.timeRange2.to')
+                    ) {
+
+                        //Compruebo el  primer Rango
+                        if (state.filterHour.from > e.config.availability.timeRange.from ||
+                            state.filterHour.to < e.config.availability.timeRange.to) {
+
+                            //Compruebo el segundo Rango
+                            if (state.filterHour.from > e.config.availability.timeRange2.from ||
+                                state.filterHour.to < e.config.availability.timeRange2.to
+                            ) {
+                                return false
+                            }
+                        }
+                        //One Range
+                    } else if (
+                        has(e, 'config.availability.timeRange.from') &&
+                        has(e, 'config.availability.timeRange.to')
+                    ) {
+
+
+                        //Invertido (Si el from del evento es mayor al to y los filtros no estan invertidos)
+                        if (e.config.availability.timeRange.from > e.config.availability.timeRange.to &&
+                            state.filterHour.from < state.filterHour.to) {
+                            return false
+                            //Normal
+                        } else if (state.filterHour.from > e.config.availability.timeRange.from ||
+                            state.filterHour.to < e.config.availability.timeRange.to) {
+                            return false
+
+                        }
+
+
+                    }
+
+
+                } else if (state.filterHour.from) {
+
+                    //Si ambos from estan seteados, ambos deben ser mayor para omitir el item
+                    if (has(e, 'config.availability.timeRange.from') && has(e, 'config.availability.timeRange2.from')) {
+                        if (state.filterHour.from > e.config.availability.timeRange.from
+                            && state.filterHour.from > e.config.availability.timeRange2.from) {
+                            return false
+                        }
+                        //Si solo esta seteado el primer from, debe ser mayor para omitir el item
+                    } else if (has(e, 'config.availability.timeRange.from')) {
                         if (state.filterHour.from > e.config.availability.timeRange.from) {
                             return false
                         }
                     }
-                }
 
-                if (state.filterHour.to) {
-                    if (e.config.availability && e.config.availability.timeRange2 && e.config.availability.timeRange2.to) {
-                        if (state.filterHour.to < e.config.availability.timeRange2.to) {
+
+                } else if (state.filterHour.to) {
+                    if (has(e, 'config.availability.timeRange.to') && has(e, 'config.availability.timeRange2.to')) {
+                        if (state.filterHour.to < e.config.availability.timeRange.to &&
+                            state.filterHour.to < e.config.availability.timeRange2.to) {
                             return false
                         }
-                    } else if (e.config.availability && e.config.availability.timeRange && e.config.availability.timeRange.to) {
+                    } else if (has(e, 'config.availability.timeRange.to')) {
                         if (state.filterHour.to < e.config.availability.timeRange.to) {
                             return false
                         }
@@ -438,17 +494,17 @@ const getters = {
 */
 
 const actions = {
-    selectEvent({commit,getters},event){
+    selectEvent({commit, getters}, event) {
         commit('SET_EVENT_SELECTED', event);
         commit('SET_EVENT_ID_SELECTED', event.id);
         commit('SET_EVENT_INDEX_SELECTED', getters.getEventIndexById(event.id));
     },
-    clearSelectEvent({commit,getters}){
+    clearSelectEvent({commit, getters}) {
         commit('SET_EVENT_SELECTED', null);
         commit('SET_EVENT_ID_SELECTED', null);
         commit('SET_EVENT_INDEX_SELECTED', null);
     },
-    selectService({commit},id){
+    selectService({commit}, id) {
         commit('SET_SERVICE_ID_SELECTED', id);
         ServiceService.fetch(id).then(
             (response) => {
