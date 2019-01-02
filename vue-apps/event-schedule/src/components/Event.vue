@@ -199,7 +199,7 @@
                 this.active = false;
             },
             edit: function () {
-                this.selectEvent();
+                this.selectEvent(this.event);
                 this.$store.commit('SET_SHOW_MODAL_FORM', true);
             },
             showServiceEvents: function () {
