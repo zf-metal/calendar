@@ -203,12 +203,24 @@
                 this.$store.commit('SET_SHOW_MODAL_FORM', true);
             },
             showServiceEvents: function () {
+
                 this.selectService(this.event.service);
+
+                if (this.event && this.event.calendar) {
+                    this.setCalendarSelected(this.event.calendar);
+                }
+
+                if (this.event && this.event.hour) {
+                    this.setHourSelected(this.event.hour);
+                }
+
                 this.$store.commit('SET_SHOW_MODAL_SERVICE', true);
             },
             ...mapActions([
                 'selectService',
-                'selectEvent'
+                'selectEvent',
+                'setCalendarSelected',
+                'setHourSelected'
             ])
         },
         computed: {

@@ -1,0 +1,5 @@
+export const HIDE_ERROR = 'HIDE_ERROR'
+export const SHOW_ERROR = 'SHOW_ERROR'
+export const SET_TEXT_ERROR = 'SET_TEXT_ERROR'
+export const LOADING_PLUS = 'LOADING_PLUS'
+export const LOADING_LESS = 'LOADING_LESS'

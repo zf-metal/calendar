@@ -5,7 +5,7 @@ import moment from 'moment'
 import tz from 'moment-timezone'
 import 'moment/locale/es';
 
-import {HTTP} from './../utils/http-client'
+
 import {calculateDistance, getRandomColor, extractPriorityIntByTime} from './../utils/helpers'
 
 
@@ -13,6 +13,7 @@ import {EventService, StartService, CalendarService, ServiceService} from '../re
 
 import datesModule from './modules/dates'
 import calendarModule from './modules/calendar'
+import helperModule from './modules/helpers'
 
 import {CONF_PRE_EVENT_SIZE} from './../config/config'
 
@@ -56,11 +57,9 @@ import {
     SET_FILTER_COOP,
     SET_OUTOFSERVICE_CALENDAR,
     SET_HOLIDAYS,
-    LOADING_PLUS,
-    LOADING_LESS,
     SET_SHOW_MODAL_SERVICE,
     SET_PRE_EVENT_SIZE,
-    SET_PRE_EVENT_FILTERED_SIZE
+    SET_PRE_EVENT_FILTERED_SIZE,
 } from './mutation-types'
 
 
@@ -87,7 +86,6 @@ const state = {
     showModalForm: false,
     showModalServiceEvents: false,
     cellHeight: 60,
-    loading: 0,
     calendarPosition: {top: 0, left: 0},
     calendarScroll: {top: 0, left: 0},
     calendars: [],
@@ -112,18 +110,22 @@ const state = {
 */
 
 const getters = {
+
     getServiceIdSelected: state => {
         return state.serviceIdSelected;
     },
+
     getServiceSelected: state => {
 
     },
+
     hasMorePreEvents: state => {
         if (state.preEventFilteredSize > state.preEventSize) {
             return true
         }
         return false
     },
+
     isHoliday: (state, getters) => {
         if (state.holidays && state.holidays.find(h => h.date == getters.getDate)) {
             return true
@@ -183,6 +185,9 @@ const getters = {
             return true;
         }
         return false;
+    },
+    getPreEventIndexById: (state) => (id) => {
+        return state.preEvents.findIndex(e => e.id === id)
     },
     getPreEventById: (state) => (id) => {
         return state.preEvents.map(function (x) {
@@ -494,16 +499,20 @@ const getters = {
 */
 
 const actions = {
+
+
     selectEvent({commit, getters}, event) {
-        commit('SET_EVENT_SELECTED', event);
-        commit('SET_EVENT_ID_SELECTED', event.id);
-        commit('SET_EVENT_INDEX_SELECTED', getters.getEventIndexById(event.id));
+        commit(SET_EVENT_SELECTED, event);
+        commit(SET_EVENT_ID_SELECTED, event.id);
+        commit(SET_EVENT_INDEX_SELECTED, getters.getEventIndexById(event.id));
     },
-    clearSelectEvent({commit, getters}) {
-        commit('SET_EVENT_SELECTED', null);
-        commit('SET_EVENT_ID_SELECTED', null);
-        commit('SET_EVENT_INDEX_SELECTED', null);
+
+    clearSelectEvent({commit}) {
+        commit(SET_EVENT_SELECTED, null);
+        commit(SET_EVENT_ID_SELECTED, null);
+        commit(SET_EVENT_INDEX_SELECTED, null);
     },
+
     selectService({commit}, id) {
         commit('SET_SERVICE_ID_SELECTED', id);
         ServiceService.fetch(id).then(
@@ -563,7 +572,11 @@ const actions = {
 
 
                 }
-            );
+            ).catch(
+                (error) => {
+                    dispatch("setTextError","Error on changeDate");
+                }
+            );;
 
         }
     },
@@ -604,11 +617,15 @@ const actions = {
     },
 
 
-    calendarList({state, commit}) {
+    calendarList({state, commit,dispatch}) {
         CalendarService.findAll().then((response) => {
             commit(SET_CALENDARS, response.data);
 
-        })
+        }).catch(
+            (error) => {
+                dispatch("setTextError","Error on calendarList");
+            }
+        );
     },
 
     preEventList({commit, getters, state}) {
@@ -617,7 +634,7 @@ const actions = {
         });
     },
 
-    eventList({state, getters, commit}) {
+    eventList({state, getters, commit,dispatch}) {
 
         return EventService.getActiveEvents(getters.getDate, getters.getNextDate, getters.getNextEnd).then(
             (response) => {
@@ -631,7 +648,11 @@ const actions = {
                 }
                 commit("SET_EVENTS", events);
             }
-        )
+        ).catch(
+            (error) => {
+                dispatch("setTextError","Error on eventList");
+            }
+        );
     },
     pushEvent({state, getters, commit, dispatch}, event) {
         event.hour = moment(event.start).tz('America/Argentina/Buenos_Aires').format("HH:mm");
@@ -646,29 +667,50 @@ const actions = {
         );
 
     },
-    updateEvent({state, commit}, {index, event}) {
+    updateEvent({state, commit,dispatch}, {index, event}) {
         EventService.updateEvent(event).then(
             (response) => {
                 commit('UPDATE_EVENT', {index: index, event: event})
             }
         ).catch(
+            (error) => {
+                dispatch("setTextError","Error on updateEvent");
+            }
         );
     },
+    refreshEvent({state, getters, commit,dispatch},  event) {
+        EventService.updateEvent(event).then(
+            (response) => {
 
+                let indexPreEvent = getters.getPreEventIndexById(event.id);
+                if (indexPreEvent) {
+                    commit('REMOVE_PRE_EVENTS', indexPreEvent)
+                }
+
+                let indexEvent = getters.getEventIndexById(event.id);
+                if (indexEvent) {
+                    commit('UPDATE_EVENT', {index: indexEvent, event: event})
+                } else {
+                    commit('ADD_EVENT', event);
+                }
+
+            }
+        ).catch(
+            (error) => {
+                dispatch("setTextError","Error on refreshEvent");
+            }
+
+        );
+    }
 };
 
 const mutations = {
+
     [SET_SERVICE_ID_SELECTED](state, id) {
         state.serviceIdSelected = id;
     },
     [SET_SERVICE_SELECTED](state, service) {
         state.serviceSelected = service;
-    },
-    [LOADING_PLUS](state) {
-        state.loading++
-    },
-    [LOADING_LESS](state) {
-        state.loading--
     },
     [ADD_CALENDAR](state, calendar) {
         state.calendars.push(calendar);
@@ -787,7 +829,8 @@ const store = new Vuex.Store({
     mutations,
     modules: {
         dates: datesModule,
-        calendar: calendarModule
+        calendar: calendarModule,
+        helpers: helperModule
     }
 });
 

@@ -2,6 +2,7 @@
 
     <v-app>
         <loading></loading>
+        <error-snackbar></error-snackbar>
         <v-navigation-drawer
                 persistent
                 :mini-variant="miniVariant"
@@ -174,6 +175,7 @@
 
     import modal from '../components/helpers/Modal.vue'
     import loading from './../components/helpers/loading.vue'
+    import ErrorSnackbar from './../components/helpers/ErrorSnackbar.vue'
     import vueScrollingTable from 'vue-scrolling-table'
 
     import TheToolbar from './../components/TheToolbar'
@@ -202,6 +204,7 @@
             Drop,
             modal,
             loading,
+            ErrorSnackbar,
             formEvent,
             TheToolbar,
             panel,

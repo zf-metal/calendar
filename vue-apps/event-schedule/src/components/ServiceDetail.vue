@@ -55,7 +55,7 @@
 
                     <v-list-tile-content>
                         <v-list-tile-sub-title> Dirección</v-list-tile-sub-title>
-                        <v-list-tile-title v-if="serviceSelected && serviceSelected.branchOffice.location">{{ serviceSelected.branchOffice.location }}</v-list-tile-title>
+                        <v-list-tile-title v-if="serviceSelected && serviceSelected.branchOffice && serviceSelected.branchOffice.location">{{ serviceSelected.branchOffice.location }}</v-list-tile-title>
                     </v-list-tile-content>
                 </v-list-tile>
             </v-list>

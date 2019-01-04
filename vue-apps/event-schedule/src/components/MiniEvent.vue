@@ -8,8 +8,18 @@
                 <v-card-text class="pa-0">
                     <v-layout justify-space-around wrap class="caption">
                         <v-flex class="text-xs-left" @click="editCalendarEvent">{{event.id}}</v-flex>
-                        <v-flex  class="text-xs-right"> {{calendarName}}</v-flex>
-                        <v-flex xs12 class="text-xs-left">{{since}}-{{until}}</v-flex>
+                        <v-flex class="text-xs-right"> {{calendarName}}</v-flex>
+                        <v-flex xs12 class="text-xs-left">
+                            <v-layout row wrap>
+
+                                <v-flex class="text-xs-left">{{since}}-{{until}}</v-flex>
+                                <v-flex class="text-xs-right">
+                                    <v-icon color="white" style="font-size: 15px" @click="copyData">file_copy</v-icon>
+                                </v-flex>
+                            </v-layout>
+
+
+                        </v-flex>
                     </v-layout>
 
                 </v-card-text>
@@ -21,7 +31,7 @@
 </template>
 
 <script>
-    import { mapGetters,mapActions} from 'vuex';
+    import {mapGetters, mapActions} from 'vuex';
 
     import 'moment/locale/es';
     import {Drag, Drop} from 'vue-drag-drop';
@@ -49,11 +59,23 @@
         methods: {
             ...mapActions([
                 'setCalendarEventSelected',
-                'setShowCalendarEventModal'
+                'setShowCalendarEventModal',
+                'setCalendarSelected',
+                'setHourSelected'
             ]),
-            editCalendarEvent: function(){
+            editCalendarEvent: function () {
                 this.setCalendarEventSelected(this.event)
                 this.setShowCalendarEventModal(true)
+            },
+            copyData: function () {
+
+                if (this.event && this.event.calendar) {
+                    this.setCalendarSelected(this.event.calendar);
+                }
+
+                if (this.event && this.event.hour) {
+                    this.setHourSelected(this.event.hour);
+                }
             }
         },
         computed: {
@@ -66,7 +88,7 @@
                 return 'background-color:' + this.getEventStateBgColor(this.event.state) + "; color: " + this.getEventStateColor(this.event.state);
             },
             calendarName: function () {
-                if(this.event.calendar) {
+                if (this.event.calendar) {
                     let calendar = this.getCalendarById(this.event.calendar)
                     return calendar.name
                 }

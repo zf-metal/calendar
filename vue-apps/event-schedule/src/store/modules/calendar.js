@@ -150,12 +150,14 @@ export default {
       if (state.calendarDate) {
 
         for (let mday of getters.getCalendarMonthRange.by('days')) {
+            // console.log(mday)
+            //   console.log(mday.week())
+            //   console.log(mday.isoWeek())
           if (weeks.indexOf(mday.week()) === -1) {
             weeks.push(mday.week());
           }
         }
       }
-      console.log(weeks);
       return weeks
     },
 
@@ -170,15 +172,16 @@ export default {
       for (let index = 0; index < weeks.length; index++) {
         var weeknumber = weeks[index];
 
-        let firstWeekDay = moment().year(getters.getCalendarYear).week(weeknumber).day(0);
-        let lastWeekDay = moment().year(getters.getCalendarYear).week(weeknumber).day(6);
+        let firstWeekDay = moment().year(getters.getCalendarYear).week(weeknumber).day(1);
+        let lastWeekDay = moment().year(getters.getCalendarYear).week(weeknumber).day(7);
 
-        if (getters.getCalendarMonth == 12) {
-          firstWeekDay = moment().year(getters.getCalendarYear).week(weeknumber - 1).day(0);
+        if (getters.getCalendarMonth == 12  && (weeks.length - 1) == index) {
+          firstWeekDay = moment().year(getters.getCalendarYear).week(weeks[index  - 1]).day(1);
           firstWeekDay.add(7, "day");
-          lastWeekDay = moment().year(getters.getCalendarYear).week(weeknumber - 1).day(6);
+          lastWeekDay = moment().year(getters.getCalendarYear).week(weeks[index - 1]).day(7);
           lastWeekDay.add(7, "day");
         }
+
         //console.log("From", firstWeekDay.format("YYYY-MM-DD"), weeknumber, "To", lastWeekDay.format("YYYY-MM-DD"), weeknumber);
         weekRange = moment.range(firstWeekDay, lastWeekDay)
         calendar.push(weekRange)

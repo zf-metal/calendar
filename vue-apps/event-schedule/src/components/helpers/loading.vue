@@ -7,33 +7,39 @@
 <script>
 
     import {ai} from './../../resource/HttpRequest'
-    import {mapState} from 'vuex';
+    import {mapGetters,mapActions} from 'vuex';
 
     export default {
         name: 'loading',
         props: [],
         computed: {
-            ...mapState([
-                'loading',
+            ...mapGetters([
+                'getLoading',
             ]),
             isLoading: function () {
-                return this.loading ? true : false
+                return this.getLoading ? true : false
             }
+        },
+        methods: {
+            ...mapActions([
+                'loadingPlus',
+                'loadingLess',
+            ])
         },
         mounted: function () {
             ai.interceptors.request.use(
                 (config) => {
-                    this.$store.commit('LOADING_PLUS')
+                    this.loadingPlus()
                     return config;
                 }
             );
             ai.interceptors.response.use(
                 (response) => {
-                    this.$store.commit('LOADING_LESS')
+                    this.loadingLess()
                     return response;
                 },
                 (error) => {
-                    this.$store.commit('LOADING_LESS')
+                    this.loadingLess()
                     return Promise.reject(error)
                 }
             );

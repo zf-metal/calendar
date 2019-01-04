@@ -3,7 +3,7 @@
             :class="{'not-current-month':!currentMonth}"
             class="pa-0"
     >
-        <drop @drop="handleDrop" fill-height>
+        <drop @drop="handleDrop" fill-height class="zfc-dropcell">
             <v-layout align-content-start wrap>
                 <v-flex xs12 class="text-xs-right ">
                     {{day.format("DD")}}
@@ -17,7 +17,7 @@
 </template>
 
 <script>
-    import {mapState} from 'vuex';
+    import {mapState,mapGetters,mapActions} from 'vuex';
     import MiniEvent from './MiniEvent'
     import {Drag, Drop} from 'vue-drag-drop';
     import {calculateEnd} from './../utils/helpers'
@@ -34,33 +34,41 @@
             handleDrop: function (data) {
                 var event = data.event;
 
-                if (this.eventSelected) {
-                    event.calendar = this.eventSelected.calendar;
-                    event.start = this.day.format("Y-MM-DD") + " " + this.eventSelected.hour;
-                    event.hour = this.eventSelected.hour;
 
-                    let a =  calculateEnd(event.start, event.duration);
+                let hour = (this.getHourSelected) ? this.getHourSelected : "00:00";
+                event.start = this.day.format("Y-MM-DD") + " " + hour;
+                event.hour = hour;
+                event.end = calculateEnd(event.start, event.duration);
 
-                    event.end = a;
-                } else {
-                    event.start = this.day.format("Y-MM-DD") + " 00:00";
-                    event.hour = "00:00";
-                    event.end = calculateEnd(event.start, event.duration);
-                }
+                event.calendar = this.getCalendarSelected;
 
-                this.$emit("eventDrop", event)
+
+                this.refreshEvent(event);
+
 
             },
+            ...mapActions([
+                'refreshEvent',
+            ]),
         },
         computed: {
             ...mapState([
-                'eventSelected',
+                'eventSelected'
             ]),
+            ...mapGetters([
+                'getCalendarSelected',
+                'getHourSelected',
+                'getEventIndexById'
+            ])
         },
     }
 </script>
 
 <style scoped>
+
+    .zfc-dropcell {
+        height: 100%;
+    }
 
     .not-current-month {
         background-color: #8B8986;
