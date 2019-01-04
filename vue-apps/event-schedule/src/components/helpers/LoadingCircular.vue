@@ -10,18 +10,17 @@
 
 <script>
 
-    import {ai} from './../../resource/HttpRequest'
-    import {mapState} from 'vuex';
+    import {mapGetters} from 'vuex';
 
     export default {
         name: 'LoadingCircular',
         props: [],
         computed: {
-            ...mapState([
-                'loading',
+            ...mapGetters([
+                'getLoading',
             ]),
             isLoading: function () {
-                return this.loading ? true : false
+                return this.getLoading ? true : false
             }
         },
 
