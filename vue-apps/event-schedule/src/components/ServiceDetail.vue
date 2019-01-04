@@ -9,7 +9,7 @@
                     </v-list-tile-avatar>
                     <v-list-tile-content>
                         <v-list-tile-sub-title>Cliente </v-list-tile-sub-title>
-                        <v-list-tile-title  v-if="serviceSelected && serviceSelected.client" >{{ serviceSelected.client.name }}</v-list-tile-title>
+                        <v-list-tile-title  v-if="serviceSelected && serviceSelected.client && serviceSelected.client.name" >{{ serviceSelected.client.name }}</v-list-tile-title>
 
                     </v-list-tile-content>
                 </v-list-tile>
@@ -40,7 +40,7 @@
                     </v-list-tile-avatar>
                     <v-list-tile-content>
                         <v-list-tile-sub-title>Sucursal</v-list-tile-sub-title>
-                        <v-list-tile-title  v-if="serviceSelected && serviceSelected.branchOffice"> {{ serviceSelected.branchOffice.name }}</v-list-tile-title>
+                        <v-list-tile-title  v-if="serviceSelected && serviceSelected.branchOffice && serviceSelected.branchOffice.name"> {{ serviceSelected.branchOffice.name }}</v-list-tile-title>
                     </v-list-tile-content>
                 </v-list-tile>
             </v-list>

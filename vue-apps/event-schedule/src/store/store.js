@@ -518,6 +518,22 @@ const actions = {
         ServiceService.fetch(id).then(
             (response) => {
                 let service = response.data;
+
+                //TODO AltoParche (Corregir por favor...)
+                if (service && service.cliente && service.cliente.nombre) {
+                    service.client = {name: service.cliente.nombre};
+                }
+                if (service && service.nombre) {
+                    service.name = service.nombre;
+                }
+                if (service && service.sucursal && service.sucursal.nombre) {
+                    service.branchOffice = {name: service.sucursal.nombre};
+                    if (service.sucursal.direccion) {
+                        service.branchOffice.location = service.sucursal.direccion;
+                    }
+                }
+
+
                 commit('SET_SERVICE_SELECTED', service);
             }
         )
@@ -574,9 +590,10 @@ const actions = {
                 }
             ).catch(
                 (error) => {
-                    dispatch("setTextError","Error on changeDate");
+                    dispatch("setTextError", "Error on changeDate");
                 }
-            );;
+            );
+            ;
 
         }
     },
@@ -617,13 +634,13 @@ const actions = {
     },
 
 
-    calendarList({state, commit,dispatch}) {
+    calendarList({state, commit, dispatch}) {
         CalendarService.findAll().then((response) => {
             commit(SET_CALENDARS, response.data);
 
         }).catch(
             (error) => {
-                dispatch("setTextError","Error on calendarList");
+                dispatch("setTextError", "Error on calendarList");
             }
         );
     },
@@ -634,7 +651,7 @@ const actions = {
         });
     },
 
-    eventList({state, getters, commit,dispatch}) {
+    eventList({state, getters, commit, dispatch}) {
 
         return EventService.getActiveEvents(getters.getDate, getters.getNextDate, getters.getNextEnd).then(
             (response) => {
@@ -650,7 +667,7 @@ const actions = {
             }
         ).catch(
             (error) => {
-                dispatch("setTextError","Error on eventList");
+                dispatch("setTextError", "Error on eventList");
             }
         );
     },
@@ -667,18 +684,18 @@ const actions = {
         );
 
     },
-    updateEvent({state, commit,dispatch}, {index, event}) {
+    updateEvent({state, commit, dispatch}, {index, event}) {
         EventService.updateEvent(event).then(
             (response) => {
                 commit('UPDATE_EVENT', {index: index, event: event})
             }
         ).catch(
             (error) => {
-                dispatch("setTextError","Error on updateEvent");
+                dispatch("setTextError", "Error on updateEvent");
             }
         );
     },
-    refreshEvent({state, getters, commit,dispatch},  event) {
+    refreshEvent({state, getters, commit, dispatch}, event) {
         EventService.updateEvent(event).then(
             (response) => {
 
@@ -697,9 +714,8 @@ const actions = {
             }
         ).catch(
             (error) => {
-                dispatch("setTextError","Error on refreshEvent");
+                dispatch("setTextError", "Error on refreshEvent");
             }
-
         );
     }
 };
