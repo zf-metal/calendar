@@ -38,6 +38,7 @@ class PredefinedEvents
      * @Annotation\Options({"label":"calendar","empty_option": "",
      * "target_class":"\ZfMetal\Calendar\Entity\Calendar", "description":""})
      * @ORM\OneToOne(targetEntity="\ZfMetal\Calendar\Entity\Calendar", inversedBy="predefinedEvents")
+     * @Transformation\Policy\Skip
      */
     public $calendar = null;
 

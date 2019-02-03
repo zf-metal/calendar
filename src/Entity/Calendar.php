@@ -86,7 +86,6 @@ class Calendar
      * @Annotation\Options({"label":"predefinedEvents","empty_option": "",
      * "target_class":"\ZfMetal\Calendar\Entity\PredefinedEvents", "description":""})
      * @ORM\OneToOne(targetEntity="\ZfMetal\Calendar\Entity\PredefinedEvents", fetch="EAGER", mappedBy="calendar", cascade={"persist", "remove"})
-     * @Transformation\Policy\Skip
      */
     public $predefinedEvents = null;
 
