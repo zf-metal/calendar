@@ -50,7 +50,15 @@ return [
                 'predefinedEvents' => [
                     'displayName' => 'Eventos predefinidos',
                     'hidden' => true,
-                ]
+                ],
+                'groups' => [
+                    'displayName' => 'Groups',
+                    'hidden' => true,
+                ],
+                'outOfServices' => [
+                    'displayName' => 'OutOfServices',
+                    'hidden' => true,
+                ],
             ],
             'crudConfig' => [
                 'enable' => true,
