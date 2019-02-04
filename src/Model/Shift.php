@@ -129,11 +129,11 @@ class Shift
     {
         return [
             'calendar' => $this->getCalendar(),
-            'date' => $this->getDate(),
+            'date' => $this->getDate()->format("Y-m-d"),
             'hour' => $this->getHour(),
             'duration' => $this->getDuration(),
-            'start' => $this->getStart(),
-            'end' => $this->getEnd()
+            'start' => $this->getStart()->format("Y-m-d H:i"),
+            'end' => $this->getEnd()->format("Y-m-d H:i")
         ];
     }
 

@@ -3,7 +3,7 @@
 namespace ZfMetal\Calendar\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
-use ZendTest\View\Renderer\TestAsset\JsonModel;
+use Zend\View\Model\JsonModel;
 use ZfMetal\Calendar\Entity\Calendar;
 use ZfMetal\Calendar\Entity\Event;
 use ZfMetal\Calendar\Entity\Schedule;
@@ -76,8 +76,8 @@ class ShiftController extends AbstractActionController
     {
 
         //Obtengo parametros
-        $calendarId = $this->getParams('calendarId');
-        $date = $this->getParams('date');
+        $calendarId = $this->params('calendarId');
+        $date = $this->params('date');
 
 
         //Verifico Parametros
@@ -98,7 +98,7 @@ class ShiftController extends AbstractActionController
         $calendar = $this->getCalendarRepository()->find($calendarId);
 
         //Valido Calendar ok
-        if (!calenar) {
+        if (!$calendar) {
             //Invalid Parameters
         }
 
@@ -110,7 +110,7 @@ class ShiftController extends AbstractActionController
         //Si no hay SpecificSchedule busco en el General
         if (!$schedule) {
             $day = $date->format("N");
-            $schedule = $this->getSpecificScheduleRepository()->findOneBy(['calendar' => $calendar->getId(), 'day' => $day]);
+            $schedule = $this->getScheduleRepository()->findOneBy(['calendar' => $calendar->getId(), 'day' => $day]);
         }
 
 
@@ -119,13 +119,18 @@ class ShiftController extends AbstractActionController
             $start = \DateTime::createFromFormat("H:i", $schedule->getStart());
             $end = \DateTime::createFromFormat("H:i", $schedule->getEnd());
             $diff = $end->diff($start);
-            $tiempoTotal = $diff->format('i');
+            $minutes = $diff->days * 24 * 60;
+            $minutes += $diff->h * 60;
+            $minutes += $diff->i;
+
+
             $duration = $calendar->getPredefinedEvents()->getDuration();
-            $quantityShifts = floor($tiempoTotal / $duration);
+            $quantityShifts = floor($minutes / $duration);
             $shifts = new Shifts();
 
+
             for ($i = 0; $i < $quantityShifts; $i++) {
-                $shift = new Shift($calendar->getId(), $date, clone $start, $duration);
+                $shift = new Shift($calendar->getId(), $date, $start->format("H:i"), $duration);
                 $shifts->add($shift);
                 $start->modify('+' . $duration . ' minutes');
             }

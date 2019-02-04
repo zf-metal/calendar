@@ -83,48 +83,45 @@ class ShiftControllerTest extends AbstractConsoleControllerTestCase
             'date' => $date
         ];
 
-        $this->dispatch("/zfmc/available-shifts/".$calendarId."/".$date, "GET");
+        $this->dispatch("/zfmc/shift/available-shifts/" . $calendarId . "/" . $date, "GET");
 
 
         echo $this->getResponse()->getContent();
 
-        $response = json_decode($this->getResponse()->getContent());
+
 
 
         $responseToCompare = [
             [
-                'calendarId' => 1,
-                'shifts' => [
-                    [
-                        'calendar' => $calendarId,
-                        'date' => $date,
-                        'start' => $date.' 09:00',
-                        'end' => $date.' 10:00',
-                        'hour' => '09:00',
-                        'duration' => '60'
-                    ],
-                    [
-                        'calendar' => $calendarId,
-                        'date' => $date,
-                        'start' => $date.' 10:00',
-                        'end' => $date.' 11:00',
-                        'hour' => '10:00',
-                        'duration' => '60'
-                    ],
-                    [
-                        'calendar' => $calendarId,
-                        'date' => $date,
-                        'start' => $date.' 11:00',
-                        'end' => $date.' 12:00',
-                        'hour' => '11:00',
-                        'duration' => '60'
-                    ]
-                ]
+                'calendar' => $calendarId,
+                'date' => $date,
+                'start' => $date . ' 09:00',
+                'end' => $date . ' 10:00',
+                'hour' => '09:00',
+                'duration' => '60'
+            ],
+            [
+                'calendar' => $calendarId,
+                'date' => $date,
+                'start' => $date . ' 10:00',
+                'end' => $date . ' 11:00',
+                'hour' => '10:00',
+                'duration' => '60'
+            ],
+            [
+                'calendar' => $calendarId,
+                'date' => $date,
+                'start' => $date . ' 11:00',
+                'end' => $date . ' 12:00',
+                'hour' => '11:00',
+                'duration' => '60'
             ]
         ];
 
+        $response = json_decode($this->getResponse()->getContent());
+
         $this->assertResponseStatusCode(200);
-        $this->assertJsonStringEqualsJsonString($this->getResponse()->getContent(), json_encode($responseToCompare));
+        $this->assertJsonStringEqualsJsonString(json_encode($responseToCompare), $this->getResponse()->getContent() );
     }
 
 

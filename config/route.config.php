@@ -8,10 +8,10 @@ return [
                 'options' => [
                     'route' => '/zfmc',
                 ],
-                'type' => 'Literal',
+                'type' => \Zend\Router\Http\Literal::class,
                 'child_routes' => [
                     'ServiceSearch' => [
-                        'type' => 'Literal',
+                        'type' => \Zend\Router\Http\Literal::class,
                         'mayTerminate' => true,
                         'options' => [
                             'defaults' => [
@@ -22,7 +22,7 @@ return [
                         ],
                     ],
                     'EventsByServiceYearMonth' => [
-                        'type' => 'Zend\\Router\\Http\\Segment',
+                        'type' => \Zend\Router\Http\Segment::class,
                         'mayTerminate' => true,
                         'options' => [
                             'route' => '/api/events/search/byServiceYearMonth/:service/:year/:month',
@@ -41,7 +41,7 @@ return [
                             ],
                             'route' => '/calendar',
                         ],
-                        'type' => 'Literal',
+                        'type' => \Zend\Router\Http\Literal::class,
                         'child_routes' => [
                             'Grid' => [
                                 'mayTerminate' => true,
@@ -52,7 +52,7 @@ return [
                                     ],
                                     'route' => '/grid',
                                 ],
-                                'type' => 'Segment',
+                                'type' => \Zend\Router\Http\Segment::class,
                             ],
                         ],
                     ],
@@ -65,7 +65,7 @@ return [
                             ],
                             'route' => '/manager-calendar',
                         ],
-                        'type' => 'Literal',
+                        'type' => \Zend\Router\Http\Literal::class,
                         'child_routes' => [
                             'List' => [
                                 'mayTerminate' => true,
@@ -76,7 +76,7 @@ return [
                                     ],
                                     'route' => '/list',
                                 ],
-                                'type' => 'Segment',
+                                'type' => \Zend\Router\Http\Segment::class,
                             ],
                             'Manage' => [
                                 'mayTerminate' => true,
@@ -87,7 +87,7 @@ return [
                                     ],
                                     'route' => '/manage[/:id]',
                                 ],
-                                'type' => 'Segment',
+                                'type' => \Zend\Router\Http\Segment::class,
                             ],
                         ],
                     ],
@@ -100,7 +100,7 @@ return [
                             ],
                             'route' => '/holiday',
                         ],
-                        'type' => 'Literal',
+                        'type' => \Zend\Router\Http\Literal::class,
                         'child_routes' => [
                             'Grid' => [
                                 'mayTerminate' => true,
@@ -111,19 +111,19 @@ return [
                                     ],
                                     'route' => '/grid',
                                 ],
-                                'type' => 'Segment',
+                                'type' => \Zend\Router\Http\Segment::class,
                             ],
                         ],
                     ],
                     'Api' => [
-                        'type' => 'Literal',
+                        'type' => \Zend\Router\Http\Literal::class,
                         'mayTerminate' => false,
                         'options' => [
                             'route' => '/api',
                         ],
                         'child_routes' => [
                             'entity' => [
-                                'type' => 'Segment',
+                                'type' => \Zend\Router\Http\Segment::class,
                                 'mayTerminate' => false,
                                 'options' => [
                                     'route' => '/:entityAlias[/:id]',
@@ -133,7 +133,7 @@ return [
                                 ],
                             ],
                             'start' => [
-                                'type' => 'Segment',
+                                'type' => \Zend\Router\Http\Segment::class,
                                 'mayTerminate' => false,
                                 'options' => [
                                     'route' => '/start',
@@ -153,7 +153,7 @@ return [
                                 'action' => 'index',
                             ],
                         ],
-                        'type' => 'Literal',
+                        'type' => \Zend\Router\Http\Literal::class,
                     ],
                     'EventSchedule' => [
                         'mayTerminate' => false,
@@ -164,7 +164,7 @@ return [
                                 'action' => 'schedule',
                             ],
                         ],
-                        'type' => 'Literal',
+                        'type' => \Zend\Router\Http\Literal::class,
                         'child_routes' => [
                             'Schedule' => [
                                 'mayTerminate' => true,
@@ -175,7 +175,7 @@ return [
                                         'action' => 'schedule',
                                     ],
                                 ],
-                                'type' => 'Segment',
+                                'type' => \Zend\Router\Http\Segment::class,
                             ],
                         ],
                     ],
@@ -188,7 +188,7 @@ return [
                                 'action' => 'grid',
                             ],
                         ],
-                        'type' => 'Literal',
+                        'type' => \Zend\Router\Http\Literal::class,
                         'child_routes' => [
                             'Grid' => [
                                 'mayTerminate' => true,
@@ -199,7 +199,7 @@ return [
                                         'action' => 'grid',
                                     ],
                                 ],
-                                'type' => 'Segment',
+                                'type' => \Zend\Router\Http\Segment::class,
                             ],
                         ],
                     ],
@@ -212,7 +212,7 @@ return [
                                 'action' => 'grid',
                             ],
                         ],
-                        'type' => 'Literal',
+                        'type' => \Zend\Router\Http\Literal::class,
                         'child_routes' => [
                             'Grid' => [
                                 'mayTerminate' => true,
@@ -223,7 +223,7 @@ return [
                                         'action' => 'grid',
                                     ],
                                 ],
-                                'type' => 'Segment',
+                                'type' => \Zend\Router\Http\Segment::class,
                             ],
                         ],
                     ],
@@ -236,7 +236,7 @@ return [
                                 'action' => 'grid',
                             ],
                         ],
-                        'type' => 'Literal',
+                        'type' => \Zend\Router\Http\Literal::class,
                         'child_routes' => [
                             'Grid' => [
                                 'mayTerminate' => true,
@@ -247,7 +247,7 @@ return [
                                         'action' => 'grid',
                                     ],
                                 ],
-                                'type' => 'Segment',
+                                'type' => \Zend\Router\Http\Segment::class,
                             ],
                         ],
                     ],
@@ -260,7 +260,7 @@ return [
                                 'action' => 'grid',
                             ],
                         ],
-                        'type' => 'Literal',
+                        'type' => \Zend\Router\Http\Literal::class,
                         'child_routes' => [
                             'Grid' => [
                                 'mayTerminate' => true,
@@ -271,7 +271,7 @@ return [
                                         'action' => 'grid',
                                     ],
                                 ],
-                                'type' => 'Segment',
+                                'type' => \Zend\Router\Http\Segment::class,
                             ],
                         ],
                     ],
@@ -284,7 +284,7 @@ return [
                                 'action' => 'grid',
                             ],
                         ],
-                        'type' => 'Literal',
+                        'type' => \Zend\Router\Http\Literal::class,
                         'child_routes' => [
                             'Grid' => [
                                 'mayTerminate' => true,
@@ -295,7 +295,7 @@ return [
                                         'action' => 'grid',
                                     ],
                                 ],
-                                'type' => 'Segment',
+                                'type' => \Zend\Router\Http\Segment::class,
                             ],
                         ],
                     ],
@@ -304,7 +304,7 @@ return [
                         'options' => [
                             'route' => '/api',
                         ],
-                        'type' => 'Literal',
+                        'type' => \Zend\Router\Http\Literal::class,
                     ],
                     'Export' => [
                         'mayTerminate' => false,
@@ -315,7 +315,7 @@ return [
                                 'action' => 'Events',
                             ],
                         ],
-                        'type' => 'Literal',
+                        'type' => \Zend\Router\Http\Literal::class,
                         'child_routes' => [
                             'Events' => [
                                 'mayTerminate' => true,
@@ -326,7 +326,7 @@ return [
                                         'action' => 'Events',
                                     ],
                                 ],
-                                'type' => 'Segment',
+                                'type' => \Zend\Router\Http\Segment::class,
                             ],
                         ],
                     ],
@@ -339,7 +339,7 @@ return [
                                 'action' => 'grid',
                             ],
                         ],
-                        'type' => 'Literal',
+                        'type' => \Zend\Router\Http\Literal::class,
                         'child_routes' => [
                             'Grid' => [
                                 'mayTerminate' => true,
@@ -350,7 +350,7 @@ return [
                                         'action' => 'grid',
                                     ],
                                 ],
-                                'type' => 'Segment',
+                                'type' => \Zend\Router\Http\Segment::class,
                             ],
                         ],
                     ],
@@ -363,7 +363,7 @@ return [
                                 'action' => 'grid',
                             ],
                         ],
-                        'type' => 'Literal',
+                        'type' => \Zend\Router\Http\Literal::class,
                         'child_routes' => [
                             'Grid' => [
                                 'mayTerminate' => true,
@@ -374,7 +374,7 @@ return [
                                         'action' => 'grid',
                                     ],
                                 ],
-                                'type' => 'Segment',
+                                'type' => \Zend\Router\Http\Segment::class,
                             ],
                         ],
                     ],
@@ -387,7 +387,7 @@ return [
                                 'action' => 'availableShifts',
                             ],
                         ],
-                        'type' => 'Literal',
+                        'type' => \Zend\Router\Http\Literal::class,
                         'child_routes' => [
                             'AvailableShifts' => [
                                 'mayTerminate' => true,
@@ -398,7 +398,7 @@ return [
                                         'action' => 'availableShifts',
                                     ],
                                 ],
-                                'type' => 'Segment',
+                                'type' => \Zend\Router\Http\Segment::class,
                             ],
                         ],
                     ],

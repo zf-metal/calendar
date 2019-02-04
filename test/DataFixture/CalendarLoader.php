@@ -8,6 +8,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\ORM\EntityManager;
 use ZfMetal\Calendar\Entity\Calendar;
+use ZfMetal\Calendar\Entity\PredefinedEvents;
 
 class CalendarLoader extends AbstractFixture implements FixtureInterface
 {
@@ -76,6 +77,14 @@ class CalendarLoader extends AbstractFixture implements FixtureInterface
             $calendar = new Calendar();
             $calendar->setId($id);
             $calendar->setName($name);
+
+            //Predefined Events
+            $predefinedEvents = new PredefinedEvents();
+            $predefinedEvents->setDuration(60);
+            $predefinedEvents->setBreak(0);
+            $predefinedEvents->setMaxDaysForShifs(7);
+            $calendar->setPredefinedEvents($predefinedEvents);
+
          //   $calendar->addSchedule($this->getReference($schedule));
 
         }
