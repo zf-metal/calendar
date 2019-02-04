@@ -15,21 +15,23 @@ return [
                         'mayTerminate' => true,
                         'options' => [
                             'defaults' => [
-                                'controller' => \ZfMetal\Calendar\Controller\ServiceSearchController::class,
+                                'controller' => \ZfMetal\Calendar\Controller\ServiceSearchController::CLASS,
                                 'action' => 'search',
                             ],
                             'route' => '/serviceSearch',
                         ],
                     ],
                     'EventsByServiceYearMonth' => [
-                        'type' => 'Zend\\Router\\Http\\Segment',
+                        'type' => \Zend\Router\Http\Segment::class,
                         'mayTerminate' => true,
                         'options' => [
                             'route' => '/api/events/search/byServiceYearMonth/:service/:year/:month',
+                           // 'route' => '/eventSearch',
                             'defaults' => [
-                                'controller' => \ZfMetal\Calendar\Controller\EventSearchController::class,
+                                'controller' => \ZfMetal\Calendar\Controller\EventSearchController::CLASS,
                                 'action' => 'searchByServiceYearMonth',
                             ],
+
                         ],
                     ],
                     'Calendar' => [
@@ -311,7 +313,7 @@ return [
                         'options' => [
                             'route' => '/export',
                             'defaults' => [
-                                'controller' => 'ZfMetal\\Calendar\\Controller\\ExportController',
+                                'controller' => \ZfMetal\Calendar\Controller\ExportController::CLASS,
                                 'action' => 'Events',
                             ],
                         ],
@@ -322,80 +324,8 @@ return [
                                 'options' => [
                                     'route' => '/events/:date/:hourStart/:hourEnd',
                                     'defaults' => [
-                                        'controller' => 'ZfMetal\\Calendar\\Controller\\ExportController',
+                                        'controller' => \ZfMetal\Calendar\Controller\ExportController::CLASS,
                                         'action' => 'Events',
-                                    ],
-                                ],
-                                'type' => 'Segment',
-                            ],
-                        ],
-                    ],
-                    'Account' => [
-                        'mayTerminate' => false,
-                        'options' => [
-                            'route' => '/account',
-                            'defaults' => [
-                                'controller' => \ZfMetal\Calendar\Controller\AccountController::CLASS,
-                                'action' => 'grid',
-                            ],
-                        ],
-                        'type' => 'Literal',
-                        'child_routes' => [
-                            'Grid' => [
-                                'mayTerminate' => true,
-                                'options' => [
-                                    'route' => '/grid',
-                                    'defaults' => [
-                                        'controller' => \ZfMetal\Calendar\Controller\AccountController::CLASS,
-                                        'action' => 'grid',
-                                    ],
-                                ],
-                                'type' => 'Segment',
-                            ],
-                        ],
-                    ],
-                    'BranchOffice' => [
-                        'mayTerminate' => false,
-                        'options' => [
-                            'route' => '/branch-office',
-                            'defaults' => [
-                                'controller' => \ZfMetal\Calendar\Controller\BranchOfficeController::CLASS,
-                                'action' => 'grid',
-                            ],
-                        ],
-                        'type' => 'Literal',
-                        'child_routes' => [
-                            'Grid' => [
-                                'mayTerminate' => true,
-                                'options' => [
-                                    'route' => '/grid',
-                                    'defaults' => [
-                                        'controller' => \ZfMetal\Calendar\Controller\BranchOfficeController::CLASS,
-                                        'action' => 'grid',
-                                    ],
-                                ],
-                                'type' => 'Segment',
-                            ],
-                        ],
-                    ],
-                    'Shift' => [
-                        'mayTerminate' => false,
-                        'options' => [
-                            'route' => '/shift',
-                            'defaults' => [
-                                'controller' => \ZfMetal\Calendar\Controller\ShiftController::CLASS,
-                                'action' => 'availableShifts',
-                            ],
-                        ],
-                        'type' => 'Literal',
-                        'child_routes' => [
-                            'AvailableShifts' => [
-                                'mayTerminate' => true,
-                                'options' => [
-                                    'route' => '/available-shifts/:calendarId/:date',
-                                    'defaults' => [
-                                        'controller' => \ZfMetal\Calendar\Controller\ShiftController::CLASS,
-                                        'action' => 'availableShifts',
                                     ],
                                 ],
                                 'type' => 'Segment',

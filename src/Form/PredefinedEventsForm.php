@@ -82,6 +82,22 @@ class PredefinedEventsForm extends \Zend\Form\Fieldset implements \DoctrineModul
             )
         ));
 
+
+        $this->add(array(
+            'name' => 'maxDaysForShifs',
+            'attributes' => array(
+                'type' => 'number',
+                'placeholder' => 'Dias máximos para Turnos',
+                'class' => 'form-control ',
+                'autocomplete' => "off"
+            ),
+            'options' => array(
+                'label' => 'Dias máximos para Turnos',
+                'description' => 'Configuración de la cantidad de dias hacia adelante en la que se permite agendar un turno'
+            )
+        ));
+
+
     }
 
 

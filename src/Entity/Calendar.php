@@ -174,6 +174,9 @@ class Calendar
         $this->events = $events;
     }
 
+    /**
+     * @return PredefinedEvents
+     */
     public function getPredefinedEvents()
     {
         return $this->predefinedEvents;

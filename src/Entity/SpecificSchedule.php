@@ -7,6 +7,7 @@ use Zend\Form\Annotation as Annotation;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\UniqueConstraint as UniqueConstraint;
 use Gedmo\Mapping\Annotation as Gedmo;
+use ZfMetal\Restful\Transformation;
 
 /**
  * SpecificSchedule
@@ -54,6 +55,7 @@ class SpecificSchedule
      * @Annotation\Attributes({"type":"time"})
      * @Annotation\Options({"label":"start", "description":"", "addon":""})
      * @ORM\Column(type="time", unique=false, nullable=true, name="start")
+     * @Transformation\Policy\KeepDateTime
      */
     public $start = null;
 
@@ -62,24 +64,27 @@ class SpecificSchedule
      * @Annotation\Attributes({"type":"time"})
      * @Annotation\Options({"label":"end", "description":"", "addon":""})
      * @ORM\Column(type="time", unique=false, nullable=true, name="end")
+     * @Transformation\Policy\KeepDateTime
      */
     public $end = null;
 
     /**
      * @Annotation\Type("Zend\Form\Element\Time")
      * @Annotation\Attributes({"type":"time"})
-     * @Annotation\Options({"label":"startBreak", "description":"", "addon":""})
-     * @ORM\Column(type="time", unique=false, nullable=true, name="start_break")
+     * @Annotation\Options({"label":"Start 2", "description":"", "addon":""})
+     * @ORM\Column(type="time", unique=false, nullable=true, name="start_2")
+     * @Transformation\Policy\KeepDateTime
      */
-    public $startBreak = null;
+    public $start2 = null;
 
     /**
      * @Annotation\Type("Zend\Form\Element\Time")
      * @Annotation\Attributes({"type":"time"})
-     * @Annotation\Options({"label":"endBreak", "description":"", "addon":""})
-     * @ORM\Column(type="time", unique=false, nullable=true, name="end_break")
+     * @Annotation\Options({"label":"End 2", "description":"", "addon":""})
+     * @ORM\Column(type="time", unique=false, nullable=true, name="end_2")
+     * @Transformation\Policy\KeepDateTime
      */
-    public $endBreak = null;
+    public $end2 = null;
 
     public function getId()
     {
@@ -131,24 +136,36 @@ class SpecificSchedule
         $this->end = $end;
     }
 
-    public function getStartBreak()
+    /**
+     * @return mixed
+     */
+    public function getStart2()
     {
-        return $this->startBreak;
+        return $this->start2;
     }
 
-    public function setStartBreak($startBreak)
+    /**
+     * @param mixed $start2
+     */
+    public function setStart2($start2)
     {
-        $this->startBreak = $startBreak;
+        $this->start2 = $start2;
     }
 
-    public function getEndBreak()
+    /**
+     * @return mixed
+     */
+    public function getEnd2()
     {
-        return $this->endBreak;
+        return $this->end2;
     }
 
-    public function setEndBreak($endBreak)
+    /**
+     * @param mixed $end2
+     */
+    public function setEnd2($end2)
     {
-        $this->endBreak = $endBreak;
+        $this->end2 = $end2;
     }
 
     public function __toString()

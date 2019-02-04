@@ -61,6 +61,14 @@ class PredefinedEvents
      */
     public $break = 0;
 
+    /**
+     * @Annotation\Type("Zend\Form\Element\Number")
+     * @Annotation\Attributes({"type":"text"})
+     * @Annotation\Options({"label":"break", "description":"", "addon":""})
+     * @ORM\Column(type="integer", length=6, unique=false, nullable=true, name="max_days_for_shift")
+     */
+    public $maxDaysForShifs = 0;
+
     public function getId()
     {
         return $this->id;
@@ -115,6 +123,23 @@ class PredefinedEvents
     {
         return (string) $this->duration;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getMaxDaysForShifs()
+    {
+        return $this->maxDaysForShifs;
+    }
+
+    /**
+     * @param mixed $maxDaysForShifs
+     */
+    public function setMaxDaysForShifs($maxDaysForShifs)
+    {
+        $this->maxDaysForShifs = $maxDaysForShifs;
+    }
+
 
 
 }

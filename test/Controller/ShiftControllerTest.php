@@ -10,14 +10,14 @@ use Doctrine\ORM\EntityManager;
 use Test\DataFixture\CalendarLoader;
 use Test\DataFixture\ScheduleLoader;
 use Zend\Test\PHPUnit\Controller\AbstractConsoleControllerTestCase;
-
+use ZfMetal\Restful\Transformation;
 
 /**
  * Class UserControllerTest
  * @method Request getRequest()
  * @package Test\Controller
  */
-class PredefinedEventsControllerTest extends AbstractConsoleControllerTestCase
+class ShiftControllerTest extends AbstractConsoleControllerTestCase
 {
 
     protected $traceError = true;
@@ -68,20 +68,22 @@ class PredefinedEventsControllerTest extends AbstractConsoleControllerTestCase
     }
 
     /**
-     * @depends testCreateData
+     *
      */
-    public function testFetchAvilableShifts()
+    public function testAvailableShifts()
     {
         $this->setUseConsoleRequest(false);
 
         $date = '2019-02-04';
 
+        $calendarId = 1;
+
         $params = [
-            'calendarId' => 1,
+            'calendarId' => $calendarId,
             'date' => $date
         ];
 
-        $this->dispatch("/zfmc/fetch-available-shifts", "POST", $params);
+        $this->dispatch("/zfmc/available-shifts/".$calendarId."/".$date, "GET");
 
 
         echo $this->getResponse()->getContent();
@@ -94,6 +96,7 @@ class PredefinedEventsControllerTest extends AbstractConsoleControllerTestCase
                 'calendarId' => 1,
                 'shifts' => [
                     [
+                        'calendar' => $calendarId,
                         'date' => $date,
                         'start' => $date.' 09:00',
                         'end' => $date.' 10:00',
@@ -101,6 +104,7 @@ class PredefinedEventsControllerTest extends AbstractConsoleControllerTestCase
                         'duration' => '60'
                     ],
                     [
+                        'calendar' => $calendarId,
                         'date' => $date,
                         'start' => $date.' 10:00',
                         'end' => $date.' 11:00',
@@ -108,6 +112,7 @@ class PredefinedEventsControllerTest extends AbstractConsoleControllerTestCase
                         'duration' => '60'
                     ],
                     [
+                        'calendar' => $calendarId,
                         'date' => $date,
                         'start' => $date.' 11:00',
                         'end' => $date.' 12:00',
