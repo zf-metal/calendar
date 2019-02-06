@@ -10,6 +10,7 @@ use ZfMetal\Calendar\Entity\Schedule;
 use ZfMetal\Calendar\Entity\SpecificSchedule;
 use ZfMetal\Calendar\Model\Shift;
 use ZfMetal\Calendar\Model\Shifts;
+use ZfMetal\Calendar\Service\ShiftService;
 
 /**
  * ShiftController
@@ -29,6 +30,22 @@ class ShiftController extends AbstractActionController
      * @var \Doctrine\ORM\EntityManager
      */
     public $em = null;
+
+    /**
+     * @var ShiftService
+     */
+    public $shiftService;
+
+    /**
+     * ShiftController constructor.
+     * @param \Doctrine\ORM\EntityManager $em
+     * @param ShiftService $shiftService
+     */
+    public function __construct(\Doctrine\ORM\EntityManager $em, ShiftService $shiftService)
+    {
+        $this->em = $em;
+        $this->shiftService = $shiftService;
+    }
 
     public function getEm()
     {
@@ -67,11 +84,6 @@ class ShiftController extends AbstractActionController
     }
 
 
-    public function __construct(\Doctrine\ORM\EntityManager $em)
-    {
-        $this->em = $em;
-    }
-
     public function availableShiftsAction()
     {
 
@@ -79,64 +91,7 @@ class ShiftController extends AbstractActionController
         $calendarId = $this->params('calendarId');
         $date = $this->params('date');
 
-
-        //Verifico Parametros
-        if (!$calendarId || !$date) {
-            //Missing parameters
-        }
-
-        //Valido Fecha
-        if (!$this->validateDate($date, "Y-m-d")) {
-            //Invalid Parameters
-
-        }
-
-        $date = \DateTime::createFromFormat("Y-m-d", $date);
-
-        //Obtengo Calendar
-        /** @var Calendar $calendar */
-        $calendar = $this->getCalendarRepository()->find($calendarId);
-
-        //Valido Calendar ok
-        if (!$calendar) {
-            //Invalid Parameters
-        }
-
-
-        //busco Specific Schedule
-
-        $schedule = $this->getSpecificScheduleRepository()->findOneBy(['calendar' => $calendar->getId(), 'date' => $date]);
-
-        //Si no hay SpecificSchedule busco en el General
-        if (!$schedule) {
-            $day = $date->format("N");
-            $schedule = $this->getScheduleRepository()->findOneBy(['calendar' => $calendar->getId(), 'day' => $day]);
-        }
-
-
-        if ($schedule->getStart()) {
-
-            $start = \DateTime::createFromFormat("H:i", $schedule->getStart());
-            $end = \DateTime::createFromFormat("H:i", $schedule->getEnd());
-            $diff = $end->diff($start);
-            $minutes = $diff->days * 24 * 60;
-            $minutes += $diff->h * 60;
-            $minutes += $diff->i;
-
-
-            $duration = $calendar->getPredefinedEvents()->getDuration();
-            $quantityShifts = floor($minutes / $duration);
-            $shifts = new Shifts();
-
-
-            for ($i = 0; $i < $quantityShifts; $i++) {
-                $shift = new Shift($calendar->getId(), $date, $start->format("H:i"), $duration);
-                $shifts->add($shift);
-                $start->modify('+' . $duration . ' minutes');
-            }
-
-
-        }
+        $shifts = $this->shiftService->getAvailableShift($calendarId, $date);
 
 
         return new JsonModel($shifts->toArray());
@@ -148,12 +103,7 @@ class ShiftController extends AbstractActionController
 
     }
 
-    function validateDate($date, $format = 'Y-m-d')
-    {
-        $d = \DateTime::createFromFormat($format, $date);
-        // The Y ( 4 digits year ) returns TRUE for any integer with any number of digits so changing the comparison from == to === fixes the issue.
-        return $d && $d->format($format) === $date;
-    }
+
 
 }
 
