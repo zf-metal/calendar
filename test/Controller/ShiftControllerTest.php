@@ -125,4 +125,46 @@ class ShiftControllerTest extends AbstractConsoleControllerTestCase
     }
 
 
+
+
+    public function testTakeShift()
+    {
+        $this->setUseConsoleRequest(false);
+
+        $date = '2019-02-04';
+        $hour = '11:00';
+        $calendarId = 1;
+
+        $params = [
+            'calendarId' => $calendarId,
+            'date' => $date,
+            'hour' => $hour
+        ];
+
+        $this->dispatch("/zfmc/shift/take-shift/", "post",$params);
+
+
+        echo $this->getResponse()->getContent();
+
+
+
+
+        $responseToCompare = [
+            [
+                'status' => true,
+                'data' => [
+                    'id' => 2
+                ]
+            ],
+
+        ];
+
+        $response = json_decode($this->getResponse()->getContent());
+
+        $this->assertResponseStatusCode(200);
+        $this->assertJsonStringEqualsJsonString(json_encode($responseToCompare), $this->getResponse()->getContent() );
+    }
+
+
+
 }
