@@ -49,7 +49,7 @@
     "zfcampus/zf-development-mode": "^3.2@dev"
   },
   "require-dev": {
-    "zendframework/zend-test": "^3.2.1",
+    "zendframework/zend-test": "^3.1.1",
     "zendframework/zend-http": "^2.8@dev"
   },
   "autoload": {

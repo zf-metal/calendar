@@ -13,6 +13,8 @@ use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\ORM\EntityManager;
+use Zend\Crypt\Password\Bcrypt;
+use ZfMetal\Security\Entity\User;
 
 
 class UserLoader  extends AbstractFixture implements FixtureInterface

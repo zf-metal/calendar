@@ -25,7 +25,7 @@ use ZfMetal\Restful\Transformation;
  * @method Request getRequest()
  * @package Test\Controller
  */
-class ShiftControllerTest extends AbstractControllerTestCase
+class ShiftControllerTest extends AbstractConsoleControllerTestCase
 {
 
     protected $traceError = true;
@@ -189,6 +189,7 @@ class ShiftControllerTest extends AbstractControllerTestCase
     {
         $this->setUseConsoleRequest(false);
 
+
         $date = '2019-02-04';
         $hour = '11:00';
         $calendarId = 1;
@@ -204,17 +205,17 @@ class ShiftControllerTest extends AbstractControllerTestCase
             'duration' => $duration
         ];
 
-        $headers = new Headers();
+      /*  $headers = new Headers();
         $headers->addHeaderLine('authorization', 'Bearer ' . $token);
 
 
         $this->getRequest()
             ->setHeaders($headers)
             ->setMethod('POST')
-            ->setPost(new Parameters($params));
+            ->setPost(new Parameters($params));*/
 
 
-        $this->dispatch("/zfmc/shift/take-appointment/", "POST",$params);
+        $this->dispatch("/zfmc/shift/take-appointment/", "POST", $params);
 
 
         echo $this->getResponse()->getContent();
@@ -225,7 +226,7 @@ class ShiftControllerTest extends AbstractControllerTestCase
 
         $responseToCompare = [
             'status' => true,
-            'appointment' => [
+            'item' => [
                 'id' => 2,
                 'user' => $this->getMockIdentity()->getId(),
                 'calendar' => $calendarId,
