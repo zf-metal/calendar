@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "3c24aaabf02d8383150810712b99a24a",
+    "content-hash": "132801cf4a30e3cf2864aff267757513",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -1027,6 +1027,52 @@
                 "xml"
             ],
             "time": "2018-06-06T18:10:59+00:00"
+        },
+        {
+            "name": "firebase/php-jwt",
+            "version": "v5.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/firebase/php-jwt.git",
+                "reference": "9984a4d3a32ae7673d6971ea00bae9d0a1abba0e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/firebase/php-jwt/zipball/9984a4d3a32ae7673d6971ea00bae9d0a1abba0e",
+                "reference": "9984a4d3a32ae7673d6971ea00bae9d0a1abba0e",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": " 4.8.35"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Firebase\\JWT\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Neuman Vong",
+                    "email": "neuman+pear@twilio.com",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Anant Narayanan",
+                    "email": "anant@php.net",
+                    "role": "Developer"
+                }
+            ],
+            "description": "A simple library to encode and decode JSON Web Tokens (JWT) in PHP. Should conform to the current spec.",
+            "homepage": "https://github.com/firebase/php-jwt",
+            "time": "2017-06-27T22:17:23+00:00"
         },
         {
             "name": "gedmo/doctrine-extensions",
@@ -2089,12 +2135,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/code-unit-reverse-lookup.git",
-                "reference": "22f5f5ff892d51035dd1fb4cd6b224a640ffb206"
+                "reference": "383c44e104c1fd46ecc915f55145bd2831318747"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/code-unit-reverse-lookup/zipball/22f5f5ff892d51035dd1fb4cd6b224a640ffb206",
-                "reference": "22f5f5ff892d51035dd1fb4cd6b224a640ffb206",
+                "url": "https://api.github.com/repos/sebastianbergmann/code-unit-reverse-lookup/zipball/383c44e104c1fd46ecc915f55145bd2831318747",
+                "reference": "383c44e104c1fd46ecc915f55145bd2831318747",
                 "shasum": ""
             },
             "require": {
@@ -2126,7 +2172,7 @@
             ],
             "description": "Looks up which function or method a line of code belongs to",
             "homepage": "https://github.com/sebastianbergmann/code-unit-reverse-lookup/",
-            "time": "2018-05-15T05:52:48+00:00"
+            "time": "2019-02-11T12:48:46+00:00"
         },
         {
             "name": "sebastian/comparator",
@@ -2726,16 +2772,16 @@
         },
         {
             "name": "symfony/polyfill-ctype",
-            "version": "v1.10.0",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-ctype.git",
-                "reference": "e3d826245268269cd66f8326bd8bc066687b4a19"
+                "reference": "82ebae02209c21113908c229e9883c419720738a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-ctype/zipball/e3d826245268269cd66f8326bd8bc066687b4a19",
-                "reference": "e3d826245268269cd66f8326bd8bc066687b4a19",
+                "url": "https://api.github.com/repos/symfony/polyfill-ctype/zipball/82ebae02209c21113908c229e9883c419720738a",
+                "reference": "82ebae02209c21113908c229e9883c419720738a",
                 "shasum": ""
             },
             "require": {
@@ -2747,7 +2793,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.9-dev"
+                    "dev-master": "1.11-dev"
                 }
             },
             "autoload": {
@@ -2780,20 +2826,20 @@
                 "polyfill",
                 "portable"
             ],
-            "time": "2018-08-06T14:22:27+00:00"
+            "time": "2019-02-06T07:57:58+00:00"
         },
         {
             "name": "symfony/polyfill-mbstring",
-            "version": "v1.10.0",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-mbstring.git",
-                "reference": "c79c051f5b3a46be09205c73b80b346e4153e494"
+                "reference": "fe5e94c604826c35a32fa832f35bd036b6799609"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-mbstring/zipball/c79c051f5b3a46be09205c73b80b346e4153e494",
-                "reference": "c79c051f5b3a46be09205c73b80b346e4153e494",
+                "url": "https://api.github.com/repos/symfony/polyfill-mbstring/zipball/fe5e94c604826c35a32fa832f35bd036b6799609",
+                "reference": "fe5e94c604826c35a32fa832f35bd036b6799609",
                 "shasum": ""
             },
             "require": {
@@ -2805,7 +2851,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.9-dev"
+                    "dev-master": "1.11-dev"
                 }
             },
             "autoload": {
@@ -2839,7 +2885,7 @@
                 "portable",
                 "shim"
             ],
-            "time": "2018-09-21T13:07:52+00:00"
+            "time": "2019-02-06T07:57:58+00:00"
         },
         {
             "name": "symfony/yaml",
@@ -3575,12 +3621,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zendframework/zend-form.git",
-                "reference": "0662f074cdb1f5df4bac40293d499ee3ea82833c"
+                "reference": "50c5d0b4ade596ddb8a64d031962ed092aa70e79"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zendframework/zend-form/zipball/0662f074cdb1f5df4bac40293d499ee3ea82833c",
-                "reference": "0662f074cdb1f5df4bac40293d499ee3ea82833c",
+                "url": "https://api.github.com/repos/zendframework/zend-form/zipball/50c5d0b4ade596ddb8a64d031962ed092aa70e79",
+                "reference": "50c5d0b4ade596ddb8a64d031962ed092aa70e79",
                 "shasum": ""
             },
             "require": {
@@ -3645,7 +3691,7 @@
                 "form",
                 "zf"
             ],
-            "time": "2019-01-07T21:39:12+00:00"
+            "time": "2019-02-07T21:25:58+00:00"
         },
         {
             "name": "zendframework/zend-http",
@@ -4655,16 +4701,16 @@
         },
         {
             "name": "zendframework/zend-router",
-            "version": "dev-develop",
+            "version": "3.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zendframework/zend-router.git",
-                "reference": "8398f4778a04b55431bc5dcac54086dc1453dd31"
+                "reference": "a80a7427afb8f736b9aeeb341a78dae855849291"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zendframework/zend-router/zipball/8398f4778a04b55431bc5dcac54086dc1453dd31",
-                "reference": "8398f4778a04b55431bc5dcac54086dc1453dd31",
+                "url": "https://api.github.com/repos/zendframework/zend-router/zipball/a80a7427afb8f736b9aeeb341a78dae855849291",
+                "reference": "a80a7427afb8f736b9aeeb341a78dae855849291",
                 "shasum": ""
             },
             "require": {
@@ -4713,7 +4759,7 @@
                 "zend",
                 "zf"
             ],
-            "time": "2018-08-01T22:25:40+00:00"
+            "time": "2018-08-01T22:24:35+00:00"
         },
         {
             "name": "zendframework/zend-servicemanager",
@@ -4856,12 +4902,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zendframework/zend-stdlib.git",
-                "reference": "89a6fb821c11ba790ea2e123559ba1432596be39"
+                "reference": "519a966dedc32af62765736eba9900c270e419d8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zendframework/zend-stdlib/zipball/89a6fb821c11ba790ea2e123559ba1432596be39",
-                "reference": "89a6fb821c11ba790ea2e123559ba1432596be39",
+                "url": "https://api.github.com/repos/zendframework/zend-stdlib/zipball/519a966dedc32af62765736eba9900c270e419d8",
+                "reference": "519a966dedc32af62765736eba9900c270e419d8",
                 "shasum": ""
             },
             "require": {
@@ -4894,7 +4940,7 @@
                 "stdlib",
                 "zf"
             ],
-            "time": "2018-08-29T10:55:46+00:00"
+            "time": "2019-02-07T05:36:36+00:00"
         },
         {
             "name": "zendframework/zend-test",
@@ -5538,16 +5584,16 @@
         },
         {
             "name": "zf-metal/restful",
-            "version": "1.2.1",
+            "version": "1.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zf-metal/restful.git",
-                "reference": "583831f4ed47225d895c38ffacbdf09676b58645"
+                "reference": "f9680a48d3e0f9949a1aada5fb1f0096373d0f28"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zf-metal/restful/zipball/583831f4ed47225d895c38ffacbdf09676b58645",
-                "reference": "583831f4ed47225d895c38ffacbdf09676b58645",
+                "url": "https://api.github.com/repos/zf-metal/restful/zipball/f9680a48d3e0f9949a1aada5fb1f0096373d0f28",
+                "reference": "f9680a48d3e0f9949a1aada5fb1f0096373d0f28",
                 "shasum": ""
             },
             "require": {
@@ -5601,7 +5647,7 @@
             "keywords": [
                 "zf3"
             ],
-            "time": "2019-02-04T18:53:08+00:00"
+            "time": "2019-02-11T18:18:55+00:00"
         },
         {
             "name": "zf-metal/security",
@@ -5664,6 +5710,62 @@
                 "zf3"
             ],
             "time": "2019-02-04T20:22:45+00:00"
+        },
+        {
+            "name": "zf-metal/security-jwt",
+            "version": "1.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/zf-metal/security-jwt.git",
+                "reference": "cdffe018f5d4045df992a96996d04b78404d6cc3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/zf-metal/security-jwt/zipball/cdffe018f5d4045df992a96996d04b78404d6cc3",
+                "reference": "cdffe018f5d4045df992a96996d04b78404d6cc3",
+                "shasum": ""
+            },
+            "require": {
+                "firebase/php-jwt": "^5.0",
+                "php": "^5.6 || ^7.0",
+                "zendframework/zend-mvc": "^3.1@dev",
+                "zf-metal/log": "^1.0.0",
+                "zf-metal/security": "^1.1.2"
+            },
+            "require-dev": {
+                "zendframework/zend-http": "^2.8@dev",
+                "zendframework/zend-test": "^3.1@dev"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "ZfMetal\\SecurityJwt\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Cristian Incarnato",
+                    "email": "cincarnato@gmail.com",
+                    "homepage": "http://cincarnato.com.ar/",
+                    "role": "Desarrollador"
+                },
+                {
+                    "name": "Alejandro Furgeri",
+                    "email": "alecitoman@gmail.com",
+                    "homepage": "http://afurgeri.com.ar/",
+                    "role": "Desarrollador"
+                }
+            ],
+            "description": "Modulo de autenticación por jwt para Zend Framework 3",
+            "homepage": "https://github.com/cincarnato",
+            "keywords": [
+                "zf3"
+            ],
+            "time": "2019-01-30T17:57:47+00:00"
         },
         {
             "name": "zfcampus/zf-development-mode",

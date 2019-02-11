@@ -4,12 +4,15 @@ namespace ZfMetal\Calendar\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\JsonModel;
+use ZfMetal\Calendar\Entity\Appointment;
 use ZfMetal\Calendar\Entity\Calendar;
 use ZfMetal\Calendar\Entity\Event;
 use ZfMetal\Calendar\Entity\Schedule;
 use ZfMetal\Calendar\Entity\SpecificSchedule;
+use ZfMetal\Calendar\Form\AppointmentForm;
 use ZfMetal\Calendar\Model\Shift;
 use ZfMetal\Calendar\Model\Shifts;
+use ZfMetal\Calendar\Repository\AppointmentRepository;
 use ZfMetal\Calendar\Service\ShiftService;
 
 /**
@@ -35,6 +38,8 @@ class ShiftController extends AbstractActionController
      * @var ShiftService
      */
     public $shiftService;
+
+
 
     /**
      * ShiftController constructor.
@@ -84,6 +89,15 @@ class ShiftController extends AbstractActionController
     }
 
 
+    /**
+     * @return AppointmentRepository
+     */
+    public function getAppointmentRepository()
+    {
+        return $this->getEm()->getRepository(Appointment::class);
+    }
+
+
     public function availableShiftsAction()
     {
 
@@ -98,12 +112,7 @@ class ShiftController extends AbstractActionController
     }
 
 
-    function checkAvailability(Shift $shift)
-    {
-
-    }
-
-
 
 }
+
 

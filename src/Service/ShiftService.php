@@ -8,10 +8,12 @@
 
 namespace ZfMetal\Calendar\Service;
 
+use ZfMetal\Calendar\Entity\Appointment;
 use ZfMetal\Calendar\Entity\Calendar;
 use ZfMetal\Calendar\Entity\Event;
 use ZfMetal\Calendar\Entity\Schedule;
 use ZfMetal\Calendar\Entity\SpecificSchedule;
+use ZfMetal\Calendar\Form\AppointmentForm;
 use ZfMetal\Calendar\Model\Shift;
 use ZfMetal\Calendar\Model\Shifts;
 
@@ -191,11 +193,14 @@ class ShiftService
     }
 
 
-    function validateDate($date, $format = 'Y-m-d')
+    protected function validateDate($date, $format = 'Y-m-d')
     {
         $d = \DateTime::createFromFormat($format, $date);
         // The Y ( 4 digits year ) returns TRUE for any integer with any number of digits so changing the comparison from == to === fixes the issue.
         return $d && $d->format($format) === $date;
     }
+
+
+
 
 }

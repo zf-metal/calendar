@@ -400,6 +400,17 @@ return [
                                 ],
                                 'type' => \Zend\Router\Http\Segment::class,
                             ],
+                            'TakeAppointment' => [
+                                'mayTerminate' => true,
+                                'options' => [
+                                    'route' => '/take-appointment/',
+                                    'defaults' => [
+                                        'controller' => \ZfMetal\Calendar\Controller\AppointmentController::CLASS,
+                                        'action' => 'create',
+                                    ],
+                                ],
+                                'type' => \Zend\Router\Http\Segment::class,
+                            ],
                         ],
                     ],
                 ],

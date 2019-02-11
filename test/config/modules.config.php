@@ -23,6 +23,7 @@ return [
     'ZfMetal\Commons',
     'ZfMetal\Datagrid',
     'ZfMetal\Security',
+    'ZfMetal\SecurityJwt',
     'ZfcRbac',
     'ZfMetal\Restful',
     'ZfMetal\Calendar',

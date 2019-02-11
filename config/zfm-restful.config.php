@@ -13,6 +13,9 @@ return  [
             'clients' => \ZfMetal\Calendar\Entity\Client::class,
             'branch-offices' => \ZfMetal\Calendar\Entity\BranchOffice::class,
             'services' => \ZfMetal\Calendar\Entity\Service::class,
+
+
+            'appointments' => \ZfMetal\Calendar\Entity\Appointment::class,
         ],
     ],
 ];

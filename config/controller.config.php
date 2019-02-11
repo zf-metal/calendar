@@ -26,6 +26,7 @@ return array(
             \ZfMetal\Calendar\Controller\ServiceController::class => \ZfMetal\Calendar\Factory\Controller\ServiceControllerFactory::class,
             \ZfMetal\Calendar\Controller\EventSearchController::class => \ZfMetal\Calendar\Factory\Controller\EventSearchControllerFactory::class,
             \ZfMetal\Calendar\Controller\ShiftController::class => \ZfMetal\Calendar\Factory\Controller\ShiftControllerFactory::class,
+            \ZfMetal\Calendar\Controller\AppointmentController::class => \ZfMetal\Calendar\Factory\Controller\AppointmentControllerFactory::class,
         ),
     ),
 );

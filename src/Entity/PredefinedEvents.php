@@ -69,6 +69,12 @@ class PredefinedEvents
      */
     public $maxDaysForShifs = 0;
 
+
+    // * Minimo tiempo para pedir un turno
+    // * Tiempo de anticipacion para poder cancelar
+    // * Maximo tiempo de duracion
+
+
     public function getId()
     {
         return $this->id;
