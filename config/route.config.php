@@ -394,7 +394,7 @@ return [
                                             'route' => '/my-appointments',
                                             'defaults' => [
                                                 'controller' => \ZfMetal\Calendar\Controller\AppointmentApiController::CLASS,
-                                                'action' => 'my-appointments',
+                                                'action' => 'myAppointments',
                                             ],
                                         ],
                                         'type' => \Zend\Router\Http\Literal::class,

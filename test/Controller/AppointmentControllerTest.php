@@ -117,7 +117,7 @@ class AppointmentControllerTest extends AbstractHttpControllerTestCase
         $this->setUseConsoleRequest(false);
 
 
-        $date = '2019-02-04';
+        $date = '2020-02-04';
         $hour = '11:00';
         $calendarId = 1;
         $duration = 60;
@@ -146,7 +146,6 @@ class AppointmentControllerTest extends AbstractHttpControllerTestCase
             ]
         ];
 
-        echo $this->getResponse()->getContent();
 
         $this->assertResponseStatusCode(200);
         $this->assertJsonStringEqualsJsonString(json_encode($responseToCompare), $this->getResponse()->getContent());
@@ -161,7 +160,7 @@ class AppointmentControllerTest extends AbstractHttpControllerTestCase
         $this->setUseConsoleRequest(false);
 
 
-        $date = '2019-02-04';
+        $date = '2020-02-04';
         $hour = '12:00';
         $calendarId = 1;
         $duration = 60;
@@ -190,7 +189,6 @@ class AppointmentControllerTest extends AbstractHttpControllerTestCase
             ]
         ];
 
-        echo $this->getResponse()->getContent();
 
         $this->assertResponseStatusCode(200);
         $this->assertJsonStringEqualsJsonString(json_encode($responseToCompare), $this->getResponse()->getContent());
@@ -206,7 +204,7 @@ class AppointmentControllerTest extends AbstractHttpControllerTestCase
         $this->setUseConsoleRequest(false);
 
 
-        $date = '2019-02-04';
+        $date = '2020-02-04';
         $hour = '12:00';
         $calendarId = 1;
         $duration = 60;
@@ -243,10 +241,8 @@ class AppointmentControllerTest extends AbstractHttpControllerTestCase
         $this->setUseConsoleRequest(false);
 
 
-        $this->dispatch("/zfmc/api/appointments/my-appointments/", "GET");
+        $this->dispatch("/zfmc/api/appointments/my-appointments", "GET");
 
-
-        echo $this->getResponse()->getContent();
 
 
         $responseToCompare = [
@@ -254,16 +250,16 @@ class AppointmentControllerTest extends AbstractHttpControllerTestCase
                 'id' => 1,
                 'user' => $this->getMockIdentity()->getId(),
                 'calendar' => 1,
-                'start' => '2019-02-04 11:00',
-                'end' => '2019-02-04 12:00',
+                'start' => '2020-02-04 11:00',
+                'end' => '2020-02-04 12:00',
                 'duration' => 60
             ],
             [
                 'id' => 2,
                 'user' => $this->getMockIdentity()->getId(),
                 'calendar' => 1,
-                'start' => '2019-02-04 12:00',
-                'end' => '2019-02-04 13:00',
+                'start' => '2020-02-04 12:00',
+                'end' => '2020-02-04 13:00',
                 'duration' => 60
             ]
         ];
@@ -281,7 +277,7 @@ class AppointmentControllerTest extends AbstractHttpControllerTestCase
     {
         $this->setUseConsoleRequest(false);
 
-        $date = '2019-02-04';
+        $date = '2020-02-04';
 
         $calendarId = 1;
 
@@ -293,8 +289,6 @@ class AppointmentControllerTest extends AbstractHttpControllerTestCase
         $this->dispatch("/zfmc/api/appointments/availables/" . $calendarId . "/" . $date, "GET");
 
 
-        echo $this->getResponse()->getContent();
-
 
         $responseToCompare = [
             [
@@ -304,7 +298,7 @@ class AppointmentControllerTest extends AbstractHttpControllerTestCase
                 'end' => $date . ' 10:00',
                 'hour' => '09:00',
                 'duration' => '60',
-                'day' => 1
+                'day' => 2
             ],
             [
                 'calendar' => $calendarId,
@@ -313,7 +307,7 @@ class AppointmentControllerTest extends AbstractHttpControllerTestCase
                 'end' => $date . ' 11:00',
                 'hour' => '10:00',
                 'duration' => '60',
-                'day' => 1
+                'day' => 2
             ],
             [
                 'calendar' => $calendarId,
@@ -322,7 +316,7 @@ class AppointmentControllerTest extends AbstractHttpControllerTestCase
                 'end' => $date . ' 12:00',
                 'hour' => '11:00',
                 'duration' => '60',
-                'day' => 1
+                'day' => 2
             ]
         ];
 

@@ -62,7 +62,7 @@ class AppointmentRepository extends EntityRepository
         $result =  $this->getEntityManager()->createQueryBuilder('u')
             ->select('u')
             ->from(Appointment::class, 'u')
-            ->where('user = :userid')
+            ->where('u.user = :userid')
             ->andWhere('u.start > :start')
             //Appointment start (ex: cancelado)
             ->setParameter("userid", $userId)
