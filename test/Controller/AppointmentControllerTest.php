@@ -154,6 +154,87 @@ class AppointmentControllerTest extends AbstractHttpControllerTestCase
         $this->assertJsonStringEqualsJsonString(json_encode($responseToCompare), $this->getResponse()->getContent());
     }
 
+    /**
+     * @depends testTakeAppointment
+     * @throws \PHPUnit\Framework\ExpectationFailedException
+     */
+    public function testTakeSecondAppointment()
+    {
+        $this->setUseConsoleRequest(false);
+
+
+        $date = '2019-02-04';
+        $hour = '12:00';
+        $calendarId = 1;
+        $duration = 60;
+        $start = $date . " " . $hour;
+        $end = $date . " " . '13:00';
+        $token = "xxx";
+
+        $params = [
+            'calendar' => $calendarId,
+            'start' => $start,
+            'duration' => $duration
+        ];
+
+
+        $this->dispatch("/zfmc/api/appointments/take", "POST", $params);
+
+        $responseToCompare = [
+            'status' => true,
+            'item' => [
+                'id' => 2,
+                'user' => $this->getMockIdentity()->getId(),
+                'calendar' => $calendarId,
+                'start' => $start,
+                'end' => $end,
+                'duration' => 60
+            ]
+        ];
+
+        echo $this->getResponse()->getContent();
+
+        $this->assertResponseStatusCode(200);
+        $this->assertJsonStringEqualsJsonString(json_encode($responseToCompare), $this->getResponse()->getContent());
+    }
+
+
+    /**
+     * @depends testTakeSecondAppointment
+     * @throws \PHPUnit\Framework\ExpectationFailedException
+     */
+    public function testTakeAppointmentRejected()
+    {
+        $this->setUseConsoleRequest(false);
+
+
+        $date = '2019-02-04';
+        $hour = '12:00';
+        $calendarId = 1;
+        $duration = 60;
+        $start = $date . " " . $hour;
+        $end = $date . " " . '13:00';
+        $token = "xxx";
+
+        $params = [
+            'calendar' => $calendarId,
+            'start' => $start,
+            'duration' => $duration
+        ];
+
+
+        $this->dispatch("/zfmc/api/appointments/take", "POST", $params);
+
+        $responseToCompare = [
+            'status' => false,
+            'message' => "El turno solicitado no esta disponible"
+        ];
+
+        echo $this->getResponse()->getContent();
+
+        $this->assertResponseStatusCode(200);
+        $this->assertJsonStringEqualsJsonString(json_encode($responseToCompare), $this->getResponse()->getContent());
+    }
 
     /**
      * @depends  testCreateData

@@ -37,8 +37,8 @@ class AppointmentRepository extends EntityRepository
             ->select('u')
             ->from(Appointment::class, 'u')
             ->where(' 
-               (u.start > :start AND u.end > :end) 
-            OR (u.start < :start AND u.end < :end) 
+               (u.start > :start AND u.start < :end) 
+            OR (u.end > :start AND u.end < :end) 
             OR (u.start < :start AND u.end > :end) 
             OR (u.start = :start AND u.end = :end)
             ')
