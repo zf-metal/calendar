@@ -392,7 +392,7 @@ return [
                             'AvailableShifts' => [
                                 'mayTerminate' => true,
                                 'options' => [
-                                    'route' => '/available/:calendarId/:date',
+                                    'route' => '/availables/:calendarId/:date',
                                     'defaults' => [
                                         'controller' => \ZfMetal\Calendar\Controller\ShiftController::CLASS,
                                         'action' => 'availableShifts',
