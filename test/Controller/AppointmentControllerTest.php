@@ -134,7 +134,7 @@ class AppointmentControllerTest extends AbstractHttpControllerTestCase
         ];
 
 
-        $this->dispatch("/zfmc/appointments/take/", "POST", $params);
+        $this->dispatch("/zfmc/appointments/take", "POST", $params);
 
         $responseToCompare = [
             'status' => true,
@@ -171,7 +171,7 @@ class AppointmentControllerTest extends AbstractHttpControllerTestCase
             'date' => $date
         ];
 
-        $this->dispatch("/zfmc/appointments/available/" . $calendarId . "/" . $date, "GET");
+        $this->dispatch("/zfmc/appointments/availables/" . $calendarId . "/" . $date, "GET");
 
 
         echo $this->getResponse()->getContent();
@@ -184,7 +184,8 @@ class AppointmentControllerTest extends AbstractHttpControllerTestCase
                 'start' => $date . ' 09:00',
                 'end' => $date . ' 10:00',
                 'hour' => '09:00',
-                'duration' => '60'
+                'duration' => '60',
+                'day' => 1
             ],
             [
                 'calendar' => $calendarId,
@@ -192,7 +193,8 @@ class AppointmentControllerTest extends AbstractHttpControllerTestCase
                 'start' => $date . ' 10:00',
                 'end' => $date . ' 11:00',
                 'hour' => '10:00',
-                'duration' => '60'
+                'duration' => '60',
+                'day' => 1
             ],
             [
                 'calendar' => $calendarId,
@@ -200,7 +202,8 @@ class AppointmentControllerTest extends AbstractHttpControllerTestCase
                 'start' => $date . ' 11:00',
                 'end' => $date . ' 12:00',
                 'hour' => '11:00',
-                'duration' => '60'
+                'duration' => '60',
+                'day' => 1
             ]
         ];
 

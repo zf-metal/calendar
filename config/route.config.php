@@ -403,7 +403,7 @@ return [
                             'TakeAppointment' => [
                                 'mayTerminate' => true,
                                 'options' => [
-                                    'route' => '/take/',
+                                    'route' => '/take',
                                     'defaults' => [
                                         'controller' => \ZfMetal\Calendar\Controller\AppointmentApiController::CLASS,
                                         'action' => 'create',

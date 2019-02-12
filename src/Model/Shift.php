@@ -67,6 +67,16 @@ class Shift
         $this->calendar = $calendar;
     }
 
+
+    /**
+     * @return \DateTime
+     */
+    public function getDay()
+    {
+        return $this->getDate()->format('N');
+
+    }
+
     /**
      * @return \DateTime
      */
@@ -133,7 +143,8 @@ class Shift
             'hour' => $this->getHour(),
             'duration' => $this->getDuration(),
             'start' => $this->getStart()->format("Y-m-d H:i"),
-            'end' => $this->getEnd()->format("Y-m-d H:i")
+            'end' => $this->getEnd()->format("Y-m-d H:i"),
+            'day' => $this->getDay()
         ];
     }
 
