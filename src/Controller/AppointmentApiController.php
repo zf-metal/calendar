@@ -67,6 +67,16 @@ class AppointmentApiController extends AbstractActionController
     }
 
 
+    public function myAppointmentsAction()
+    {
+
+        $userId = $this->getJwtIdentity()->getId();
+
+        $appointments = $this->getAppointmentRepository()->findMyActiveAppointments($userId);
+
+        return new JsonModel([]);
+    }
+
     public function createAction()
     {
         $response = new Response();
@@ -89,7 +99,7 @@ class AppointmentApiController extends AbstractActionController
                 $end->modify("+".$appointment->getDuration()." minutes");
                 $appointment->setEnd($end);
 
-                //Check Caledar range time config
+                //Check Calendar range time config
 
                 //Check Availability
                 if ($this->getAppointmentRepository()

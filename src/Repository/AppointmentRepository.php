@@ -3,6 +3,7 @@
 namespace ZfMetal\Calendar\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Zend\Form\Element\DateTime;
 use ZfMetal\Calendar\Entity\Appointment;
 
 /**
@@ -54,5 +55,24 @@ class AppointmentRepository extends EntityRepository
 
     }
 
+
+    public function findMyActiveAppointments($userId)
+    {
+        $start = new \DateTime();
+        $result =  $this->getEntityManager()->createQueryBuilder('u')
+            ->select('u')
+            ->from(Appointment::class, 'u')
+            ->where('user = :userid')
+            ->andWhere('u.start > :start')
+            //Appointment start (ex: cancelado)
+            ->setParameter("userid", $userId)
+            ->setParameter("start",$start)
+            ->getQuery()
+            ->getResult();
+
+        return ($result)?false:true;
+
+
+    }
 }
 

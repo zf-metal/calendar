@@ -45,7 +45,6 @@ class AppointmentControllerTest extends AbstractHttpControllerTestCase
         );
 
 
-
         parent::setUp();
 
         $this->configureServiceManager();
@@ -60,7 +59,7 @@ class AppointmentControllerTest extends AbstractHttpControllerTestCase
     {
         $this->getApplicationServiceLocator()->setAllowOverride(true);
         $this->getApplicationServiceLocator()->setService(\ZfMetal\SecurityJwt\Service\JwtDoctrineIdentity::class, $this->getMockJwtDoctrineIdentity());
-      //  $services->setAllowOverride(false);
+        //  $services->setAllowOverride(false);
     }
 
     public function getMockJwtDoctrineIdentity()
@@ -107,7 +106,6 @@ class AppointmentControllerTest extends AbstractHttpControllerTestCase
         $executor->execute($loader->getFixtures());
         $this->assertResponseStatusCode(200);
     }
-
 
 
     /**
@@ -231,6 +229,46 @@ class AppointmentControllerTest extends AbstractHttpControllerTestCase
         ];
 
         echo $this->getResponse()->getContent();
+
+        $this->assertResponseStatusCode(200);
+        $this->assertJsonStringEqualsJsonString(json_encode($responseToCompare), $this->getResponse()->getContent());
+    }
+
+
+    /**
+     * @depends  testTakeSecondAppointment
+     */
+    public function testMyAppointments()
+    {
+        $this->setUseConsoleRequest(false);
+
+
+        $this->dispatch("/zfmc/api/appointments/my-appointments/", "GET");
+
+
+        echo $this->getResponse()->getContent();
+
+
+        $responseToCompare = [
+            [
+                'id' => 1,
+                'user' => $this->getMockIdentity()->getId(),
+                'calendar' => 1,
+                'start' => '2019-02-04 11:00',
+                'end' => '2019-02-04 12:00',
+                'duration' => 60
+            ],
+            [
+                'id' => 2,
+                'user' => $this->getMockIdentity()->getId(),
+                'calendar' => 1,
+                'start' => '2019-02-04 12:00',
+                'end' => '2019-02-04 13:00',
+                'duration' => 60
+            ]
+        ];
+
+        $response = json_decode($this->getResponse()->getContent());
 
         $this->assertResponseStatusCode(200);
         $this->assertJsonStringEqualsJsonString(json_encode($responseToCompare), $this->getResponse()->getContent());

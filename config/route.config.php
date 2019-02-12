@@ -374,10 +374,6 @@ return [
                                 'mayTerminate' => false,
                                 'options' => [
                                     'route' => '/appointments',
-                                    'defaults' => [
-                                        'controller' => \ZfMetal\Calendar\Controller\ShiftController::CLASS,
-                                        'action' => 'availableShifts',
-                                    ],
                                 ],
                                 'type' => \Zend\Router\Http\Literal::class,
                                 'child_routes' => [
@@ -391,6 +387,17 @@ return [
                                             ],
                                         ],
                                         'type' => \Zend\Router\Http\Segment::class,
+                                    ],
+                                    'MyAppointments' => [
+                                        'mayTerminate' => true,
+                                        'options' => [
+                                            'route' => '/my-appointments',
+                                            'defaults' => [
+                                                'controller' => \ZfMetal\Calendar\Controller\AppointmentApiController::CLASS,
+                                                'action' => 'my-appointments',
+                                            ],
+                                        ],
+                                        'type' => \Zend\Router\Http\Literal::class,
                                     ],
                                     'TakeAppointment' => [
                                         'mayTerminate' => true,
