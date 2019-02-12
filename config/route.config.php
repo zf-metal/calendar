@@ -378,38 +378,47 @@ return [
                             ],
                         ],
                     ],
-                    'Shift' => [
+                    'API' => [
                         'mayTerminate' => false,
                         'options' => [
-                            'route' => '/appointments',
-                            'defaults' => [
-                                'controller' => \ZfMetal\Calendar\Controller\ShiftController::CLASS,
-                                'action' => 'availableShifts',
-                            ],
+                            'route' => '/api',
                         ],
                         'type' => \Zend\Router\Http\Literal::class,
                         'child_routes' => [
-                            'AvailableShifts' => [
-                                'mayTerminate' => true,
+                            'Appointments' => [
+                                'mayTerminate' => false,
                                 'options' => [
-                                    'route' => '/availables/:calendarId/:date',
+                                    'route' => '/appointments',
                                     'defaults' => [
                                         'controller' => \ZfMetal\Calendar\Controller\ShiftController::CLASS,
                                         'action' => 'availableShifts',
                                     ],
                                 ],
-                                'type' => \Zend\Router\Http\Segment::class,
-                            ],
-                            'TakeAppointment' => [
-                                'mayTerminate' => true,
-                                'options' => [
-                                    'route' => '/take',
-                                    'defaults' => [
-                                        'controller' => \ZfMetal\Calendar\Controller\AppointmentApiController::CLASS,
-                                        'action' => 'create',
+                                'type' => \Zend\Router\Http\Literal::class,
+                                'child_routes' => [
+                                    'AvailableShifts' => [
+                                        'mayTerminate' => true,
+                                        'options' => [
+                                            'route' => '/availables/:calendarId/:date',
+                                            'defaults' => [
+                                                'controller' => \ZfMetal\Calendar\Controller\ShiftController::CLASS,
+                                                'action' => 'availableShifts',
+                                            ],
+                                        ],
+                                        'type' => \Zend\Router\Http\Segment::class,
+                                    ],
+                                    'TakeAppointment' => [
+                                        'mayTerminate' => true,
+                                        'options' => [
+                                            'route' => '/take',
+                                            'defaults' => [
+                                                'controller' => \ZfMetal\Calendar\Controller\AppointmentApiController::CLASS,
+                                                'action' => 'create',
+                                            ],
+                                        ],
+                                        'type' => \Zend\Router\Http\Segment::class,
                                     ],
                                 ],
-                                'type' => \Zend\Router\Http\Segment::class,
                             ],
                         ],
                     ],

@@ -75,7 +75,6 @@ class AppointmentApiController extends AbstractActionController
         if ($this->getRequest()->isPost()) {
             $data = $this->getRequest()->getPost();
 
-
             $data['user'] = $this->getJwtIdentity()->getId();
 
             $appointment = new Appointment();

@@ -134,7 +134,7 @@ class AppointmentControllerTest extends AbstractHttpControllerTestCase
         ];
 
 
-        $this->dispatch("/zfmc/appointments/take", "POST", $params);
+        $this->dispatch("/zfmc/api/appointments/take", "POST", $params);
 
         $responseToCompare = [
             'status' => true,
@@ -171,7 +171,7 @@ class AppointmentControllerTest extends AbstractHttpControllerTestCase
             'date' => $date
         ];
 
-        $this->dispatch("/zfmc/appointments/availables/" . $calendarId . "/" . $date, "GET");
+        $this->dispatch("/zfmc/api/appointments/availables/" . $calendarId . "/" . $date, "GET");
 
 
         echo $this->getResponse()->getContent();
