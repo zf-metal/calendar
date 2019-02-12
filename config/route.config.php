@@ -405,7 +405,7 @@ return [
                                 'options' => [
                                     'route' => '/take-appointment/',
                                     'defaults' => [
-                                        'controller' => \ZfMetal\Calendar\Controller\AppointmentController::CLASS,
+                                        'controller' => \ZfMetal\Calendar\Controller\AppointmentApiController::CLASS,
                                         'action' => 'create',
                                     ],
                                 ],

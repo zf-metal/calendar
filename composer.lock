@@ -1,10 +1,10 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4ca74073da94e81b3b9245331eab0ef1",
+    "content-hash": "f66ff54273f82abc9e9775396428e367",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -4944,16 +4944,16 @@
         },
         {
             "name": "zendframework/zend-test",
-            "version": "dev-develop",
+            "version": "3.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zendframework/zend-test.git",
-                "reference": "3f9b3a41eedcd70e0924ceaeedba73f5df0965b5"
+                "reference": "626606425072e9d513df3bf723913c0bb9d03f8c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zendframework/zend-test/zipball/3f9b3a41eedcd70e0924ceaeedba73f5df0965b5",
-                "reference": "3f9b3a41eedcd70e0924ceaeedba73f5df0965b5",
+                "url": "https://api.github.com/repos/zendframework/zend-test/zipball/626606425072e9d513df3bf723913c0bb9d03f8c",
+                "reference": "626606425072e9d513df3bf723913c0bb9d03f8c",
                 "shasum": ""
             },
             "require": {
@@ -4963,7 +4963,7 @@
                 "zendframework/zend-console": "^2.6",
                 "zendframework/zend-dom": "^2.6",
                 "zendframework/zend-eventmanager": "^2.6.2 || ^3.0",
-                "zendframework/zend-http": "^2.8.3",
+                "zendframework/zend-http": "^2.5.4",
                 "zendframework/zend-mvc": "^3.0",
                 "zendframework/zend-servicemanager": "^2.7.5 || ^3.0.3",
                 "zendframework/zend-stdlib": "^2.7 || ^3.0",
@@ -5011,7 +5011,7 @@
                 "test",
                 "zf"
             ],
-            "time": "2019-01-08T17:08:37+00:00"
+            "time": "2018-04-07T09:56:35+00:00"
         },
         {
             "name": "zendframework/zend-text",

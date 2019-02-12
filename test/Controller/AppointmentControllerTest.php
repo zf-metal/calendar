@@ -22,7 +22,7 @@ use Zend\Test\PHPUnit\Controller\AbstractConsoleControllerTestCase;
  * @method Request getRequest()
  * @package Test\Controller
  */
-class ShiftControllerTest extends AbstractHttpControllerTestCase
+class AppointmentControllerTest extends AbstractHttpControllerTestCase
 {
 
     protected $traceError = true;
@@ -44,6 +44,8 @@ class ShiftControllerTest extends AbstractHttpControllerTestCase
             include __DIR__ . '/../config/application.config.php'
         );
 
+
+
         parent::setUp();
 
         $this->configureServiceManager();
@@ -58,6 +60,7 @@ class ShiftControllerTest extends AbstractHttpControllerTestCase
     {
         $this->getApplicationServiceLocator()->setAllowOverride(true);
         $this->getApplicationServiceLocator()->setService(\ZfMetal\SecurityJwt\Service\JwtDoctrineIdentity::class, $this->getMockJwtDoctrineIdentity());
+      //  $services->setAllowOverride(false);
     }
 
     public function getMockJwtDoctrineIdentity()
@@ -106,61 +109,51 @@ class ShiftControllerTest extends AbstractHttpControllerTestCase
     }
 
 
+
     /**
-     * @depends  testCreateData
+     * @depends testCreateData
+     * @throws \PHPUnit\Framework\ExpectationFailedException
      */
-    public function testAvailableShifts()
+    public function testTakeAppointment()
     {
         $this->setUseConsoleRequest(false);
 
-        $date = '2019-02-04';
 
+        $date = '2019-02-04';
+        $hour = '11:00';
         $calendarId = 1;
+        $duration = 60;
+        $start = $date + " " + $hour;
+        $end = $date + " " + '12:00';
+        $token = "xxx";
 
         $params = [
-            'calendarId' => $calendarId,
-            'date' => $date
+            'calendar' => $calendarId,
+            'start' => $start,
+            'end' => $end,
+            'duration' => $duration
         ];
 
-        $this->dispatch("/zfmc/shift/available-shifts/" . $calendarId . "/" . $date, "GET");
 
-
-        echo $this->getResponse()->getContent();
-
+        $this->dispatch("/zfmc/shift/take-appointment/", "POST", $params);
 
         $responseToCompare = [
-            [
+            'status' => true,
+            'item' => [
+                'id' => 2,
+                'user' => $this->getMockIdentity()->getId(),
                 'calendar' => $calendarId,
-                'date' => $date,
-                'start' => $date . ' 09:00',
-                'end' => $date . ' 10:00',
-                'hour' => '09:00',
-                'duration' => '60'
-            ],
-            [
-                'calendar' => $calendarId,
-                'date' => $date,
-                'start' => $date . ' 10:00',
-                'end' => $date . ' 11:00',
-                'hour' => '10:00',
-                'duration' => '60'
-            ],
-            [
-                'calendar' => $calendarId,
-                'date' => $date,
-                'start' => $date . ' 11:00',
-                'end' => $date . ' 12:00',
-                'hour' => '11:00',
-                'duration' => '60'
+                'start' => $start,
+                'end' => $end,
+                'duration' => 60
             ]
         ];
 
-        $response = json_decode($this->getResponse()->getContent());
+        echo $this->getResponse()->getContent();
 
         $this->assertResponseStatusCode(200);
         $this->assertJsonStringEqualsJsonString(json_encode($responseToCompare), $this->getResponse()->getContent());
     }
-
 
 
 }

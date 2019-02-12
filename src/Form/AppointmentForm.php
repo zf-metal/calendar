@@ -49,21 +49,9 @@ class AppointmentForm extends \Zend\Form\Form implements \DoctrineModule\Persist
         ));
 
 
-        $this->add(array(
-            'name' => 'user',
-            'attributes' => array(
-                'type' => 'hidden',
-            )
-        ));
 
-        $this->add(array(
-            'name' => 'calendar',
-            'attributes' => array(
-                'type' => 'hidden',
-            )
-        ));
 
-       /* $this->add([
+        $this->add([
             'type' => ObjectSelect::class,
             'name' => 'calendar',
             'attributes' => array(
@@ -93,7 +81,7 @@ class AppointmentForm extends \Zend\Form\Form implements \DoctrineModule\Persist
                 'display_empty_item' => true,
                 'empty_item_label' => 'Usuario',
             ],
-        ]);*/
+        ]);
 
         $this->add(array(
             'name' => 'start',

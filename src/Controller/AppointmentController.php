@@ -68,54 +68,7 @@ class AppointmentController extends AbstractActionController
     }
 
 
-    public function createAction()
-    {
-        $response = new Response();
 
-
-        if ($this->getRequest()->isPost()) {
-            $data = $this->getRequest()->getPost();
-            $data['user'] = $this->getJwtIdentity();
-
-            $appointment = new Appointment();
-            $this->form->bind($appointment);
-            $this->form->setData($data);
-
-            if ($this->form->isValid()) {
-
-
-                if ($this->getAppointmentRepository()
-                    ->checkAvailability(
-                        $appointment->getCalendar(), $appointment->getStart(), $appointment->getEnd()
-                    )
-                ) {
-                    $this->getAppointmentRepository()->save($appointment);
-                    $response->setStatus(true);
-                    $response->setItem($appointment->toArray());
-
-                } else {
-                    $response->setMessage("El turno solicitado no esta disponible");
-                }
-
-            } else {
-                foreach ($this->form->getMessages() as $key => $messages) {
-                    foreach ($messages as $msj) {
-                        $response->addError($key,$msj);
-                    }
-                }
-                $response->setMessage("Datos invalidos");
-            }
-
-
-        } else {
-            $response->setMessage("Post method is required");
-        }
-
-
-
-        return new JsonModel($response->toArray());
-
-    }
 
 
 }
