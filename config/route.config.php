@@ -115,35 +115,7 @@ return [
                             ],
                         ],
                     ],
-                    'Api' => [
-                        'type' => \Zend\Router\Http\Literal::class,
-                        'mayTerminate' => false,
-                        'options' => [
-                            'route' => '/api',
-                        ],
-                        'child_routes' => [
-                            'entity' => [
-                                'type' => \Zend\Router\Http\Segment::class,
-                                'mayTerminate' => false,
-                                'options' => [
-                                    'route' => '/:entityAlias[/:id]',
-                                    'defaults' => [
-                                        'controller' => 'ZfMetal\\Restful\\Controller\\MainController',
-                                    ],
-                                ],
-                            ],
-                            'start' => [
-                                'type' => \Zend\Router\Http\Segment::class,
-                                'mayTerminate' => false,
-                                'options' => [
-                                    'route' => '/start',
-                                    'defaults' => [
-                                        'controller' => 'ZfMetal\\Calendar\\Controller\\ApiStartController',
-                                    ],
-                                ],
-                            ],
-                        ],
-                    ],
+
                     'Home' => [
                         'mayTerminate' => true,
                         'options' => [
@@ -299,13 +271,6 @@ return [
                             ],
                         ],
                     ],
-                    'api' => [
-                        'mayTerminate' => false,
-                        'options' => [
-                            'route' => '/api',
-                        ],
-                        'type' => \Zend\Router\Http\Literal::class,
-                    ],
                     'Export' => [
                         'mayTerminate' => false,
                         'options' => [
@@ -378,13 +343,33 @@ return [
                             ],
                         ],
                     ],
-                    'API' => [
+                    'Api' => [
+                        'type' => \Zend\Router\Http\Literal::class,
                         'mayTerminate' => false,
                         'options' => [
                             'route' => '/api',
                         ],
-                        'type' => \Zend\Router\Http\Literal::class,
                         'child_routes' => [
+                            'entity' => [
+                                'type' => \Zend\Router\Http\Segment::class,
+                                'mayTerminate' => false,
+                                'options' => [
+                                    'route' => '/:entityAlias[/:id]',
+                                    'defaults' => [
+                                        'controller' => 'ZfMetal\\Restful\\Controller\\MainController',
+                                    ],
+                                ],
+                            ],
+                            'start' => [
+                                'type' => \Zend\Router\Http\Segment::class,
+                                'mayTerminate' => false,
+                                'options' => [
+                                    'route' => '/start',
+                                    'defaults' => [
+                                        'controller' => 'ZfMetal\\Calendar\\Controller\\ApiStartController',
+                                    ],
+                                ],
+                            ],
                             'Appointments' => [
                                 'mayTerminate' => false,
                                 'options' => [
