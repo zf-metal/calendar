@@ -102,14 +102,14 @@ class AppointmentForm extends \Zend\Form\Form implements \DoctrineModule\Persist
         ));
 
 
-        $this->add(array(
+ /*       $this->add(array(
             'name' => 'end',
             'attributes' => array(
                 'type' => 'time',
                 'class' => 'form-control ',
                 'autocomplete' => "off",
             )
-        ));
+        ));*/
 
     }
 

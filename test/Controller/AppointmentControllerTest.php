@@ -123,8 +123,8 @@ class AppointmentControllerTest extends AbstractHttpControllerTestCase
         $hour = '11:00';
         $calendarId = 1;
         $duration = 60;
-        $start = $date + " " + $hour;
-        $end = $date + " " + '12:00';
+        $start = $date . " " . $hour;
+        $end = $date . " " . '12:00';
         $token = "xxx";
 
         $params = [
@@ -140,7 +140,7 @@ class AppointmentControllerTest extends AbstractHttpControllerTestCase
         $responseToCompare = [
             'status' => true,
             'item' => [
-                'id' => 2,
+                'id' => 1,
                 'user' => $this->getMockIdentity()->getId(),
                 'calendar' => $calendarId,
                 'start' => $start,

@@ -7,7 +7,7 @@ use Zend\Form\Annotation as Annotation;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\UniqueConstraint as UniqueConstraint;
 use Gedmo\Mapping\Annotation as Gedmo;
-
+use ZfMetal\Restful\Transformation;
 /**
  * Appointment
  *
@@ -55,6 +55,7 @@ class Appointment
      * @Annotation\Attributes({"type":"datetime"})
      * @Annotation\Options({"label":"Desde", "description":"", "addon":""})
      * @ORM\Column(type="datetime", unique=false, nullable=true, name="start")
+     * @Transformation\Policy\FormatDateTime(format="Y-m-d H:i")
      */
     public $start = null;
 
@@ -72,6 +73,7 @@ class Appointment
      * @Annotation\Attributes({"type":"datetime"})
      * @Annotation\Options({"label":"Hasta", "description":"", "addon":""})
      * @ORM\Column(type="datetime", unique=false, nullable=true, name="end")
+     * @Transformation\Policy\FormatDateTime(format="Y-m-d H:i")
      */
     public $end = null;
 
@@ -146,8 +148,8 @@ class Appointment
             'id' => $this->getId(),
             'user' => $this->getUser()->getId(),
             'calendar' => $this->getCalendar()->getId(),
-            'start' => $this->getStart(),
-            'end' => $this->getEnd(),
+            'start' => $this->getStart()->format("Y-m-d H:i"),
+            'end' => $this->getEnd()->format("Y-m-d H:i"),
             'duration' => $this->getDuration(),
         ];
 

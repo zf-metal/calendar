@@ -85,6 +85,11 @@ class AppointmentApiController extends AbstractActionController
             if ($this->form->isValid()) {
 
 
+                //SET DATE
+                $end = clone $appointment->getStart();
+                $end->modify("+".$appointment->getDuration()." minutes");
+                $appointment->setEnd($end);
+
                 if ($this->getAppointmentRepository()
                     ->checkAvailability(
                         $appointment->getCalendar(), $appointment->getStart(), $appointment->getEnd()
