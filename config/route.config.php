@@ -381,7 +381,7 @@ return [
                     'Shift' => [
                         'mayTerminate' => false,
                         'options' => [
-                            'route' => '/shift',
+                            'route' => '/appointments',
                             'defaults' => [
                                 'controller' => \ZfMetal\Calendar\Controller\ShiftController::CLASS,
                                 'action' => 'availableShifts',
@@ -392,7 +392,7 @@ return [
                             'AvailableShifts' => [
                                 'mayTerminate' => true,
                                 'options' => [
-                                    'route' => '/available-shifts/:calendarId/:date',
+                                    'route' => '/available/:calendarId/:date',
                                     'defaults' => [
                                         'controller' => \ZfMetal\Calendar\Controller\ShiftController::CLASS,
                                         'action' => 'availableShifts',
@@ -403,7 +403,7 @@ return [
                             'TakeAppointment' => [
                                 'mayTerminate' => true,
                                 'options' => [
-                                    'route' => '/take-appointment/',
+                                    'route' => '/take/',
                                     'defaults' => [
                                         'controller' => \ZfMetal\Calendar\Controller\AppointmentApiController::CLASS,
                                         'action' => 'create',

@@ -85,11 +85,14 @@ class AppointmentApiController extends AbstractActionController
             if ($this->form->isValid()) {
 
 
-                //SET DATE
+                //SET END DATE
                 $end = clone $appointment->getStart();
                 $end->modify("+".$appointment->getDuration()." minutes");
                 $appointment->setEnd($end);
 
+                //Check Caledar range time config
+
+                //Check Availability
                 if ($this->getAppointmentRepository()
                     ->checkAvailability(
                         $appointment->getCalendar(), $appointment->getStart(), $appointment->getEnd()

@@ -130,12 +130,11 @@ class AppointmentControllerTest extends AbstractHttpControllerTestCase
         $params = [
             'calendar' => $calendarId,
             'start' => $start,
-            'end' => $end,
             'duration' => $duration
         ];
 
 
-        $this->dispatch("/zfmc/shift/take-appointment/", "POST", $params);
+        $this->dispatch("/zfmc/appointments/take/", "POST", $params);
 
         $responseToCompare = [
             'status' => true,
@@ -150,6 +149,62 @@ class AppointmentControllerTest extends AbstractHttpControllerTestCase
         ];
 
         echo $this->getResponse()->getContent();
+
+        $this->assertResponseStatusCode(200);
+        $this->assertJsonStringEqualsJsonString(json_encode($responseToCompare), $this->getResponse()->getContent());
+    }
+
+
+    /**
+     * @depends  testCreateData
+     */
+    public function testAvailableShifts()
+    {
+        $this->setUseConsoleRequest(false);
+
+        $date = '2019-02-04';
+
+        $calendarId = 1;
+
+        $params = [
+            'calendarId' => $calendarId,
+            'date' => $date
+        ];
+
+        $this->dispatch("/zfmc/appointments/available/" . $calendarId . "/" . $date, "GET");
+
+
+        echo $this->getResponse()->getContent();
+
+
+        $responseToCompare = [
+            [
+                'calendar' => $calendarId,
+                'date' => $date,
+                'start' => $date . ' 09:00',
+                'end' => $date . ' 10:00',
+                'hour' => '09:00',
+                'duration' => '60'
+            ],
+            [
+                'calendar' => $calendarId,
+                'date' => $date,
+                'start' => $date . ' 10:00',
+                'end' => $date . ' 11:00',
+                'hour' => '10:00',
+                'duration' => '60'
+            ],
+            [
+                'calendar' => $calendarId,
+                'date' => $date,
+                'start' => $date . ' 11:00',
+                'end' => $date . ' 12:00',
+                'hour' => '11:00',
+                'duration' => '60'
+            ]
+        ];
+
+        $response = json_decode($this->getResponse()->getContent());
 
         $this->assertResponseStatusCode(200);
         $this->assertJsonStringEqualsJsonString(json_encode($responseToCompare), $this->getResponse()->getContent());
