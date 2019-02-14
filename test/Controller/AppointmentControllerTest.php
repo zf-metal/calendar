@@ -327,4 +327,35 @@ class AppointmentControllerTest extends AbstractHttpControllerTestCase
     }
 
 
+    /**
+     * @depends testTakeSecondAppointment
+     * @throws \PHPUnit\Framework\ExpectationFailedException
+     */
+    public function testCancel()
+    {
+        $this->setUseConsoleRequest(false);
+
+
+        $id = 2;
+
+
+        $params = [
+            'id' => $id
+        ];
+
+
+        $this->dispatch("/zfmc/api/appointments/cancel", "PUT", $params);
+
+        $responseToCompare = [
+            'status' => false,
+            'message' => "El turno solicitado no esta disponible"
+        ];
+
+        echo $this->getResponse()->getContent();
+
+        $this->assertResponseStatusCode(200);
+        $this->assertJsonStringEqualsJsonString(json_encode($responseToCompare), $this->getResponse()->getContent());
+    }
+
+
 }

@@ -74,12 +74,14 @@ class AppointmentApiController extends AbstractActionController
 
         $appointments = $this->getAppointmentRepository()->findMyActiveAppointments($userId);
         $items = [];
-        /** @var Appointment $appointment */
-        foreach($appointments as $appointment){
-            $items[] = $appointment->toArray();
+        if($appointments) {
+            /** @var Appointment $appointment */
+            foreach ($appointments as $appointment) {
+                $items[] = $appointment->toArray();
+            }
         }
 
-        return new JsonModel([]);
+        return new JsonModel($items);
     }
 
     public function createAction()
