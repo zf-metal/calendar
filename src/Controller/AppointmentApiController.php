@@ -117,6 +117,7 @@ class AppointmentApiController extends AbstractActionController
                     $this->getAppointmentRepository()->save($appointment);
                     $response->setStatus(true);
                     $response->setItem($appointment->toArray());
+                    $response->setMessage("Su turno ha sido confirmado satisfactoriamente.");
 
                 } else {
                     $response->setMessage("Lo sentimos. El turno solicitado ya no esta disponible.");
