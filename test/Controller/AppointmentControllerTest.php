@@ -136,6 +136,7 @@ class AppointmentControllerTest extends AbstractHttpControllerTestCase
 
         $responseToCompare = [
             'status' => true,
+            'message' => "Su turno ha sido confirmado satisfactoriamente.",
             'item' => [
                 'id' => 1,
                 'user' => $this->getMockIdentity()->getId(),
@@ -179,6 +180,7 @@ class AppointmentControllerTest extends AbstractHttpControllerTestCase
 
         $responseToCompare = [
             'status' => true,
+            'message' => "Su turno ha sido confirmado satisfactoriamente.",
             'item' => [
                 'id' => 2,
                 'user' => $this->getMockIdentity()->getId(),
@@ -223,7 +225,7 @@ class AppointmentControllerTest extends AbstractHttpControllerTestCase
 
         $responseToCompare = [
             'status' => false,
-            'message' => "El turno solicitado no esta disponible"
+            'message' => "Lo sentimos. El turno solicitado ya no esta disponible."
         ];
 
         echo $this->getResponse()->getContent();
