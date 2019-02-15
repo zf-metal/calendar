@@ -120,6 +120,7 @@ class AppointmentControllerTest extends AbstractHttpControllerTestCase
         $date = '2020-02-04';
         $hour = '11:00';
         $calendarId = 1;
+        $calendarName = "CalendarTest";
         $duration = 60;
         $start = $date . " " . $hour;
         $end = $date . " " . '12:00';
@@ -140,7 +141,7 @@ class AppointmentControllerTest extends AbstractHttpControllerTestCase
             'item' => [
                 'id' => 1,
                 'user' => $this->getMockIdentity()->getId(),
-                'calendar' => $calendarId,
+                'calendar' => ["id" => $calendarId, "name" => $calendarName],
                 'start' => $start,
                 'end' => $end,
                 'duration' => 60
@@ -164,6 +165,7 @@ class AppointmentControllerTest extends AbstractHttpControllerTestCase
         $date = '2020-02-04';
         $hour = '12:00';
         $calendarId = 1;
+        $calendarName = "CalendarTest";
         $duration = 60;
         $start = $date . " " . $hour;
         $end = $date . " " . '13:00';
@@ -184,7 +186,7 @@ class AppointmentControllerTest extends AbstractHttpControllerTestCase
             'item' => [
                 'id' => 2,
                 'user' => $this->getMockIdentity()->getId(),
-                'calendar' => $calendarId,
+                'calendar' => ["id" => $calendarId, "name" => $calendarName],
                 'start' => $start,
                 'end' => $end,
                 'duration' => 60
@@ -251,7 +253,7 @@ class AppointmentControllerTest extends AbstractHttpControllerTestCase
             [
                 'id' => 1,
                 'user' => $this->getMockIdentity()->getId(),
-                'calendar' => 1,
+                'calendar' => ["id" => 1, "name" => "CalendarTest"],
                 'start' => '2020-02-04 11:00',
                 'end' => '2020-02-04 12:00',
                 'duration' => 60
@@ -259,7 +261,7 @@ class AppointmentControllerTest extends AbstractHttpControllerTestCase
             [
                 'id' => 2,
                 'user' => $this->getMockIdentity()->getId(),
-                'calendar' => 1,
+                'calendar' => ["id" => 1, "name" => "CalendarTest"],
                 'start' => '2020-02-04 12:00',
                 'end' => '2020-02-04 13:00',
                 'duration' => 60

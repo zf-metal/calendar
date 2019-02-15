@@ -70,6 +70,10 @@ class AppointmentApiController extends AbstractActionController
     public function myAppointmentsAction()
     {
 
+        if(!$this->getJwtIdentity()){
+            throw new \Exception("Usuario no autenticado");
+        }
+
         $userId = $this->getJwtIdentity()->getId();
 
         $appointments = $this->getAppointmentRepository()->findMyActiveAppointments($userId);
@@ -91,6 +95,10 @@ class AppointmentApiController extends AbstractActionController
 
         if ($this->getRequest()->isPost()) {
             $data = $this->getRequest()->getPost();
+
+            if(!$this->getJwtIdentity()){
+            throw new \Exception("Usuario no autenticado");
+            }
 
             $data['user'] = $this->getJwtIdentity()->getId();
 

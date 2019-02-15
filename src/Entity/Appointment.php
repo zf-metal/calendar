@@ -47,6 +47,7 @@ class Appointment
      * "target_class":"\ZfMetal\Calendar\Entity\Calendar", "description":""})
      * @ORM\ManyToOne(targetEntity="\ZfMetal\Calendar\Entity\Calendar")
      * @ORM\JoinColumn(name="calendar_id", referencedColumnName="id", nullable=true)
+     * @Transformation\Policy\Custom(transform="ZfMetal\Restful\Transformation\Policy\Common\IdName::transform")
      */
     public $calendar = null;
 
@@ -147,7 +148,7 @@ class Appointment
         return [
             'id' => $this->getId(),
             'user' => $this->getUser()->getId(),
-            'calendar' => $this->getCalendar()->getId(),
+            'calendar' => ["id" => $this->getCalendar()->getId(), "name" => $this->getCalendar()->getName()],
             'start' => $this->getStart()->format("Y-m-d H:i"),
             'end' => $this->getEnd()->format("Y-m-d H:i"),
             'duration' => $this->getDuration(),
