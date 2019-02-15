@@ -119,7 +119,7 @@ class AppointmentApiController extends AbstractActionController
                     $response->setItem($appointment->toArray());
 
                 } else {
-                    $response->setMessage("El turno solicitado no esta disponible");
+                    $response->setMessage("Lo sentimos. El turno solicitado ya no esta disponible.");
                 }
 
             } else {
