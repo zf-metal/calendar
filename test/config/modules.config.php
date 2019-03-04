@@ -21,6 +21,7 @@ return [
     'DoctrineModule',
     'DoctrineORMModule',
     'ZfMetal\Commons',
+    'ZfMetal\Log',
     'ZfMetal\Datagrid',
     'ZfMetal\Security',
     'ZfMetal\SecurityJwt',

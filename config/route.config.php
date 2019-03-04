@@ -350,13 +350,24 @@ return [
                             'route' => '/api',
                         ],
                         'child_routes' => [
+
                             'entity' => [
                                 'type' => \Zend\Router\Http\Segment::class,
                                 'mayTerminate' => false,
                                 'options' => [
                                     'route' => '/:entityAlias[/:id]',
                                     'defaults' => [
-                                        'controller' => 'ZfMetal\\Restful\\Controller\\MainController',
+                                        'controller' => \ZfMetal\Restful\Controller\MainController::class,
+                                    ],
+                                ],
+                            ],
+                            'calendars' => [
+                                'type' => \Zend\Router\Http\Segment::class,
+                                'mayTerminate' => false,
+                                'options' => [
+                                    'route' => '/calendars[/:id]',
+                                    'defaults' => [
+                                        'controller' => \ZfMetal\Calendar\Controller\CalendarApiController::class,
                                     ],
                                 ],
                             ],

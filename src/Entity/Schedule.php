@@ -56,7 +56,7 @@ class Schedule
     /**
      * @Annotation\Type("Zend\Form\Element\Time")
      * @Annotation\Attributes({"type":"time"})
-     * @Annotation\Options({"label":"start", "description":"", "addon":""})
+     * @Annotation\Options({"label":"start", "description":"", "addon":"", "format": "H:i"})
      * @ORM\Column(type="time", unique=false, nullable=true, name="start")
      * @Transformation\Policy\KeepDateTime
      */
@@ -65,7 +65,7 @@ class Schedule
     /**
      * @Annotation\Type("Zend\Form\Element\Time")
      * @Annotation\Attributes({"type":"time"})
-     * @Annotation\Options({"label":"end", "description":"", "addon":""})
+     * @Annotation\Options({"label":"end", "description":"", "addon":"", "format": "H:i"})
      * @ORM\Column(type="time", unique=false, nullable=true, name="end")
      * @Transformation\Policy\KeepDateTime
      */
@@ -74,7 +74,7 @@ class Schedule
     /**
      * @Annotation\Type("Zend\Form\Element\Time")
      * @Annotation\Attributes({"type":"time"})
-     * @Annotation\Options({"label":"Start 2", "description":"", "addon":""})
+     * @Annotation\Options({"label":"Start 2", "description":"", "addon":"", "format": "H:i"})
      * @ORM\Column(type="time", unique=false, nullable=true, name="start_2")
      * @Transformation\Policy\KeepDateTime
      */
@@ -83,7 +83,7 @@ class Schedule
     /**
      * @Annotation\Type("Zend\Form\Element\Time")
      * @Annotation\Attributes({"type":"time"})
-     * @Annotation\Options({"label":"End 2", "description":"", "addon":""})
+     * @Annotation\Options({"label":"End 2", "description":"", "addon":"", "format": "H:i"})
      * @ORM\Column(type="time", unique=false, nullable=true, name="end_2")
      * @Transformation\Policy\KeepDateTime
      */
@@ -121,9 +121,9 @@ class Schedule
 
     public function getStart($formatDate = false)
     {
-        if(is_a($this->start,"DateTime")){
-            if($formatDate){
-             return $this->start;
+        if (is_a($this->start, "DateTime")) {
+            if ($formatDate) {
+                return $this->start;
             }
             return $this->start->format("H:i");
         }
@@ -137,8 +137,8 @@ class Schedule
 
     public function getEnd($formatDate = false)
     {
-        if(is_a($this->end,"DateTime")){
-            if($formatDate){
+        if (is_a($this->end, "DateTime")) {
+            if ($formatDate) {
                 return $this->end;
             }
             return $this->end->format("H:i");
@@ -153,8 +153,8 @@ class Schedule
 
     public function getStart2($formatDate = false)
     {
-        if(is_a($this->start2,"DateTime")){
-            if($formatDate){
+        if (is_a($this->start2, "DateTime")) {
+            if ($formatDate) {
                 return $this->start2;
             }
             return $this->start2->format("H:i");
@@ -167,13 +167,14 @@ class Schedule
         $this->start2 = $start2;
     }
 
-    public function getEnd2($formatDate = false){
+    public function getEnd2($formatDate = false)
+    {
 
-        if(is_a($this->end2,"DateTime")){
-            if($formatDate){
+        if (is_a($this->end2, "DateTime")) {
+            if ($formatDate) {
                 return $this->end2;
             }
-         return $this->end2->format("H:i");
+            return $this->end2->format("H:i");
         }
         return null;
     }
@@ -185,11 +186,23 @@ class Schedule
 
     public function __toString()
     {
-        return (string) $this->day;
+        return (string)$this->day;
     }
 
 
+/*    public function getArrayCopy()
+    {
+        $a = [
+            "id" => $this->getId(),
+            "calendar" => $this->getCalendar(),
+            "day" => $this->getDay(),
+            "start" => $this->getStart()
 
+        ];
+
+        return $a;
+
+    }*/
 
 
 }

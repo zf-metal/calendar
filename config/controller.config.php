@@ -6,6 +6,7 @@ return array(
             'ZfMetal\\Calendar\\Controller\\AccountController' => 'ZfMetal\\Calendar\\Factory\\Controller\\AccountControllerFactory',
             \ZfMetal\Calendar\Controller\CalendarController::class => \ZfMetal\Calendar\Factory\Controller\CalendarControllerFactory::class,
             \ZfMetal\Calendar\Controller\ManagerCalendarController::class => \ZfMetal\Calendar\Factory\Controller\ManagerCalendarControllerFactory::class,
+            \ZfMetal\Calendar\Controller\CalendarApiController::class => \ZfMetal\Calendar\Factory\Controller\CalendarApiControllerFactory::class,
             \ZfMetal\Calendar\Controller\HolidayController::class => \ZfMetal\Calendar\Factory\Controller\HolidayControllerFactory::class,
             \ZfMetal\Calendar\Controller\DayController::class => \ZfMetal\Calendar\Factory\Controller\DayControllerFactory::class,
             \ZfMetal\Calendar\Controller\ApiCalendarController::class => \ZfMetal\Calendar\Factory\Controller\ApiCalendarControllerFactory::class,

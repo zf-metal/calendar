@@ -1,0 +1,76 @@
+2019-03-04T22:42:50+00:00 ERR (3): Exception: An exception occurred while executing 'UPDATE cal_calendar SET name = ?, description = ? WHERE id = ?' with params ["Calendar Created", "Descripcion del Calendario", 4]:
+
+SQLSTATE[23000]: Integrity constraint violation: 19 UNIQUE constraint failed: cal_calendar.name
+FILE: C:\Users\crist\Proyectos\CDI\agenda\module\ZfMetal\Calendar\vendor\doctrine\dbal\lib\Doctrine\DBAL\Driver\AbstractSQLiteDriver.php
+LINE: 48
+TRACE: 
+#0 C:\Users\crist\Proyectos\CDI\agenda\module\ZfMetal\Calendar\vendor\doctrine\dbal\lib\Doctrine\DBAL\DBALException.php(128): Doctrine\DBAL\Driver\AbstractSQLiteDriver->convertException('An exception oc...', Object(Doctrine\DBAL\Driver\PDOException))
+#1 C:\Users\crist\Proyectos\CDI\agenda\module\ZfMetal\Calendar\vendor\doctrine\dbal\lib\Doctrine\DBAL\Connection.php(1015): Doctrine\DBAL\DBALException::driverExceptionDuringQuery(Object(Doctrine\DBAL\Driver\PDOSqlite\Driver), Object(Doctrine\DBAL\Driver\PDOException), 'UPDATE cal_cale...', Array)
+#2 C:\Users\crist\Proyectos\CDI\agenda\module\ZfMetal\Calendar\vendor\doctrine\orm\lib\Doctrine\ORM\Persisters\Entity\BasicEntityPersister.php(480): Doctrine\DBAL\Connection->executeUpdate('UPDATE cal_cale...', Array, Array)
+#3 C:\Users\crist\Proyectos\CDI\agenda\module\ZfMetal\Calendar\vendor\doctrine\orm\lib\Doctrine\ORM\Persisters\Entity\BasicEntityPersister.php(366): Doctrine\ORM\Persisters\Entity\BasicEntityPersister->updateTable(Object(ZfMetal\Calendar\Entity\Calendar), 'cal_calendar', Array, NULL)
+#4 C:\Users\crist\Proyectos\CDI\agenda\module\ZfMetal\Calendar\vendor\doctrine\orm\lib\Doctrine\ORM\UnitOfWork.php(1065): Doctrine\ORM\Persisters\Entity\BasicEntityPersister->update(Object(ZfMetal\Calendar\Entity\Calendar))
+#5 C:\Users\crist\Proyectos\CDI\agenda\module\ZfMetal\Calendar\vendor\doctrine\orm\lib\Doctrine\ORM\UnitOfWork.php(384): Doctrine\ORM\UnitOfWork->executeUpdates(Object(Doctrine\ORM\Mapping\ClassMetadata))
+#6 C:\Users\crist\Proyectos\CDI\agenda\module\ZfMetal\Calendar\vendor\doctrine\orm\lib\Doctrine\ORM\EntityManager.php(356): Doctrine\ORM\UnitOfWork->commit(NULL)
+#7 C:\Users\crist\Proyectos\CDI\agenda\module\ZfMetal\Calendar\src\Controller\CalendarApiController.php(193): Doctrine\ORM\EntityManager->flush()
+#8 C:\Users\crist\Proyectos\CDI\agenda\module\ZfMetal\Calendar\vendor\zendframework\zend-mvc\src\Controller\AbstractRestfulController.php(436): ZfMetal\Calendar\Controller\CalendarApiController->update('4', Array)
+#9 C:\Users\crist\Proyectos\CDI\agenda\module\ZfMetal\Calendar\vendor\zendframework\zend-eventmanager\src\EventManager.php(322): Zend\Mvc\Controller\AbstractRestfulController->onDispatch(Object(Zend\Mvc\MvcEvent))
+#10 C:\Users\crist\Proyectos\CDI\agenda\module\ZfMetal\Calendar\vendor\zendframework\zend-eventmanager\src\EventManager.php(179): Zend\EventManager\EventManager->triggerListeners(Object(Zend\Mvc\MvcEvent), Object(Closure))
+#11 C:\Users\crist\Proyectos\CDI\agenda\module\ZfMetal\Calendar\vendor\zendframework\zend-mvc\src\Controller\AbstractController.php(104): Zend\EventManager\EventManager->triggerEventUntil(Object(Closure), Object(Zend\Mvc\MvcEvent))
+#12 C:\Users\crist\Proyectos\CDI\agenda\module\ZfMetal\Calendar\vendor\zendframework\zend-mvc\src\Controller\AbstractRestfulController.php(311): Zend\Mvc\Controller\AbstractController->dispatch(Object(Zend\Http\PhpEnvironment\Request), Object(Zend\Http\PhpEnvironment\Response))
+#13 C:\Users\crist\Proyectos\CDI\agenda\module\ZfMetal\Calendar\vendor\zendframework\zend-mvc\src\DispatchListener.php(138): Zend\Mvc\Controller\AbstractRestfulController->dispatch(Object(Zend\Http\PhpEnvironment\Request), Object(Zend\Http\PhpEnvironment\Response))
+#14 C:\Users\crist\Proyectos\CDI\agenda\module\ZfMetal\Calendar\vendor\zendframework\zend-eventmanager\src\EventManager.php(322): Zend\Mvc\DispatchListener->onDispatch(Object(Zend\Mvc\MvcEvent))
+#15 C:\Users\crist\Proyectos\CDI\agenda\module\ZfMetal\Calendar\vendor\zendframework\zend-eventmanager\src\EventManager.php(179): Zend\EventManager\EventManager->triggerListeners(Object(Zend\Mvc\MvcEvent), Object(Closure))
+#16 C:\Users\crist\Proyectos\CDI\agenda\module\ZfMetal\Calendar\vendor\zendframework\zend-mvc\src\Application.php(330): Zend\EventManager\EventManager->triggerEventUntil(Object(Closure), Object(Zend\Mvc\MvcEvent))
+#17 C:\Users\crist\Proyectos\CDI\agenda\module\ZfMetal\Calendar\vendor\zendframework\zend-test\src\PHPUnit\Controller\AbstractControllerTestCase.php(310): Zend\Mvc\Application->run()
+#18 C:\Users\crist\Proyectos\CDI\agenda\module\ZfMetal\Calendar\test\Controller\CalendarRestfulControllerTest.php(222): Zend\Test\PHPUnit\Controller\AbstractControllerTestCase->dispatch('/zfmc/api/calen...', 'PUT', Array)
+#19 [internal function]: Test\Controller\CalendarRestfulControllerTest->testUpdate(NULL)
+#20 C:\Users\crist\Proyectos\CDI\agenda\vendor\phpunit\phpunit\src\Framework\TestCase.php(1062): ReflectionMethod->invokeArgs(Object(Test\Controller\CalendarRestfulControllerTest), Array)
+#21 C:\Users\crist\Proyectos\CDI\agenda\vendor\phpunit\phpunit\src\Framework\TestCase.php(913): PHPUnit_Framework_TestCase->runTest()
+#22 C:\Users\crist\Proyectos\CDI\agenda\module\ZfMetal\Calendar\vendor\phpunit\phpunit\src\Framework\TestResult.php(686): PHPUnit_Framework_TestCase->runBare()
+#23 C:\Users\crist\Proyectos\CDI\agenda\vendor\phpunit\phpunit\src\Framework\TestCase.php(868): PHPUnit_Framework_TestResult->run(Object(Test\Controller\CalendarRestfulControllerTest))
+#24 C:\Users\crist\Proyectos\CDI\agenda\module\ZfMetal\Calendar\vendor\phpunit\phpunit\src\Framework\TestSuite.php(733): PHPUnit_Framework_TestCase->run(Object(PHPUnit_Framework_TestResult))
+#25 C:\Users\crist\Proyectos\CDI\agenda\module\ZfMetal\Calendar\vendor\phpunit\phpunit\src\TextUI\TestRunner.php(517): PHPUnit_Framework_TestSuite->run(Object(PHPUnit_Framework_TestResult))
+#26 C:\Users\crist\Proyectos\CDI\agenda\vendor\phpunit\phpunit\src\TextUI\Command.php(186): PHPUnit_TextUI_TestRunner->doRun(Object(PHPUnit_Framework_TestSuite), Array, true)
+#27 C:\Users\crist\Proyectos\CDI\agenda\vendor\phpunit\phpunit\src\TextUI\Command.php(116): PHPUnit_TextUI_Command->run(Array, true)
+#28 C:\Users\crist\Proyectos\CDI\agenda\vendor\phpunit\phpunit\phpunit(52): PHPUnit_TextUI_Command::main()
+#29 {main}
+ ~ END EXCEPTION ~ 
+
+2019-03-04T22:43:51+00:00 ERR (3): Exception: An exception occurred while executing 'UPDATE cal_calendar SET name = ?, description = ? WHERE id = ?' with params ["Calendar Created", "Descripcion del Calendario", 4]:
+
+SQLSTATE[23000]: Integrity constraint violation: 19 UNIQUE constraint failed: cal_calendar.name
+FILE: C:\Users\crist\Proyectos\CDI\agenda\module\ZfMetal\Calendar\vendor\doctrine\dbal\lib\Doctrine\DBAL\Driver\AbstractSQLiteDriver.php
+LINE: 48
+TRACE: 
+#0 C:\Users\crist\Proyectos\CDI\agenda\module\ZfMetal\Calendar\vendor\doctrine\dbal\lib\Doctrine\DBAL\DBALException.php(128): Doctrine\DBAL\Driver\AbstractSQLiteDriver->convertException('An exception oc...', Object(Doctrine\DBAL\Driver\PDOException))
+#1 C:\Users\crist\Proyectos\CDI\agenda\module\ZfMetal\Calendar\vendor\doctrine\dbal\lib\Doctrine\DBAL\Connection.php(1015): Doctrine\DBAL\DBALException::driverExceptionDuringQuery(Object(Doctrine\DBAL\Driver\PDOSqlite\Driver), Object(Doctrine\DBAL\Driver\PDOException), 'UPDATE cal_cale...', Array)
+#2 C:\Users\crist\Proyectos\CDI\agenda\module\ZfMetal\Calendar\vendor\doctrine\orm\lib\Doctrine\ORM\Persisters\Entity\BasicEntityPersister.php(480): Doctrine\DBAL\Connection->executeUpdate('UPDATE cal_cale...', Array, Array)
+#3 C:\Users\crist\Proyectos\CDI\agenda\module\ZfMetal\Calendar\vendor\doctrine\orm\lib\Doctrine\ORM\Persisters\Entity\BasicEntityPersister.php(366): Doctrine\ORM\Persisters\Entity\BasicEntityPersister->updateTable(Object(ZfMetal\Calendar\Entity\Calendar), 'cal_calendar', Array, NULL)
+#4 C:\Users\crist\Proyectos\CDI\agenda\module\ZfMetal\Calendar\vendor\doctrine\orm\lib\Doctrine\ORM\UnitOfWork.php(1065): Doctrine\ORM\Persisters\Entity\BasicEntityPersister->update(Object(ZfMetal\Calendar\Entity\Calendar))
+#5 C:\Users\crist\Proyectos\CDI\agenda\module\ZfMetal\Calendar\vendor\doctrine\orm\lib\Doctrine\ORM\UnitOfWork.php(384): Doctrine\ORM\UnitOfWork->executeUpdates(Object(Doctrine\ORM\Mapping\ClassMetadata))
+#6 C:\Users\crist\Proyectos\CDI\agenda\module\ZfMetal\Calendar\vendor\doctrine\orm\lib\Doctrine\ORM\EntityManager.php(356): Doctrine\ORM\UnitOfWork->commit(NULL)
+#7 C:\Users\crist\Proyectos\CDI\agenda\module\ZfMetal\Calendar\src\Controller\CalendarApiController.php(193): Doctrine\ORM\EntityManager->flush()
+#8 C:\Users\crist\Proyectos\CDI\agenda\module\ZfMetal\Calendar\vendor\zendframework\zend-mvc\src\Controller\AbstractRestfulController.php(436): ZfMetal\Calendar\Controller\CalendarApiController->update('4', Array)
+#9 C:\Users\crist\Proyectos\CDI\agenda\module\ZfMetal\Calendar\vendor\zendframework\zend-eventmanager\src\EventManager.php(322): Zend\Mvc\Controller\AbstractRestfulController->onDispatch(Object(Zend\Mvc\MvcEvent))
+#10 C:\Users\crist\Proyectos\CDI\agenda\module\ZfMetal\Calendar\vendor\zendframework\zend-eventmanager\src\EventManager.php(179): Zend\EventManager\EventManager->triggerListeners(Object(Zend\Mvc\MvcEvent), Object(Closure))
+#11 C:\Users\crist\Proyectos\CDI\agenda\module\ZfMetal\Calendar\vendor\zendframework\zend-mvc\src\Controller\AbstractController.php(104): Zend\EventManager\EventManager->triggerEventUntil(Object(Closure), Object(Zend\Mvc\MvcEvent))
+#12 C:\Users\crist\Proyectos\CDI\agenda\module\ZfMetal\Calendar\vendor\zendframework\zend-mvc\src\Controller\AbstractRestfulController.php(311): Zend\Mvc\Controller\AbstractController->dispatch(Object(Zend\Http\PhpEnvironment\Request), Object(Zend\Http\PhpEnvironment\Response))
+#13 C:\Users\crist\Proyectos\CDI\agenda\module\ZfMetal\Calendar\vendor\zendframework\zend-mvc\src\DispatchListener.php(138): Zend\Mvc\Controller\AbstractRestfulController->dispatch(Object(Zend\Http\PhpEnvironment\Request), Object(Zend\Http\PhpEnvironment\Response))
+#14 C:\Users\crist\Proyectos\CDI\agenda\module\ZfMetal\Calendar\vendor\zendframework\zend-eventmanager\src\EventManager.php(322): Zend\Mvc\DispatchListener->onDispatch(Object(Zend\Mvc\MvcEvent))
+#15 C:\Users\crist\Proyectos\CDI\agenda\module\ZfMetal\Calendar\vendor\zendframework\zend-eventmanager\src\EventManager.php(179): Zend\EventManager\EventManager->triggerListeners(Object(Zend\Mvc\MvcEvent), Object(Closure))
+#16 C:\Users\crist\Proyectos\CDI\agenda\module\ZfMetal\Calendar\vendor\zendframework\zend-mvc\src\Application.php(330): Zend\EventManager\EventManager->triggerEventUntil(Object(Closure), Object(Zend\Mvc\MvcEvent))
+#17 C:\Users\crist\Proyectos\CDI\agenda\module\ZfMetal\Calendar\vendor\zendframework\zend-test\src\PHPUnit\Controller\AbstractControllerTestCase.php(310): Zend\Mvc\Application->run()
+#18 C:\Users\crist\Proyectos\CDI\agenda\module\ZfMetal\Calendar\test\Controller\CalendarRestfulControllerTest.php(222): Zend\Test\PHPUnit\Controller\AbstractControllerTestCase->dispatch('/zfmc/api/calen...', 'PUT', Array)
+#19 [internal function]: Test\Controller\CalendarRestfulControllerTest->testUpdate(NULL)
+#20 C:\Users\crist\Proyectos\CDI\agenda\vendor\phpunit\phpunit\src\Framework\TestCase.php(1062): ReflectionMethod->invokeArgs(Object(Test\Controller\CalendarRestfulControllerTest), Array)
+#21 C:\Users\crist\Proyectos\CDI\agenda\vendor\phpunit\phpunit\src\Framework\TestCase.php(913): PHPUnit_Framework_TestCase->runTest()
+#22 C:\Users\crist\Proyectos\CDI\agenda\module\ZfMetal\Calendar\vendor\phpunit\phpunit\src\Framework\TestResult.php(686): PHPUnit_Framework_TestCase->runBare()
+#23 C:\Users\crist\Proyectos\CDI\agenda\vendor\phpunit\phpunit\src\Framework\TestCase.php(868): PHPUnit_Framework_TestResult->run(Object(Test\Controller\CalendarRestfulControllerTest))
+#24 C:\Users\crist\Proyectos\CDI\agenda\module\ZfMetal\Calendar\vendor\phpunit\phpunit\src\Framework\TestSuite.php(733): PHPUnit_Framework_TestCase->run(Object(PHPUnit_Framework_TestResult))
+#25 C:\Users\crist\Proyectos\CDI\agenda\module\ZfMetal\Calendar\vendor\phpunit\phpunit\src\TextUI\TestRunner.php(517): PHPUnit_Framework_TestSuite->run(Object(PHPUnit_Framework_TestResult))
+#26 C:\Users\crist\Proyectos\CDI\agenda\vendor\phpunit\phpunit\src\TextUI\Command.php(186): PHPUnit_TextUI_TestRunner->doRun(Object(PHPUnit_Framework_TestSuite), Array, true)
+#27 C:\Users\crist\Proyectos\CDI\agenda\vendor\phpunit\phpunit\src\TextUI\Command.php(116): PHPUnit_TextUI_Command->run(Array, true)
+#28 C:\Users\crist\Proyectos\CDI\agenda\vendor\phpunit\phpunit\phpunit(52): PHPUnit_TextUI_Command::main()
+#29 {main}
+ ~ END EXCEPTION ~ 
+

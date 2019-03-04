@@ -7,10 +7,13 @@ use Doctrine\Common\DataFixtures\Executor\ORMExecutor;
 use Doctrine\Common\DataFixtures\Loader;
 use Doctrine\Common\DataFixtures\Purger\ORMPurger;
 use Doctrine\ORM\EntityManager;
+use Test\DataFixture\CalendarLoader;
 use Test\DataFixture\ClientLoader;
 use Test\DataFixture\BranchOfficeLoader;
 use Test\DataFixture\ServiceLoader;
+use Test\DataFixture\UserLoader;
 use Zend\Test\PHPUnit\Controller\AbstractConsoleControllerTestCase;
+use ZfMetal\Calendar\Controller\CalendarApiController;
 
 
 /**
@@ -18,7 +21,7 @@ use Zend\Test\PHPUnit\Controller\AbstractConsoleControllerTestCase;
  * @method Request getRequest()
  * @package Test\Controller
  */
-class ClientControllerTest extends AbstractConsoleControllerTestCase
+class CalendarRestfulControllerTest extends AbstractConsoleControllerTestCase
 {
 
     protected $traceError = true;
@@ -40,7 +43,6 @@ class ClientControllerTest extends AbstractConsoleControllerTestCase
     }
 
 
-
     /**
      * Se genera la estructura de la base de datos (Creacion de tablas)
      */
@@ -58,9 +60,9 @@ class ClientControllerTest extends AbstractConsoleControllerTestCase
     public function testCreateData()
     {
         $loader = new Loader();
-        $loader->addFixture(new ClientLoader());
-        $loader->addFixture(new BranchOfficeLoader());
-        $loader->addFixture(new ServiceLoader());
+        $loader->addFixture(new UserLoader());
+        $loader->addFixture(new CalendarLoader());
+
 
         $purger = new ORMPurger();
         $executor = new ORMExecutor($this->getEm(), $purger);
@@ -70,27 +72,30 @@ class ClientControllerTest extends AbstractConsoleControllerTestCase
 
 
     /**
+     * @depends testCreateData
      * METHOD GET
      * ACTION get
-     * DESC Obtener un registro especifico (administrator)
+     * DESC Obtener un registro especifico (calendar)
      */
     public function testGet()
     {
         $this->setUseConsoleRequest(false);
-        $this->dispatch("/zfmc/api/clients/1", "GET");
+        $this->dispatch("/zfmc/api/calendars/1", "GET");
 
 
         $response = json_decode($this->getResponse()->getContent());
 
+
         $this->assertResponseStatusCode(200);
 
         $this->assertEquals($response->id, 1);
-        $this->assertEquals($response->name, "MANOLO CHAPS");
+        $this->assertEquals($response->name, "CalendarTest");
 
     }
 
 
     /**
+     * @depends testCreateData
      * METHOD GET
      * ACTION getlist
      * DESC Obtener un listado de registros
@@ -98,15 +103,15 @@ class ClientControllerTest extends AbstractConsoleControllerTestCase
     public function testGetList()
     {
         $this->setUseConsoleRequest(false);
-        $this->dispatch("/zfmc/api/clients", "GET");
+        $this->dispatch("/zfmc/api/calendars", "GET");
 
         $response = json_decode($this->getResponse()->getContent());
-        //var_dump($response);
+
 
         $this->assertResponseStatusCode(200);
 
         $this->assertEquals($response[0]->id, 1);
-        $this->assertEquals($response[0]->name, "MANOLO CHAPS");
+        $this->assertEquals($response[0]->name, "CalendarTest");
 
     }
 
@@ -126,19 +131,25 @@ class ClientControllerTest extends AbstractConsoleControllerTestCase
         //Create Firt User
 
         $params = [
-            "name" => "ACCOUNT TEST CREATE",
-
+            "name" => "Calendar Created",
+            "description" => "Descripcion del Calendario",
+            "user" => 1,
+            "schedules" => [
+                ["day" => 1, "start" => "09:00", "end" => "12:00"],
+                ["day" => 2, "start" => "09:00", "end" => "12:00"]
+            ]
         ];
 
-        $this->dispatch("/zfmr/api/clients", "POST",
+        $this->dispatch("/zfmc/api/calendars", "POST",
             $params);
 
         $jsonToCompare = [
             "status" => true,
-            'id' => 2,
+            'id' => 3,
             "message" => "The item was created successfully"
         ];
 
+        $this->assertControllerName(CalendarApiController::class);
         $this->assertJsonStringEqualsJsonString($this->getResponse()->getContent(), json_encode($jsonToCompare));
         $this->assertResponseStatusCode(201);
 
@@ -147,6 +158,46 @@ class ClientControllerTest extends AbstractConsoleControllerTestCase
 
     /**
      * @depends testCreate
+     * METHOD POST
+     * ACTION create
+     * DESC crear un nuevo usuario
+     */
+
+    public function testCreateTwo()
+    {
+
+        $this->setUseConsoleRequest(false);
+
+        //Create Firt User
+
+        $params = [
+            "name" => "Calendar Created Two",
+            "description" => "Two Calendar Created",
+            "user" => 1,
+            "schedules" => [
+                ["day" => 1, "start" => "08:00", "end" => "13:00"],
+                ["day" => 2, "start" => "08:00", "end" => "13:00"],
+                ["day" => 3, "start" => "08:00", "end" => "13:00"]
+            ]
+        ];
+
+        $this->dispatch("/zfmc/api/calendars", "POST",
+            $params);
+
+        $jsonToCompare = [
+            "status" => true,
+            'id' => 4,
+            "message" => "The item was created successfully"
+        ];
+
+        $this->assertControllerName(CalendarApiController::class);
+        $this->assertJsonStringEqualsJsonString($this->getResponse()->getContent(), json_encode($jsonToCompare));
+        $this->assertResponseStatusCode(201);
+
+    }
+
+    /**
+     * @depends testCreateTwo
      * METHOD PUT
      * ACTION update
      * DESC actualizo un usuario
@@ -158,20 +209,25 @@ class ClientControllerTest extends AbstractConsoleControllerTestCase
         $this->setUseConsoleRequest(false);
 
         $params = [
-            "name" => "ACCOUNT TEST UPDATE",
-
+            "name" => "Calendar Update",
+            "description" => "Descripcion del Calendario Actualizado",
+            "user" => 1,
+            "schedules" => [
+                ["id" => 4,"day" => 2, "start" => "07:00", "end" => "14:00"],
+                ["id" => 5,"day" => 3, "start" => "07:00", "end" => "14:00"]
+            ]
         ];
 
-        $this->dispatch("/zfmr/api/clients/2", "PUT",
+        $this->dispatch("/zfmc/api/calendars/4", "PUT",
             $params);
 
 
         $jsonToCompare = [
             "status" => true,
-            'id' => 2,
+            'id' => 4,
             "message" => "The item was updated successfully"
         ];
-
+        $this->assertControllerName(CalendarApiController::class);
         $this->assertJsonStringEqualsJsonString($this->getResponse()->getContent(), json_encode($jsonToCompare));
         $this->assertResponseStatusCode(200);
     }
@@ -193,7 +249,6 @@ class ClientControllerTest extends AbstractConsoleControllerTestCase
 
 
         $jsonToCompare = [
-            'status' => true,
             "message" => "Item Delete"
         ];
 

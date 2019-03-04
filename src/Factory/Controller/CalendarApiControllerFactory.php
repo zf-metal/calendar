@@ -4,9 +4,10 @@ namespace ZfMetal\Calendar\Factory\Controller;
 
 use Interop\Container\ContainerInterface;
 use Zend\ServiceManager\Factory\FactoryInterface;
+use ZfMetal\Calendar\Form\CalendarForm;
 
 /**
- * ApiCalendarControllerFactory
+ * ManagerCalendarControllerFactory
  *
  *
  *
@@ -14,14 +15,16 @@ use Zend\ServiceManager\Factory\FactoryInterface;
  * @license
  * @link
  */
-class ApiCalendarControllerFactory implements FactoryInterface
+class CalendarApiControllerFactory implements FactoryInterface
 {
 
     public function __invoke(\Interop\Container\ContainerInterface $container, $requestedName, array $options = null)
     {
         /* @var $em \Doctrine\ORM\EntityManager */
         $em = $container->get("doctrine.entitymanager.orm_default");
-        return new \ZfMetal\Calendar\Controller\ApiCalendarController($em);
+
+        $form = $container->get('FormElementManager')->get(CalendarForm::class);
+        return new \ZfMetal\Calendar\Controller\CalendarApiController($em,$form);
     }
 
 

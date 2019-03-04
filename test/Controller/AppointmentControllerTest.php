@@ -274,6 +274,10 @@ class AppointmentControllerTest extends AbstractHttpControllerTestCase
         $this->assertJsonStringEqualsJsonString(json_encode($responseToCompare), $this->getResponse()->getContent());
     }
 
+
+
+
+
     /**
      * @depends  testCreateData
      */
@@ -356,6 +360,45 @@ class AppointmentControllerTest extends AbstractHttpControllerTestCase
         ];
 
         echo $this->getResponse()->getContent();
+
+        $this->assertResponseStatusCode(200);
+        $this->assertJsonStringEqualsJsonString(json_encode($responseToCompare), $this->getResponse()->getContent());
+    }
+
+
+
+    /**
+     * @depends  testTakeSecondAppointment
+     */
+    public function testTheAppointments()
+    {
+        $this->setUseConsoleRequest(false);
+
+
+        $this->dispatch("/zfmc/api/appointments/my-appointments", "GET");
+
+
+
+        $responseToCompare = [
+            [
+                'id' => 1,
+                'user' => $this->getMockIdentity()->getId(),
+                'calendar' => ["id" => 1, "name" => "CalendarTest"],
+                'start' => '2020-02-04 11:00',
+                'end' => '2020-02-04 12:00',
+                'duration' => 60
+            ],
+            [
+                'id' => 2,
+                'user' => $this->getMockIdentity()->getId(),
+                'calendar' => ["id" => 1, "name" => "CalendarTest"],
+                'start' => '2020-02-04 12:00',
+                'end' => '2020-02-04 13:00',
+                'duration' => 60
+            ]
+        ];
+
+        $response = json_decode($this->getResponse()->getContent());
 
         $this->assertResponseStatusCode(200);
         $this->assertJsonStringEqualsJsonString(json_encode($responseToCompare), $this->getResponse()->getContent());
