@@ -93,10 +93,21 @@ class AppointmentControllerTest extends AbstractHttpControllerTestCase
 
 
     /**
+     * Se genera la estructura de la base de datos (Creacion de tablas)
+     */
+    public function testGenerateStructure()
+    {
+
+        $this->dispatch('orm:schema-tool:update --force');
+        $this->assertResponseStatusCode(0);
+    }
+
+    /**
      * Se popula las tablas con datos necesarios
      */
     public function testCreateData()
     {
+        $this->setUseConsoleRequest(false);
         $loader = new Loader();
         $loader->addFixture(new UserLoader());
         $loader->addFixture(new CalendarLoader());
@@ -106,7 +117,7 @@ class AppointmentControllerTest extends AbstractHttpControllerTestCase
         $purger = new ORMPurger();
         $executor = new ORMExecutor($this->getEm(), $purger);
         $executor->execute($loader->getFixtures());
-        $this->assertResponseStatusCode(200);
+        //$this->assertResponseStatusCode(200);
     }
 
 
@@ -355,7 +366,7 @@ class AppointmentControllerTest extends AbstractHttpControllerTestCase
         ];
 
 
-        $this->dispatch("/zfmc/api/appointments/cancel/".$id, "PUT", $params);
+        $this->dispatch("/zfmc/api/appointments/cancel/".$id, "POST", $params);
 
         $responseToCompare = [
             'status' => true,

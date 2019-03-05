@@ -70,13 +70,23 @@ class Appointment
     public $duration = null;
 
     /**
-     * @Annotation\Type("Zend\Form\Element\DateTime")
-     * @Annotation\Attributes({"type":"datetime"})
-     * @Annotation\Options({"label":"Hasta", "description":"", "addon":""})
-     * @ORM\Column(type="datetime", unique=false, nullable=true, name="end")
-     * @Transformation\Policy\FormatDateTime(format="Y-m-d H:i")
-     */
+ * @Annotation\Type("Zend\Form\Element\DateTime")
+ * @Annotation\Attributes({"type":"datetime"})
+ * @Annotation\Options({"label":"Hasta", "description":"", "addon":""})
+ * @ORM\Column(type="datetime", unique=false, nullable=true, name="end")
+ * @Transformation\Policy\FormatDateTime(format="Y-m-d H:i")
+ */
     public $end = null;
+
+
+    /**
+     * @var boolean
+     * @Annotation\Type("Zend\Form\Element\Checkbox")
+     * @Annotation\Attributes({"type":"checkbox"})
+     * @Annotation\Options({"label":"Hasta", "description":"", "addon":""})
+     * @ORM\Column(type="boolean", unique=false, nullable=true, name="canceled")
+     */
+    public $canceled = false;
 
     public function getId()
     {
@@ -155,5 +165,23 @@ class Appointment
         ];
 
     }
+
+    /**
+     * @return boolean
+     */
+    public function getCanceled()
+    {
+        return $this->canceled;
+    }
+
+    /**
+     * @param boolean $canceled
+     */
+    public function setCanceled($canceled)
+    {
+        $this->canceled = $canceled;
+    }
+
+
 }
 

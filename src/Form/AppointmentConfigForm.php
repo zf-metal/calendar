@@ -99,7 +99,7 @@ class AppointmentConfigForm extends \Zend\Form\Fieldset implements \DoctrineModu
         ));
 
         $this->add(array(
-            'name' => 'minTimeInMinutes',
+            'name' => 'minTimeInHours',
             'attributes' => array(
                 'type' => 'number',
                 'placeholder' => 'Tiempo minimo para turno',

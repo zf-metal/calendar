@@ -427,7 +427,7 @@ return [
                                             'route' => '/cancel/:id',
                                             'defaults' => [
                                                 'controller' => \ZfMetal\Calendar\Controller\AppointmentApiController::CLASS,
-                                                'action' => 'create',
+                                                'action' => 'cancel',
                                             ],
                                         ],
                                         'type' => \Zend\Router\Http\Segment::class,

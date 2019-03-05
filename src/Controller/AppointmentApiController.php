@@ -114,12 +114,18 @@ class AppointmentApiController extends AbstractActionController
 
     public function cancelAction()
     {
-
+        $response = new Response();
         $appointmentId = $this->params('id');
 
+        /** @var Appointment $appointment */
         $appointment = $this->getAppointmentRepository()->find($appointmentId);
+        $appointment->setCanceled(true);
+        $this->getAppointmentRepository()->save($appointment);
+        $response->setStatus(true);
+      //  $response->setItem($appointment->toArray());
+        $response->setMessage("El turno ha sido cancelado");
 
-
+        return new JsonModel($response->toArray());
     }
 
     public function createAction()
