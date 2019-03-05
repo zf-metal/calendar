@@ -7,6 +7,7 @@ use Indaxia\OTR\Traits\Transformable;
 use Zend\Http\Response;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\JsonModel;
+use ZfMetal\Calendar\Entity\AppointmentConfig;
 use ZfMetal\Calendar\Entity\Calendar;
 use ZfMetal\Calendar\Entity\PredefinedEvents;
 use ZfMetal\Calendar\Entity\Schedule;
@@ -258,7 +259,7 @@ class CalendarApiController extends MainController
             $calendar->addSchedule($this->buildSchedule($calendar, 6));
             $calendar->addSchedule($this->buildSchedule($calendar, 7));
             $calendar->addSchedule($this->buildSchedule($calendar, 8));
-            $calendar->setPredefinedEvents(new PredefinedEvents());
+            $calendar->setAppointmentConfig(new AppointmentConfig());
         }
 
         return $calendar;

@@ -113,7 +113,7 @@ class AppointmentConfigForm extends \Zend\Form\Fieldset implements \DoctrineModu
         ));
 
         $this->add(array(
-            'name' => 'cancelTimeInMinutes',
+            'name' => 'cancelTimeInHours',
             'attributes' => array(
                 'type' => 'number',
                 'placeholder' => 'Tiempo minimo para cancelar',

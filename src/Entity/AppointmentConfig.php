@@ -85,9 +85,9 @@ class AppointmentConfig
      * @Annotation\Options({"label":"Tiempo para Cancelar", "description":"Tiempo para
      * poder cancelar", "addon":""})
      * @ORM\Column(type="integer", length=11, unique=false, nullable=true,
-     * name="cancel_time_in_minutes")
+     * name="cancel_time_in_hours")
      */
-    public $cancelTimeInMinutes = null;
+    public $cancelTimeInHours = null;
 
     public function getId()
     {
@@ -149,15 +149,22 @@ class AppointmentConfig
         $this->maxTimeInDays = $maxTimeInDays;
     }
 
-    public function getCancelTimeInMinutes()
+    /**
+     * @return mixed
+     */
+    public function getCancelTimeInHours()
     {
-        return $this->cancelTimeInMinutes;
+        return $this->cancelTimeInHours;
     }
 
-    public function setCancelTimeInMinutes($cancelTimeInMinutes)
+    /**
+     * @param mixed $cancelTimeInHours
+     */
+    public function setCancelTimeInHours($cancelTimeInHours)
     {
-        $this->cancelTimeInMinutes = $cancelTimeInMinutes;
+        $this->cancelTimeInHours = $cancelTimeInHours;
     }
+
 
     public function __toString()
     {
