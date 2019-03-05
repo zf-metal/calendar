@@ -13,7 +13,7 @@ use ZfMetal\Calendar\Form\AppointmentForm;
 use ZfMetal\Calendar\Model\Shift;
 use ZfMetal\Calendar\Model\Shifts;
 use ZfMetal\Calendar\Repository\AppointmentRepository;
-use ZfMetal\Calendar\Service\ShiftService;
+use ZfMetal\Calendar\Service\AppointmentService;
 
 /**
  * ShiftController
@@ -35,7 +35,7 @@ class ShiftController extends AbstractActionController
     public $em = null;
 
     /**
-     * @var ShiftService
+     * @var AppointmentService
      */
     public $shiftService;
 
@@ -44,9 +44,9 @@ class ShiftController extends AbstractActionController
     /**
      * ShiftController constructor.
      * @param \Doctrine\ORM\EntityManager $em
-     * @param ShiftService $shiftService
+     * @param AppointmentService $shiftService
      */
-    public function __construct(\Doctrine\ORM\EntityManager $em, ShiftService $shiftService)
+    public function __construct(\Doctrine\ORM\EntityManager $em, AppointmentService $shiftService)
     {
         $this->em = $em;
         $this->shiftService = $shiftService;

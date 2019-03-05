@@ -1,6 +1,7 @@
 <?php
 
 $setting = array_merge_recursive(
+    include "options.config.php",
     include "controller.config.php",
     include "doctrine.config.php",
     include "form.config.php",

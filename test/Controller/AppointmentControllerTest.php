@@ -9,6 +9,7 @@ use Doctrine\Common\DataFixtures\Purger\ORMPurger;
 use Doctrine\ORM\EntityManager;
 
 use Zend\Test\PHPUnit\Controller\AbstractHttpControllerTestCase;
+use ZfMetal\Calendar\Controller\AppointmentApiController;
 use \ZfMetal\Security\Entity\User;
 use Test\DataFixture\CalendarLoader;
 use Test\DataFixture\ScheduleLoader;
@@ -97,9 +98,10 @@ class AppointmentControllerTest extends AbstractHttpControllerTestCase
     public function testCreateData()
     {
         $loader = new Loader();
+        $loader->addFixture(new UserLoader());
         $loader->addFixture(new CalendarLoader());
         $loader->addFixture(new ScheduleLoader());
-        $loader->addFixture(new UserLoader());
+
 
         $purger = new ORMPurger();
         $executor = new ORMExecutor($this->getEm(), $purger);
@@ -281,7 +283,7 @@ class AppointmentControllerTest extends AbstractHttpControllerTestCase
     /**
      * @depends  testCreateData
      */
-    public function testAvailableShifts()
+    public function testAvailable()
     {
         $this->setUseConsoleRequest(false);
 
@@ -330,6 +332,7 @@ class AppointmentControllerTest extends AbstractHttpControllerTestCase
 
         $response = json_decode($this->getResponse()->getContent());
 
+        $this->assertControllerName(AppointmentApiController::class);
         $this->assertResponseStatusCode(200);
         $this->assertJsonStringEqualsJsonString(json_encode($responseToCompare), $this->getResponse()->getContent());
     }

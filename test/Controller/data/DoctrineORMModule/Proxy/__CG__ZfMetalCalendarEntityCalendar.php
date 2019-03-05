@@ -36,7 +36,7 @@ class Calendar extends \ZfMetal\Calendar\Entity\Calendar implements \Doctrine\OR
      *
      * @see \Doctrine\Common\Persistence\Proxy::__getLazyProperties
      */
-    public static $lazyPropertiesDefaults = ['name' => NULL, 'user' => NULL, 'schedules' => NULL, 'specificSchedules' => NULL, 'events' => NULL, 'predefinedEvents' => NULL, 'description' => NULL];
+    public static $lazyPropertiesDefaults = ['name' => NULL, 'user' => NULL, 'schedules' => NULL, 'specificSchedules' => NULL, 'events' => NULL, 'appointmentConfig' => NULL, 'description' => NULL];
 
 
 
@@ -46,7 +46,7 @@ class Calendar extends \ZfMetal\Calendar\Entity\Calendar implements \Doctrine\OR
      */
     public function __construct($initializer = null, $cloner = null)
     {
-        unset($this->name, $this->user, $this->schedules, $this->specificSchedules, $this->events, $this->predefinedEvents, $this->description);
+        unset($this->name, $this->user, $this->schedules, $this->specificSchedules, $this->events, $this->appointmentConfig, $this->description);
 
         $this->__initializer__ = $initializer;
         $this->__cloner__      = $cloner;
@@ -108,7 +108,7 @@ class Calendar extends \ZfMetal\Calendar\Entity\Calendar implements \Doctrine\OR
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', 'id', 'name', 'user', 'schedules', 'specificSchedules', 'events', 'predefinedEvents', 'description', '' . "\0" . 'ZfMetal\\Calendar\\Entity\\Calendar' . "\0" . 'groups', '' . "\0" . 'ZfMetal\\Calendar\\Entity\\Calendar' . "\0" . 'outOfServices'];
+            return ['__isInitialized__', 'id', 'name', 'user', 'schedules', 'specificSchedules', 'events', 'appointmentConfig', 'description', '' . "\0" . 'ZfMetal\\Calendar\\Entity\\Calendar' . "\0" . 'groups', '' . "\0" . 'ZfMetal\\Calendar\\Entity\\Calendar' . "\0" . 'outOfServices'];
         }
 
         return ['__isInitialized__', 'id', '' . "\0" . 'ZfMetal\\Calendar\\Entity\\Calendar' . "\0" . 'groups', '' . "\0" . 'ZfMetal\\Calendar\\Entity\\Calendar' . "\0" . 'outOfServices'];
@@ -133,7 +133,7 @@ class Calendar extends \ZfMetal\Calendar\Entity\Calendar implements \Doctrine\OR
                 }
             };
 
-            unset($this->name, $this->user, $this->schedules, $this->specificSchedules, $this->events, $this->predefinedEvents, $this->description);
+            unset($this->name, $this->user, $this->schedules, $this->specificSchedules, $this->events, $this->appointmentConfig, $this->description);
         }
     }
 
@@ -330,28 +330,6 @@ class Calendar extends \ZfMetal\Calendar\Entity\Calendar implements \Doctrine\OR
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setEvents', [$events]);
 
         return parent::setEvents($events);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getPredefinedEvents()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPredefinedEvents', []);
-
-        return parent::getPredefinedEvents();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function setPredefinedEvents($predefinedEvents)
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setPredefinedEvents', [$predefinedEvents]);
-
-        return parent::setPredefinedEvents($predefinedEvents);
     }
 
     /**
@@ -594,6 +572,28 @@ class Calendar extends \ZfMetal\Calendar\Entity\Calendar implements \Doctrine\OR
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeOutOfService', [$outOfService]);
 
         return parent::removeOutOfService($outOfService);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getAppointmentConfig()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getAppointmentConfig', []);
+
+        return parent::getAppointmentConfig();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setAppointmentConfig($appointmentConfig)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setAppointmentConfig', [$appointmentConfig]);
+
+        return parent::setAppointmentConfig($appointmentConfig);
     }
 
 }

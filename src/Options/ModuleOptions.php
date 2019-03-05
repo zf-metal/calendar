@@ -18,7 +18,7 @@ class ModuleOptions extends \Zend\Stdlib\AbstractOptions
 
     private $ticketEntity = '';
 
-    private $preEventEnable = false;
+    private $appointmentConfigEnable = true;
 
     public function getTicketEntity()
     {
@@ -42,13 +42,30 @@ class ModuleOptions extends \Zend\Stdlib\AbstractOptions
 
     public function getPreEventEnable()
     {
-        return $this->preEventEnable;
+        return $this->appointmentConfigEnable;
     }
 
     public function setPreEventEnable($preEventEnable)
     {
-        $this->preEventEnable= $preEventEnable;
+        $this->appointmentConfigEnable= $preEventEnable;
     }
+
+    /**
+     * @return bool
+     */
+    public function getAppointmentConfigEnable()
+    {
+        return $this->appointmentConfigEnable;
+    }
+
+    /**
+     * @param bool $appointmentConfigEnable
+     */
+    public function setAppointmentConfigEnable($appointmentConfigEnable)
+    {
+        $this->appointmentConfigEnable = $appointmentConfigEnable;
+    }
+
 
 
 }

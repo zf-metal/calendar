@@ -24,14 +24,13 @@ $elementsReady = array();
     </div>
 </div>
 
-<?php if($this->ZfMetalCalendarOptions()->getPreEventEnable()): ?>
+<?php if($this->ZfMetalCalendarOptions()->getAppointmentConfigEnable()): ?>
 
     <div class="card">
         <div class="card-content">
-            <h4>Eventos predefinidos</h4>
-            <p>Configuración de eventos pre-establecidos, con una duracion por defecto.</p>
+            <h4>Configuración de turnos</h4>
 
-            <?php echo $this->formCollection($form->get('predefinedEvents')); ?>
+            <?php echo $this->formCollection($form->get('appointmentconfig')); ?>
         </div>
     </div>
 

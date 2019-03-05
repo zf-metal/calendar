@@ -4,7 +4,7 @@ namespace ZfMetal\Calendar\Factory\Controller;
 
 use Interop\Container\ContainerInterface;
 use Zend\ServiceManager\Factory\FactoryInterface;
-use ZfMetal\Calendar\Service\ShiftService;
+use ZfMetal\Calendar\Service\AppointmentService;
 
 /**
  * ShiftControllerFactory
@@ -23,7 +23,7 @@ class ShiftControllerFactory implements FactoryInterface
         /* @var $em \Doctrine\ORM\EntityManager */
         $em = $container->get("doctrine.entitymanager.orm_default");
 
-        $shiftService =  $container->get(ShiftService::class);
+        $shiftService =  $container->get(AppointmentService::class);
 
 
         return new \ZfMetal\Calendar\Controller\ShiftController($em,$shiftService);

@@ -18,7 +18,7 @@ use ZfMetal\Calendar\Model\Shift;
 use ZfMetal\Calendar\Model\Shifts;
 
 
-class ShiftService
+class AppointmentService
 {
 
     /**
@@ -162,8 +162,8 @@ class ShiftService
         $rangeDurationInMinutes = $this->calculateDiffTimeInMinutes($end, $start);
 
 
-        $shiftDuration = $calendar->getPredefinedEvents()->getDuration();
-        $breakDuration = $calendar->getPredefinedEvents()->getBreak();
+        $shiftDuration = $calendar->getAppointmentConfig()->getDuration();
+        $breakDuration = $calendar->getAppointmentConfig()->getBreak();
         $quantityShifts = floor($rangeDurationInMinutes / $shiftDuration);
 
 

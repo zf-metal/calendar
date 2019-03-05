@@ -3,9 +3,10 @@
 namespace ZfMetal\Calendar\Form;
 
 use Doctrine\Common\Persistence\ObjectManager;
+use ZfMetal\Calendar\Entity\AppointmentConfig;
 use ZfMetal\Calendar\Entity\PredefinedEvents;
 
-class PredefinedEventsForm extends \Zend\Form\Fieldset implements \DoctrineModule\Persistence\ObjectManagerAwareInterface
+class AppointmentConfigForm extends \Zend\Form\Fieldset implements \DoctrineModule\Persistence\ObjectManagerAwareInterface
 {
 
 
@@ -33,7 +34,7 @@ class PredefinedEventsForm extends \Zend\Form\Fieldset implements \DoctrineModul
 
     public function __construct()
     {
-        parent::__construct('predefinedevents');
+        parent::__construct('AppointmentConfig');
         $this->setAttribute('method', 'post');
         $this->setAttribute('class', "form");
         $this->setAttribute('role', "form");
@@ -44,7 +45,7 @@ class PredefinedEventsForm extends \Zend\Form\Fieldset implements \DoctrineModul
     {
 
         $hydrator = new \DoctrineModule\Stdlib\Hydrator\DoctrineObject($this->getObjectManager(),false);
-        $this->setHydrator($hydrator)->setObject(new PredefinedEvents());
+        $this->setHydrator($hydrator)->setObject(new AppointmentConfig());
 
         $this->add(array(
             'name' => 'id',
@@ -57,13 +58,13 @@ class PredefinedEventsForm extends \Zend\Form\Fieldset implements \DoctrineModul
             'name' => 'duration',
             'attributes' => array(
                 'type' => 'number',
-                'placeholder' => 'Intervalo',
+                'placeholder' => 'Tiempo de turno',
                 'class' => 'form-control ',
                 'autocomplete' => "off"
             ),
             'options' => array(
-                'label' => 'Tiempo de evento',
-                'description' => 'Configuración, en minutos, de la duración por defecto de cada evento.'
+                'label' => 'Tiempo de turno',
+                'description' => 'Configuración, en minutos, de la duración por defecto de cada turno.'
             )
         ));
 
@@ -72,19 +73,19 @@ class PredefinedEventsForm extends \Zend\Form\Fieldset implements \DoctrineModul
             'name' => 'break',
             'attributes' => array(
                 'type' => 'number',
-                'placeholder' => 'Intervalo',
+                'placeholder' => 'Tiempo libre entre turnos',
                 'class' => 'form-control ',
                 'autocomplete' => "off"
             ),
             'options' => array(
-                'label' => 'Tiempo entre eventos',
-                'description' => 'Configuración, en minutos, del espacio de tiempo entre evento y evento'
+                'label' => 'Tiempo libre entre turnos',
+                'description' => 'Configuración, en minutos, del espacio de tiempo entre turno y turno'
             )
         ));
 
 
         $this->add(array(
-            'name' => 'maxDaysForShifs',
+            'name' => 'maxTimeInDays',
             'attributes' => array(
                 'type' => 'number',
                 'placeholder' => 'Dias máximos para Turnos',
@@ -97,7 +98,33 @@ class PredefinedEventsForm extends \Zend\Form\Fieldset implements \DoctrineModul
             )
         ));
 
+        $this->add(array(
+            'name' => 'minTimeInMinutes',
+            'attributes' => array(
+                'type' => 'number',
+                'placeholder' => 'Tiempo minimo para turno',
+                'class' => 'form-control ',
+                'autocomplete' => "off"
+            ),
+            'options' => array(
+                'label' => 'Tiempo minimo para turno',
+                'description' => 'Configuración del tiempo minimo de anticipación para sacar un turno'
+            )
+        ));
 
+        $this->add(array(
+            'name' => 'cancelTimeInMinutes',
+            'attributes' => array(
+                'type' => 'number',
+                'placeholder' => 'Tiempo minimo para cancelar',
+                'class' => 'form-control ',
+                'autocomplete' => "off"
+            ),
+            'options' => array(
+                'label' => 'Tiempo minimo para cancelar',
+                'description' => 'Configuración del tiempo minimo para cancelar'
+            )
+        ));
     }
 
 

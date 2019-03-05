@@ -7,6 +7,7 @@ use Zend\View\Model\JsonModel;
 use ZfMetal\Calendar\Entity\Appointment;
 use ZfMetal\Calendar\Form\AppointmentForm;
 use ZfMetal\Calendar\Repository\AppointmentRepository;
+use ZfMetal\Calendar\Service\AppointmentService;
 use ZfMetal\Restful\Model\Response;
 /**
  * AppointmentApiController
@@ -32,15 +33,22 @@ class AppointmentApiController extends AbstractActionController
      */
     public $form;
 
+
+    /**
+     * @var AppointmentService
+     */
+    protected $appointmnetService;
+
     /**
      * AppointmentController constructor.
      * @param \Doctrine\ORM\EntityManager $em
      * @param AppointmentForm $form
      */
-    public function __construct(\Doctrine\ORM\EntityManager $em, AppointmentForm $form)
+    public function __construct(\Doctrine\ORM\EntityManager $em, AppointmentForm $form, AppointmentService $appointmentService)
     {
         $this->em = $em;
         $this->form = $form;
+        $this->appointmnetService = $appointmentService;
     }
 
     public function getEm()
@@ -64,6 +72,20 @@ class AppointmentApiController extends AbstractActionController
     public function getAppointmentRepository()
     {
         return $this->getEm()->getRepository(self::ENTITY);
+    }
+
+
+    public function availableAction()
+    {
+
+        //Obtengo parametros
+        $calendarId = $this->params('calendarId');
+        $date = $this->params('date');
+
+        $appointments = $this->appointmnetService->getAvailableShift($calendarId, $date);
+
+
+        return new JsonModel($appointments->toArray());
     }
 
 

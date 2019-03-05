@@ -393,8 +393,8 @@ return [
                                         'options' => [
                                             'route' => '/availables/:calendarId/:date',
                                             'defaults' => [
-                                                'controller' => \ZfMetal\Calendar\Controller\ShiftController::CLASS,
-                                                'action' => 'availableShifts',
+                                                'controller' => \ZfMetal\Calendar\Controller\AppointmentApiController::CLASS,
+                                                'action' => 'available',
                                             ],
                                         ],
                                         'type' => \Zend\Router\Http\Segment::class,

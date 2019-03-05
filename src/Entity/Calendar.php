@@ -83,11 +83,11 @@ class Calendar
 
     /**
      * @Annotation\Type("DoctrineModule\Form\Element\ObjectSelect")
-     * @Annotation\Options({"label":"predefinedEvents","empty_option": "",
-     * "target_class":"\ZfMetal\Calendar\Entity\PredefinedEvents", "description":""})
-     * @ORM\OneToOne(targetEntity="\ZfMetal\Calendar\Entity\PredefinedEvents", fetch="EAGER", mappedBy="calendar", cascade={"persist", "remove"})
+     * @Annotation\Options({"label":"Appointment Config","empty_option": "",
+     * "target_class":"\ZfMetal\Calendar\Entity\AppointmentConfig", "description":""})
+     * @ORM\OneToOne(targetEntity="\ZfMetal\Calendar\Entity\AppointmentConfig", fetch="EAGER", mappedBy="calendar", cascade={"persist", "remove"})
      */
-    public $predefinedEvents = null;
+    public $appointmentConfig = null;
 
 
     /**
@@ -174,19 +174,6 @@ class Calendar
         $this->events = $events;
     }
 
-    /**
-     * @return PredefinedEvents
-     */
-    public function getPredefinedEvents()
-    {
-        return $this->predefinedEvents;
-    }
-
-    public function setPredefinedEvents($predefinedEvents)
-    {
-        $predefinedEvents->setCalendar($this);
-        $this->predefinedEvents = $predefinedEvents;
-    }
 
     public function __toString()
     {
@@ -370,6 +357,24 @@ class Calendar
         $outOfService->setCalendar(null);
         $this->groups->removeElement($outOfService);
     }
+
+    /**
+     * @return mixed
+     */
+    public function getAppointmentConfig()
+    {
+        return $this->appointmentConfig;
+    }
+
+    /**
+     * @param mixed $appointmentConfig
+     */
+    public function setAppointmentConfig($appointmentConfig)
+    {
+        $appointmentConfig->setCalendar($this);
+        $this->appointmentConfig = $appointmentConfig;
+    }
+
 
 
 }
