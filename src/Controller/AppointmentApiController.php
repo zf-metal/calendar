@@ -110,6 +110,18 @@ class AppointmentApiController extends AbstractActionController
         return new JsonModel($items);
     }
 
+
+
+    public function cancelAction()
+    {
+
+        $appointmentId = $this->params('id');
+
+        $appointment = $this->getAppointmentRepository()->find($appointmentId);
+
+
+    }
+
     public function createAction()
     {
         $response = new Response();

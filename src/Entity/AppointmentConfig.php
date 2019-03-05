@@ -65,9 +65,9 @@ class AppointmentConfig
      * @Annotation\Options({"label":"Tiempo Minimo", "description":"Tiempo minimo para
      * solicitar un turno", "addon":""})
      * @ORM\Column(type="integer", length=11, unique=false, nullable=true,
-     * name="min_time_in_minutes")
+     * name="min_time_in_hours")
      */
-    public $minTimeInMinutes = null;
+    public $minTimeInHours = null;
 
     /**
      * @Annotation\Type("Zend\Form\Element\Text")
@@ -129,15 +129,6 @@ class AppointmentConfig
         $this->break = $break;
     }
 
-    public function getMinTimeInMinutes()
-    {
-        return $this->minTimeInMinutes;
-    }
-
-    public function setMinTimeInMinutes($minTimeInMinutes)
-    {
-        $this->minTimeInMinutes = $minTimeInMinutes;
-    }
 
     public function getMaxTimeInDays()
     {
@@ -164,6 +155,24 @@ class AppointmentConfig
     {
         $this->cancelTimeInHours = $cancelTimeInHours;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getMinTimeInHours()
+    {
+        return $this->minTimeInHours;
+    }
+
+    /**
+     * @param mixed $minTimeInHours
+     */
+    public function setMinTimeInHours($minTimeInHours)
+    {
+        $this->minTimeInHours = $minTimeInHours;
+    }
+
+
 
 
     public function __toString()
