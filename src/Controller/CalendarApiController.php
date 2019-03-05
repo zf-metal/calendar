@@ -248,6 +248,9 @@ class CalendarApiController extends MainController
                 throw new \Exception("Calendar doesn´t exist");
             }
 
+            if(!$calendar->getAppointmentConfig()){
+                $calendar->setAppointmentConfig(new AppointmentConfig());
+            }
 
         } else {
             $calendar = new Calendar();
