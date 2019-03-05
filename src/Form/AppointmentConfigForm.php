@@ -34,7 +34,7 @@ class AppointmentConfigForm extends \Zend\Form\Fieldset implements \DoctrineModu
 
     public function __construct()
     {
-        parent::__construct('AppointmentConfig');
+        parent::__construct('appointmentConfig');
         $this->setAttribute('method', 'post');
         $this->setAttribute('class', "form");
         $this->setAttribute('role', "form");

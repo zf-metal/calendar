@@ -137,6 +137,13 @@ class CalendarRestfulControllerTest extends AbstractConsoleControllerTestCase
             "schedules" => [
                 ["day" => 1, "start" => "09:00", "end" => "12:00"],
                 ["day" => 2, "start" => "09:00", "end" => "12:00"]
+            ],
+            "appointmentConfig" => [
+                "duration" => 50,
+                "break" => 10,
+                "minTimeInMinutes" => 10,
+                "maxTimeInDays" => 7,
+                "cancelTimeInHours" => 1
             ]
         ];
 

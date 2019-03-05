@@ -86,7 +86,7 @@ class CalendarLoader extends AbstractFixture implements FixtureInterface
             $AppointmentConfig->setBreak(0);
             $AppointmentConfig->setMinTimeInMinutes(60);
             $AppointmentConfig->setMaxTimeInDays(7);
-            $AppointmentConfig->setCancelTimeInMinutes(20);
+            $AppointmentConfig->setCancelTimeInHours(20);
             $calendar->setAppointmentConfig($AppointmentConfig);
 
          //   $calendar->addSchedule($this->getReference($schedule));

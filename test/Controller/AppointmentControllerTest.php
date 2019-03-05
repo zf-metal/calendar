@@ -355,15 +355,16 @@ class AppointmentControllerTest extends AbstractHttpControllerTestCase
         ];
 
 
-        $this->dispatch("/zfmc/api/appointments/cancel", "PUT", $params);
+        $this->dispatch("/zfmc/api/appointments/cancel/".$id, "PUT", $params);
 
         $responseToCompare = [
-            'status' => false,
-            'message' => "El turno solicitado no esta disponible"
+            'status' => true,
+            'message' => "El turno ha sido cancelado"
         ];
 
         echo $this->getResponse()->getContent();
 
+        $this->assertControllerName(AppointmentApiController::class);
         $this->assertResponseStatusCode(200);
         $this->assertJsonStringEqualsJsonString(json_encode($responseToCompare), $this->getResponse()->getContent());
     }
