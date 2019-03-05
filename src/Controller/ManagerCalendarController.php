@@ -3,6 +3,7 @@
 namespace ZfMetal\Calendar\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
+use ZfMetal\Calendar\Entity\AppointmentConfig;
 use ZfMetal\Calendar\Entity\Calendar;
 use ZfMetal\Calendar\Entity\PredefinedEvents;
 use ZfMetal\Calendar\Entity\Schedule;
@@ -109,7 +110,7 @@ class ManagerCalendarController extends AbstractActionController
             $calendar->addSchedule($this->buildSchedule($calendar, 6));
             $calendar->addSchedule($this->buildSchedule($calendar, 7));
             $calendar->addSchedule($this->buildSchedule($calendar, 8));
-            $calendar->setPredefinedEvents(new PredefinedEvents());
+            $calendar->setAppointmentConfig(new AppointmentConfig());
         }
 
         return $calendar;
