@@ -8,6 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\UniqueConstraint as UniqueConstraint;
 use Gedmo\Mapping\Annotation as Gedmo;
 use ZfMetal\Restful\Transformation;
+
 /**
  * Appointment
  *
@@ -21,6 +22,20 @@ use ZfMetal\Restful\Transformation;
  */
 class Appointment
 {
+
+    const STATUS_LAPSED = 0;
+    const STATUS_ACTIVE = 1;
+    const STATUS_CANCEL_USER = 2;
+    const STATUS_CANCEL_ADMIN = 3;
+    const STATUS_ABSENT = 4;
+
+    const STATUS = [
+        self::STATUS_LAPSED => "Caducado",
+        self::STATUS_ACTIVE => "Activo",
+        self::STATUS_CANCEL_USER => "Cancelado",
+        self::STATUS_CANCEL_ADMIN => "Cancelado",
+        self::STATUS_ABSENT => "Ausente",
+    ];
 
     /**
      * @Annotation\Type("Zend\Form\Element\Text")
@@ -38,6 +53,7 @@ class Appointment
      * "target_class":"\ZfMetal\Security\Entity\User", "description":""})
      * @ORM\ManyToOne(targetEntity="\ZfMetal\Security\Entity\User")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=true)
+     * @Transformation\Policy\Custom(transform="ZfMetal\Restful\Transformation\Policy\Common\Id::transform")
      */
     public $user = null;
 
@@ -70,23 +86,22 @@ class Appointment
     public $duration = null;
 
     /**
- * @Annotation\Type("Zend\Form\Element\DateTime")
- * @Annotation\Attributes({"type":"datetime"})
- * @Annotation\Options({"label":"Hasta", "description":"", "addon":""})
- * @ORM\Column(type="datetime", unique=false, nullable=true, name="end")
- * @Transformation\Policy\FormatDateTime(format="Y-m-d H:i")
- */
+     * @Annotation\Type("Zend\Form\Element\DateTime")
+     * @Annotation\Attributes({"type":"datetime"})
+     * @Annotation\Options({"label":"Hasta", "description":"", "addon":""})
+     * @ORM\Column(type="datetime", unique=false, nullable=true, name="end")
+     * @Transformation\Policy\FormatDateTime(format="Y-m-d H:i")
+     */
     public $end = null;
 
-
     /**
-     * @var boolean
-     * @Annotation\Type("Zend\Form\Element\Checkbox")
-     * @Annotation\Attributes({"type":"checkbox"})
-     * @Annotation\Options({"label":"Hasta", "description":"", "addon":""})
-     * @ORM\Column(type="boolean", unique=false, nullable=true, name="canceled")
+     * @var integer
+     * @Annotation\Exclude()
+     * @ORM\Column(type="integer",  length=1, unique=false, nullable=true, name="status")
      */
-    public $canceled = false;
+    public $status = self::STATUS_ACTIVE;
+
+    public $statusName;
 
     public function getId()
     {
@@ -108,6 +123,9 @@ class Appointment
         $this->user = $user;
     }
 
+    /**
+     * @return Calendar
+     */
     public function getCalendar()
     {
         return $this->calendar;
@@ -150,10 +168,11 @@ class Appointment
 
     public function __toString()
     {
-        return (string) $this->getId();
+        return (string)$this->getId();
     }
 
-    public function toArray(){
+    public function toArray()
+    {
 
         return [
             'id' => $this->getId(),
@@ -162,24 +181,49 @@ class Appointment
             'start' => $this->getStart()->format("Y-m-d H:i"),
             'end' => $this->getEnd()->format("Y-m-d H:i"),
             'duration' => $this->getDuration(),
+            'status' => $this->getStatus(),
+            'statusName' => $this->getStatusName()
         ];
 
     }
 
     /**
-     * @return boolean
+     * @return int
      */
-    public function getCanceled()
+    public function getStatus()
     {
-        return $this->canceled;
+        return $this->status;
     }
 
     /**
-     * @param boolean $canceled
+     * @param int $status
      */
-    public function setCanceled($canceled)
+    public function setStatus($status)
     {
-        $this->canceled = $canceled;
+
+        if (is_string($status) && in_array($status, self::STATUS)) {
+            $key = array_search($status, self::STATUS);
+            $this->status = self::STATUS[$key];
+        }
+
+        if (is_int($status) && key_exists($status, self::STATUS)) {
+            $this->status = $status;
+        }
+
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getStatusName()
+    {
+        return self::STATUS[$this->status];
+    }
+
+
+    public function cancelByUser()
+    {
+        $this->status = self::STATUS_CANCEL_USER;
     }
 
 
