@@ -162,18 +162,26 @@ class AppointmentService
         $rangeDurationInMinutes = $this->calculateDiffTimeInMinutes($end, $start);
 
 
-        $shiftDuration = $calendar->getAppointmentConfig()->getDuration();
-        $breakDuration = $calendar->getAppointmentConfig()->getBreak();
-        $quantityShifts = floor($rangeDurationInMinutes / $shiftDuration);
+        if ($calendar->getAppointmentConfig()) {
+            $duration = $calendar->getAppointmentConfig()->getDuration();
+            $breakDuration = $calendar->getAppointmentConfig()->getBreak();
+            if ($duration) {
+                $quantityShifts = floor($rangeDurationInMinutes / $duration);
 
 
-        for ($i = 0; $i < $quantityShifts; $i++) {
-            $shift = new Shift($calendar->getId(), $date, $start->format("H:i"), $shiftDuration);
-            $this->shifts->add($shift);
-            $start->modify('+' . $shiftDuration . ' minutes');
-            if ($breakDuration > 0) {
-                $start->modify('+' . $breakDuration . ' minutes');
+                for ($i = 0; $i < $quantityShifts; $i++) {
+                    $shift = new Shift($calendar->getId(), $date, $start->format("H:i"), $duration);
+                    $this->shifts->add($shift);
+                    $start->modify('+' . $duration . ' minutes');
+                    if ($breakDuration > 0) {
+                        $start->modify('+' . $breakDuration . ' minutes');
+                    }
+                }
+            }else{
+                throw new \Exception("The calendar has not duration");
             }
+        }else{
+            throw new \Exception("The calendar has not config");
         }
     }
 
@@ -199,8 +207,6 @@ class AppointmentService
         // The Y ( 4 digits year ) returns TRUE for any integer with any number of digits so changing the comparison from == to === fixes the issue.
         return $d && $d->format($format) === $date;
     }
-
-
 
 
 }
