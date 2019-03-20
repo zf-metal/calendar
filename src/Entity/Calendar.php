@@ -359,7 +359,7 @@ class Calendar
     }
 
     /**
-     * @return mixed
+     * @return AppointmentConfig
      */
     public function getAppointmentConfig()
     {

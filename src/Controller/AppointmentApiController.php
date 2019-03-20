@@ -119,13 +119,34 @@ class AppointmentApiController extends AbstractActionController
 
         /** @var Appointment $appointment */
         $appointment = $this->getAppointmentRepository()->find($appointmentId);
-        $appointment->setCanceled(true);
-        $this->getAppointmentRepository()->save($appointment);
-        $response->setStatus(true);
-      //  $response->setItem($appointment->toArray());
-        $response->setMessage("El turno ha sido cancelado");
+
+        $calendar = $appointment->getCalendar();
+
+        $now = new \DateTime();
+        $diff = $this->calculateHoursDiff($appointment->getStart(),$now);
+        $cancelTime = $calendar->getAppointmentConfig()->getCancelTimeInHours();
+
+        if($diff < 0){
+            $response->setStatus(false);
+            $response->setMessage("El turno ha caducado");
+        } else if($cancelTime < $diff){
+            $appointment->cancelByUser();
+            $this->getAppointmentRepository()->save($appointment);
+            $response->setStatus(true);
+            $response->setMessage("El turno ha sido cancelado");
+
+        }else{
+            $response->setStatus(false);
+            $response->setMessage("No es posible cancelar el turno. Tiempo requerido: ".$cancelTime."hs");
+        }
+
+
 
         return new JsonModel($response->toArray());
+    }
+
+    protected function calculateHoursDiff(\DateTime $date1, \DateTime $date2){
+       return  round($date1->getTimestamp() - $date2->getTimestamp(),0,PHP_ROUND_HALF_DOWN) / 3600;
     }
 
     public function createAction()

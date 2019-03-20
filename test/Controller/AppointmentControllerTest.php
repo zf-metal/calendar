@@ -131,12 +131,12 @@ class AppointmentControllerTest extends AbstractHttpControllerTestCase
 
 
         $date = '2020-02-04';
-        $hour = '11:00';
+        $hour = '12:00';
         $calendarId = 1;
         $calendarName = "CalendarTest";
         $duration = 60;
         $start = $date . " " . $hour;
-        $end = $date . " " . '12:00';
+        $end = $date . " " . '13:00';
         $token = "xxx";
 
         $params = [
@@ -157,7 +157,9 @@ class AppointmentControllerTest extends AbstractHttpControllerTestCase
                 'calendar' => ["id" => $calendarId, "name" => $calendarName],
                 'start' => $start,
                 'end' => $end,
-                'duration' => 60
+                'duration' => 60,
+                'status' => 1,
+                'statusName' => 'Activo'
             ]
         ];
 
@@ -175,7 +177,7 @@ class AppointmentControllerTest extends AbstractHttpControllerTestCase
         $this->setUseConsoleRequest(false);
 
 
-        $date = '2020-02-04';
+        $date = '2018-02-04';
         $hour = '12:00';
         $calendarId = 1;
         $calendarName = "CalendarTest";
@@ -202,7 +204,9 @@ class AppointmentControllerTest extends AbstractHttpControllerTestCase
                 'calendar' => ["id" => $calendarId, "name" => $calendarName],
                 'start' => $start,
                 'end' => $end,
-                'duration' => 60
+                'duration' => 60,
+                'status' => 1,
+                'statusName' => 'Activo'
             ]
         ];
 
@@ -261,24 +265,25 @@ class AppointmentControllerTest extends AbstractHttpControllerTestCase
         $this->dispatch("/zfmc/api/appointments/my-appointments", "GET");
 
 
-
         $responseToCompare = [
             [
                 'id' => 1,
                 'user' => $this->getMockIdentity()->getId(),
                 'calendar' => ["id" => 1, "name" => "CalendarTest"],
-                'start' => '2020-02-04 11:00',
-                'end' => '2020-02-04 12:00',
-                'duration' => 60
-            ],
-            [
-                'id' => 2,
-                'user' => $this->getMockIdentity()->getId(),
-                'calendar' => ["id" => 1, "name" => "CalendarTest"],
                 'start' => '2020-02-04 12:00',
                 'end' => '2020-02-04 13:00',
-                'duration' => 60
-            ]
+                'duration' => 60,
+                'status' => 1,
+                'statusName' => 'Activo'
+            ],
+            /*            [
+                            'id' => 2,
+                            'user' => $this->getMockIdentity()->getId(),
+                            'calendar' => ["id" => 1, "name" => "CalendarTest"],
+                            'start' => '2018-02-04 12:00',
+                            'end' => '2018-02-04 13:00',
+                            'duration' => 60
+                        ]*/
         ];
 
         $response = json_decode($this->getResponse()->getContent());
@@ -286,9 +291,6 @@ class AppointmentControllerTest extends AbstractHttpControllerTestCase
         $this->assertResponseStatusCode(200);
         $this->assertJsonStringEqualsJsonString(json_encode($responseToCompare), $this->getResponse()->getContent());
     }
-
-
-
 
 
     /**
@@ -308,7 +310,6 @@ class AppointmentControllerTest extends AbstractHttpControllerTestCase
         ];
 
         $this->dispatch("/zfmc/api/appointments/availables/" . $calendarId . "/" . $date, "GET");
-
 
 
         $responseToCompare = [
@@ -358,7 +359,7 @@ class AppointmentControllerTest extends AbstractHttpControllerTestCase
         $this->setUseConsoleRequest(false);
 
 
-        $id = 2;
+        $id = 1;
 
 
         $params = [
@@ -366,7 +367,7 @@ class AppointmentControllerTest extends AbstractHttpControllerTestCase
         ];
 
 
-        $this->dispatch("/zfmc/api/appointments/cancel/".$id, "POST", $params);
+        $this->dispatch("/zfmc/api/appointments/cancel/" . $id, "POST", $params);
 
         $responseToCompare = [
             'status' => true,
@@ -381,17 +382,47 @@ class AppointmentControllerTest extends AbstractHttpControllerTestCase
     }
 
 
+    /**
+     * @depends testTakeSecondAppointment
+     * @throws \PHPUnit\Framework\ExpectationFailedException
+     */
+    public function testCancelLapsed()
+    {
+        $this->setUseConsoleRequest(false);
+
+
+        $id = 2;
+
+
+        $params = [
+            'id' => $id
+        ];
+
+
+        $this->dispatch("/zfmc/api/appointments/cancel/" . $id, "POST", $params);
+
+        $responseToCompare = [
+            'status' => false,
+            'message' => "El turno ha caducado"
+        ];
+
+        echo $this->getResponse()->getContent();
+
+        $this->assertControllerName(AppointmentApiController::class);
+        $this->assertResponseStatusCode(200);
+        $this->assertJsonStringEqualsJsonString(json_encode($responseToCompare), $this->getResponse()->getContent());
+    }
+
 
     /**
-     * @depends  testTakeSecondAppointment
+     * @depends  testCancel
      */
     public function testTheAppointments()
     {
         $this->setUseConsoleRequest(false);
 
 
-        $this->dispatch("/zfmc/api/appointments/my-appointments", "GET");
-
+        $this->dispatch("/zfmc/api/appointments?calendar=1&start=>=2018-02-04", "GET");
 
 
         $responseToCompare = [
@@ -399,17 +430,21 @@ class AppointmentControllerTest extends AbstractHttpControllerTestCase
                 'id' => 1,
                 'user' => $this->getMockIdentity()->getId(),
                 'calendar' => ["id" => 1, "name" => "CalendarTest"],
-                'start' => '2020-02-04 11:00',
-                'end' => '2020-02-04 12:00',
-                'duration' => 60
+                'start' => '2020-02-04 12:00',
+                'end' => '2020-02-04 13:00',
+                'duration' => 60,
+                'status' => 2,
+                'statusName' => 'Cancelado'
             ],
             [
                 'id' => 2,
                 'user' => $this->getMockIdentity()->getId(),
                 'calendar' => ["id" => 1, "name" => "CalendarTest"],
-                'start' => '2020-02-04 12:00',
-                'end' => '2020-02-04 13:00',
-                'duration' => 60
+                'start' => '2018-02-04 12:00',
+                'end' => '2018-02-04 13:00',
+                'duration' => 60,
+                'status' => 1,
+                'statusName' => 'Activo'
             ]
         ];
 
