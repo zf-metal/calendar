@@ -19,6 +19,7 @@ class Shift
     protected $calendar;
     protected $hour;
     protected $duration;
+    protected $start;
 
     /**
      * Shift constructor.
@@ -33,6 +34,7 @@ class Shift
         $this->setCalendar($calendar);
         $this->setHour($hour);
         $this->setDuration($duration);
+        $this->setStart($date,$hour);
     }
 
     /**
@@ -82,9 +84,7 @@ class Shift
      */
     public function getStart()
     {
-        $start = \DateTime::createFromFormat("Y-m-d H:i", $this->getDate()->format('Y-m-d') . ' ' . $this->getHour());
-
-        return $start;
+      return $this->start;
     }
 
     /**
@@ -146,6 +146,11 @@ class Shift
             'end' => $this->getEnd()->format("Y-m-d H:i"),
             'day' => $this->getDay()
         ];
+    }
+
+    private function setStart(\DateTime $date, $hour)
+    {
+        $this->start =  \DateTime::createFromFormat("!Y-m-d H:i", $date->format('Y-m-d') . ' ' . $hour);
     }
 
 }

@@ -84,7 +84,7 @@ class ScheduleLoader extends AbstractFixture implements FixtureInterface
             $schedule->setCalendar($this->getReference($calendar));
             $schedule->setDay($day);
             $schedule->setStart(\DateTime::createFromFormat('H:i','09:00'));
-            $schedule->setEnd(\DateTime::createFromFormat('H:i','12:00'));
+            $schedule->setEnd(\DateTime::createFromFormat('H:i','13:00'));
         }
 
         $this->getEm()->persist($schedule);

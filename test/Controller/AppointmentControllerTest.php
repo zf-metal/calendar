@@ -364,7 +364,7 @@ class AppointmentControllerTest extends AbstractHttpControllerTestCase
 
 
     /**
-     * @depends  testCreateData
+     * @depends  testTakeAppointment
      */
     public function testAvailable()
     {
@@ -413,6 +413,8 @@ class AppointmentControllerTest extends AbstractHttpControllerTestCase
         ];
 
         $response = json_decode($this->getResponse()->getContent());
+
+        //var_dump($response);
 
         $this->assertControllerName(AppointmentApiController::class);
         $this->assertResponseStatusCode(200);

@@ -20,6 +20,18 @@ class Shifts
         $this->shifts[] = $shift;
     }
 
+    public function remove($key)
+    {
+        if(key_exists($key,$this->shifts)){
+            unset($this->shifts[$key]);
+        }
+
+    }
+
+    public function getCollection(){
+        return $this->shifts;
+    }
+
     public function toArray()
     {
         $r = [];

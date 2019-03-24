@@ -5,6 +5,7 @@ namespace ZfMetal\Calendar\Repository;
 use Doctrine\ORM\EntityRepository;
 use Zend\Form\Element\DateTime;
 use ZfMetal\Calendar\Entity\Appointment;
+use ZfMetal\Calendar\Entity\Calendar;
 
 /**
  * AppointmentRepository
@@ -86,10 +87,30 @@ class AppointmentRepository extends EntityRepository
             ->from(Appointment::class, 'u')
             ->where('u.user = :userid')
             ->andWhere('u.start > :start')
-
             //Appointment start (ex: cancelado)
             ->setParameter("userid", $userId)
             ->setParameter("start",$start)
+            ->getQuery()
+            ->getResult();
+
+
+    }
+
+
+    public function findByCalendarAndDate(Calendar $calendar,$date)
+    {
+        $end = clone $date;
+        $end->modify("+1 day");
+        return  $this->getEntityManager()->createQueryBuilder('u')
+            ->select('u')
+            ->from(Appointment::class, 'u')
+            ->where('u.calendar = :calendar')
+            ->andWhere('u.start >= :start')
+            ->andWhere('u.start < :end')
+            ->andWhere('u.status = 1')
+            ->setParameter("calendar", $calendar)
+            ->setParameter("start",$date)
+            ->setParameter("end",$end)
             ->getQuery()
             ->getResult();
 

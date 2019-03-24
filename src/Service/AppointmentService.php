@@ -16,6 +16,7 @@ use ZfMetal\Calendar\Entity\SpecificSchedule;
 use ZfMetal\Calendar\Form\AppointmentForm;
 use ZfMetal\Calendar\Model\Shift;
 use ZfMetal\Calendar\Model\Shifts;
+use ZfMetal\Calendar\Repository\AppointmentRepository;
 
 
 class AppointmentService
@@ -62,6 +63,14 @@ class AppointmentService
         return $this->getEm()->getRepository(Event::class);
     }
 
+    /**
+     * @return AppointmentRepository
+     */
+    public function getAppointmentRepository()
+    {
+        return $this->getEm()->getRepository(Appointment::class);
+    }
+
 
     public function __construct(\Doctrine\ORM\EntityManager $em)
     {
@@ -89,7 +98,7 @@ class AppointmentService
 
         }
 
-        $date = \DateTime::createFromFormat("Y-m-d", $date);
+        $date = \DateTime::createFromFormat("!Y-m-d", $date);
 
 
         /** @var Calendar $calendar */
@@ -104,6 +113,8 @@ class AppointmentService
 
 
         $this->generateShifts($date, $schedule, $calendar);
+
+        $this->checkAppointments($calendar, $date);
 
 
         return $this->shifts;
@@ -177,10 +188,10 @@ class AppointmentService
                         $start->modify('+' . $breakDuration . ' minutes');
                     }
                 }
-            }else{
+            } else {
                 throw new \Exception("The calendar has not duration");
             }
-        }else{
+        } else {
             throw new \Exception("The calendar has not config");
         }
     }
@@ -206,6 +217,28 @@ class AppointmentService
         $d = \DateTime::createFromFormat($format, $date);
         // The Y ( 4 digits year ) returns TRUE for any integer with any number of digits so changing the comparison from == to === fixes the issue.
         return $d && $d->format($format) === $date;
+    }
+
+    private function checkAppointments(Calendar $calendar, \DateTime $date)
+    {
+        $appointments = $this->getAppointmentRepository()->findByCalendarAndDate($calendar, $date);
+
+        /**
+         * @var  $key
+         * @var Shift $shift
+         */
+        foreach ($this->shifts->getCollection() as $key => $shift) {
+            /** @var Appointment $appointment */
+            foreach ($appointments as $appointment) {
+
+                //TODO: Ampliar la verificacion a rango de tiempo en vez de solo el start
+                if ($shift->getStart() == $appointment->getStart()) {
+                 $this->shifts->remove($key);
+                }
+            }
+        }
+
+
     }
 
 
