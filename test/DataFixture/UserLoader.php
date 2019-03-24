@@ -72,6 +72,8 @@ class UserLoader  extends AbstractFixture implements FixtureInterface
 
         $this->createUser(1, "User Valid", "UserValid","user@gmail.com","1234", "validPassword");
 
+        $this->createUser(2, "User Valid 2", "UserValid2","user2@gmail.com","1234", "validPassword");
+
         $manager->flush();
 
 

@@ -14,6 +14,8 @@ return  [
             'branch-offices' => \ZfMetal\Calendar\Entity\BranchOffice::class,
             'services' => \ZfMetal\Calendar\Entity\Service::class,
 
+            'holidays' => \ZfMetal\Calendar\Entity\Holiday::class,
+            'outofservice' => \ZfMetal\Calendar\Entity\OutOfService::class,
 
             'appointments' => \ZfMetal\Calendar\Entity\Appointment::class,
         ],

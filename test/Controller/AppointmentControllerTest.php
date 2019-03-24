@@ -36,6 +36,15 @@ class AppointmentControllerTest extends AbstractHttpControllerTestCase
      */
     protected $user;
 
+
+
+    protected $mockJwtDoctrineIdentity2;
+
+    /**
+     * @var \Zfmetal\Security\Entity\User
+     */
+    protected $user2;
+
     /**
      * Inicializo el MVC
      */
@@ -85,6 +94,28 @@ class AppointmentControllerTest extends AbstractHttpControllerTestCase
         return $this->user;
     }
 
+    public function getMockJwtDoctrineIdentity2()
+    {
+
+        if (!$this->mockJwtDoctrineIdentity2) {
+
+            $this->mockJwtDoctrineIdentity2 = $this->createMock(\ZfMetal\SecurityJwt\Service\JwtDoctrineIdentity::class);
+            $this->mockJwtDoctrineIdentity2->method('getIdentity')
+                ->willReturn($this->getMockIdentity2());
+        }
+        return $this->mockJwtDoctrineIdentity2;
+    }
+
+    public function getMockIdentity2()
+    {
+
+        if (!$this->user2) {
+            $user2 = $this->getEm()->getRepository(User::class)->find(2);
+            $this->user2 = $user2;
+        }
+        return $this->user2;
+
+    }
 
     public function getEm()
     {
@@ -179,8 +210,8 @@ class AppointmentControllerTest extends AbstractHttpControllerTestCase
 
         $date = '2018-02-04';
         $hour = '12:00';
-        $calendarId = 1;
-        $calendarName = "CalendarTest";
+        $calendarId = 2;
+        $calendarName = "CalendarTestSegundo";
         $duration = 60;
         $start = $date . " " . $hour;
         $end = $date . " " . '13:00';
@@ -217,12 +248,51 @@ class AppointmentControllerTest extends AbstractHttpControllerTestCase
 
 
     /**
-     * @depends testTakeSecondAppointment
+     * @depends testTakeAppointment
      * @throws \PHPUnit\Framework\ExpectationFailedException
      */
-    public function testTakeAppointmentRejected()
+    public function testTakeAppointmentRejectedForPreviusAppointment()
     {
         $this->setUseConsoleRequest(false);
+
+
+        $date = '2020-02-04';
+        $hour = '18:00';
+        $calendarId = 1;
+        $calendarName = "CalendarTest";
+        $duration = 60;
+        $start = $date . " " . $hour;
+        $end = $date . " " . '13:00';
+        $token = "xxx";
+
+        $params = [
+            'calendar' => $calendarId,
+            'start' => $start,
+            'duration' => $duration
+        ];
+
+
+        $this->dispatch("/zfmc/api/appointments/take", "POST", $params);
+
+        $responseToCompare = [
+            'status' => false,
+            'message' => "Ya cuenta con un turno pendiente para esta agenda. No es posible acumular turnos."
+        ];
+
+
+        $this->assertResponseStatusCode(200);
+        $this->assertJsonStringEqualsJsonString(json_encode($responseToCompare), $this->getResponse()->getContent());
+    }
+
+    /**
+     * @depends testTakeAppointment
+     * @throws \PHPUnit\Framework\ExpectationFailedException
+     */
+    public function testTakeAppointmentRejectedForAvailability()
+    {
+        $this->setUseConsoleRequest(false);
+
+        $this->getApplicationServiceLocator()->setService(\ZfMetal\SecurityJwt\Service\JwtDoctrineIdentity::class, $this->getMockJwtDoctrineIdentity2());
 
 
         $date = '2020-02-04';
@@ -422,7 +492,7 @@ class AppointmentControllerTest extends AbstractHttpControllerTestCase
         $this->setUseConsoleRequest(false);
 
 
-        $this->dispatch("/zfmc/api/appointments?calendar=1&start=>=2018-02-04", "GET");
+        $this->dispatch("/zfmc/api/appointments?start=>=2018-02-04", "GET");
 
 
         $responseToCompare = [
@@ -439,7 +509,7 @@ class AppointmentControllerTest extends AbstractHttpControllerTestCase
             [
                 'id' => 2,
                 'user' => $this->getMockIdentity()->getId(),
-                'calendar' => ["id" => 1, "name" => "CalendarTest"],
+                'calendar' => ["id" => 2, "name" => "CalendarTestSegundo"],
                 'start' => '2018-02-04 12:00',
                 'end' => '2018-02-04 13:00',
                 'duration' => 60,

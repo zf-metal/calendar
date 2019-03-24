@@ -175,21 +175,37 @@ class AppointmentApiController extends AbstractActionController
                 $end->modify("+".$appointment->getDuration()." minutes");
                 $appointment->setEnd($end);
 
-                //Check Calendar range time config
 
-                //Check Availability
-                if ($this->getAppointmentRepository()
-                    ->checkAvailability(
+
+
+                //TODO: Check Calendar range time config
+
+
+                //Check 1 appointment per User for the same calendar
+                $hasAnotherAppointment = $this->getAppointmentRepository()->checkIfUserHasAnotherAppointmentForTheSameCalendar(
+                    $appointment->getCalendar(),$appointment->getUser()
+                );
+
+                if($hasAnotherAppointment){
+                    $response->setMessage("Ya cuenta con un turno pendiente para esta agenda. No es posible acumular turnos.");
+                }else {
+
+                    //Check Availability
+                    $hasAvailability = $this->getAppointmentRepository()->checkAvailability(
                         $appointment->getCalendar(), $appointment->getStart(), $appointment->getEnd()
-                    )
-                ) {
-                    $this->getAppointmentRepository()->save($appointment);
-                    $response->setStatus(true);
-                    $response->setItem($appointment->toArray());
-                    $response->setMessage("Su turno ha sido confirmado satisfactoriamente.");
+                    );
 
-                } else {
-                    $response->setMessage("Lo sentimos. El turno solicitado ya no esta disponible.");
+
+                    if ($hasAvailability) {
+
+                        $this->getAppointmentRepository()->save($appointment);
+                        $response->setStatus(true);
+                        $response->setItem($appointment->toArray());
+                        $response->setMessage("Su turno ha sido confirmado satisfactoriamente.");
+
+                    } else {
+                        $response->setMessage("Lo sentimos. El turno solicitado ya no esta disponible.");
+                    }
                 }
 
             } else {

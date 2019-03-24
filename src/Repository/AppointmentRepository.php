@@ -55,6 +55,26 @@ class AppointmentRepository extends EntityRepository
 
     }
 
+    public function checkIfUserHasAnotherAppointmentForTheSameCalendar($calendar, $user)
+    {
+        $now = new \DateTime();
+        $result =  $this->getEntityManager()->createQueryBuilder('u')
+            ->select('u')
+            ->from(Appointment::class, 'u')
+            ->where('u.start > :now')
+            ->andWhere('u.calendar = :calendar')
+            ->andWhere('u.user = :user')
+            ->setParameter("calendar", $calendar)
+            ->setParameter("now",$now)
+            ->setParameter("user", $user)
+            ->getQuery()
+            ->getResult();
+
+        return ($result)?true:false;
+
+
+    }
+
 
     public function findMyActiveAppointments($userId)
     {
