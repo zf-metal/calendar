@@ -44,6 +44,7 @@ class AppointmentRepository extends EntityRepository
             OR (u.start = :start AND u.end = :end)
             ')
             ->andWhere('u.calendar = :calendar')
+            ->andWhere('u.status = 1')
             ->setParameter("calendar", $calendar)
             ->setParameter("start",$start)
             ->setParameter("end", $end)
@@ -64,6 +65,7 @@ class AppointmentRepository extends EntityRepository
             ->where('u.start > :now')
             ->andWhere('u.calendar = :calendar')
             ->andWhere('u.user = :user')
+            ->andWhere('u.status = 1')
             ->setParameter("calendar", $calendar)
             ->setParameter("now",$now)
             ->setParameter("user", $user)
@@ -84,6 +86,7 @@ class AppointmentRepository extends EntityRepository
             ->from(Appointment::class, 'u')
             ->where('u.user = :userid')
             ->andWhere('u.start > :start')
+
             //Appointment start (ex: cancelado)
             ->setParameter("userid", $userId)
             ->setParameter("start",$start)
