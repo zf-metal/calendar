@@ -430,7 +430,14 @@ class AppointmentControllerTest extends AbstractHttpControllerTestCase
 
 
         $id = 1;
-
+        $date = '2020-02-04';
+        $hour = '12:00';
+        $calendarId = 1;
+        $calendarName = "CalendarTest";
+        $duration = 60;
+        $start = $date . " " . $hour;
+        $end = $date . " " . '13:00';
+        $token = "xxx";
 
         $params = [
             'id' => $id
@@ -441,7 +448,18 @@ class AppointmentControllerTest extends AbstractHttpControllerTestCase
 
         $responseToCompare = [
             'status' => true,
-            'message' => "El turno ha sido cancelado"
+            'message' => "El turno ha sido cancelado",
+            'item' => [
+                'id' => 1,
+                'user' => $this->getMockIdentity()->getId(),
+                'calendar' => ["id" => $calendarId, "name" => $calendarName],
+                'start' => $start,
+                'end' => $end,
+                'duration' => 60,
+                'status' => 2,
+                'statusName' => 'Cancelado'
+            ]
+
         ];
 
         echo $this->getResponse()->getContent();

@@ -9,6 +9,8 @@ use ZfMetal\Calendar\Form\AppointmentForm;
 use ZfMetal\Calendar\Repository\AppointmentRepository;
 use ZfMetal\Calendar\Service\AppointmentService;
 use ZfMetal\Restful\Model\Response;
+use ZfMetal\Restful\Transformation\Transform;
+
 /**
  * AppointmentApiController
  *
@@ -129,9 +131,16 @@ class AppointmentApiController extends AbstractActionController
         if($diff < 0){
             $response->setStatus(false);
             $response->setMessage("El turno ha caducado");
-        } else if($cancelTime < $diff){
+        } else if($cancelTime < $diff) {
             $appointment->cancelByUser();
             $this->getAppointmentRepository()->save($appointment);
+
+
+            $transform = new Transform();
+            $item = $transform->toArray($appointment);
+            $response->setItem($item);
+
+
             $response->setStatus(true);
             $response->setMessage("El turno ha sido cancelado");
 
