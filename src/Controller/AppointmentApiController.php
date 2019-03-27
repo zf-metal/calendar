@@ -170,7 +170,10 @@ class AppointmentApiController extends AbstractActionController
             throw new \Exception("Usuario no autenticado");
             }
 
-            $data['user'] = $this->getJwtIdentity()->getId();
+            //TODO: check the permission of the user (need be administrator)
+            if(!isset($data['user'])) {
+                $data['user'] = $this->getJwtIdentity()->getId();
+            }
 
             $appointment = new Appointment();
             $this->form->bind($appointment);
