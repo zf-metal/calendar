@@ -39,6 +39,7 @@ class SpecificSchedule
      * "target_class":"\ZfMetal\Calendar\Entity\Calendar", "description":""})
      * @ORM\ManyToOne(targetEntity="\ZfMetal\Calendar\Entity\Calendar")
      * @ORM\JoinColumn(name="calendar_id", referencedColumnName="id", nullable=true)
+     * @Transformation\Policy\Custom(transform="ZfMetal\Restful\Transformation\Policy\Common\IdName::transform")
      */
     public $calendar = null;
 
