@@ -15,7 +15,9 @@ return  [
             'services' => \ZfMetal\Calendar\Entity\Service::class,
 
             'holidays' => \ZfMetal\Calendar\Entity\Holiday::class,
-            'outofservice' => \ZfMetal\Calendar\Entity\OutOfService::class,
+
+            'out-of-service' => \ZfMetal\Calendar\Entity\OutOfService::class,
+            'specifics-schedule' => \ZfMetal\Calendar\Entity\SpecificSchedule::class,
 
             'appointments' => \ZfMetal\Calendar\Entity\Appointment::class,
         ],
