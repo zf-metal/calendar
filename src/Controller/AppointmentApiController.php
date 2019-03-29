@@ -6,10 +6,13 @@ use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\JsonModel;
 use ZfMetal\Calendar\Entity\Appointment;
 use ZfMetal\Calendar\Form\AppointmentForm;
+use ZfMetal\Calendar\Options\ModuleOptions;
 use ZfMetal\Calendar\Repository\AppointmentRepository;
 use ZfMetal\Calendar\Service\AppointmentService;
+use ZfMetal\Mail\MailManager;
 use ZfMetal\Restful\Model\Response;
 use ZfMetal\Restful\Transformation\Transform;
+use ZfMetal\Security\Entity\User;
 
 /**
  * AppointmentApiController
@@ -19,6 +22,9 @@ use ZfMetal\Restful\Transformation\Transform;
  * @author
  * @license
  * @link
+ * @method ModuleOptions ZfMetalCalendarOptions()
+ * @method \ZfMetal\Mail\Options\ModuleOptions ZfMetalMailOptions()
+ * @method MailManager mailManager()
  */
 class AppointmentApiController extends AbstractActionController
 {
@@ -94,7 +100,7 @@ class AppointmentApiController extends AbstractActionController
     public function myAppointmentsAction()
     {
 
-        if(!$this->getJwtIdentity()){
+        if (!$this->getJwtIdentity()) {
             throw new \Exception("Usuario no autenticado");
         }
 
@@ -102,7 +108,7 @@ class AppointmentApiController extends AbstractActionController
 
         $appointments = $this->getAppointmentRepository()->findMyActiveAppointments($userId);
         $items = [];
-        if($appointments) {
+        if ($appointments) {
             /** @var Appointment $appointment */
             foreach ($appointments as $appointment) {
                 $items[] = $appointment->toArray();
@@ -111,7 +117,6 @@ class AppointmentApiController extends AbstractActionController
 
         return new JsonModel($items);
     }
-
 
 
     public function cancelAction()
@@ -125,37 +130,38 @@ class AppointmentApiController extends AbstractActionController
         $calendar = $appointment->getCalendar();
 
         $now = new \DateTime();
-        $diff = $this->calculateHoursDiff($appointment->getStart(),$now);
+        $diff = $this->calculateHoursDiff($appointment->getStart(), $now);
         $cancelTime = $calendar->getAppointmentConfig()->getCancelTimeInHours();
 
-        if($diff < 0){
+        if ($diff < 0) {
             $response->setStatus(false);
             $response->setMessage("El turno ha caducado");
-        } else if($cancelTime < $diff) {
+        } else if ($cancelTime < $diff) {
             $appointment->cancelByUser();
             $this->getAppointmentRepository()->save($appointment);
 
+            if ($this->ZfMetalCalendarOptions()->getAppointmentEmailNotify()) {
+                $this->appointmentEmailNotifyCancel($appointment);
+            }
 
             $transform = new Transform();
             $item = $transform->toArray($appointment);
             $response->setItem($item);
-
-
             $response->setStatus(true);
             $response->setMessage("El turno ha sido cancelado");
 
-        }else{
+        } else {
             $response->setStatus(false);
-            $response->setMessage("No es posible cancelar el turno. Tiempo requerido: ".$cancelTime."hs");
+            $response->setMessage("No es posible cancelar el turno. Tiempo requerido: " . $cancelTime . "hs");
         }
-
 
 
         return new JsonModel($response->toArray());
     }
 
-    protected function calculateHoursDiff(\DateTime $date1, \DateTime $date2){
-       return  round($date1->getTimestamp() - $date2->getTimestamp(),0,PHP_ROUND_HALF_DOWN) / 3600;
+    protected function calculateHoursDiff(\DateTime $date1, \DateTime $date2)
+    {
+        return round($date1->getTimestamp() - $date2->getTimestamp(), 0, PHP_ROUND_HALF_DOWN) / 3600;
     }
 
     public function createAction()
@@ -166,12 +172,12 @@ class AppointmentApiController extends AbstractActionController
         if ($this->getRequest()->isPost()) {
             $data = $this->getRequest()->getPost();
 
-            if(!$this->getJwtIdentity()){
-            throw new \Exception("Usuario no autenticado");
+            if (!$this->getJwtIdentity()) {
+                throw new \Exception("Usuario no autenticado");
             }
 
             //TODO: check the permission of the user (need be administrator)
-            if(!isset($data['user'])) {
+            if (!isset($data['user'])) {
                 $data['user'] = $this->getJwtIdentity()->getId();
             }
 
@@ -184,10 +190,8 @@ class AppointmentApiController extends AbstractActionController
 
                 //SET END DATE
                 $end = clone $appointment->getStart();
-                $end->modify("+".$appointment->getDuration()." minutes");
+                $end->modify("+" . $appointment->getDuration() . " minutes");
                 $appointment->setEnd($end);
-
-
 
 
                 //TODO: Check Calendar range time config
@@ -195,12 +199,12 @@ class AppointmentApiController extends AbstractActionController
 
                 //Check 1 appointment per User for the same calendar
                 $hasAnotherAppointment = $this->getAppointmentRepository()->checkIfUserHasAnotherAppointmentForTheSameCalendar(
-                    $appointment->getCalendar(),$appointment->getUser()
+                    $appointment->getCalendar(), $appointment->getUser()
                 );
 
-                if($hasAnotherAppointment){
+                if ($hasAnotherAppointment) {
                     $response->setMessage("Ya cuenta con un turno pendiente para esta agenda. No es posible acumular turnos.");
-                }else {
+                } else {
 
                     //Check Availability
                     $hasAvailability = $this->getAppointmentRepository()->checkAvailability(
@@ -215,6 +219,10 @@ class AppointmentApiController extends AbstractActionController
                         $response->setItem($appointment->toArray());
                         $response->setMessage("Su turno ha sido confirmado satisfactoriamente.");
 
+                        if ($this->ZfMetalCalendarOptions()->getAppointmentEmailNotify()) {
+                            $this->appointmentEmailNotifyConfirm($appointment);
+                        }
+
                     } else {
                         $response->setMessage("Lo sentimos. El turno solicitado ya no esta disponible.");
                     }
@@ -223,7 +231,7 @@ class AppointmentApiController extends AbstractActionController
             } else {
                 foreach ($this->form->getMessages() as $key => $messages) {
                     foreach ($messages as $msj) {
-                        $response->addError($key,$msj);
+                        $response->addError($key, $msj);
                     }
                 }
                 $response->setMessage("Datos invalidos");
@@ -235,11 +243,70 @@ class AppointmentApiController extends AbstractActionController
         }
 
 
-
         return new JsonModel($response->toArray());
 
     }
 
+
+    public function appointmentEmailNotifyConfirm(Appointment $appointment)
+    {
+
+        $params = [
+            "nombre" => $appointment->getUser()->getName(),
+            "agenda" => $appointment->getCalendar()->getName(),
+            "fecha" => $appointment->getStart()->format("d-m-Y"),
+            "horario" => $appointment->getStart()->format("H:i")
+
+        ];
+
+        $this->mailManager()->setTemplate('zf-metal/calendar/mails/appointment-confirm', $params);
+
+        $this->mailManager()->setFrom($this->ZfMetalMailOptions()->getDefaultFrom());
+
+        $this->mailManager()->addTo($appointment->getUser()->getEmail(), $appointment->getUser()->getName());
+
+
+        $this->mailManager()->setSubject('Confirmación de Turno');
+
+        if ($this->mailManager()->send()) {
+            return true;
+        } else {
+            $this->logger()->info("Falla al enviar mail de confirmacion de turno");
+            return false;
+        }
+
+
+    }
+
+    public function appointmentEmailNotifyCancel(Appointment $appointment)
+    {
+
+        $params = [
+            "nombre" => $appointment->getUser()->getName(),
+            "agenda" => $appointment->getCalendar()->getName(),
+            "fecha" => $appointment->getStart()->format("d-m-Y"),
+            "horario" => $appointment->getStart()->format("H:i")
+
+        ];
+
+        $this->mailManager()->setTemplate('zf-metal/calendar/mails/appointment-cancel', $params);
+
+        $this->mailManager()->setFrom($this->ZfMetalMailOptions()->getDefaultFrom());
+
+        $this->mailManager()->addTo($appointment->getUser()->getEmail(), $appointment->getUser()->getName());
+
+
+        $this->mailManager()->setSubject('Cancelación de Turno');
+
+        if ($this->mailManager()->send()) {
+            return true;
+        } else {
+            $this->logger()->info("Falla al enviar mail de cancelacion de turno");
+            return false;
+        }
+
+
+    }
 
 }
 

@@ -20,6 +20,9 @@ class ModuleOptions extends \Zend\Stdlib\AbstractOptions
 
     private $appointmentConfigEnable = true;
 
+
+    private $appointmentEmailNotify = false;
+
     public function getTicketEntity()
     {
         return $this->ticketEntity;
@@ -65,6 +68,24 @@ class ModuleOptions extends \Zend\Stdlib\AbstractOptions
     {
         $this->appointmentConfigEnable = $appointmentConfigEnable;
     }
+
+    /**
+     * @return bool
+     */
+    public function getAppointmentEmailNotify()
+    {
+        return $this->appointmentEmailNotify;
+    }
+
+    /**
+     * @param bool $appointmentEmailNotify
+     */
+    public function setAppointmentEmailNotify($appointmentEmailNotify)
+    {
+        $this->appointmentEmailNotify = $appointmentEmailNotify;
+    }
+
+
 
 
 
