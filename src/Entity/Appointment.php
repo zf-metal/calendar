@@ -176,7 +176,7 @@ class Appointment
 
         return [
             'id' => $this->getId(),
-            'user' => $this->getUser()->getId(),
+            'user' => ["id" => $this->getUser()->getId(), "name" => $this->getUser()->getName()],
             'calendar' => ["id" => $this->getCalendar()->getId(), "name" => $this->getCalendar()->getName()],
             'start' => $this->getStart()->format("Y-m-d H:i"),
             'end' => $this->getEnd()->format("Y-m-d H:i"),
