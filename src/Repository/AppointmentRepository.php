@@ -81,7 +81,7 @@ class AppointmentRepository extends EntityRepository
 
     public function findMyActiveAppointments($userId)
     {
-        $start = new \DateTime();
+        $start = new \DateTime("Y-m-d");
         return  $this->getEntityManager()->createQueryBuilder('u')
             ->select('u')
             ->from(Appointment::class, 'u')
@@ -89,7 +89,7 @@ class AppointmentRepository extends EntityRepository
             ->andWhere('u.start > :start')
             //Appointment start (ex: cancelado)
             ->setParameter("userid", $userId)
-            ->setParameter("start",$start)
+            ->setParameter("start",$start->format("Y-m-d"))
             ->getQuery()
             ->getResult();
 
