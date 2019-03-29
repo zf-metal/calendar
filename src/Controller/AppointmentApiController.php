@@ -271,7 +271,7 @@ class AppointmentApiController extends AbstractActionController
         $this->mailManager()->addTo($appointment->getUser()->getEmail(), $appointment->getUser()->getName());
 
 
-        $this->mailManager()->setSubject('Confirmación de Turno');
+        $this->mailManager()->setSubject('Confirmación de Turno #'.$appointment->getId());
 
         if ($this->mailManager()->send()) {
             return true;
@@ -306,7 +306,7 @@ class AppointmentApiController extends AbstractActionController
         $this->mailManager()->addTo($appointment->getUser()->getEmail(), $appointment->getUser()->getName());
 
 
-        $this->mailManager()->setSubject('Cancelación de Turno');
+        $this->mailManager()->setSubject('Cancelación de Turno #'.$appointment->getId());
 
         if ($this->mailManager()->send()) {
             return true;
