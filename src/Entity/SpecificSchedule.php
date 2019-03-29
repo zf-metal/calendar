@@ -107,6 +107,24 @@ class SpecificSchedule
         $this->calendar = $calendar;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getDate()
+    {
+        return $this->date;
+    }
+
+    /**
+     * @param mixed $date
+     */
+    public function setDate($date)
+    {
+        $this->date = $date;
+    }
+
+
+
     public function getStart($formatDate = false)
     {
         if (is_a($this->start, "DateTime")) {
