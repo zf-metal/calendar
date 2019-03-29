@@ -252,6 +252,11 @@ class AppointmentApiController extends AbstractActionController
     {
 
         $params = [
+            "title" => $this->ZfMetalCalendarOptions()->getAppointmentEmailTitle(),
+            "backgroundColorTitle" => $this->ZfMetalCalendarOptions()->getAppointmentEmailBackgroundColorTitle(),
+            "colorTitle" => $this->ZfMetalCalendarOptions()->getAppointmentEmailColorTitle(),
+            "signature" => $this->ZfMetalCalendarOptions()->getAppointmentEmailSignature(),
+            "url" => $this->ZfMetalCalendarOptions()->getAppointmentEmailUrl(),
             "nombre" => $appointment->getUser()->getName(),
             "agenda" => $appointment->getCalendar()->getName(),
             "fecha" => $appointment->getStart()->format("d-m-Y"),
@@ -282,6 +287,11 @@ class AppointmentApiController extends AbstractActionController
     {
 
         $params = [
+            "title" => $this->ZfMetalCalendarOptions()->getAppointmentEmailTitle(),
+            "backgroundColorTitle" => $this->ZfMetalCalendarOptions()->getAppointmentEmailBackgroundColorTitle(),
+            "colorTitle" => $this->ZfMetalCalendarOptions()->getAppointmentEmailColorTitle(),
+            "signature" => $this->ZfMetalCalendarOptions()->getAppointmentEmailSignature(),
+            "url" => $this->ZfMetalCalendarOptions()->getAppointmentEmailUrl(),
             "nombre" => $appointment->getUser()->getName(),
             "agenda" => $appointment->getCalendar()->getName(),
             "fecha" => $appointment->getStart()->format("d-m-Y"),

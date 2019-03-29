@@ -1,39 +1,39 @@
 <?php
 
-if(!isset($backgroundColorTitle)){
-    $backgroundColorTitle = "#000000";
+if(!isset($this->backgroundColorTitle)){
+    $this->backgroundColorTitle = "#000000";
 }
 
-if(!isset($colorTitle)){
-    $colorTitle = "#ffffff";
+if(!isset($this->colorTitle)){
+    $this->colorTitle = "#ffffff";
 }
 
-if(!isset($title)){
-    $title = "TU MARCA";
+if(!isset($this->title)){
+    $this->title = "TU MARCA";
 }
 
-if(!isset($firma)){
-    $firma = "TuFirma";
+if(!isset($this->signature)){
+    $this->signature = "TuFirma";
 }
 
-if(!isset($www)){
-    $www = "wwww.tumarca.com";
+if(!isset($this->url)){
+    $this->url = "wwww.tumarca.com";
 }
 
-if(!isset($nombre)){
-    $nombre = "@nombre";
+if(!isset($this->nombre)){
+    $this->nombre = "@nombre";
 }
 
-if(!isset($agenda)){
-    $agenda = "@agenda";
+if(!isset($this->agenda)){
+    $this->agenda = "@agenda";
 }
 
-if(!isset($fecha)){
-    $fecha = "@fecha";
+if(!isset($this->fecha)){
+    $this->fecha = "@fecha";
 }
 
-if(!isset($horario)){
-    $horario = "@horario";
+if(!isset($this->horario)){
+    $this->horario = "@horario";
 }
 
 ?>
@@ -161,9 +161,9 @@ if(!isset($horario)){
             <!--[if (mso)|(IE)]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td align="center" style="background-color: #e7e7e7;"><![endif]-->
 
             <div class="email-row-container" style="padding: 0px;background-color: #e7e7e7">
-                <div style="Margin: 0 auto;min-width: 320px;max-width: 500px;overflow-wrap: break-word;word-wrap: break-word;word-break: break-word;background-color: <?php echo $backgroundColorTitle;?>;" class="email-row">
-                    <div style="border-collapse: collapse;display: table;width: 100%;background-color: <?php echo $backgroundColorTitle;?>;">
-                        <!--[if (mso)|(IE)]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding: 0px;background-color: #e7e7e7;" align="center"><table cellpadding="0" cellspacing="0" border="0" style="width:500px;"><tr style="background-color: <?php echo $backgroundColorTitle ?> ;"><![endif]-->
+                <div style="Margin: 0 auto;min-width: 320px;max-width: 500px;overflow-wrap: break-word;word-wrap: break-word;word-break: break-word;background-color: <?php echo $this->backgroundColorTitle;?>;" class="email-row">
+                    <div style="border-collapse: collapse;display: table;width: 100%;background-color: <?php echo $this->backgroundColorTitle;?>;">
+                        <!--[if (mso)|(IE)]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding: 0px;background-color: #e7e7e7;" align="center"><table cellpadding="0" cellspacing="0" border="0" style="width:500px;"><tr style="background-color: <?php echo $this->backgroundColorTitle ?> ;"><![endif]-->
 
                         <!--[if (mso)|(IE)]><td align="center" width="500" style="width: 500px;padding: 0px;border-top: 0px solid transparent;border-left: 0px solid transparent;border-right: 0px solid transparent;border-bottom: 0px solid transparent;" valign="top"><![endif]-->
                         <div class="email-col email-col-100" style="max-width: 320px;min-width: 500px;display: table-cell;vertical-align: top;">
@@ -175,8 +175,8 @@ if(!isset($horario)){
                                         <tr>
                                             <td style="overflow-wrap:break-word;word-break:break-word;padding:7px;font-family:arial,helvetica,sans-serif;" align="left">
 
-                                                <div style="color: <?php echo $colorTitle; ?>; line-height: 110%; text-align: left; word-wrap: break-word;">
-                                                    <p style="font-size: 14px; line-height: 110%;"><span style="font-size: 40px; line-height: 44px; font-family: 'Source Sans Pro', sans-serif;"><?echo $title; ?></span></p>
+                                                <div style="color: <?php echo $this->colorTitle; ?>; line-height: 110%; text-align: left; word-wrap: break-word;">
+                                                    <p style="font-size: 14px; line-height: 110%;"><span style="font-size: 40px; line-height: 44px; font-family: 'Source Sans Pro', sans-serif;"><?echo $this->title; ?></span></p>
                                                 </div>
 
                                             </td>
@@ -209,17 +209,17 @@ if(!isset($horario)){
                                             <td style="overflow-wrap:break-word;word-break:break-word;padding:10px;font-family:arial,helvetica,sans-serif;" align="left">
 
                                                 <div style="color: #000; line-height: 140%; text-align: left; word-wrap: break-word;">
-                                                    <p style="font-size: 14px; line-height: 140%;"><?echo $nombre; ?>,</p>
+                                                    <p style="font-size: 14px; line-height: 140%;"><?echo $this->nombre; ?>,</p>
                                                     <p style="font-size: 14px; line-height: 140%;">&nbsp;</p>
                                                     <p style="font-size: 14px; line-height: 140%;">Este mail es para notificarte la <strong>confirmación</strong> del turno:</p>
                                                     <p style="font-size: 14px; line-height: 140%;">&nbsp;</p>
-                                                    <p style="font-size: 14px; line-height: 140%;"><strong>Agenda</strong>: <?echo $agenda; ?></p>
-                                                    <p style="font-size: 14px; line-height: 140%;"><strong>Fecha</strong>: <?echo $fecha; ?></p>
-                                                    <p style="font-size: 14px; line-height: 140%;"><strong>Hora</strong>: <?echo $hora; ?></p>
+                                                    <p style="font-size: 14px; line-height: 140%;"><strong>Agenda</strong>: <?echo $this->agenda; ?></p>
+                                                    <p style="font-size: 14px; line-height: 140%;"><strong>Fecha</strong>: <?echo $this->fecha; ?></p>
+                                                    <p style="font-size: 14px; line-height: 140%;"><strong>Hora</strong>: <?echo $this->hora; ?></p>
                                                     <p style="font-size: 14px; line-height: 140%;">&nbsp;</p>
                                                     <p style="font-size: 14px; line-height: 140%;">Muchas gracias por elegirnos!</p>
-                                                    <p style="font-size: 14px; line-height: 140%;"><?echo $firma; ?></p>
-                                                    <p style="font-size: 14px; line-height: 140%;"><a href="http://<?echo $www; ?>"><?echo $www; ?></a></p>
+                                                    <p style="font-size: 14px; line-height: 140%;"><?echo $this->signature; ?></p>
+                                                    <p style="font-size: 14px; line-height: 140%;"><a href="http://<?echo $this->url; ?>"><?echo $this->url; ?></a></p>
                                                 </div>
 
                                             </td>
