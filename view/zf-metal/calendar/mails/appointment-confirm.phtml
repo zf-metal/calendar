@@ -176,7 +176,7 @@ if(!isset($this->horario)){
                                             <td style="overflow-wrap:break-word;word-break:break-word;padding:7px;font-family:arial,helvetica,sans-serif;" align="left">
 
                                                 <div style="color: <?php echo $this->colorTitle; ?>; line-height: 110%; text-align: left; word-wrap: break-word;">
-                                                    <p style="font-size: 14px; line-height: 110%;"><span style="font-size: 40px; line-height: 44px; font-family: 'Source Sans Pro', sans-serif;"><?echo $this->title; ?></span></p>
+                                                    <p style="font-size: 14px; line-height: 110%;"><span style="font-size: 40px; line-height: 44px; font-family: 'Source Sans Pro', sans-serif;"><?php echo $this->title; ?></span></p>
                                                 </div>
 
                                             </td>
@@ -209,17 +209,17 @@ if(!isset($this->horario)){
                                             <td style="overflow-wrap:break-word;word-break:break-word;padding:10px;font-family:arial,helvetica,sans-serif;" align="left">
 
                                                 <div style="color: #000; line-height: 140%; text-align: left; word-wrap: break-word;">
-                                                    <p style="font-size: 14px; line-height: 140%;"><?echo $this->nombre; ?>,</p>
+                                                    <p style="font-size: 14px; line-height: 140%;"><?php echo $this->nombre; ?>,</p>
                                                     <p style="font-size: 14px; line-height: 140%;">&nbsp;</p>
                                                     <p style="font-size: 14px; line-height: 140%;">Este mail es para notificarte la <strong>confirmación</strong> del turno:</p>
                                                     <p style="font-size: 14px; line-height: 140%;">&nbsp;</p>
-                                                    <p style="font-size: 14px; line-height: 140%;"><strong>Agenda</strong>: <?echo $this->agenda; ?></p>
-                                                    <p style="font-size: 14px; line-height: 140%;"><strong>Fecha</strong>: <?echo $this->fecha; ?></p>
-                                                    <p style="font-size: 14px; line-height: 140%;"><strong>Hora</strong>: <?echo $this->hora; ?></p>
+                                                    <p style="font-size: 14px; line-height: 140%;"><strong>Agenda</strong>: <?php echo $this->agenda; ?></p>
+                                                    <p style="font-size: 14px; line-height: 140%;"><strong>Fecha</strong>: <?php echo $this->fecha; ?></p>
+                                                    <p style="font-size: 14px; line-height: 140%;"><strong>Hora</strong>: <?php echo $this->hora; ?></p>
                                                     <p style="font-size: 14px; line-height: 140%;">&nbsp;</p>
                                                     <p style="font-size: 14px; line-height: 140%;">Muchas gracias por elegirnos!</p>
-                                                    <p style="font-size: 14px; line-height: 140%;"><?echo $this->signature; ?></p>
-                                                    <p style="font-size: 14px; line-height: 140%;"><a href="http://<?echo $this->url; ?>"><?echo $this->url; ?></a></p>
+                                                    <p style="font-size: 14px; line-height: 140%;"><?php echo $this->signature; ?></p>
+                                                    <p style="font-size: 14px; line-height: 140%;"><a href="http://<?php echo $this->url; ?>"><?php echo $this->url; ?></a></p>
                                                 </div>
 
                                             </td>
