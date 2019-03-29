@@ -107,19 +107,15 @@ class SpecificSchedule
         $this->calendar = $calendar;
     }
 
-    public function getDate()
+    public function getStart($formatDate = false)
     {
-        return $this->date;
-    }
-
-    public function setDate($date)
-    {
-        $this->date = $date;
-    }
-
-    public function getStart()
-    {
-        return $this->start;
+        if (is_a($this->start, "DateTime")) {
+            if ($formatDate) {
+                return $this->start;
+            }
+            return $this->start->format("H:i");
+        }
+        return null;
     }
 
     public function setStart($start)
@@ -127,9 +123,15 @@ class SpecificSchedule
         $this->start = $start;
     }
 
-    public function getEnd()
+    public function getEnd($formatDate = false)
     {
-        return $this->end;
+        if (is_a($this->end, "DateTime")) {
+            if ($formatDate) {
+                return $this->end;
+            }
+            return $this->end->format("H:i");
+        }
+        return null;
     }
 
     public function setEnd($end)
@@ -137,33 +139,34 @@ class SpecificSchedule
         $this->end = $end;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getStart2()
+    public function getStart2($formatDate = false)
     {
-        return $this->start2;
+        if (is_a($this->start2, "DateTime")) {
+            if ($formatDate) {
+                return $this->start2;
+            }
+            return $this->start2->format("H:i");
+        }
+        return null;
     }
 
-    /**
-     * @param mixed $start2
-     */
     public function setStart2($start2)
     {
         $this->start2 = $start2;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getEnd2()
+    public function getEnd2($formatDate = false)
     {
-        return $this->end2;
+
+        if (is_a($this->end2, "DateTime")) {
+            if ($formatDate) {
+                return $this->end2;
+            }
+            return $this->end2->format("H:i");
+        }
+        return null;
     }
 
-    /**
-     * @param mixed $end2
-     */
     public function setEnd2($end2)
     {
         $this->end2 = $end2;
