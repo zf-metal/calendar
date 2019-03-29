@@ -48,6 +48,7 @@ class SpecificSchedule
      * @Annotation\Attributes({"type":"date"})
      * @Annotation\Options({"label":"date", "description":"", "addon":""})
      * @ORM\Column(type="date", unique=false, nullable=true, name="date")
+     * @Transformation\Policy\FormatDateTime(format="Y-m-d")
      */
     public $date = null;
 
