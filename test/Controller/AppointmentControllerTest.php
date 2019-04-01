@@ -184,7 +184,7 @@ class AppointmentControllerTest extends AbstractHttpControllerTestCase
             'message' => "Su turno ha sido confirmado satisfactoriamente.",
             'item' => [
                 'id' => 1,
-                'user' => $this->getMockIdentity()->getId(),
+                'user' => ["id" => $this->getMockIdentity()->getId(), "name" => $this->getMockIdentity()->getName()],
                 'calendar' => ["id" => $calendarId, "name" => $calendarName],
                 'start' => $start,
                 'end' => $end,
@@ -231,7 +231,7 @@ class AppointmentControllerTest extends AbstractHttpControllerTestCase
             'message' => "Su turno ha sido confirmado satisfactoriamente.",
             'item' => [
                 'id' => 2,
-                'user' => $this->getMockIdentity()->getId(),
+                'user' => ["id" => $this->getMockIdentity()->getId(), "name" => $this->getMockIdentity()->getName()],
                 'calendar' => ["id" => $calendarId, "name" => $calendarName],
                 'start' => $start,
                 'end' => $end,
@@ -338,7 +338,7 @@ class AppointmentControllerTest extends AbstractHttpControllerTestCase
         $responseToCompare = [
             [
                 'id' => 1,
-                'user' => $this->getMockIdentity()->getId(),
+                'user' => ["id" => $this->getMockIdentity()->getId(), "name" => $this->getMockIdentity()->getName()],
                 'calendar' => ["id" => 1, "name" => "CalendarTest"],
                 'start' => '2020-02-04 12:00',
                 'end' => '2020-02-04 13:00',
@@ -453,7 +453,7 @@ class AppointmentControllerTest extends AbstractHttpControllerTestCase
             'message' => "El turno ha sido cancelado",
             'item' => [
                 'id' => 1,
-                'user' => $this->getMockIdentity()->getId(),
+                'user' => ["id" => $this->getMockIdentity()->getId(), "name" => $this->getMockIdentity()->getName()],
                 'calendar' => ["id" => $calendarId, "name" => $calendarName],
                 'start' => $start,
                 'end' => $end,
@@ -518,7 +518,7 @@ class AppointmentControllerTest extends AbstractHttpControllerTestCase
         $responseToCompare = [
             [
                 'id' => 1,
-                'user' => $this->getMockIdentity()->getId(),
+                'user' => ["id" => $this->getMockIdentity()->getId(), "name" => $this->getMockIdentity()->getName()],
                 'calendar' => ["id" => 1, "name" => "CalendarTest"],
                 'start' => '2020-02-04 12:00',
                 'end' => '2020-02-04 13:00',
@@ -528,7 +528,7 @@ class AppointmentControllerTest extends AbstractHttpControllerTestCase
             ],
             [
                 'id' => 2,
-                'user' => $this->getMockIdentity()->getId(),
+                'user' => ["id" => $this->getMockIdentity()->getId(), "name" => $this->getMockIdentity()->getName()],
                 'calendar' => ["id" => 2, "name" => "CalendarTestSegundo"],
                 'start' => '2018-02-04 12:00',
                 'end' => '2018-02-04 13:00',

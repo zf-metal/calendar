@@ -131,11 +131,18 @@ class AppointmentApiController extends AbstractActionController
 
         $now = new \DateTime();
         $diff = $this->calculateHoursDiff($appointment->getStart(), $now);
+
+
         $cancelTime = $calendar->getAppointmentConfig()->getCancelTimeInHours();
+
+        if(!$cancelTime){
+            $cancelTime = 0;
+        }
 
         if ($diff < 0) {
             $response->setStatus(false);
             $response->setMessage("El turno ha caducado");
+            $this->logger()->warn("Turnos Caducado. DIFF: ".$diff. " NOW: ".$now->format("Y-m-d H:i:s")." (".$now->getTimestamp(). ") START: ".$appointment->getStart()->format("Y-m-d H:i:s")." (".$appointment->getStart()->getTimestamp().")");
         } else if ($cancelTime < $diff) {
             $appointment->cancelByUser();
             $this->getAppointmentRepository()->save($appointment);
