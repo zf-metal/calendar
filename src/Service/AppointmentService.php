@@ -11,6 +11,8 @@ namespace ZfMetal\Calendar\Service;
 use ZfMetal\Calendar\Entity\Appointment;
 use ZfMetal\Calendar\Entity\Calendar;
 use ZfMetal\Calendar\Entity\Event;
+use ZfMetal\Calendar\Entity\Holiday;
+use ZfMetal\Calendar\Entity\OutOfService;
 use ZfMetal\Calendar\Entity\Schedule;
 use ZfMetal\Calendar\Entity\SpecificSchedule;
 use ZfMetal\Calendar\Form\AppointmentForm;
@@ -55,6 +57,17 @@ class AppointmentService
     public function getScheduleRepository()
     {
         return $this->getEm()->getRepository(Schedule::class);
+    }
+
+    public function getOutOfServiceRepository()
+    {
+        return $this->getEm()->getRepository(OutOfService::class);
+    }
+
+
+    public function getHolidayRepository()
+    {
+        return $this->getEm()->getRepository(Holiday::class);
     }
 
 
@@ -111,11 +124,10 @@ class AppointmentService
 
         $schedule = $this->findSchedule($date, $calendar);
 
-
-        $this->generateShifts($date, $schedule, $calendar);
-
-        $this->checkAppointments($calendar, $date);
-
+        if($schedule) {
+            $this->generateShifts($date, $schedule, $calendar);
+            $this->checkAppointments($calendar, $date);
+        }
 
         return $this->shifts;
 
@@ -129,12 +141,32 @@ class AppointmentService
      */
     public function findSchedule($date, Calendar $calendar)
     {
+
+        //OurOfService
+        $outOfService = $this->getOutOfServiceRepository()->findByDate($date);
+        if($outOfService){
+            return null;
+        }
+
+        //specific schedule
         $schedule = $this->getSpecificScheduleRepository()->findOneBy(['calendar' => $calendar->getId(), 'date' => $date]);
 
         if (!$schedule) {
-            $day = $date->format("N");
-            $schedule = $this->getScheduleRepository()->findOneBy(['calendar' => $calendar->getId(), 'day' => $day]);
+
+
+            //Holiday Schedule
+            $holiday = $this->getHolidayRepository()->findOneBy(['date' => $date]);
+
+            if($holiday){
+                $schedule = $this->getScheduleRepository()->findOneBy(['calendar' => $calendar->getId(), 'day' => 8]);
+            }else{
+                $day = $date->format("N");
+                $schedule = $this->getScheduleRepository()->findOneBy(['calendar' => $calendar->getId(), 'day' => $day]);
+
+            }
         }
+
+
         return $schedule;
     }
 

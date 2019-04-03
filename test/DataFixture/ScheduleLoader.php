@@ -68,6 +68,7 @@ class ScheduleLoader extends AbstractFixture implements FixtureInterface
         $this->createSchedule(5, 5,"CalendarTest");
         $this->createSchedule(6, 6,"CalendarTest");
         $this->createSchedule(7, 7,"CalendarTest");
+        $this->createSchedule(8, 8,"CalendarTest");
         $manager->flush();
 
 
