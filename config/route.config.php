@@ -8,14 +8,14 @@ return [
                 'options' => [
                     'route' => '/zfmc',
                 ],
-                'type' => 'Literal',
+                'type' => \Zend\Router\Http\Literal::class,
                 'child_routes' => [
                     'ServiceSearch' => [
-                        'type' => 'Literal',
+                        'type' => \Zend\Router\Http\Literal::class,
                         'mayTerminate' => true,
                         'options' => [
                             'defaults' => [
-                                'controller' => \ZfMetal\Calendar\Controller\ServiceSearchController::CLASS,
+                                'controller' => \ZfMetal\Calendar\Controller\ServiceSearchController::class,
                                 'action' => 'search',
                             ],
                             'route' => '/serviceSearch',
@@ -26,12 +26,10 @@ return [
                         'mayTerminate' => true,
                         'options' => [
                             'route' => '/api/events/search/byServiceYearMonth/:service/:year/:month',
-                           // 'route' => '/eventSearch',
                             'defaults' => [
-                                'controller' => \ZfMetal\Calendar\Controller\EventSearchController::CLASS,
+                                'controller' => \ZfMetal\Calendar\Controller\EventSearchController::class,
                                 'action' => 'searchByServiceYearMonth',
                             ],
-
                         ],
                     ],
                     'Calendar' => [
@@ -43,7 +41,7 @@ return [
                             ],
                             'route' => '/calendar',
                         ],
-                        'type' => 'Literal',
+                        'type' => \Zend\Router\Http\Literal::class,
                         'child_routes' => [
                             'Grid' => [
                                 'mayTerminate' => true,
@@ -54,7 +52,7 @@ return [
                                     ],
                                     'route' => '/grid',
                                 ],
-                                'type' => 'Segment',
+                                'type' => \Zend\Router\Http\Segment::class,
                             ],
                         ],
                     ],
@@ -67,7 +65,7 @@ return [
                             ],
                             'route' => '/manager-calendar',
                         ],
-                        'type' => 'Literal',
+                        'type' => \Zend\Router\Http\Literal::class,
                         'child_routes' => [
                             'List' => [
                                 'mayTerminate' => true,
@@ -78,7 +76,7 @@ return [
                                     ],
                                     'route' => '/list',
                                 ],
-                                'type' => 'Segment',
+                                'type' => \Zend\Router\Http\Segment::class,
                             ],
                             'Manage' => [
                                 'mayTerminate' => true,
@@ -89,7 +87,7 @@ return [
                                     ],
                                     'route' => '/manage[/:id]',
                                 ],
-                                'type' => 'Segment',
+                                'type' => \Zend\Router\Http\Segment::class,
                             ],
                         ],
                     ],
@@ -102,7 +100,7 @@ return [
                             ],
                             'route' => '/holiday',
                         ],
-                        'type' => 'Literal',
+                        'type' => \Zend\Router\Http\Literal::class,
                         'child_routes' => [
                             'Grid' => [
                                 'mayTerminate' => true,
@@ -113,39 +111,11 @@ return [
                                     ],
                                     'route' => '/grid',
                                 ],
-                                'type' => 'Segment',
+                                'type' => \Zend\Router\Http\Segment::class,
                             ],
                         ],
                     ],
-                    'Api' => [
-                        'type' => 'Literal',
-                        'mayTerminate' => false,
-                        'options' => [
-                            'route' => '/api',
-                        ],
-                        'child_routes' => [
-                            'entity' => [
-                                'type' => 'Segment',
-                                'mayTerminate' => false,
-                                'options' => [
-                                    'route' => '/:entityAlias[/:id]',
-                                    'defaults' => [
-                                        'controller' => 'ZfMetal\\Restful\\Controller\\MainController',
-                                    ],
-                                ],
-                            ],
-                            'start' => [
-                                'type' => 'Segment',
-                                'mayTerminate' => false,
-                                'options' => [
-                                    'route' => '/start',
-                                    'defaults' => [
-                                        'controller' => 'ZfMetal\\Calendar\\Controller\\ApiStartController',
-                                    ],
-                                ],
-                            ],
-                        ],
-                    ],
+
                     'Home' => [
                         'mayTerminate' => true,
                         'options' => [
@@ -155,7 +125,7 @@ return [
                                 'action' => 'index',
                             ],
                         ],
-                        'type' => 'Literal',
+                        'type' => \Zend\Router\Http\Literal::class,
                     ],
                     'EventSchedule' => [
                         'mayTerminate' => false,
@@ -166,7 +136,7 @@ return [
                                 'action' => 'schedule',
                             ],
                         ],
-                        'type' => 'Literal',
+                        'type' => \Zend\Router\Http\Literal::class,
                         'child_routes' => [
                             'Schedule' => [
                                 'mayTerminate' => true,
@@ -177,7 +147,7 @@ return [
                                         'action' => 'schedule',
                                     ],
                                 ],
-                                'type' => 'Segment',
+                                'type' => \Zend\Router\Http\Segment::class,
                             ],
                         ],
                     ],
@@ -190,7 +160,7 @@ return [
                                 'action' => 'grid',
                             ],
                         ],
-                        'type' => 'Literal',
+                        'type' => \Zend\Router\Http\Literal::class,
                         'child_routes' => [
                             'Grid' => [
                                 'mayTerminate' => true,
@@ -201,7 +171,7 @@ return [
                                         'action' => 'grid',
                                     ],
                                 ],
-                                'type' => 'Segment',
+                                'type' => \Zend\Router\Http\Segment::class,
                             ],
                         ],
                     ],
@@ -214,7 +184,7 @@ return [
                                 'action' => 'grid',
                             ],
                         ],
-                        'type' => 'Literal',
+                        'type' => \Zend\Router\Http\Literal::class,
                         'child_routes' => [
                             'Grid' => [
                                 'mayTerminate' => true,
@@ -225,7 +195,7 @@ return [
                                         'action' => 'grid',
                                     ],
                                 ],
-                                'type' => 'Segment',
+                                'type' => \Zend\Router\Http\Segment::class,
                             ],
                         ],
                     ],
@@ -238,7 +208,7 @@ return [
                                 'action' => 'grid',
                             ],
                         ],
-                        'type' => 'Literal',
+                        'type' => \Zend\Router\Http\Literal::class,
                         'child_routes' => [
                             'Grid' => [
                                 'mayTerminate' => true,
@@ -249,7 +219,7 @@ return [
                                         'action' => 'grid',
                                     ],
                                 ],
-                                'type' => 'Segment',
+                                'type' => \Zend\Router\Http\Segment::class,
                             ],
                         ],
                     ],
@@ -262,7 +232,7 @@ return [
                                 'action' => 'grid',
                             ],
                         ],
-                        'type' => 'Literal',
+                        'type' => \Zend\Router\Http\Literal::class,
                         'child_routes' => [
                             'Grid' => [
                                 'mayTerminate' => true,
@@ -273,7 +243,7 @@ return [
                                         'action' => 'grid',
                                     ],
                                 ],
-                                'type' => 'Segment',
+                                'type' => \Zend\Router\Http\Segment::class,
                             ],
                         ],
                     ],
@@ -286,7 +256,7 @@ return [
                                 'action' => 'grid',
                             ],
                         ],
-                        'type' => 'Literal',
+                        'type' => \Zend\Router\Http\Literal::class,
                         'child_routes' => [
                             'Grid' => [
                                 'mayTerminate' => true,
@@ -297,38 +267,172 @@ return [
                                         'action' => 'grid',
                                     ],
                                 ],
-                                'type' => 'Segment',
+                                'type' => \Zend\Router\Http\Segment::class,
                             ],
                         ],
-                    ],
-                    'api' => [
-                        'mayTerminate' => false,
-                        'options' => [
-                            'route' => '/api',
-                        ],
-                        'type' => 'Literal',
                     ],
                     'Export' => [
                         'mayTerminate' => false,
                         'options' => [
                             'route' => '/export',
                             'defaults' => [
-                                'controller' => \ZfMetal\Calendar\Controller\ExportController::CLASS,
+                                'controller' => 'ZfMetal\\Calendar\\Controller\\ExportController',
                                 'action' => 'Events',
                             ],
                         ],
-                        'type' => 'Literal',
+                        'type' => \Zend\Router\Http\Literal::class,
                         'child_routes' => [
                             'Events' => [
                                 'mayTerminate' => true,
                                 'options' => [
                                     'route' => '/events/:date/:hourStart/:hourEnd',
                                     'defaults' => [
-                                        'controller' => \ZfMetal\Calendar\Controller\ExportController::CLASS,
+                                        'controller' => 'ZfMetal\\Calendar\\Controller\\ExportController',
                                         'action' => 'Events',
                                     ],
                                 ],
-                                'type' => 'Segment',
+                                'type' => \Zend\Router\Http\Segment::class,
+                            ],
+                        ],
+                    ],
+                    'Account' => [
+                        'mayTerminate' => false,
+                        'options' => [
+                            'route' => '/account',
+                            'defaults' => [
+                                'controller' => \ZfMetal\Calendar\Controller\AccountController::CLASS,
+                                'action' => 'grid',
+                            ],
+                        ],
+                        'type' => \Zend\Router\Http\Literal::class,
+                        'child_routes' => [
+                            'Grid' => [
+                                'mayTerminate' => true,
+                                'options' => [
+                                    'route' => '/grid',
+                                    'defaults' => [
+                                        'controller' => \ZfMetal\Calendar\Controller\AccountController::CLASS,
+                                        'action' => 'grid',
+                                    ],
+                                ],
+                                'type' => \Zend\Router\Http\Segment::class,
+                            ],
+                        ],
+                    ],
+                    'BranchOffice' => [
+                        'mayTerminate' => false,
+                        'options' => [
+                            'route' => '/branch-office',
+                            'defaults' => [
+                                'controller' => \ZfMetal\Calendar\Controller\BranchOfficeController::CLASS,
+                                'action' => 'grid',
+                            ],
+                        ],
+                        'type' => \Zend\Router\Http\Literal::class,
+                        'child_routes' => [
+                            'Grid' => [
+                                'mayTerminate' => true,
+                                'options' => [
+                                    'route' => '/grid',
+                                    'defaults' => [
+                                        'controller' => \ZfMetal\Calendar\Controller\BranchOfficeController::CLASS,
+                                        'action' => 'grid',
+                                    ],
+                                ],
+                                'type' => \Zend\Router\Http\Segment::class,
+                            ],
+                        ],
+                    ],
+                    'Api' => [
+                        'type' => \Zend\Router\Http\Literal::class,
+                        'mayTerminate' => false,
+                        'options' => [
+                            'route' => '/api',
+                        ],
+                        'child_routes' => [
+
+                            'entity' => [
+                                'type' => \Zend\Router\Http\Segment::class,
+                                'mayTerminate' => false,
+                                'options' => [
+                                    'route' => '/:entityAlias[/:id]',
+                                    'defaults' => [
+                                        'controller' => \ZfMetal\Restful\Controller\MainController::class,
+                                    ],
+                                ],
+                            ],
+                            'calendars' => [
+                                'type' => \Zend\Router\Http\Segment::class,
+                                'mayTerminate' => false,
+                                'options' => [
+                                    'route' => '/calendars[/:id]',
+                                    'defaults' => [
+                                        'controller' => \ZfMetal\Calendar\Controller\CalendarApiController::class,
+                                    ],
+                                ],
+                            ],
+                            'start' => [
+                                'type' => \Zend\Router\Http\Segment::class,
+                                'mayTerminate' => false,
+                                'options' => [
+                                    'route' => '/start',
+                                    'defaults' => [
+                                        'controller' => 'ZfMetal\\Calendar\\Controller\\ApiStartController',
+                                    ],
+                                ],
+                            ],
+                            'Appointments' => [
+                                'mayTerminate' => false,
+                                'options' => [
+                                    'route' => '/appointments',
+                                ],
+                                'type' => \Zend\Router\Http\Literal::class,
+                                'child_routes' => [
+                                    'AvailableShifts' => [
+                                        'mayTerminate' => true,
+                                        'options' => [
+                                            'route' => '/availables/:calendarId/:date',
+                                            'defaults' => [
+                                                'controller' => \ZfMetal\Calendar\Controller\AppointmentApiController::CLASS,
+                                                'action' => 'available',
+                                            ],
+                                        ],
+                                        'type' => \Zend\Router\Http\Segment::class,
+                                    ],
+                                    'MyAppointments' => [
+                                        'mayTerminate' => true,
+                                        'options' => [
+                                            'route' => '/my-appointments',
+                                            'defaults' => [
+                                                'controller' => \ZfMetal\Calendar\Controller\AppointmentApiController::CLASS,
+                                                'action' => 'myAppointments',
+                                            ],
+                                        ],
+                                        'type' => \Zend\Router\Http\Literal::class,
+                                    ],
+                                    'TakeAppointment' => [
+                                        'mayTerminate' => true,
+                                        'options' => [
+                                            'route' => '/take',
+                                            'defaults' => [
+                                                'controller' => \ZfMetal\Calendar\Controller\AppointmentApiController::CLASS,
+                                                'action' => 'create',
+                                            ],
+                                        ],
+                                        'type' => \Zend\Router\Http\Segment::class,
+                                    ],
+                                    'Cancel' => [
+                                        'mayTerminate' => true,
+                                        'options' => [
+                                            'route' => '/cancel/:id',
+                                            'defaults' => [
+                                                'controller' => \ZfMetal\Calendar\Controller\AppointmentApiController::CLASS,
+                                                'action' => 'cancel',
+                                            ],
+                                        ],
+                                        'type' => \Zend\Router\Http\Segment::class,
+                                    ],
+                                ],
                             ],
                         ],
                     ],

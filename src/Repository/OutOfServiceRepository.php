@@ -3,6 +3,7 @@
 namespace ZfMetal\Calendar\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use ZfMetal\Calendar\Entity\OutOfService;
 
 /**
  * OutOfServiceRepository
@@ -26,6 +27,18 @@ class OutOfServiceRepository extends EntityRepository
         $this->getEntityManager()->remove($entity); $this->getEntityManager()->flush();
     }
 
+    public function findByDate($date)
+    {
+        return  $this->getEntityManager()->createQueryBuilder('u')
+            ->select('u')
+            ->from(OutOfService::class, 'u')
+            ->where('u.start <= :date')
+            ->andWhere('u.end >= :date')
+            ->setParameter("date", $date)
+            ->getQuery()
+            ->getOneOrNullResult();
+
+    }
 
 }
 

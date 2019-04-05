@@ -4,6 +4,7 @@ namespace ZfMetal\Calendar\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use ZfMetal\Calendar\Entity\Event;
+use ZfMetal\Calendar\Model\Shift;
 
 /**
  * EventRepository
@@ -43,6 +44,30 @@ class EventRepository extends EntityRepository
             ->andWhere('u.calendar is not null')
             ->setParameter("from", $from)
             ->setParameter("to", $to)
+            ->getQuery()
+            ->getResult();
+    }
+
+
+
+    /**
+     * @return array
+     */
+    public function checkAvailability($calendar,$start,$end)
+    {
+        return $this->getEntityManager()->createQueryBuilder('u')
+            ->select('u')
+            ->from(Event::class, 'u')
+            ->where(' 
+               (u.start > :start & u.end > :end) 
+            OR (u.start < :start & u.end < :end) 
+            OR (u.start < :start & u.end > :end) 
+            OR (u.start = :start & u.end = :end)
+            ')
+            ->andWhere('u.calendar is = :calendar')
+            ->setParameter("calendar", $calendar)
+            ->setParameter("start",$start)
+            ->setParameter("end", $end)
             ->getQuery()
             ->getResult();
     }

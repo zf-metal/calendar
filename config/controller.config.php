@@ -6,6 +6,7 @@ return array(
             'ZfMetal\\Calendar\\Controller\\AccountController' => 'ZfMetal\\Calendar\\Factory\\Controller\\AccountControllerFactory',
             \ZfMetal\Calendar\Controller\CalendarController::class => \ZfMetal\Calendar\Factory\Controller\CalendarControllerFactory::class,
             \ZfMetal\Calendar\Controller\ManagerCalendarController::class => \ZfMetal\Calendar\Factory\Controller\ManagerCalendarControllerFactory::class,
+            \ZfMetal\Calendar\Controller\CalendarApiController::class => \ZfMetal\Calendar\Factory\Controller\CalendarApiControllerFactory::class,
             \ZfMetal\Calendar\Controller\HolidayController::class => \ZfMetal\Calendar\Factory\Controller\HolidayControllerFactory::class,
             \ZfMetal\Calendar\Controller\DayController::class => \ZfMetal\Calendar\Factory\Controller\DayControllerFactory::class,
             \ZfMetal\Calendar\Controller\ApiCalendarController::class => \ZfMetal\Calendar\Factory\Controller\ApiCalendarControllerFactory::class,
@@ -25,6 +26,9 @@ return array(
             \ZfMetal\Calendar\Controller\ClientController::class => \ZfMetal\Calendar\Factory\Controller\ClientControllerFactory::class,
             \ZfMetal\Calendar\Controller\ServiceController::class => \ZfMetal\Calendar\Factory\Controller\ServiceControllerFactory::class,
             \ZfMetal\Calendar\Controller\EventSearchController::class => \ZfMetal\Calendar\Factory\Controller\EventSearchControllerFactory::class,
+            \ZfMetal\Calendar\Controller\ShiftController::class => \ZfMetal\Calendar\Factory\Controller\ShiftControllerFactory::class,
+            \ZfMetal\Calendar\Controller\AppointmentController::class => \ZfMetal\Calendar\Factory\Controller\AppointmentControllerFactory::class,
+            \ZfMetal\Calendar\Controller\AppointmentApiController::class => \ZfMetal\Calendar\Factory\Controller\AppointmentApiControllerFactory::class,
         ),
     ),
 );

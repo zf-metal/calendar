@@ -7,7 +7,9 @@ use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\ORM\EntityManager;
+use ZfMetal\Calendar\Entity\AppointmentConfig;
 use ZfMetal\Calendar\Entity\Calendar;
+use ZfMetal\Calendar\Entity\PredefinedEvents;
 
 class CalendarLoader extends AbstractFixture implements FixtureInterface
 {
@@ -62,6 +64,7 @@ class CalendarLoader extends AbstractFixture implements FixtureInterface
         $this->em = $manager;
 
         $this->createCalendar(1, "CalendarTest", 'schedule1');
+        $this->createCalendar(2, "CalendarTestSegundo", 'schedule1');
         $manager->flush();
 
 
@@ -76,6 +79,16 @@ class CalendarLoader extends AbstractFixture implements FixtureInterface
             $calendar = new Calendar();
             $calendar->setId($id);
             $calendar->setName($name);
+            $calendar->setUser($this->getReference("UserValid"));
+            //Predefined Events
+            $AppointmentConfig = new AppointmentConfig();
+            $AppointmentConfig->setDuration(60);
+            $AppointmentConfig->setBreak(0);
+            $AppointmentConfig->setMinTimeInHours(2);
+            $AppointmentConfig->setMaxTimeInDays(7);
+            $AppointmentConfig->setCancelTimeInHours(20);
+            $calendar->setAppointmentConfig($AppointmentConfig);
+
          //   $calendar->addSchedule($this->getReference($schedule));
 
         }

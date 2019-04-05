@@ -13,6 +13,13 @@ return  [
             'clients' => \ZfMetal\Calendar\Entity\Client::class,
             'branch-offices' => \ZfMetal\Calendar\Entity\BranchOffice::class,
             'services' => \ZfMetal\Calendar\Entity\Service::class,
+
+            'holidays' => \ZfMetal\Calendar\Entity\Holiday::class,
+
+            'out-of-service' => \ZfMetal\Calendar\Entity\OutOfService::class,
+            'specifics-schedule' => \ZfMetal\Calendar\Entity\SpecificSchedule::class,
+
+            'appointments' => \ZfMetal\Calendar\Entity\Appointment::class,
         ],
     ],
 ];

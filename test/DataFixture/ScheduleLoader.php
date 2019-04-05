@@ -61,14 +61,21 @@ class ScheduleLoader extends AbstractFixture implements FixtureInterface
 
         $this->em = $manager;
 
-        $this->createSchedule(1, "CalendarTest");
+        $this->createSchedule(1, 1,"CalendarTest");
+        $this->createSchedule(2, 2,"CalendarTest");
+        $this->createSchedule(3, 3,"CalendarTest");
+        $this->createSchedule(4, 4,"CalendarTest");
+        $this->createSchedule(5, 5,"CalendarTest");
+        $this->createSchedule(6, 6,"CalendarTest");
+        $this->createSchedule(7, 7,"CalendarTest");
+        $this->createSchedule(8, 8,"CalendarTest");
         $manager->flush();
 
 
     }
 
 
-    public function createSchedule($id, $calendar)
+    public function createSchedule($id, $day,$calendar)
     {
 
         $schedule = $this->find($id);
@@ -76,9 +83,9 @@ class ScheduleLoader extends AbstractFixture implements FixtureInterface
             $schedule = new Schedule();
             $schedule->setId($id);
             $schedule->setCalendar($this->getReference($calendar));
-            $schedule->setDay(1);
+            $schedule->setDay($day);
             $schedule->setStart(\DateTime::createFromFormat('H:i','09:00'));
-            $schedule->setEnd(\DateTime::createFromFormat('H:i','12:00'));
+            $schedule->setEnd(\DateTime::createFromFormat('H:i','13:00'));
         }
 
         $this->getEm()->persist($schedule);

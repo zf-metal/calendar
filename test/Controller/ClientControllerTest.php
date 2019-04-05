@@ -193,6 +193,7 @@ class ClientControllerTest extends AbstractConsoleControllerTestCase
 
 
         $jsonToCompare = [
+            'status' => true,
             "message" => "Item Delete"
         ];
 

@@ -114,8 +114,8 @@ class CalendarForm extends \Zend\Form\Form implements \DoctrineModule\Persistenc
         ]);
 
         $this->add([
-            'type' => PredefinedEventsForm::class,
-            'name' => 'predefinedEvents',
+            'type' => AppointmentConfigForm::class,
+            'name' => 'appointmentConfig',
         ]);
 
 

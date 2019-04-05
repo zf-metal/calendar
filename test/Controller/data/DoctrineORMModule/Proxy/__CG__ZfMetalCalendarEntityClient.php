@@ -36,7 +36,7 @@ class Client extends \ZfMetal\Calendar\Entity\Client implements \Doctrine\ORM\Pr
      *
      * @see \Doctrine\Common\Persistence\Proxy::__getLazyProperties
      */
-    public static $lazyPropertiesDefaults = ['name' => NULL, 'tradename' => NULL];
+    public static $lazyPropertiesDefaults = ['name' => NULL, 'tradename' => NULL, 'billingAddress' => NULL, 'contactName' => NULL, 'contactEmail' => NULL, 'contactTel' => NULL, 'cuit' => NULL, 'web' => NULL];
 
 
 
@@ -46,7 +46,7 @@ class Client extends \ZfMetal\Calendar\Entity\Client implements \Doctrine\ORM\Pr
      */
     public function __construct($initializer = null, $cloner = null)
     {
-        unset($this->name, $this->tradename);
+        unset($this->name, $this->tradename, $this->billingAddress, $this->contactName, $this->contactEmail, $this->contactTel, $this->cuit, $this->web);
 
         $this->__initializer__ = $initializer;
         $this->__cloner__      = $cloner;
@@ -108,7 +108,7 @@ class Client extends \ZfMetal\Calendar\Entity\Client implements \Doctrine\ORM\Pr
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', 'id', 'name', 'tradename'];
+            return ['__isInitialized__', 'id', 'name', 'tradename', 'billingAddress', 'contactName', 'contactEmail', 'contactTel', 'cuit', 'web'];
         }
 
         return ['__isInitialized__', 'id'];
@@ -133,7 +133,7 @@ class Client extends \ZfMetal\Calendar\Entity\Client implements \Doctrine\ORM\Pr
                 }
             };
 
-            unset($this->name, $this->tradename);
+            unset($this->name, $this->tradename, $this->billingAddress, $this->contactName, $this->contactEmail, $this->contactTel, $this->cuit, $this->web);
         }
     }
 
@@ -286,6 +286,138 @@ class Client extends \ZfMetal\Calendar\Entity\Client implements \Doctrine\ORM\Pr
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setTradename', [$tradename]);
 
         return parent::setTradename($tradename);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getBillingAddress()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getBillingAddress', []);
+
+        return parent::getBillingAddress();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setBillingAddress($billingAddress)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setBillingAddress', [$billingAddress]);
+
+        return parent::setBillingAddress($billingAddress);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getContactName()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getContactName', []);
+
+        return parent::getContactName();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setContactName($contactName)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setContactName', [$contactName]);
+
+        return parent::setContactName($contactName);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getContactEmail()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getContactEmail', []);
+
+        return parent::getContactEmail();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setContactEmail($contactEmail)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setContactEmail', [$contactEmail]);
+
+        return parent::setContactEmail($contactEmail);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getContactTel()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getContactTel', []);
+
+        return parent::getContactTel();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setContactTel($contactTel)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setContactTel', [$contactTel]);
+
+        return parent::setContactTel($contactTel);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getCuit()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getCuit', []);
+
+        return parent::getCuit();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setCuit($cuit)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setCuit', [$cuit]);
+
+        return parent::setCuit($cuit);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getWeb()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getWeb', []);
+
+        return parent::getWeb();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setWeb($web)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setWeb', [$web]);
+
+        return parent::setWeb($web);
     }
 
     /**
