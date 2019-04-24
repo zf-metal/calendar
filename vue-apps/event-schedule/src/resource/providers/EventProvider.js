@@ -15,8 +15,8 @@ class EventProvider extends HttpRequest {
         return this.fetchFilters(filters)
     }
 
-    getPreEvents(date){
-        let filters = '?calendar=isNull&state=!=3&dateFrom=<=' + date + '&orderby=zone';
+    getPreEvents(date,limit,page){
+        let filters = '?calendar=isNull&state=!=3&dateFrom=<=' + date + '&orderby=zone&limit='+limit+'&page='+page;
         return this.fetchFilters(filters)
     }
 
