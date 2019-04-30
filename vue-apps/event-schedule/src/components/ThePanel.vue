@@ -113,7 +113,6 @@
         'preEventList'
       ]),
       incrementSize: function (data) {
-        this.preEventList();
         this.$store.commit('SET_PRE_EVENT_SIZE', this.preEventSize + 10);
       },
       handleDrop: function (data) {

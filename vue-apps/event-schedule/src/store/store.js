@@ -93,14 +93,14 @@ const state = {
   calendarGroupSelected: null,
   vcalendars: [],
   preEvents: [],
-  preEventSize: CONF_PRE_EVENT_SIZE,
-  preEventFilteredSize: 0,
   preEventsByZone: {},
   events: [],
   eventStates: [],
   zones: {},
   holidays: [],
   eventTypes: [],
+  preEventSize: CONF_PRE_EVENT_SIZE,
+  preEventFilteredSize: 0,
   preEventListLimit: 500,
   preEventListPage: 1
 };
@@ -645,13 +645,13 @@ const actions = {
   },
 
   preEventList({commit, getters, state}) {
-    if(state.preEventFilteredSize > state.preEvents.length) {
+
       return EventService.getPreEvents(getters.getDate, state.preEventListLimit, state.preEventListPage).then((response) => {
         commit("SET_PRE_EVENTS", response.data);
         commit(PLUS_PRE_EVENT_LIST_PAGE);
       });
-    }
-    return new Promise(resolve => null);
+
+
   },
 
   eventList({state, getters, commit, dispatch}) {
