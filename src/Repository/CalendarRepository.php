@@ -49,6 +49,21 @@ class CalendarRepository extends EntityRepository
         return $data;
     }
 
+
+    public function findActives()
+    {
+        $data = $this->getEntityManager()->createQueryBuilder('u')
+            ->select('u')
+            ->from(Calendar::class, 'u')
+            ->join('u.schedules', 's')
+            ->join('u.user', 'r')
+            ->where('r.active = true')
+            ->getQuery()
+            ->getResult();
+
+        return $data;
+    }
+
     public function queryFilter($query)
     {
         $qb = $this->getEntityManager()->createQueryBuilder('u')->select('u')

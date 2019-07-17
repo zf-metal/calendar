@@ -128,7 +128,7 @@ class ApiStartController extends AbstractRestfulController
             $transform = new Transform();
 
 
-            $calendars = $this->getCalendarRepository()->findAll();
+            $calendars = $this->getCalendarRepository()->findActives();
             $calendars = $transform->toArrays($calendars);
 
             $calendarGroups = $this->getCalendarGroupsRepository()->findAll();
