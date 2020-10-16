@@ -1,5 +1,5 @@
 import moment from 'moment'
-import tz from 'moment-timezone'
+
 import 'moment/locale/es';
 
 export function calculateEventDuraction(event) {
@@ -20,7 +20,7 @@ export function  calculateEnd (start, duration) {
 }
 
 export function extractPriorityIntByTime(time){
-  var r = time.replace(":","");
+  return time.replace(":","");
 }
 
 

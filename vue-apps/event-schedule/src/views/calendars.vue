@@ -171,17 +171,12 @@
 <script>
     import {mapState, mapGetters, mapActions} from 'vuex';
 
-    import {Drag, Drop} from 'vue-drag-drop';
-
     import modal from '../components/helpers/Modal.vue'
     import loading from './../components/helpers/loading.vue'
     import ErrorSnackbar from './../components/helpers/ErrorSnackbar.vue'
-    import vueScrollingTable from 'vue-scrolling-table'
 
-    import TheToolbar from './../components/TheToolbar'
     import panel from './../components/ThePanel.vue'
     import calendarTd from '../components/CalendarTd.vue'
-    import preEvent from "../components/PreEvent.vue";
     import formEvent from './../components/forms/form-event.vue'
     import maps from '../components/Maps.vue'
     import DaySelect from '../components/DaySelect'
@@ -199,19 +194,14 @@
             SelectSize,
             SelectStart,
             calendarTd,
-            preEvent,
-            Drag,
-            Drop,
             modal,
             loading,
             ErrorSnackbar,
             formEvent,
-            TheToolbar,
             panel,
             maps,
             DaySelect,
             DayShow,
-            vueScrollingTable,
             oof
         },
         data() {
@@ -274,6 +264,8 @@
             getModalFormTitle: function () {
                 if (this.eventSelected) {
                     return this.eventSelected.id + '. ' + this.eventSelected.title;
+                }else{
+                    return ''
                 }
             }
         },

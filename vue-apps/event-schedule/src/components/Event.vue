@@ -170,7 +170,7 @@
     import {mapState, mapGetters, mapActions} from 'vuex';
 
     import 'moment/locale/es';
-    import {Drag, Drop} from 'vue-drag-drop';
+    import {Drag} from 'vue-drag-drop';
     import availabilityDay from './availabilityDay.vue';
     import availabilityTime from './availabilityTime.vue';
     import coop from './signals/coop.vue'
@@ -258,11 +258,13 @@
                 if (this.event.config && this.event.config.preference && this.event.config.preference.keep) {
                     return this.event.config.preference.keep;
                 }
+                return false
             },
             getFav: function () {
                 if (this.event.config && this.event.config.preference) {
                     return this.event.config.preference;
                 }
+                return false
             },
             coopEnable: function () {
                 return (this.event.link) ? true : false
@@ -326,7 +328,6 @@
                 if (sh[1] >= 30) {
                     min = parseInt(sh[1]) - 30
                 }
-                let top = Math.ceil(min * this.cellHeight / 30)
 
                 return Math.ceil(min * this.cellHeight / 30)
             },
