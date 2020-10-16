@@ -2,11 +2,11 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 
 import moment from 'moment'
-import tz from 'moment-timezone'
+
 import 'moment/locale/es';
 
 
-import {calculateDistance, getRandomColor, extractPriorityIntByTime} from './../utils/helpers'
+import {calculateDistance, getRandomColor} from './../utils/helpers'
 
 
 import {EventService, StartService, CalendarService, ServiceService} from '../resource'
@@ -46,7 +46,6 @@ import {
   SET_FILTER_HOURS,
   ADD_PRE_EVENT,
   REMOVE_EVENT,
-  SET_EVENT_FORM,
   SET_EVENT_ID_SELECTED,
   SET_EVENT_INDEX_SELECTED,
   SET_SHOW_MODAL_FORM,
@@ -168,7 +167,7 @@ const getters = {
     }
     return true
   },
-  getCalendarSchedule: (state, getters) => (id, day) => {
+  getCalendarSchedule: (state) => (id, day) => {
     var calendar = state.calendars.find(calendar => calendar.id === id);
     return calendar.schedules.find(schedule => schedule.day === day);
   },
@@ -588,7 +587,7 @@ const actions = {
 
         }
       ).catch(
-        (error) => {
+        () => {
           dispatch("setTextError", "Error on changeDate");
         }
       );
@@ -633,7 +632,7 @@ const actions = {
   },
 
 
-  calendarList({state, commit, dispatch}) {
+  calendarList({ commit, dispatch}) {
     CalendarService.findAll().then((response) => {
       commit(SET_CALENDARS, response.data);
 
@@ -654,7 +653,7 @@ const actions = {
 
   },
 
-  eventList({state, getters, commit, dispatch}) {
+  eventList({getters, commit, dispatch}) {
 
     return EventService.getActiveEvents(getters.getDate, getters.getNextDate, getters.getNextEnd).then(
       (response) => {
@@ -669,7 +668,7 @@ const actions = {
         commit("SET_EVENTS", events);
       }
     ).catch(
-      (error) => {
+      () => {
         dispatch("setTextError", "Error on eventList");
       }
     );
@@ -678,10 +677,10 @@ const actions = {
     event.hour = moment(event.start).tz('America/Argentina/Buenos_Aires').format("HH:mm");
     commit('ADD_EVENT', event);
 
-    EventService.updateEvent(event).then((response) => {
+    EventService.updateEvent(event).then(() => {
       dispatch('checkCoop')
     }).catch(
-      (error) => {
+      () => {
         commit('REMOVE_EVENT', getters.getEventIndexById(event.id))
       }
     );
@@ -689,18 +688,18 @@ const actions = {
   },
   updateEvent({state, commit, dispatch}, {index, event}) {
     EventService.updateEvent(event).then(
-      (response) => {
+      () => {
         commit('UPDATE_EVENT', {index: index, event: event})
       }
     ).catch(
-      (error) => {
+      () => {
         dispatch("setTextError", "Error on updateEvent");
       }
     );
   },
   refreshEvent({state, getters, commit, dispatch}, event) {
     EventService.updateEvent(event).then(
-      (response) => {
+      () => {
 
         let indexPreEvent = getters.getPreEventIndexById(event.id);
         if (indexPreEvent) {
@@ -716,7 +715,7 @@ const actions = {
 
       }
     ).catch(
-      (error) => {
+      () => {
         dispatch("setTextError", "Error on refreshEvent");
       }
     );

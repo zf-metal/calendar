@@ -2,7 +2,7 @@ import axios from 'axios'
 import {CONF_HTTP_TIMEOUT} from './../config/config'
 
 let axiosInstance = axios.create({
-    baseURL: "/zfmc/api/",
+    baseURL: process.env.VUE_APP_BASE_API_URL,
     timeout: CONF_HTTP_TIMEOUT,
     headers: {
         accept: 'application/json'

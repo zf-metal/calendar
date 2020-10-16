@@ -1,16 +1,22 @@
 <template>
     <drag :transfer-data="{event: preEvent, index:index, op: 'push'}">
 
-        <v-card class="mt-4" color="blue-grey darken-4">
+        <v-card @click="selectEvent(preEvent)" class="mt-4 zfc-preevent"
+                :class="{'zfc-preevent-selected': (eventIdSelected == preEvent.id)}"
+                >
 
             <!--Title-->
-            <v-card-text class="pa-1 cursorPointer white--text">
+            <v-card-text class="pa-1 cursorPointer white--text blue-grey darken-4" >
                 <span class="text-xs-left">{{preEvent.id}}. {{preEvent.title}}
                 </span>
                 <keep :enable="getKeep"></keep>
                 <fav :preference="getFav"></fav>
                 <coop :enable="coopEnable" :link="coopLink" :count="coopCount"></coop>
-
+                <v-spacer></v-spacer>
+                <!--Distance-->
+                <span class="pt-1" style="padding:1px">
+                    {{getDistance}}
+                </span>
 
             </v-card-text>
 
@@ -77,7 +83,8 @@
                                                 placement:'top'
                                               }"
                                     title="Zona"
-                            >location_on</v-icon>
+                            >location_on
+                            </v-icon>
                         </td>
                         <td class="pa-1">{{getZone}}</td>
                     </tr>
@@ -152,8 +159,8 @@
 </template>
 
 <script>
-    import {mapGetters, mapActions} from 'vuex';
-    import {Drag, Drop} from 'vue-drag-drop';
+    import {mapActions, mapGetters, mapState} from 'vuex';
+    import {Drag} from 'vue-drag-drop';
     import availabilityDay from './availabilityDay.vue';
     import availabilityTime from './availabilityTime.vue';
     import coop from './signals/coop.vue'
@@ -163,15 +170,36 @@
     export default {
         name: 'PreEvent',
         props: ['preEvent', 'index'],
-        components: {Drag, Drop, availabilityDay, availabilityTime, coop, keep, fav},
-        methods: {},
+        components: {Drag, availabilityDay, availabilityTime, coop, keep, fav},
+        methods: {
+            ...mapActions([
+                'selectEvent',
+            ])
+        },
         computed: {
+            ...mapState([
+                'eventIdSelected',
+            ]),
             ...mapGetters([
                 'getZoneBgColor',
                 'getZoneColor',
                 'getEventStateBgColor',
-                'getEventTypeIcon'
+                'getEventTypeIcon',
+                'getDistanceFromEventSelected'
             ]),
+            getMainClass: function () {
+                if (this.eventIdSelected == this.preEvent.id) {
+                    return 'zfc-preevent-selected';
+                }
+                return ""
+            },
+            getDistance: function () {
+                let d = this.getDistanceFromEventSelected(this.preEvent.lat, this.preEvent.lng)
+                if (d && this.eventIdSelected != this.preEvent.id) {
+                    return d + "Km"
+                }
+                return ""
+            },
             getAvailability: function () {
                 if (this.preEvent.config && this.preEvent.config.availability) {
                     return this.preEvent.config.availability
@@ -181,11 +209,15 @@
             getKeep: function () {
                 if (this.preEvent.config && this.preEvent.config.preference && this.preEvent.config.preference.keep) {
                     return this.preEvent.config.preference.keep;
+                }else{
+                    return false
                 }
             },
             getFav: function () {
                 if (this.preEvent.config && this.preEvent.config.preference) {
                     return this.preEvent.config.preference;
+                }else{
+                    return false
                 }
             },
             coopEnable: function () {
@@ -269,6 +301,16 @@
 
     .cursorHelp {
         cursor: help;
+    }
+
+    .zfc-preevent{
+        background-color: #263238 ;
+        border-color:  #263238 ;
+    }
+
+    .zfc-preevent-selected {
+        border: 2px solid greenyellow !important;
+        border-color: greenyellow !important;
     }
 
 
