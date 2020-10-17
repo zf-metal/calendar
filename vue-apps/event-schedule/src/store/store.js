@@ -591,7 +591,7 @@ const actions = {
           dispatch("setTextError", "Error on changeDate");
         }
       );
-      ;
+
 
     }
   },
@@ -637,7 +637,7 @@ const actions = {
       commit(SET_CALENDARS, response.data);
 
     }).catch(
-      (error) => {
+      () => {
         dispatch("setTextError", "Error on calendarList");
       }
     );
@@ -673,7 +673,7 @@ const actions = {
       }
     );
   },
-  pushEvent({state, getters, commit, dispatch}, event) {
+  pushEvent({ getters, commit, dispatch}, event) {
     event.hour = moment(event.start).tz('America/Argentina/Buenos_Aires').format("HH:mm");
     commit('ADD_EVENT', event);
 
@@ -686,7 +686,7 @@ const actions = {
     );
 
   },
-  updateEvent({state, commit, dispatch}, {index, event}) {
+  updateEvent({ commit, dispatch}, {index, event}) {
     EventService.updateEvent(event).then(
       () => {
         commit('UPDATE_EVENT', {index: index, event: event})
@@ -697,7 +697,7 @@ const actions = {
       }
     );
   },
-  refreshEvent({state, getters, commit, dispatch}, event) {
+  refreshEvent({ getters, commit, dispatch}, event) {
     EventService.updateEvent(event).then(
       () => {
 

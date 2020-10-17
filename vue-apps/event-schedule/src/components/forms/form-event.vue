@@ -226,7 +226,15 @@
 
             </v-layout>
             <v-layout row wrap justify-end>
-                <v-flex xs3 class="text-xs-right pa-0">
+
+                <v-flex class="text-xs-right pa-0">
+                    <v-btn class="text-xs-right" flat
+                           :disabled="h.submitInProgress"
+                           @click="$store.commit('SET_SHOW_MODAL_FORM', false)"
+                    >
+                        Cerrar
+                    </v-btn>
+
                     <v-btn class="text-xs-right"
                            :disabled="h.submitInProgress"
                            @click="save"
@@ -251,20 +259,18 @@
     import {mapGetters, mapActions, mapState} from 'vuex';
     import {HTTP} from './../../utils/http-client'
     import {calculateEnd} from './../../utils/helpers'
-    import fe from '../helpers/form-errors.vue'
     import saveStatus from '../helpers/save-status.vue'
     import alert from '../helpers/alert.vue'
 
 
     import moment from 'moment'
-    import momenttz from 'moment-timezone'
     import 'moment/locale/es';
 
 
     export default {
         name: 'form-event',
         props: ['index', 'value', 'isSaved', 'calendars'],
-        components: {fe, saveStatus, alert},
+        components: { saveStatus, alert},
         data() {
             return {
                 errors: [],
