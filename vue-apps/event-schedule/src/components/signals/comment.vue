@@ -1,11 +1,9 @@
-
 <template>
 
-    <v-btn
-           v-if="enable"
-           small
-           dark icon
-           class="ma-1"
+    <v-btn small
+           dark
+           icon
+           class="ma-0"
            v-tippy="{
                             dynamicTitle:true,
                             arrow:true,
@@ -13,13 +11,12 @@
                             placement:'top',
                             flip:true,
                             interactive: true,
-                            animation: 'scale'
+                             animation: 'scale'
                         }"
-           :title='getTitle'
+           :title="comment"
     >
-        <v-icon
-                color="amber">
-            airplanemode_active
+        <v-icon>
+            feedback
         </v-icon>
     </v-btn>
 
@@ -27,19 +24,10 @@
 
 <script>
 
-
     export default {
-        name: 'oof',
+        name: 'comment',
         props: {
-            enable: Boolean,
-        },
-        computed: {
-            getTitle: function () {
-                return "Fuera de Servicio";
-            },
-
-
+            comment: String
         },
     }
 </script>
-

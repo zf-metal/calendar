@@ -30,6 +30,7 @@
 
                         <v-spacer></v-spacer>
                         <!--Signals-->
+                        <comment v-if="!!event.finalComment" :comment="event.finalComment"></comment>
                         <keep :enable="getKeep"></keep>
                         <coop :enable="coopEnable" :link="coopLink" :count="coopCount"></coop>
                         <fav :preference="getFav"></fav>
@@ -176,6 +177,7 @@
     import coop from './signals/coop.vue'
     import keep from './signals/keep.vue'
     import fav from './signals/fav.vue'
+    import comment from './signals/comment.vue'
     import EventMenu from './EventMenu'
 
     export default {
@@ -185,7 +187,7 @@
             'index',
             'event',
         ],
-        components: {Drag, availabilityDay, availabilityTime, coop, keep, fav, EventMenu},
+        components: {Drag, availabilityDay, availabilityTime, coop, keep, fav, EventMenu, comment},
         data() {
             return {
                 active: false,

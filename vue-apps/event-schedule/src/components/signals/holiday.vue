@@ -14,7 +14,7 @@
 
 
     export default {
-        name: 'keep',
+        name: 'holiday',
         props: {
             enable: Boolean,
         },
