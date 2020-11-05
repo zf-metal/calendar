@@ -40,7 +40,6 @@ class ServiceControllerTest extends AbstractConsoleControllerTestCase
     }
 
 
-
     /**
      * Se genera la estructura de la base de datos (Creacion de tablas)
      */
@@ -194,6 +193,7 @@ class ServiceControllerTest extends AbstractConsoleControllerTestCase
 
 
         $jsonToCompare = [
+            "status" => true,
             "message" => "Item Delete"
         ];
 

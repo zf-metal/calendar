@@ -99,7 +99,26 @@ class CalendarApiController extends MainController
             return new JsonModel($a);
         } catch (\Exception $e) {
             $a = [
-                "success" => fale,
+                "success" => false,
+                "message" => $e->getMessage()
+            ];
+            return new JsonModel($a);
+        }
+
+    }
+
+    public function activeAction()
+    {
+        try {
+            $calendars = $this->getCalendarRepository()->findActives();
+
+            $transform = new Transform($this->getEntityLocalPolicies());
+            $results = $transform->toArrays($calendars);
+
+            return new JsonModel($results);
+        } catch (\Exception $e) {
+            $a = [
+                "success" => false,
                 "message" => $e->getMessage()
             ];
             return new JsonModel($a);

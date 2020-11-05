@@ -371,6 +371,17 @@ return [
                                     ],
                                 ],
                             ],
+                            'calendarsActive' => [
+                                'type' => \Zend\Router\Http\Literal::class,
+                                'mayTerminate' => true,
+                                'options' => [
+                                    'route' => '/calendars/active',
+                                    'defaults' => [
+                                        'controller' => \ZfMetal\Calendar\Controller\CalendarApiController::class,
+                                        'action' => 'active'
+                                    ],
+                                ],
+                            ],
                             'start' => [
                                 'type' => \Zend\Router\Http\Segment::class,
                                 'mayTerminate' => false,

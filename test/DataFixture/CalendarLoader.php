@@ -63,15 +63,15 @@ class CalendarLoader extends AbstractFixture implements FixtureInterface
 
         $this->em = $manager;
 
-        $this->createCalendar(1, "CalendarTest", 'schedule1');
-        $this->createCalendar(2, "CalendarTestSegundo", 'schedule1');
+        $this->createCalendar(1, "CalendarTest", 'schedule1',2);
+        $this->createCalendar(2, "CalendarTestSegundo", 'schedule1',1);
         $manager->flush();
 
 
     }
 
 
-    public function createCalendar($id, $name,$schedule)
+    public function createCalendar($id, $name,$schedule,$priority)
     {
 
         $calendar = $this->findByName($name);
@@ -80,6 +80,8 @@ class CalendarLoader extends AbstractFixture implements FixtureInterface
             $calendar->setId($id);
             $calendar->setName($name);
             $calendar->setUser($this->getReference("UserValid"));
+            $calendar->setPriority($priority);
+
             //Predefined Events
             $AppointmentConfig = new AppointmentConfig();
             $AppointmentConfig->setDuration(60);
@@ -88,8 +90,6 @@ class CalendarLoader extends AbstractFixture implements FixtureInterface
             $AppointmentConfig->setMaxTimeInDays(7);
             $AppointmentConfig->setCancelTimeInHours(20);
             $calendar->setAppointmentConfig($AppointmentConfig);
-
-         //   $calendar->addSchedule($this->getReference($schedule));
 
         }
 

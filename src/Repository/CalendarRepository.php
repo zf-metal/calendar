@@ -43,6 +43,7 @@ class CalendarRepository extends EntityRepository
             ->select('u')
             ->from(Calendar::class, 'u')
             ->join('u.schedules', 's')
+            ->orderBy('u.priority')
             ->getQuery()
             ->getResult();
 
@@ -58,6 +59,7 @@ class CalendarRepository extends EntityRepository
             ->join('u.schedules', 's')
             ->join('u.user', 'r')
             ->where('r.active = true')
+            ->orderBy('u.priority')
             ->getQuery()
             ->getResult();
 

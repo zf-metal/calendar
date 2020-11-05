@@ -10,6 +10,7 @@ use Doctrine\ORM\EntityManager;
 use Test\DataFixture\CalendarLoader;
 use Test\DataFixture\ClientLoader;
 use Test\DataFixture\BranchOfficeLoader;
+use Test\DataFixture\ScheduleLoader;
 use Test\DataFixture\ServiceLoader;
 use Test\DataFixture\UserLoader;
 use Zend\Test\PHPUnit\Controller\AbstractConsoleControllerTestCase;
@@ -62,6 +63,7 @@ class CalendarRestfulControllerTest extends AbstractConsoleControllerTestCase
         $loader = new Loader();
         $loader->addFixture(new UserLoader());
         $loader->addFixture(new CalendarLoader());
+        $loader->addFixture(new ScheduleLoader());
 
 
         $purger = new ORMPurger();
@@ -100,6 +102,28 @@ class CalendarRestfulControllerTest extends AbstractConsoleControllerTestCase
      * ACTION getlist
      * DESC Obtener un listado de registros
      */
+    public function testGetListOrderByPriority()
+    {
+        $this->setUseConsoleRequest(false);
+        $this->dispatch("/zfmc/api/calendars?orderby=priority", "GET");
+
+        $response = json_decode($this->getResponse()->getContent());
+
+
+        $this->assertResponseStatusCode(200);
+
+        $this->assertEquals($response[0]->id, 2);
+        $this->assertEquals($response[0]->name, "CalendarTestSegundo");
+
+    }
+
+
+    /**
+     * @depends testCreateData
+     * METHOD GET
+     * ACTION getlist
+     * DESC Obtener un listado de registros
+     */
     public function testGetList()
     {
         $this->setUseConsoleRequest(false);
@@ -110,6 +134,28 @@ class CalendarRestfulControllerTest extends AbstractConsoleControllerTestCase
 
         $this->assertResponseStatusCode(200);
 
+        $this->assertEquals($response[0]->id, 1);
+        $this->assertEquals($response[0]->name, "CalendarTest");
+
+    }
+
+    /**
+     * @depends testCreateData
+     * METHOD GET
+     * ACTION getlist
+     * DESC Obtener un listado de registros
+     */
+    public function testGetActive()
+    {
+        //TODO: Falta setear un usuario activo al calendario
+        $this->setUseConsoleRequest(false);
+        $this->dispatch("/zfmc/api/calendars/active", "GET");
+
+        $response = json_decode($this->getResponse()->getContent());
+
+
+        $this->assertResponseStatusCode(200);
+        var_dump($response);
         $this->assertEquals($response[0]->id, 1);
         $this->assertEquals($response[0]->name, "CalendarTest");
 
@@ -134,6 +180,7 @@ class CalendarRestfulControllerTest extends AbstractConsoleControllerTestCase
             "name" => "Calendar Created",
             "description" => "Descripcion del Calendario",
             "user" => 1,
+            "priority" => 30,
             "schedules" => [
                 ["day" => 1, "start" => "09:00", "end" => "12:00"],
                 ["day" => 2, "start" => "09:00", "end" => "12:00"]
@@ -181,6 +228,7 @@ class CalendarRestfulControllerTest extends AbstractConsoleControllerTestCase
             "name" => "Calendar Created Two",
             "description" => "Two Calendar Created",
             "user" => 1,
+            "priority" => 20,
             "schedules" => [
                 ["day" => 1, "start" => "08:00", "end" => "13:00"],
                 ["day" => 2, "start" => "08:00", "end" => "13:00"],
@@ -220,8 +268,8 @@ class CalendarRestfulControllerTest extends AbstractConsoleControllerTestCase
             "description" => "Descripcion del Calendario Actualizado",
             "user" => 1,
             "schedules" => [
-                ["id" => 4,"day" => 2, "start" => "07:00", "end" => "14:00"],
-                ["id" => 5,"day" => 3, "start" => "07:00", "end" => "14:00"]
+                ["id" => 4, "day" => 2, "start" => "07:00", "end" => "14:00"],
+                ["id" => 5, "day" => 3, "start" => "07:00", "end" => "14:00"]
             ]
         ];
 
@@ -240,7 +288,7 @@ class CalendarRestfulControllerTest extends AbstractConsoleControllerTestCase
     }
 
     /**
-     * @depends testUpdate
+     * @depends testCreate
      * METHOD DELETE
      * ACTION delete
      * DESC elimino un usuario
@@ -252,11 +300,12 @@ class CalendarRestfulControllerTest extends AbstractConsoleControllerTestCase
         $this->setUseConsoleRequest(false);
 
 
-        $this->dispatch("/zfmr/api/clients/2", "DELETE");
+        $this->dispatch("/zfmc/api/calendars/1", "DELETE");
 
 
         $jsonToCompare = [
-            "message" => "Item Delete"
+            'status' => true,
+            'message' => 'Item Delete'
         ];
 
         $this->assertJsonStringEqualsJsonString($this->getResponse()->getContent(), json_encode($jsonToCompare));
