@@ -56,7 +56,7 @@ class Calendar
      * @Annotation\Type("Zend\Form\Element\Text")
      * @Annotation\Attributes({"type":"number"})
      * @Annotation\Options({"label":"name", "description":"", "addon":""})
-     * @ORM\Column(type="integer", length=2, unique=false, nullable=true, name="priority")
+     * @ORM\Column(type="integer", length=5, unique=false, nullable=true, name="priority")
      */
     public $priority = null;
 
