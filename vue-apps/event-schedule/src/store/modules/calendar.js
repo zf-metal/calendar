@@ -1,5 +1,4 @@
 import Moment from 'moment';
-import tz from 'moment-timezone'
 import 'moment/locale/es';
 import {extendMoment} from 'moment-range';
 

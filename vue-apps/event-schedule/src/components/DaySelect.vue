@@ -38,15 +38,12 @@
 
 <script>
     import {mapGetters, mapActions} from 'vuex';
-    import holiday from './signals/holiday.vue'
     import moment from 'moment'
-    import momenttz from 'moment-timezone'
     import 'moment/locale/es';
 
     export default {
         name: 'DaySelect',
         props: ['value'],
-        components: {holiday},
         data() {
             return {
                 menu: false,

@@ -19,7 +19,7 @@
 <script>
     import {mapState,mapGetters,mapActions} from 'vuex';
     import MiniEvent from './MiniEvent'
-    import {Drag, Drop} from 'vue-drag-drop';
+    import {Drop} from 'vue-drag-drop';
     import {calculateEnd} from './../utils/helpers'
 
     export default {
@@ -29,7 +29,7 @@
             events: {type: Array, default: null},
             currentMonth: {type: Boolean, default: false},
         },
-        components: {MiniEvent, Drag, Drop},
+        components: {MiniEvent, Drop},
         methods: {
             handleDrop: function (data) {
                 var event = data.event;

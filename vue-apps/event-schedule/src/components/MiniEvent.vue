@@ -34,14 +34,9 @@
     import {mapGetters, mapActions} from 'vuex';
 
     import 'moment/locale/es';
-    import {Drag, Drop} from 'vue-drag-drop';
+    import {Drag} from 'vue-drag-drop';
     import formatStringDate from './../helpers/formatStringDate'
 
-    import availabilityDay from './availabilityDay.vue';
-    import availabilityTime from './availabilityTime.vue';
-    import coop from './signals/coop.vue'
-    import keep from './signals/keep.vue'
-    import fav from './signals/fav.vue'
 
     export default {
         name:
@@ -50,7 +45,7 @@
             index: Number,
             event: Object
         },
-        components: {Drag, availabilityDay, availabilityTime, coop, keep, fav},
+        components: {Drag},
         data() {
             return {
                 active: false,

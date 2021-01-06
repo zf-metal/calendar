@@ -647,7 +647,7 @@ const actions = {
 
       return EventService.getPreEvents(getters.getDate, state.preEventListLimit, state.preEventListPage).then((response) => {
         commit("SET_PRE_EVENTS", response.data);
-        commit(PLUS_PRE_EVENT_LIST_PAGE);
+        //commit(PLUS_PRE_EVENT_LIST_PAGE);
       });
 
 

@@ -44,9 +44,9 @@
             closeModal: function () {
                 this.$emit('close');
             },
-            onEscapeClose: function (key) {
-
-            }
+            // onEscapeClose: function (key) {
+            //
+            // }
         }
     }
 </script>
