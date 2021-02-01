@@ -3,7 +3,7 @@
   "description": "Doctrine Calendar Zend Framework 3",
   "type": "library",
   "license": "MIT",
-  "version": "1.6.3",
+  "version": "1.6.4",
   "homepage": "https://github.com/cincarnato",
   "keywords": [
     "zf3"

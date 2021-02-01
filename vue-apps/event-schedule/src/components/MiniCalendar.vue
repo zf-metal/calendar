@@ -100,8 +100,8 @@
                         </thead>
 
                         <tbody>
-                        <tr v-for="(range,index) in getMonthCalendar" :key="index">
-                            <template v-for="day in getRangeDays(range)">
+                        <tr v-for="(week,index) in getCalendarWeeks" :key="index">
+                            <template v-for="day in getRangeDays(week.range)">
                                 <mini-calendar-cell
                                         :key="index+'_'+day"
                                         :day="day"
@@ -180,7 +180,7 @@
 
             },
             changeDate: function () {
-                this.setCalendarDate(moment.tz(this.dyear + this.dmonth, "YYYYMM", 'America/Argentina/Buenos_Aires'));
+                this.setCalendarDate(moment(this.dyear + this.dmonth, "YYYYMM").tz('America/Argentina/Buenos_Aires').locale('es'));
             },
             increaseMonth: function () {
                 this.setCalendarDate(this.getCalendarDate.add(1, 'month'));
@@ -244,7 +244,8 @@
                 'getRealDate',
                 'getRealCalendarDate',
                 'getCalendarYear',
-                'getCalendarMonth',
+              //  'getCalendarMonth',
+                'getCalendarWeeks',
                 'getCalendars',
                 'getCalendarDaysInMonth',
                 'getMonthCalendar',
