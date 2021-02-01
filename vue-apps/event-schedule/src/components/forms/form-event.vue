@@ -70,7 +70,7 @@
                 <v-flex xs4>
                     <v-select
                             label="Calendario"
-                            :items="getCalendars"
+                            :items="getCalendarsForCombo"
                             item-text="name"
                             item-value="id"
                             v-model="value.calendar"
@@ -318,6 +318,9 @@
                 'hasCalendars',
                 'getEventIndexById'
             ]),
+          getCalendarsForCombo(){
+            return [{name:"",id:null},...this.getCalendars]
+          },
             getEvent: function () {
                 return this.value;
             }
@@ -381,10 +384,11 @@
                         this.$store.commit('SET_SHOW_MODAL_FORM', false);
                     } else {
                         this.$store.commit('REMOVE_EVENT', this.getEventIndexById(this.value.id));
-                        this.$store.commit('ADD_PRE_EVENT', this.value);
+                        this.$store.commit('ADD_PRE_EVENT_UNSHIFT', this.value);
                         this.$store.commit('SET_EVENT_ID_SELECTED', null);
                         this.$store.commit('SET_EVENT_SELECTED', null);
                         this.$store.commit('SET_EVENT_INDEX_SELECTED', null);
+                      this.$store.commit('SET_SHOW_MODAL_FORM', false);
                         this.$emit('closeModal');
                     }
 

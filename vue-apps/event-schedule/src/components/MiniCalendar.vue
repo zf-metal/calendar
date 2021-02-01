@@ -119,10 +119,15 @@
             </v-layout>
         </v-container>
 
-        <modal title="" :showModal="getShowCalendarEventModal" @close="setShowCalendarEventModal(false)"
-               :btn-close="true">
-            <form-event v-if="getCalendarEventSelected" :calendars="getCalendars" v-model="getCalendarEventSelected"
-                        :index="-1"/>
+        <modal title=""
+               :showModal="getShowCalendarEventModal"
+               @close="setShowCalendarEventModal(false)"
+               :btnclose="true">
+            <form-event v-if="getCalendarEventSelected"
+                        :calendars="getCalendars"
+                        v-model="getCalendarEventSelected"
+                        :index="-1"
+            />
         </modal>
     </div>
 </template>

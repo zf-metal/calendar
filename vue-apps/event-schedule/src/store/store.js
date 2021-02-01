@@ -60,6 +60,7 @@ import {
   SET_PRE_EVENT_SIZE,
   SET_PRE_EVENT_FILTERED_SIZE, PLUS_PRE_EVENT_LIST_PAGE, CLEAR_PRE_EVENTS,
 } from './mutation-types'
+import {ADD_PRE_EVENT_UNSHIFT} from "@/store/mutation-types";
 
 
 Vue.use(Vuex)
@@ -785,6 +786,9 @@ const mutations = {
   },
   [ADD_PRE_EVENT](state, event) {
     state.preEvents.push(event);
+  },
+  [ADD_PRE_EVENT_UNSHIFT](state, event) {
+    state.preEvents.unshift(event);
   },
   [SET_EVENT_INDEX_SELECTED](state, index) {
     state.eventIndexSelected = index;
