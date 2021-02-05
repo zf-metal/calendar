@@ -72,6 +72,16 @@ class Event
      */
     public $type = null;
 
+    /**
+     * @Annotation\Type("DoctrineModule\Form\Element\ObjectSelect")
+     * @Annotation\Options({"label":"Category","empty_option": "",
+     * "target_class":"\ZfMetal\Calendar\Entity\Category", "description":""})
+     * @ORM\ManyToOne(targetEntity="\ZfMetal\Calendar\Entity\Category")
+     * @ORM\JoinColumn(name="category_id", referencedColumnName="id", nullable=true)
+     * @Transformation\Policy\Custom(transform="ZfMetal\Restful\Transformation\Policy\Common\Id::transform")
+     */
+    public $category = null;
+
 
     /**
      * @Annotation\Type("DoctrineModule\Form\Element\ObjectSelect")
@@ -841,6 +851,22 @@ class Event
     public function setFinalComment($finalComment)
     {
         $this->finalComment = $finalComment;
+    }
+
+    /**
+     * @return null
+     */
+    public function getCategory()
+    {
+        return $this->category;
+    }
+
+    /**
+     * @param null $category
+     */
+    public function setCategory($category)
+    {
+        $this->category = $category;
     }
 
 

@@ -25,6 +25,9 @@
               <v-flex xs12>
                 <filterZone></filterZone>
               </v-flex>
+              <v-flex xs12>
+                <filter-category></filter-category>
+              </v-flex>
             </v-layout>
           </v-container>
 
@@ -75,6 +78,7 @@
   import serviceSearch from "./ServiceSearch.vue"
   import {Drop} from 'vue-drag-drop'
   import {EventService} from '../resource'
+  import FilterCategory from "./filters/filterCategory";
 
   export default {
     name: 'panel',
@@ -85,6 +89,7 @@
       }
     },
     components: {
+      FilterCategory,
       preEvent, filterZone,Drop, filterString, filterHour, filterCalendars, serviceSearch
     },
     computed: {

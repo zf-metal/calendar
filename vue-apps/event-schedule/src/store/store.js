@@ -9,7 +9,7 @@ import 'moment/locale/es';
 import {calculateDistance, getRandomColor} from './../utils/helpers'
 
 
-import {EventService, StartService, CalendarService, ServiceService} from '../resource'
+import {EventService, StartService, CalendarService, ServiceService, CategoryService} from '../resource'
 
 import datesModule from './modules/dates'
 import calendarModule from './modules/calendar'
@@ -60,7 +60,7 @@ import {
   SET_PRE_EVENT_SIZE,
   SET_PRE_EVENT_FILTERED_SIZE, PLUS_PRE_EVENT_LIST_PAGE, CLEAR_PRE_EVENTS,
 } from './mutation-types'
-import {ADD_PRE_EVENT_UNSHIFT} from "@/store/mutation-types";
+import {ADD_PRE_EVENT_UNSHIFT, SET_CATEGORIES, SET_FILTER_CATEGORY} from "@/store/mutation-types";
 
 
 Vue.use(Vuex)
@@ -77,6 +77,7 @@ const state = {
   filterCoop: null,
   filterZone: null,
   filterString: null,
+  filterCategory: null,
   calendarStart: "06:00",
   eventIndexSelected: null,
   eventIdSelected: null,
@@ -97,6 +98,7 @@ const state = {
   events: [],
   eventStates: [],
   zones: {},
+  categories: {},
   holidays: [],
   eventTypes: [],
   preEventSize: CONF_PRE_EVENT_SIZE,
@@ -138,6 +140,9 @@ const getters = {
   },
   getZones: state => {
     return state.zones;
+  },
+  getCategories: state => {
+    return state.categories;
   },
   getDistanceFromEventSelected: (state) => (dlat, dlng) => {
     if (state.eventIndexSelected != undefined && state.eventSelected.lat != undefined && state.eventSelected.lng != undefined) {
@@ -200,7 +205,7 @@ const getters = {
     }
 
     //FILTER
-    if (state.filterZone || state.filterString || state.filterCoop || state.filterHour.from || state.filterHour.to) {
+    if (state.filterZone || state.filterString || state.filterCoop || state.filterHour.from || state.filterHour.to || state.filterCategory) {
 
       pes = state.preEvents.filter(function (e) {
 
@@ -210,6 +215,11 @@ const getters = {
           return false
         }
 
+        if (state.filterCategory && e.category.id == state.filterCategory) {
+          return true
+        } else if (state.filterCategory && e.category.id != state.filterCategory) {
+          return false
+        }
 
         if (state.filterHour.from && state.filterHour.to) {
 
@@ -356,6 +366,15 @@ const getters = {
         }
         return false;
       }
+    );
+  },
+  getPreEventsByCategory: (state) => (id) => {
+    return state.preEvents.filter(function (el) {
+          if (el.category != undefined && el.category.id != undefined && el.category.id == id) {
+            return true;
+          }
+          return false;
+        }
     );
   },
   getZoneColor: (state) => (id) => {
@@ -613,7 +632,7 @@ const actions = {
       if (response.data.zones) {
         dispatch('populateZones', response.data.zones);
       }
-
+      dispatch('fetchCategories');
       dispatch('eventList');
       dispatch('preEventList');
     })
@@ -630,6 +649,13 @@ const actions = {
       zones[zone.id] = zone;
     }
     commit("SET_ZONES", zones);
+  },
+
+  fetchCategories: ({commit}) => {
+    return CategoryService.findAll().then((response) => {
+      commit(SET_CATEGORIES, response.data);
+    });
+
   },
 
 
@@ -822,6 +848,9 @@ const mutations = {
   [SET_FILTER_ZONE](state, filterZoneId) {
     state.filterZone = filterZoneId;
   },
+  [SET_FILTER_CATEGORY](state,categoryId){
+    state.filterCategory = categoryId;
+  },
   [SET_FILTER_STRING](state, filterString) {
     state.filterString = filterString;
   },
@@ -858,6 +887,9 @@ const mutations = {
   },
   [PLUS_PRE_EVENT_LIST_PAGE](state) {
     state.preEventListPage++;
+  },
+  [SET_CATEGORIES](state, categories){
+    state.categories = categories
   }
 };
 
