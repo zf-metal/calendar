@@ -175,19 +175,35 @@
                 </v-flex>
 
 
-                <v-flex xs4>
 
-                    <v-text-field
-                            v-model="value.deliveryNote"
-                            ref="deliveryNote"
-                            @keydown="unsaved"
-                            :error-messages="errors.deliveryNote"
-                            label="Remito"
-                    >
 
-                    </v-text-field>
+              <v-flex xs4>
 
-                </v-flex>
+                <v-text-field
+                    v-model="getUpdatedAt"
+                    ref="end"
+                    @keydown="unsaved"
+                    :disabled="true"
+                    label="Actualizado"
+                >
+
+                </v-text-field>
+
+              </v-flex>
+
+              <v-flex xs4>
+
+                <v-text-field
+                    v-model="value.deliveryNote"
+                    ref="deliveryNote"
+                    @keydown="unsaved"
+                    :error-messages="errors.deliveryNote"
+                    label="Remito"
+                >
+
+                </v-text-field>
+
+              </v-flex>
 
                 <v-flex xs4>
                     <v-text-field v-if="value.rescheduledVisit"
@@ -222,6 +238,8 @@
                     <v-divider class="ma-0"></v-divider>
 
                 </v-flex>
+
+
 
 
             </v-layout>
@@ -263,7 +281,7 @@
     import alert from '../helpers/alert.vue'
 
 
-    import moment from 'moment'
+    import moment from 'moment-timezone'
     import 'moment/locale/es';
 
 
@@ -323,7 +341,11 @@
           },
             getEvent: function () {
                 return this.value;
-            }
+            },
+          getUpdatedAt(){
+              let m = moment(this.value.updatedAt).tz('America/Argentina/Buenos_Aires').locale('es')
+              return m.format("YYYY-MM-DD HH:mm:ss")
+          }
         },
         methods: {
             ...mapActions([
