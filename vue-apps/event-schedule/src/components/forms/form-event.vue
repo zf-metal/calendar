@@ -343,8 +343,7 @@
                 return this.value;
             },
           getUpdatedAt(){
-              let m = moment(this.value.updatedAt).tz('America/Argentina/Buenos_Aires').locale('es')
-              return m.format("YYYY-MM-DD HH:mm:ss")
+              return moment(this.value.updatedAt).utc(false).format("YYYY-MM-DD HH:mm:ss")
           }
         },
         methods: {
