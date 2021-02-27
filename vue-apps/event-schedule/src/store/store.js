@@ -209,20 +209,29 @@ const getters = {
 
       pes = state.preEvents.filter(function (e) {
 
-        if (state.filterCoop && e.link == state.filterCoop) {
-          return true
-        } else if (state.filterCoop && e.link != state.filterCoop) {
+
+        if (state.filterCoop && e.link != state.filterCoop) {
           return false
         }
 
-        if (state.filterCategory && e.category.id == state.filterCategory) {
-          return true
-        } else if (state.filterCategory && e.category.id != state.filterCategory) {
+        if (state.filterCategory && e.category.id != state.filterCategory) {
           return false
         }
+
+        if (state.filterZone && e.zone.id != state.filterZone) {
+          return false
+        }
+
+        if (state.filterString && //Si existe filtro string
+            (e.client && e.client.toLowerCase().indexOf(state.filterString) == -1) && //Y no coincide con nombre cliente
+            (e.location && e.location.toLowerCase().indexOf(state.filterString) == -1) && //Y tampoco coincide con la locacion
+            (e.branchOffice && e.branchOffice.toLowerCase().indexOf(state.filterString) == -1) && // y tampoco coincide con la sucursal
+            state.filterString != e.id) { //y tampoco coincide con el ID
+          return false;
+        }
+
 
         if (state.filterHour.from && state.filterHour.to) {
-
           //Two Range
           if (
             has(e, 'config.availability.timeRange.from') &&
@@ -230,7 +239,6 @@ const getters = {
             has(e, 'config.availability.timeRange2.from') &&
             has(e, 'config.availability.timeRange2.to')
           ) {
-
             //Compruebo el  primer Rango
             if (state.filterHour.from > e.config.availability.timeRange.from ||
               state.filterHour.to < e.config.availability.timeRange.to) {
@@ -247,8 +255,6 @@ const getters = {
             has(e, 'config.availability.timeRange.from') &&
             has(e, 'config.availability.timeRange.to')
           ) {
-
-
             //Invertido (Si el from del evento es mayor al to y los filtros no estan invertidos)
             if (e.config.availability.timeRange.from > e.config.availability.timeRange.to &&
               state.filterHour.from < state.filterHour.to) {
@@ -257,10 +263,7 @@ const getters = {
             } else if (state.filterHour.from > e.config.availability.timeRange.from ||
               state.filterHour.to < e.config.availability.timeRange.to) {
               return false
-
             }
-
-
           }
 
 
@@ -292,15 +295,7 @@ const getters = {
             }
           }
         }
-
-        if (
-          ((e.zone != undefined && e.zone.id != undefined && (state.filterZone == null || state.filterZone == "" || e.zone.id == state.filterZone)) || (e.zone == undefined && (state.filterZone == undefined || state.filterZone == ""))) &&
-          (state.filterString == e.id || state.filterString == "" || state.filterString == null || ((e.client && e.client.toLowerCase().indexOf(state.filterString) > -1) || (e.location && e.location.toLowerCase().indexOf(state.filterString) > -1) || (e.branchOffice && e.branchOffice.toLowerCase().indexOf(state.filterString) > -1)))) {
-          return true;
-        }
-
-
-        return false;
+        return true;
       });
     }
 
