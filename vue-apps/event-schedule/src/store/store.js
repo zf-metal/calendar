@@ -214,13 +214,22 @@ const getters = {
           return false
         }
 
-        if (state.filterCategory && e.category.id != state.filterCategory) {
+        if (state.filterCategory && e.category && e.category.id && e.category.id != state.filterCategory) {
           return false
         }
 
-        if (state.filterZone && e.zone.id != state.filterZone) {
+        if(state.filterCategory && !e.category){
           return false
         }
+
+        if (state.filterZone && e.zone && e.zone.id && e.zone.id != state.filterZone) {
+          return false
+        }
+
+        if (state.filterZone && !e.zone){
+          return false
+        }
+
 
         if (state.filterString && //Si existe filtro string
             (e.client && e.client.toLowerCase().indexOf(state.filterString) == -1) && //Y no coincide con nombre cliente
