@@ -706,9 +706,13 @@ const actions = {
   },
   pushEvent({ getters, commit, dispatch}, event) {
     event.hour = moment(event.start).tz('America/Argentina/Buenos_Aires').format("HH:mm");
+
+    //Change state to "agendado"
+    event.state = 2
     commit('ADD_EVENT', event);
 
-    EventService.updateEvent(event).then(() => {
+    EventService.updateEvent(event).then((response) => {
+      console.log(response.data)
       dispatch('checkCoop')
     }).catch(
       () => {
@@ -719,8 +723,10 @@ const actions = {
   },
   updateEvent({ commit, dispatch}, {index, event}) {
     EventService.updateEvent(event).then(
-      () => {
-        commit('UPDATE_EVENT', {index: index, event: event})
+      (response) => {
+        let eventUpdated = response.data.item
+        eventUpdated.hour = eventUpdated.start.match(/[0-2][0-9]:[0-6][0-9]/)[0].split(":")[0]
+        commit('UPDATE_EVENT', {index: index, event: eventUpdated})
       }
     ).catch(
       () => {
@@ -840,7 +846,7 @@ const mutations = {
     state.events.splice(index, 1);
   },
   [UPDATE_EVENT](state, {index, event}) {
-    state.events[index] = event;
+    Vue.set(state.events,index,event)
   },
   [SET_CALENDAR_SCROLL](state, {top, left}) {
     state.calendarScroll.top = top;
