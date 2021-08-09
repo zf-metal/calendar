@@ -120,6 +120,7 @@
 
         let event = data.event
         event.calendar = null
+        event.state = 1
         EventService.updateEvent(event).then(
           () => {
             this.$store.commit('REMOVE_EVENT', this.getEventIndexById(data.event.id));
