@@ -343,6 +343,30 @@ return [
                             ],
                         ],
                     ],
+                    'Category' => [
+                        'mayTerminate' => false,
+                        'options' => [
+                            'route' => '/category',
+                            'defaults' => [
+                                'controller' => \ZfMetal\Calendar\Controller\CategoryController::CLASS,
+                                'action' => 'grid',
+                            ],
+                        ],
+                        'type' => \Zend\Router\Http\Literal::class,
+                        'child_routes' => [
+                            'Grid' => [
+                                'mayTerminate' => true,
+                                'options' => [
+                                    'route' => '/grid',
+                                    'defaults' => [
+                                        'controller' => \ZfMetal\Calendar\Controller\CategoryController::CLASS,
+                                        'action' => 'grid',
+                                    ],
+                                ],
+                                'type' => \Zend\Router\Http\Segment::class,
+                            ],
+                        ],
+                    ],
                     'Api' => [
                         'type' => \Zend\Router\Http\Literal::class,
                         'mayTerminate' => false,
@@ -368,6 +392,17 @@ return [
                                     'route' => '/calendars[/:id]',
                                     'defaults' => [
                                         'controller' => \ZfMetal\Calendar\Controller\CalendarApiController::class,
+                                    ],
+                                ],
+                            ],
+                            'calendarsActive' => [
+                                'type' => \Zend\Router\Http\Literal::class,
+                                'mayTerminate' => true,
+                                'options' => [
+                                    'route' => '/calendars/active',
+                                    'defaults' => [
+                                        'controller' => \ZfMetal\Calendar\Controller\CalendarApiController::class,
+                                        'action' => 'active'
                                     ],
                                 ],
                             ],

@@ -1,6 +1,4 @@
 import {LOADING_LESS, LOADING_PLUS, SHOW_ERROR, HIDE_ERROR, SET_TEXT_ERROR} from "./helpers-mutations";
-import {SET_PRE_EVENT_SIZE} from "../mutation-types";
-
 
 export default {
     namespaced: false,

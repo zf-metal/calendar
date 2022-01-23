@@ -29,7 +29,7 @@
     import {mapState} from 'vuex';
 
     export default {
-        name: 'keep',
+        name: 'coop',
         props: {
             enable: Boolean,
             count: Number,

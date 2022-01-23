@@ -52,6 +52,14 @@ class Calendar
      */
     public $user = null;
 
+    /**
+     * @Annotation\Type("Zend\Form\Element\Text")
+     * @Annotation\Attributes({"type":"number"})
+     * @Annotation\Options({"label":"name", "description":"", "addon":""})
+     * @ORM\Column(type="integer", length=5, unique=false, nullable=true, name="priority")
+     */
+    public $priority = null;
+
 
     /**
      * @Annotation\ComposedObject({"name":"schedules", "target_object":"\ZfMetal\Calendar\Entity\Schedule", "is_collection":"true",
@@ -374,6 +382,23 @@ class Calendar
         $appointmentConfig->setCalendar($this);
         $this->appointmentConfig = $appointmentConfig;
     }
+
+    /**
+     * @return null
+     */
+    public function getPriority()
+    {
+        return $this->priority;
+    }
+
+    /**
+     * @param null $priority
+     */
+    public function setPriority($priority)
+    {
+        $this->priority = $priority;
+    }
+
 
 
 

@@ -9,7 +9,7 @@ import 'moment/locale/es';
 import {calculateDistance, getRandomColor} from './../utils/helpers'
 
 
-import {EventService, StartService, CalendarService, ServiceService} from '../resource'
+import {EventService, StartService, CalendarService, ServiceService, CategoryService} from '../resource'
 
 import datesModule from './modules/dates'
 import calendarModule from './modules/calendar'
@@ -60,6 +60,7 @@ import {
   SET_PRE_EVENT_SIZE,
   SET_PRE_EVENT_FILTERED_SIZE, PLUS_PRE_EVENT_LIST_PAGE, CLEAR_PRE_EVENTS,
 } from './mutation-types'
+import {ADD_PRE_EVENT_UNSHIFT, SET_CATEGORIES, SET_FILTER_CATEGORY} from "@/store/mutation-types";
 
 
 Vue.use(Vuex)
@@ -76,6 +77,7 @@ const state = {
   filterCoop: null,
   filterZone: null,
   filterString: null,
+  filterCategory: null,
   calendarStart: "06:00",
   eventIndexSelected: null,
   eventIdSelected: null,
@@ -96,6 +98,7 @@ const state = {
   events: [],
   eventStates: [],
   zones: {},
+  categories: {},
   holidays: [],
   eventTypes: [],
   preEventSize: CONF_PRE_EVENT_SIZE,
@@ -137,6 +140,9 @@ const getters = {
   },
   getZones: state => {
     return state.zones;
+  },
+  getCategories: state => {
+    return state.categories;
   },
   getDistanceFromEventSelected: (state) => (dlat, dlng) => {
     if (state.eventIndexSelected != undefined && state.eventSelected.lat != undefined && state.eventSelected.lng != undefined) {
@@ -199,19 +205,42 @@ const getters = {
     }
 
     //FILTER
-    if (state.filterZone || state.filterString || state.filterCoop || state.filterHour.from || state.filterHour.to) {
+    if (state.filterZone || state.filterString || state.filterCoop || state.filterHour.from || state.filterHour.to || state.filterCategory) {
 
       pes = state.preEvents.filter(function (e) {
 
-        if (state.filterCoop && e.link == state.filterCoop) {
-          return true
-        } else if (state.filterCoop && e.link != state.filterCoop) {
+
+        if (state.filterCoop && e.link != state.filterCoop) {
+          return false
+        }
+
+        if (state.filterCategory && e.category && e.category.id && e.category.id != state.filterCategory) {
+          return false
+        }
+
+        if(state.filterCategory && !e.category){
+          return false
+        }
+
+        if (state.filterZone && e.zone && e.zone.id && e.zone.id != state.filterZone) {
+          return false
+        }
+
+        if (state.filterZone && !e.zone){
           return false
         }
 
 
-        if (state.filterHour.from && state.filterHour.to) {
+        if (state.filterString && //Si existe filtro string
+            (e.client && e.client.toLowerCase().indexOf(state.filterString) == -1) && //Y no coincide con nombre cliente
+            (e.location && e.location.toLowerCase().indexOf(state.filterString) == -1) && //Y tampoco coincide con la locacion
+            (e.branchOffice && e.branchOffice.toLowerCase().indexOf(state.filterString) == -1) && // y tampoco coincide con la sucursal
+            state.filterString != e.id) { //y tampoco coincide con el ID
+          return false;
+        }
 
+
+        if (state.filterHour.from && state.filterHour.to) {
           //Two Range
           if (
             has(e, 'config.availability.timeRange.from') &&
@@ -219,7 +248,6 @@ const getters = {
             has(e, 'config.availability.timeRange2.from') &&
             has(e, 'config.availability.timeRange2.to')
           ) {
-
             //Compruebo el  primer Rango
             if (state.filterHour.from > e.config.availability.timeRange.from ||
               state.filterHour.to < e.config.availability.timeRange.to) {
@@ -236,8 +264,6 @@ const getters = {
             has(e, 'config.availability.timeRange.from') &&
             has(e, 'config.availability.timeRange.to')
           ) {
-
-
             //Invertido (Si el from del evento es mayor al to y los filtros no estan invertidos)
             if (e.config.availability.timeRange.from > e.config.availability.timeRange.to &&
               state.filterHour.from < state.filterHour.to) {
@@ -246,10 +272,7 @@ const getters = {
             } else if (state.filterHour.from > e.config.availability.timeRange.from ||
               state.filterHour.to < e.config.availability.timeRange.to) {
               return false
-
             }
-
-
           }
 
 
@@ -281,15 +304,7 @@ const getters = {
             }
           }
         }
-
-        if (
-          ((e.zone != undefined && e.zone.id != undefined && (state.filterZone == null || state.filterZone == "" || e.zone.id == state.filterZone)) || (e.zone == undefined && (state.filterZone == undefined || state.filterZone == ""))) &&
-          (state.filterString == e.id || state.filterString == "" || state.filterString == null || ((e.client && e.client.toLowerCase().indexOf(state.filterString) > -1) || (e.location && e.location.toLowerCase().indexOf(state.filterString) > -1) || (e.branchOffice && e.branchOffice.toLowerCase().indexOf(state.filterString) > -1)))) {
-          return true;
-        }
-
-
-        return false;
+        return true;
       });
     }
 
@@ -355,6 +370,15 @@ const getters = {
         }
         return false;
       }
+    );
+  },
+  getPreEventsByCategory: (state) => (id) => {
+    return state.preEvents.filter(function (el) {
+          if (el.category != undefined && el.category.id != undefined && el.category.id == id) {
+            return true;
+          }
+          return false;
+        }
     );
   },
   getZoneColor: (state) => (id) => {
@@ -591,7 +615,7 @@ const actions = {
           dispatch("setTextError", "Error on changeDate");
         }
       );
-      ;
+
 
     }
   },
@@ -612,7 +636,7 @@ const actions = {
       if (response.data.zones) {
         dispatch('populateZones', response.data.zones);
       }
-
+      dispatch('fetchCategories');
       dispatch('eventList');
       dispatch('preEventList');
     })
@@ -631,13 +655,20 @@ const actions = {
     commit("SET_ZONES", zones);
   },
 
+  fetchCategories: ({commit}) => {
+    return CategoryService.findAll().then((response) => {
+      commit(SET_CATEGORIES, response.data);
+    });
+
+  },
+
 
   calendarList({ commit, dispatch}) {
     CalendarService.findAll().then((response) => {
       commit(SET_CALENDARS, response.data);
 
     }).catch(
-      (error) => {
+      () => {
         dispatch("setTextError", "Error on calendarList");
       }
     );
@@ -647,7 +678,7 @@ const actions = {
 
       return EventService.getPreEvents(getters.getDate, state.preEventListLimit, state.preEventListPage).then((response) => {
         commit("SET_PRE_EVENTS", response.data);
-        commit(PLUS_PRE_EVENT_LIST_PAGE);
+        //commit(PLUS_PRE_EVENT_LIST_PAGE);
       });
 
 
@@ -673,11 +704,15 @@ const actions = {
       }
     );
   },
-  pushEvent({state, getters, commit, dispatch}, event) {
+  pushEvent({ getters, commit, dispatch}, event) {
     event.hour = moment(event.start).tz('America/Argentina/Buenos_Aires').format("HH:mm");
+
+    //Change state to "agendado"
+    event.state = 2
     commit('ADD_EVENT', event);
 
-    EventService.updateEvent(event).then(() => {
+    EventService.updateEvent(event).then((response) => {
+      console.log(response.data)
       dispatch('checkCoop')
     }).catch(
       () => {
@@ -686,10 +721,12 @@ const actions = {
     );
 
   },
-  updateEvent({state, commit, dispatch}, {index, event}) {
+  updateEvent({ commit, dispatch}, {index, event}) {
     EventService.updateEvent(event).then(
-      () => {
-        commit('UPDATE_EVENT', {index: index, event: event})
+      (response) => {
+        let eventUpdated = response.data.item
+        eventUpdated.hour = eventUpdated.start.match(/[0-2][0-9]:[0-6][0-9]/)[0].split(":")[0]
+        commit('UPDATE_EVENT', {index: index, event: eventUpdated})
       }
     ).catch(
       () => {
@@ -697,7 +734,7 @@ const actions = {
       }
     );
   },
-  refreshEvent({state, getters, commit, dispatch}, event) {
+  refreshEvent({ getters, commit, dispatch}, event) {
     EventService.updateEvent(event).then(
       () => {
 
@@ -786,6 +823,9 @@ const mutations = {
   [ADD_PRE_EVENT](state, event) {
     state.preEvents.push(event);
   },
+  [ADD_PRE_EVENT_UNSHIFT](state, event) {
+    state.preEvents.unshift(event);
+  },
   [SET_EVENT_INDEX_SELECTED](state, index) {
     state.eventIndexSelected = index;
   },
@@ -806,7 +846,7 @@ const mutations = {
     state.events.splice(index, 1);
   },
   [UPDATE_EVENT](state, {index, event}) {
-    state.events[index] = event;
+    Vue.set(state.events,index,event)
   },
   [SET_CALENDAR_SCROLL](state, {top, left}) {
     state.calendarScroll.top = top;
@@ -817,6 +857,9 @@ const mutations = {
   },
   [SET_FILTER_ZONE](state, filterZoneId) {
     state.filterZone = filterZoneId;
+  },
+  [SET_FILTER_CATEGORY](state,categoryId){
+    state.filterCategory = categoryId;
   },
   [SET_FILTER_STRING](state, filterString) {
     state.filterString = filterString;
@@ -854,6 +897,9 @@ const mutations = {
   },
   [PLUS_PRE_EVENT_LIST_PAGE](state) {
     state.preEventListPage++;
+  },
+  [SET_CATEGORIES](state, categories){
+    state.categories = categories
   }
 };
 

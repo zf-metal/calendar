@@ -60,7 +60,6 @@
 </template>
 
 <script>
-    import delay from '../helpers/delay'
     import {ServiceService} from '../resource/index'
     import ServiceItems from './ServiceItems.vue'
 

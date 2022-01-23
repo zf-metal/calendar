@@ -98,6 +98,20 @@ class CalendarForm extends \Zend\Form\Form implements \DoctrineModule\Persistenc
             )
         ));
 
+        $this->add(array(
+            'name' => 'priority',
+            'attributes' => array(
+                'type' => 'number',
+                'placeholder' => 'Prioridad',
+                'class' => 'form-control ',
+                'required' => 'required',
+                'autocomplete' => "off"
+            ),
+            'options' => array(
+                'label' => 'Prioridad para orden en programación',
+            )
+        ));
+
 
         $this->add([
             'type' => Collection::class,

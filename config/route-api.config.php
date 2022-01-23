@@ -3,6 +3,7 @@
 return [
     'router' => [
         'routes' => [
+
             'ZfMetalCalendar' => [
                 'mayTerminate' => false,
                 'options' => [
@@ -17,16 +18,6 @@ return [
                             'route' => '/api',
                         ],
                         'child_routes' => [
-                            'calendars' => [
-                                'type' => \Zend\Router\Http\Segment::class,
-                                'mayTerminate' => false,
-                                'options' => [
-                                    'route' => '/calendars[/:id]',
-                                    'defaults' => [
-                                        'controller' => \ZfMetal\Calendar\Controller\CalendarApiController::class,
-                                    ],
-                                ],
-                            ],
                             'entity' => [
                                 'type' => \Zend\Router\Http\Segment::class,
                                 'mayTerminate' => false,
@@ -37,6 +28,17 @@ return [
                                     ],
                                 ],
                             ],
+                            'calendars' => [
+                                'type' => \Zend\Router\Http\Segment::class,
+                                'mayTerminate' => true,
+                                'options' => [
+                                    'route' => '/calendars[/:id]',
+                                    'defaults' => [
+                                        'controller' => \ZfMetal\Calendar\Controller\CalendarApiController::class,
+                                    ],
+                                ],
+                            ],
+
                             'start' => [
                                 'type' => \Zend\Router\Http\Segment::class,
                                 'mayTerminate' => false,

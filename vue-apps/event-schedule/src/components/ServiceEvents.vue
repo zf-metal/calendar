@@ -42,10 +42,8 @@
     import {mapGetters, mapState, mapActions} from 'vuex';
     import {EventService} from '../resource'
     import moment from 'moment'
-    import tz from 'moment-timezone'
     import 'moment/locale/es';
 
-    import MiniEvent from "./MiniEvent.vue";
     import MiniCalendar from './MiniCalendar.vue'
     import ServiceDetail from './ServiceDetail.vue'
 
@@ -56,7 +54,6 @@
         props: {},
         components: {
             MiniCalendar,
-            MiniEvent,
             ServiceDetail,
             PreEvent
         },

@@ -18,7 +18,7 @@
 
 <script>
     import {mapGetters, mapActions} from 'vuex';
-    import {Drag, Drop} from 'vue-drag-drop';
+    import {Drop} from 'vue-drag-drop';
     import {calculateEnd} from './../utils/helpers'
     import event from './Event.vue'
     import dialogAlert from './helpers/dialogAlert.vue'
@@ -30,7 +30,7 @@
     export default {
         name: 'calnedarTd',
         props: ['calendarId', 'name', 'user', 'outOfService', 'ki', 'date', 'hour', 'cellHeight', 'isNextDay', 'day'],
-        components: {Drag, Drop, event, dialogAlert},
+        components: { Drop, event, dialogAlert},
         data() {
             return {
                 top: 0,

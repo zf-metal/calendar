@@ -7,9 +7,10 @@
                 :fullscreen="fullscreen"
         >
             <v-card   >
-
                 <v-toolbar dark color="primary">
-                    <v-btn v-if="btnClose" icon dark @click.native="$emit('close')">
+                    <v-btn v-if="btnclose" icon dark
+                           @click.native="$emit('close')"
+                    >
                         <v-icon>close</v-icon>
                     </v-btn>
                     <v-toolbar-title>{{title}}</v-toolbar-title>
@@ -34,7 +35,7 @@
             modalClass: String,
             modalSize: String,
             title: String,
-            btnClose: Boolean,
+            btnclose: {type:Boolean, default:true},
             fullscreen: {type:Boolean,default:false}
         },
         data: function () {
@@ -44,9 +45,6 @@
             closeModal: function () {
                 this.$emit('close');
             },
-            onEscapeClose: function (key) {
-
-            }
         }
     }
 </script>

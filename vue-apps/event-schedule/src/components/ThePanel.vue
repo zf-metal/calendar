@@ -25,6 +25,9 @@
               <v-flex xs12>
                 <filterZone></filterZone>
               </v-flex>
+              <v-flex xs12>
+                <filter-category></filter-category>
+              </v-flex>
             </v-layout>
           </v-container>
 
@@ -73,12 +76,9 @@
   import filterHour from './filters/filterHours.vue'
   import filterCalendars from "./filters/filterCalendars.vue"
   import serviceSearch from "./ServiceSearch.vue"
-
-  import modal from './helpers/Modal.vue'
-  import formEvent from './forms/form-event.vue'
-
-  import {Drag, Drop} from 'vue-drag-drop';
+  import {Drop} from 'vue-drag-drop'
   import {EventService} from '../resource'
+  import FilterCategory from "./filters/filterCategory";
 
   export default {
     name: 'panel',
@@ -89,7 +89,8 @@
       }
     },
     components: {
-      preEvent, modal, filterZone, filterString, filterHour, formEvent, filterCalendars, serviceSearch, Drag, Drop
+      FilterCategory,
+      preEvent, filterZone,Drop, filterString, filterHour, filterCalendars, serviceSearch
     },
     computed: {
       ...mapState([
@@ -112,21 +113,22 @@
       ...mapActions([
         'preEventList'
       ]),
-      incrementSize: function (data) {
+      incrementSize: function () {
         this.$store.commit('SET_PRE_EVENT_SIZE', this.preEventSize + 10);
       },
       handleDrop: function (data) {
 
         let event = data.event
         event.calendar = null
+        event.state = 1
         EventService.updateEvent(event).then(
-          (response) => {
+          () => {
             this.$store.commit('REMOVE_EVENT', this.getEventIndexById(data.event.id));
             this.$store.commit('ADD_PRE_EVENT', data.event);
           }
         ).catch(
           (error) => {
-            console.log("Error On Update Event");
+            console.log("Error On Update Event:",error);
           }
         );
       },

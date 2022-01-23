@@ -15,7 +15,7 @@ return [
                 'columns' => \ZfMetal\Commons\Consts::COLUMNS_ONE,
                 'style' => \ZfMetal\Commons\Consts::STYLE_VERTICAL,
                 'groups' => [
-                    
+
                 ],
             ],
             'columnsConfig' => [
@@ -34,6 +34,10 @@ return [
                 'description' => [
                     'displayName' => 'Descripción',
                     'hidden' => true,
+                ],
+                'priority' => [
+                    'displayName' => 'Prioridad',
+                    'priority' => 40
                 ],
                 'schedules' => [
                     'displayName' => 'schedules',

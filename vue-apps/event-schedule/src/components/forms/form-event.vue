@@ -70,7 +70,7 @@
                 <v-flex xs4>
                     <v-select
                             label="Calendario"
-                            :items="getCalendars"
+                            :items="getCalendarsForCombo"
                             item-text="name"
                             item-value="id"
                             v-model="value.calendar"
@@ -175,19 +175,35 @@
                 </v-flex>
 
 
-                <v-flex xs4>
 
-                    <v-text-field
-                            v-model="value.deliveryNote"
-                            ref="deliveryNote"
-                            @keydown="unsaved"
-                            :error-messages="errors.deliveryNote"
-                            label="Remito"
-                    >
 
-                    </v-text-field>
+              <v-flex xs4>
 
-                </v-flex>
+                <v-text-field
+                    v-model="getUpdatedAt"
+                    ref="end"
+                    @keydown="unsaved"
+                    :disabled="true"
+                    label="Actualizado"
+                >
+
+                </v-text-field>
+
+              </v-flex>
+
+              <v-flex xs4>
+
+                <v-text-field
+                    v-model="value.deliveryNote"
+                    ref="deliveryNote"
+                    @keydown="unsaved"
+                    :error-messages="errors.deliveryNote"
+                    label="Remito"
+                >
+
+                </v-text-field>
+
+              </v-flex>
 
                 <v-flex xs4>
                     <v-text-field v-if="value.rescheduledVisit"
@@ -224,9 +240,19 @@
                 </v-flex>
 
 
+
+
             </v-layout>
             <v-layout row wrap justify-end>
-                <v-flex xs3 class="text-xs-right pa-0">
+
+                <v-flex class="text-xs-right pa-0">
+                    <v-btn class="text-xs-right" flat
+                           :disabled="h.submitInProgress"
+                           @click="$store.commit('SET_SHOW_MODAL_FORM', false)"
+                    >
+                        Cerrar
+                    </v-btn>
+
                     <v-btn class="text-xs-right"
                            :disabled="h.submitInProgress"
                            @click="save"
@@ -251,20 +277,18 @@
     import {mapGetters, mapActions, mapState} from 'vuex';
     import {HTTP} from './../../utils/http-client'
     import {calculateEnd} from './../../utils/helpers'
-    import fe from '../helpers/form-errors.vue'
     import saveStatus from '../helpers/save-status.vue'
     import alert from '../helpers/alert.vue'
 
 
-    import moment from 'moment'
-    import momenttz from 'moment-timezone'
+    import moment from 'moment-timezone'
     import 'moment/locale/es';
 
 
     export default {
         name: 'form-event',
         props: ['index', 'value', 'isSaved', 'calendars'],
-        components: {fe, saveStatus, alert},
+        components: { saveStatus, alert},
         data() {
             return {
                 errors: [],
@@ -312,9 +336,15 @@
                 'hasCalendars',
                 'getEventIndexById'
             ]),
+          getCalendarsForCombo(){
+            return [{name:"",id:null},...this.getCalendars]
+          },
             getEvent: function () {
                 return this.value;
-            }
+            },
+          getUpdatedAt(){
+              return moment(this.value.updatedAt).utc(false).format("YYYY-MM-DD HH:mm:ss")
+          }
         },
         methods: {
             ...mapActions([
@@ -375,10 +405,11 @@
                         this.$store.commit('SET_SHOW_MODAL_FORM', false);
                     } else {
                         this.$store.commit('REMOVE_EVENT', this.getEventIndexById(this.value.id));
-                        this.$store.commit('ADD_PRE_EVENT', this.value);
+                        this.$store.commit('ADD_PRE_EVENT_UNSHIFT', this.value);
                         this.$store.commit('SET_EVENT_ID_SELECTED', null);
                         this.$store.commit('SET_EVENT_SELECTED', null);
                         this.$store.commit('SET_EVENT_INDEX_SELECTED', null);
+                      this.$store.commit('SET_SHOW_MODAL_FORM', false);
                         this.$emit('closeModal');
                     }
 
